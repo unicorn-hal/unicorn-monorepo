@@ -11,3 +11,13 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: postgres
       POSTGRES_INIT_DB_ARGS: --encoding=UTF-8
+  test-db:
+    image: postgres:14-bullseye
+    container_name: test-db
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+      POSTGRES_INIT_DB_ARGS: --encoding=UTF-8
