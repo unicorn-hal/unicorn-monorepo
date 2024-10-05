@@ -5,6 +5,7 @@
 まずはIntelliJ IDEAをインストールし、このプロジェクトを開いてください。
 
 ## DBの起動
+`./api-server`へ移動し、以下のコマンドを実行してください。
 ```bash
 docker compose up -d
 ```
@@ -13,7 +14,7 @@ docker compose up -d
 
 ### 環境変数の設定
 Intellij IDEAの右上にある`Edit Configurations`をクリックし、`Environment`タブを選択して環境変数を設定してください。
-または、bashに以下の環境変数を設定してください。(exportコマンドを使用)
+または、VS Codeを使用する場合は、bashに以下の環境変数を設定してください。(exportコマンドを使用)
 ```bash
 SPRING_APPLICATION_NAME=api-server
 SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:5432/postgres
