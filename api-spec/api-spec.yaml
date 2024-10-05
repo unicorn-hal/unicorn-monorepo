@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
   version: '1.0.0'
-  title: 'Fleet Tracker API'
-  description: 'このAPIはFleet TrackerのためのAPIです。'
+  title: 'Unicorn API'
+  description: 'API for managing unicorn.'
 
 x-google-backend:
   address: https://xxxx.run.app
