@@ -1,15 +1,38 @@
-openapi: 3.0.0
+swagger: '2.0'
 info:
-  title: Sample API
-  version: 1.0.0
+  version: '1.0.0'
+  title: 'Fleet Tracker API'
+  description: 'このAPIはFleet TrackerのためのAPIです。'
+
+x-google-backend:
+  address: https://xxxx.run.app
+  deadline: 30.0
+
+securityDefinitions:
+  firebase:
+    authorizationUrl: ""
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "https://securetoken.google.com/xxxx"
+    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+    x-google-audiences: "xxxx"
+security:
+  - firebase: []
+
+tags:
+  - name: test
+    description: test
+host: 'https://xxxx.run.app'
+schemes:
+  - https
 paths:
   /hello:
     get:
       summary: Returns a greeting message.
+      tags:
+        - test
       responses:
         '200':
           description: A successful response
-          content:
-            application/json:
-              schema:
-                type: string
+          schema:
+            type: string
