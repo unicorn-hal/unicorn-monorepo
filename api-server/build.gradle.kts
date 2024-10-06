@@ -40,12 +40,3 @@ kotlin {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
-
-flyway {
-    driver="org.postgresql.Driver"
-    url=System.getenv("SPRING_DATASOURCE_URL")
-    user=System.getenv("SPRING_DATASOURCE_USERNAME")
-    password=System.getenv("SPRING_DATASOURCE_PASSWORD")
-    baselineOnMigrate=true
-    locations= arrayOf("classpath:db/migration")
-}
