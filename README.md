@@ -17,7 +17,7 @@ Intellij IDEAの右上にある`Edit Configurations`をクリックし、`Enviro
 または、VS Codeを使用する場合は、bashに以下の環境変数を設定してください。(exportコマンドを使用)
 ```bash
 SPRING_APPLICATION_NAME=api-server
-SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:5432/postgres
+SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:5432/unicorn-postgres
 SPRING_DATASOURCE_USERNAME=postgres
 SPRING_DATASOURCE_PASSWORD=password
 SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
