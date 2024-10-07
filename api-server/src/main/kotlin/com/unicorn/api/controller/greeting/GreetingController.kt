@@ -1,16 +1,23 @@
 package com.unicorn.api.controller.greeting
 
+import com.unicorn.api.application_service.greeting.SaveGreetingService
+import com.unicorn.api.domain.greeting.Greeting
 import com.unicorn.api.query_service.GreetingDto
 import com.unicorn.api.query_service.GreetingQueryService
 import com.unicorn.api.query_service.GreetingResult
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-class GreetingController(val greetingQueryService: GreetingQueryService) {
+class GreetingController(
+    private val greetingQueryService: GreetingQueryService,
+    private val saveGreetingService: SaveGreetingService
+) {
 
     @GetMapping("/greetings")
     fun getGreetings(): ResponseEntity<GreetingResult> {
@@ -35,4 +42,16 @@ class GreetingController(val greetingQueryService: GreetingQueryService) {
             return ResponseEntity.status(500).build()
         }
     }
+
+    @PostMapping("/greetings")
+    fun postGreeting(@RequestBody greetingRequest: GreetingPostRequest): ResponseEntity<Greeting> {
+        try {
+            val result = saveGreetingService.save(greetingRequest.message)
+            return ResponseEntity.ok(result)
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).build()
+        }
+    }
 }
+
+data class GreetingPostRequest(val message: String)
