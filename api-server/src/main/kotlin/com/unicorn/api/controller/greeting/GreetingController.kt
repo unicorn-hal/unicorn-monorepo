@@ -13,7 +13,7 @@ import java.util.UUID
 class GreetingController(val greetingQueryService: GreetingQueryService) {
 
     @GetMapping("/greetings")
-    fun hello(): ResponseEntity<GreetingResult> {
+    fun getGreetings(): ResponseEntity<GreetingResult> {
         try {
             val result = greetingQueryService.get()
             return ResponseEntity.ok(result)
@@ -23,7 +23,7 @@ class GreetingController(val greetingQueryService: GreetingQueryService) {
     }
 
     @GetMapping("/greetings/{id}")
-    fun hello(@PathVariable id: UUID): ResponseEntity<GreetingDto> {
+    fun getGreetingById(@PathVariable id: UUID): ResponseEntity<GreetingDto> {
         try {
             val result = greetingQueryService.getBy(id)
             return if (result != null) {
