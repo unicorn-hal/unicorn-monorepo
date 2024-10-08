@@ -19,7 +19,7 @@ import java.util.*
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
-@Sql("/db/greeting/Insert_greeting_data.sql")
+@Sql("/db/greeting/Insert_Greeting_Data.sql")
 class GreetingRepositoryTest {
 
     @Autowired
