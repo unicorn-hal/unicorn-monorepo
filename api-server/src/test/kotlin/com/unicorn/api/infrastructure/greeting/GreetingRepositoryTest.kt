@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
+import org.springframework.test.context.jdbc.Sql
 import java.sql.ResultSet
 import java.util.*
 
@@ -18,6 +19,7 @@ import java.util.*
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
+@Sql("/db/greeting/Insert_greeting_data.sql")
 class GreetingRepositoryTest {
 
     @Autowired
