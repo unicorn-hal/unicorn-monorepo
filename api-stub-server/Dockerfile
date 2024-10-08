@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:16
 
 # 作業ディレクトリを設定
 WORKDIR /usr/src/app
