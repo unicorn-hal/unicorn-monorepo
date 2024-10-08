@@ -16,10 +16,10 @@ COPY . .
 # RUN npm run build
 
 # Cloud Run がリッスンするポートを指定
-ENV PORT=3000
+ENV PORT=8080
 
 # コンテナ起動時に実行するコマンド
 CMD node index.js
 
 # Expose port 3000
-EXPOSE 3000
+EXPOSE 8080
