@@ -10,6 +10,7 @@ interface GreetingRepository {
     fun store(greeting: Greeting): Greeting
     fun getOrNullById(id: UUID): Greeting?
     fun update(greeting: Greeting): Greeting
+    fun delete(greeting: Greeting): Greeting
 }
 
 @Repository
@@ -63,6 +64,21 @@ class GreetingRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
         val sqlParams = MapSqlParameterSource()
             .addValue("id", greeting.id)
             .addValue("message", greeting.message)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+
+        return greeting
+    }
+
+    override fun delete(greeting: Greeting): Greeting {
+        val sql = """
+            UPDATE greeting
+            SET deleted_at = NOW()
+            WHERE id = :id
+        """.trimIndent()
+
+        val sqlParams = MapSqlParameterSource()
+            .addValue("id", greeting.id)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
 

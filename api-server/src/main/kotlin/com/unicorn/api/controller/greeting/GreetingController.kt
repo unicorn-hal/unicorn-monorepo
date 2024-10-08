@@ -1,5 +1,6 @@
 package com.unicorn.api.controller.greeting
 
+import com.unicorn.api.application_service.greeting.DeleteGreetingService
 import com.unicorn.api.application_service.greeting.SaveGreetingService
 import com.unicorn.api.application_service.greeting.UpdateGreetingService
 import com.unicorn.api.domain.greeting.Greeting
@@ -7,6 +8,7 @@ import com.unicorn.api.query_service.GreetingDto
 import com.unicorn.api.query_service.GreetingQueryService
 import com.unicorn.api.query_service.GreetingResult
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,7 +21,8 @@ import java.util.UUID
 class GreetingController(
     private val greetingQueryService: GreetingQueryService,
     private val saveGreetingService: SaveGreetingService,
-    private val updateGreetingService: UpdateGreetingService
+    private val updateGreetingService: UpdateGreetingService,
+    private val deleteGreetingService: DeleteGreetingService
 ) {
 
     @GetMapping("/greetings")
@@ -61,6 +64,16 @@ class GreetingController(
         try {
             val result = updateGreetingService.update(id, greetingRequest.message)
             return ResponseEntity.ok(result)
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).build()
+        }
+    }
+
+    @DeleteMapping("/greetings/{id}")
+    fun deleteGreeting(@PathVariable id: UUID): ResponseEntity<Unit> {
+        try {
+            deleteGreetingService.delete(id)
+            return ResponseEntity.ok().build()
         } catch (e: Exception) {
             return ResponseEntity.status(500).build()
         }
