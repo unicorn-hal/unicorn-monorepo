@@ -4,9 +4,9 @@ import com.unicorn.api.application_service.greeting.DeleteGreetingService
 import com.unicorn.api.application_service.greeting.SaveGreetingService
 import com.unicorn.api.application_service.greeting.UpdateGreetingService
 import com.unicorn.api.domain.greeting.Greeting
-import com.unicorn.api.query_service.GreetingDto
-import com.unicorn.api.query_service.GreetingQueryService
-import com.unicorn.api.query_service.GreetingResult
+import com.unicorn.api.query_service.greeting.GreetingDto
+import com.unicorn.api.query_service.greeting.GreetingQueryService
+import com.unicorn.api.query_service.greeting.GreetingResult
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping

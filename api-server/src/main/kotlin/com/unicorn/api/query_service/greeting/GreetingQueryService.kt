@@ -1,4 +1,4 @@
-package com.unicorn.api.query_service
+package com.unicorn.api.query_service.greeting
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -11,7 +11,8 @@ interface GreetingQueryService {
 }
 
 @Service
-class GreetingQueryServiceImpl(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate): GreetingQueryService  {
+class GreetingQueryServiceImpl(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate):
+    GreetingQueryService {
     override fun get(): GreetingResult {
         // language=SQL
         val sql = """
