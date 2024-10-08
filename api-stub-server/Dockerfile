@@ -5,10 +5,10 @@ FROM node:16
 WORKDIR /app
 
 # パッケージファイルとその他必要なファイルをコピー
-COPY api-stub-server/package.json api-stub-server/package-lock.json ./
+COPY api-stub-server/package.json ./
 COPY api-stub-server/tsconfig.json ./
 COPY api-stub-server/src/ ./src
-COPY api-spec/api-spec.yaml ./api-spec.yaml
+#COPY api-spec/api-spec.yaml ./api-spec.yaml
 
 # 依存関係のインストール
 RUN npm install
