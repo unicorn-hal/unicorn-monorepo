@@ -28,7 +28,7 @@ IntelliJ IDEAで`src/main/java/com/unicorn/api/ApiServerApplication.kt`を開き
 
 ### 方法2
 プロジェクトのルートディレクトリで以下のコマンドを実行してください。
-85% EXECUTINGという表示が出れば成功です。
+85% EXECUTINGという表示が出れば成功です
 ```bash
 ./gradlew bootRun
 ```
