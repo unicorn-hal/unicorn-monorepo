@@ -6,7 +6,7 @@ app.get('/', (req, res) => {
     res.send(`Hello ${name}!`);
 });
 
-const port = parseInt(process.env.PORT) || 8080;
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
-    console.log(`helloworld: listening on port ${port}`);
+    console.log(`Server is listening on port ${port}`);
 });
