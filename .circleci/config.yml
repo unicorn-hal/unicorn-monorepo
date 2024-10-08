@@ -6,8 +6,6 @@ jobs:
     docker:
       - image: cimg/openjdk:17.0
       - image: cimg/postgres:14.0
-        ports:
-          - 5433:5432
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -15,7 +13,8 @@ jobs:
           POSTGRES_INIT_DB_ARGS: --encoding=UTF-8
     environment:
         SPRING_APPLICATION_NAME: api-server
-        SPRING_DATASOURCE_URL: jdbc:postgresql://127.0.0.1:5433/unicorn-test
+        SPRING_DATASOURCE_URL: jdbc:postgresql://127.0.0.1:5432/postgres
+        SPRING_TEST_DATASOURCE_URL: jdbc:postgresql://127.0.0.1:5432/postgres
         SPRING_DATASOURCE_USERNAME: postgres
         SPRING_DATASOURCE_PASSWORD: password
         SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver

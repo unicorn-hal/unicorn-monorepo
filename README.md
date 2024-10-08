@@ -21,6 +21,7 @@ SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:5432/unicorn-postgres
 SPRING_DATASOURCE_USERNAME=postgres
 SPRING_DATASOURCE_PASSWORD=password
 SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+SPRING_TEST_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:5433/unicorn-test
 ```
 
 ### 方法1
