@@ -1,6 +1,7 @@
 package com.unicorn.api.controller.greeting
 
 import com.unicorn.api.application_service.greeting.SaveGreetingService
+import com.unicorn.api.application_service.greeting.UpdateGreetingService
 import com.unicorn.api.domain.greeting.Greeting
 import com.unicorn.api.query_service.GreetingDto
 import com.unicorn.api.query_service.GreetingQueryService
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -16,7 +18,8 @@ import java.util.UUID
 @RestController
 class GreetingController(
     private val greetingQueryService: GreetingQueryService,
-    private val saveGreetingService: SaveGreetingService
+    private val saveGreetingService: SaveGreetingService,
+    private val updateGreetingService: UpdateGreetingService
 ) {
 
     @GetMapping("/greetings")
@@ -52,6 +55,17 @@ class GreetingController(
             return ResponseEntity.status(500).build()
         }
     }
+
+    @PutMapping("/greetings/{id}")
+    fun putGreeting(@PathVariable id: UUID, @RequestBody greetingRequest: GreetingPutRequest): ResponseEntity<Greeting> {
+        try {
+            val result = updateGreetingService.update(id, greetingRequest.message)
+            return ResponseEntity.ok(result)
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).build()
+        }
+    }
 }
 
 data class GreetingPostRequest(val message: String)
+data class GreetingPutRequest(val message: String)
