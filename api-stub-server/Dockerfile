@@ -1,25 +1,23 @@
-FROM node:14
+# ベースイメージ
+FROM node:16
 
-# 作業ディレクトリを設定
-WORKDIR /usr/src/app
+# 作業ディレクトリの設定
+WORKDIR /app
 
-# package.json と package-lock.json をコピー
-COPY package*.json ./
+# パッケージファイルとその他必要なファイルをコピー
+COPY api-stub-server/package*.json  ./
+#COPY api-stub-server/tsconfig.json ./
+#COPY api-stub-server/src/ ./src
+#COPY api-spec/api-spec.yaml ./api-spec.yaml
 
-# 依存関係をインストール
+# 依存関係のインストール
 RUN npm install
 
-# アプリケーションのソースコードをコピー
-COPY . .
+# TypeScriptファイルをビルド
+RUN npx tsc
 
-# アプリケーションをビルド (必要な場合)
-# RUN npm run build
-
-# Cloud Run がリッスンするポートを指定
-ENV PORT=3000
-
-# コンテナ起動時に実行するコマンド
-CMD [ "node", "index.js" ]
-
-# Expose port 8080
+# コンテナを外部と接続するためのポートを公開
 EXPOSE 3000
+
+# アプリケーションを実行
+CMD ["node", "dist/index.js"]
