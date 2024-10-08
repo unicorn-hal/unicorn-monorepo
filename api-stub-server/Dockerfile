@@ -19,7 +19,7 @@ COPY . .
 ENV PORT=3000
 
 # コンテナ起動時に実行するコマンド
-CMD [ "node", "index.js" ]
+CMD node index.js
 
 # Expose port 3000
 EXPOSE 3000
