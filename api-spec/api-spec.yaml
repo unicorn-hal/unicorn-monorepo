@@ -17,12 +17,13 @@ securityDefinitions:
     x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
     x-google-audiences: "xxxx"
 security:
-  - firebase: []
+  - firebase: [ ]
 
 tags:
-  - name: test
-    description: test
+  - name: user
+    description: "ユーザー情報"
 host: 'https://xxxx.run.app'
+basePath: '/api'
 schemes:
   - https
 paths:
@@ -36,3 +37,439 @@ paths:
           description: A successful response
           schema:
             type: string
+  /users:
+    post:
+      summary: "ユーザー登録"
+      description: "ユーザーを登録します"
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - user
+      parameters:
+        - in: body
+          name: user
+          description: "ユーザー情報"
+          required: true
+          schema:
+            $ref: "#/definitions/UserRequest"
+      responses:
+        200:
+          description: "ユーザー登録成功"
+          schema:
+            $ref: "#/definitions/UserRequest"
+        400:
+          description: "不正なデータが送信されました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "InvalidData"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+  /users/{uid}:
+    get:
+      tags:
+        - user
+      summary: "ユーザー情報取得"
+      description: "ユーザー情報を取得します"
+      parameters:
+        - in: path
+          name: uid
+          description: "User ID"
+          required: true
+          type: string
+      responses:
+        200:
+          description: "ユーザー情報取得成功"
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: "指定されたユーザーが存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "UserNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+    delete:
+      tags:
+        - user
+      summary: "ユーザー削除"
+      description: "ユーザーを削除します"
+      parameters:
+        - in: path
+          name: uid
+          description: "User ID"
+          required: true
+          type: string
+      responses:
+        204:
+          description: "ユーザー削除成功"
+        404:
+          description: "指定されたユーザーが存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "UserNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+  /users/{uid}/profiles:
+    get:
+      summary: "ユーザープロフィール取得"
+      description: "ユーザーのプロフィールデータを取得します"
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: uid
+          description: "User ID"
+          required: true
+          type: string
+      responses:
+        200:
+          description: "プロフィール取得成功"
+          schema:
+            $ref: "#/definitions/UserProfiles"
+        404:
+          description: "指定されたユーザーが存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "UserNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+    post:
+      summary: "ユーザープロフィール登録"
+      description: "ユーザーの個人情報を登録する"
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: uid
+          description: "User ID"
+          required: true
+          type: string
+        - in: body
+          name: profile
+          description: "ユーザーのプロフィールデータ"
+          required: true
+          schema:
+            $ref: "#/definitions/UserProfilesRequest"
+
+      responses:
+        200:
+          description: "プロフィールが正常に登録されました"
+          schema:
+            $ref: "#/definitions/UserProfilesRequest"
+        400:
+          description: "不正なデータが送信されました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "InvalidData"
+        404:
+          description: "指定されたユーザーが存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "UserNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+    put:
+      summary: "ユーザープロフィール更新"
+      description: "ユーザーの個人情報を更新する"
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: uid
+          description: "User ID"
+          required: true
+          type: string
+        - in: body
+          name: profile
+          description: "ユーザーのプロフィールデータ"
+          required: true
+          schema:
+            $ref: "#/definitions/UserProfilesRequest"
+
+      responses:
+        200:
+          description: "プロフィールが正常に更新されました"
+          schema:
+            $ref: "#/definitions/UserProfilesRequest"
+        400:
+          description: "不正なデータが送信されました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "InvalidData"
+        404:
+          description: "指定されたユーザーが存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "UserNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+    delete:
+      summary: "ユーザープロフィール削除"
+      description: "ユーザーの個人情報を削除する"
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: uid
+          description: "User ID"
+          required: true
+          type: string
+      responses:
+        204:
+          description: "プロフィールが正常に削除されました"
+        404:
+          description: "指定されたユーザーが存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "UserNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+
+definitions:
+  User:
+    type: object
+    properties:
+      uid:
+        type: string
+        description: "User ID"
+        example: "1234567890"
+      fcmTokenId:
+        type: string
+        description: "FCMトークンID"
+        example: "fcm_token_id"
+  UserRequest:
+    type: object
+    properties:
+      uid:
+        type: string
+        description: "User ID"
+        example: "1234567890"
+      fcmTokenId:
+        type: string
+        description: "FCMトークンID"
+        example: "fcm_token_id"
+  UserProfilesRequest:
+    type: object
+    properties:
+      userName:
+        type: string
+        description: "ユーザーの氏名"
+        example: "山田 太郎"
+      gender:
+        type: string
+        description: "ユーザーの性別"
+        enum: [ "male", "female", "other" ]
+        example: "male"
+      birthDate:
+        type: string
+        format: date
+        description: "ユーザーの生年月日"
+        example: "1990-01-01"
+      address:
+        type: string
+        description: "ユーザーの住所"
+        example: "東京都新宿区1-1-1"
+      postalCode:
+        type: string
+        description: "ユーザーの郵便番号"
+        example: "123-4567"
+      phoneNumber:
+        type: string
+        description: "ユーザーの電話番号"
+        example: "090-1234-5678"
+      iconImage:
+        type: string
+        format: byte
+        description: "Base64エンコードされた画像データ"
+      height:
+        type: integer
+        description: "ユーザーの身長（cm単位）"
+        example: 180
+      weight:
+        type: integer
+        description: "ユーザーの体重（kg単位）"
+        example: 75
+      occupation:
+        type: string
+        description: "ユーザーの職業"
+        example: "エンジニア"
+      primaryHospital:
+        type: string
+        description: "かかりつけ病院の名前"
+        example: "新宿病院"
+      medicineList:
+        type: array
+        description: "ユーザーが服用している薬のリスト"
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              description: "薬の名前"
+              example: "アスピリン"
+            remainingAmount:
+              type: integer
+              description: "薬の残量（錠数やグラム数）"
+              example: 10
+  UserProfiles:
+    type: object
+    properties:
+      uid:
+        type: string
+        description: "User ID"
+        example: "1234567890"
+      userName:
+        type: string
+        description: "ユーザーの氏名"
+        example: "山田 太郎"
+      gender:
+        type: string
+        description: "ユーザーの性別"
+        enum: [ "male", "female", "other" ]
+        example: "male"
+      birthDate:
+        type: string
+        format: date
+        description: "ユーザーの生年月日"
+        example: "1990-01-01"
+      address:
+        type: string
+        description: "ユーザーの住所"
+        example: "東京都新宿区1-1-1"
+      postalCode:
+        type: string
+        description: "ユーザーの郵便番号"
+        example: "123-4567"
+      phoneNumber:
+        type: string
+        description: "ユーザーの電話番号"
+        example: "090-1234-5678"
+      iconImage:
+        type: string
+        format: byte
+        description: "Base64エンコードされた画像データ"
+      height:
+        type: integer
+        description: "ユーザーの身長（cm単位）"
+        example: 180
+      weight:
+        type: integer
+        description: "ユーザーの体重（kg単位）"
+        example: 75
+      occupation:
+        type: string
+        description: "ユーザーの職業"
+        example: "エンジニア"
+      primaryHospital:
+        type: string
+        description: "かかりつけ病院の名前"
+        example: "新宿病院"
+      medicineList:
+        type: array
+        description: "ユーザーが服用している薬のリスト"
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              description: "薬の名前"
+              example: "アスピリン"
+            remainingAmount:
+              type: integer
+              description: "薬の残量（錠数やグラム数）"
+              example: 10
