@@ -22,6 +22,8 @@ security:
 tags:
   - name: user
     description: "ユーザー情報"
+  - name: health_checkup
+    description: "検査情報"
 host: 'https://xxxx.run.app'
 basePath: '/api'
 schemes:
@@ -313,12 +315,12 @@ paths:
                 type: string
                 description: "エラータイプ"
                 example: "ServerError"
-  /health_checkup:
+  /health_checkups:
     get:
       tags:
-        - user
-      summary: "健康診断結果取得"
-      description: "ユーザーの健康診断結果を取得します"
+        - health_checkup
+      summary: "検査結果一覧取得"
+      description: "一週間分の検査結果を取得します"
       parameters:
         - in: header
           name: X-UID
@@ -327,46 +329,11 @@ paths:
           description: "UID"
       responses:
         200:
-          description: "健康診断結果取得成功"
+          description: "検査結果一覧取得成功"
           schema:
-            type: object
-            properties:
-              uid:
-                type: string
-                description: "User ID"
-                example: "1234567890"
-              healthCheckupResults:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    date:
-                      type: string
-                      format: date
-                      description: "健康診断日"
-                      example: "2020-01-01"
-                    bodyTemperature:
-                      type: number
-                      description: "体温"
-                      example: 36.5
-                    bloodPressure:
-                      type: string
-                      description: "血圧"
-                      example: "120/80"
-                    medicalRecord:
-                      type: string
-                      description: "マークダウンで表記されるカルテ情報"
-                      example: ""
-
-        404:
-          description: "指定されたユーザーが存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "UserNotFound"
+            type: array
+            items:
+              $ref: "#/definitions/HealthCheckup"
         500:
           description: "サーバーエラーが発生しました"
           schema:
@@ -376,8 +343,185 @@ paths:
                 type: string
                 description: "エラータイプ"
                 example: "ServerError"
-
-
+    post:
+      tags:
+        - health_checkup
+      summary: "検査結果登録"
+      description: "ユーザーの健康診断結果を登録します"
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+        - in: body
+          name: healthCheckup
+          description: "ユーザーの健康診断結果"
+          required: true
+          schema:
+            $ref: "#/definitions/HealthCheckupRequest"
+      responses:
+        200:
+          description: "検査結果登録成功"
+          schema:
+            $ref: "#/definitions/HealthCheckup"
+        400:
+          description: "不正なデータが送信されました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "InvalidData"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+  /health_checkups/{healthCheckupID}:
+    get:
+      tags:
+        - health_checkup
+      summary: "検査結果取得"
+      description: "ユーザーの健康診断結果を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+        - in: path
+          name: healthCheckupID
+          type: string
+          required: true
+          description: "検査結果UUID"
+      responses:
+        200:
+          description: "検査結果取得成功"
+          schema:
+            $ref: "#/definitions/HealthCheckup"
+        404:
+          description: "指定された検査結果が存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "HealthCheckupNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+    put:
+      tags:
+        - health_checkup
+      summary: "検査結果更新"
+      description: "ユーザーの健康診断結果を更新します"
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+        - in: path
+          name: healthCheckupID
+          type: string
+          required: true
+          description: "検査結果UUID"
+        - in: body
+          name: healthCheckup
+          description: "ユーザーの健康診断結果"
+          required: true
+          schema:
+            $ref: "#/definitions/HealthCheckupRequest"
+      responses:
+        200:
+          description: "検査結果更新成功"
+          schema:
+            $ref: "#/definitions/HealthCheckup"
+        400:
+          description: "不正なデータが送信されました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "InvalidData"
+        404:
+          description: "指定された検査結果が存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "HealthCheckupNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+    delete:
+      tags:
+        - health_checkup
+      summary: "検査結果削除"
+      description: "ユーザーの健康診断結果を削除します"
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+        - in: path
+          name: healthCheckupID
+          type: string
+          required: true
+          description: "検査結果UUID"
+      responses:
+        204:
+          description: "検査結果削除成功"
+        404:
+          description: "指定された検査結果が存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "HealthCheckupNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
 definitions:
   User:
     type: object
@@ -495,3 +639,47 @@ definitions:
         type: string
         description: "ユーザーの職業"
         example: "エンジニア"
+  HealthCheckup:
+    type: object
+    properties:
+      healthCheckupID:
+        type: string
+        description: "検査結果UUID"
+        example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      date:
+        type: string
+        format: date
+        description: "健康診断日"
+        example: "2020-01-01"
+      bodyTemperature:
+        type: number
+        description: "体温"
+        example: 36.5
+      bloodPressure:
+        type: string
+        description: "血圧"
+        example: "120/80"
+      medicalRecord:
+        type: string
+        description: "マークダウンで表記されるカルテ情報"
+        example: "## 2020年1月1日\n- 体温: 36.5\n- 血圧: 120/80\n- 診断: 軽度の風邪"
+  HealthCheckupRequest:
+    type: object
+    properties:
+      date:
+        type: string
+        format: date
+        description: "検査日"
+        example: "2020-01-01"
+      bodyTemperature:
+        type: number
+        description: "体温"
+        example: 36.5
+      bloodPressure:
+        type: string
+        description: "血圧"
+        example: "120/80"
+      medicalRecord:
+        type: string
+        description: "マークダウンで表記されるカルテ情報"
+        example: "## 2020年1月1日\n- 体温: 36.5\n- 血圧: 120/80\n- 診断: 軽度の風邪"
