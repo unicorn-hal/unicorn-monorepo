@@ -24,6 +24,18 @@ tags:
     description: "ユーザー情報"
   - name: health_checkup
     description: "検査情報"
+  - name: hospital
+    description: "病院情報"
+  - name: doctor
+    description: "医師情報"
+  - name: chat
+    description: "チャット情報"
+  - name: family_email
+    description: "家族メール情報"
+  - name: medicine
+    description: "薬情報"
+  - name: call
+    description: "通話情報"
 host: 'https://xxxx.run.app'
 basePath: '/api'
 schemes:
@@ -140,7 +152,7 @@ paths:
                 type: string
                 description: "エラータイプ"
                 example: "ServerError"
-  /user/profiles:
+  /users/{userUid}/profiles:
     get:
       summary: "ユーザープロフィール取得"
       description: "ユーザーのプロフィールデータを取得します"
@@ -152,6 +164,11 @@ paths:
           type: string
           required: true
           description: "UID"
+        - in: path
+          name: userUid
+          type: string
+          required: true
+          description: "ユーザーUID"
       responses:
         200:
           description: "プロフィール取得成功"
@@ -190,6 +207,11 @@ paths:
           type: string
           required: true
           description: "UID"
+        - in: path
+          name: userUid
+          type: string
+          required: true
+          description: "ユーザーUID"
         - in: body
           name: profile
           description: "ユーザーのプロフィールデータ"
@@ -244,6 +266,11 @@ paths:
           type: string
           required: true
           description: "UID"
+        - in: path
+          name: userUid
+          type: string
+          required: true
+          description: "ユーザーUID"
         - in: body
           name: profile
           description: "ユーザーのプロフィールデータ"
@@ -294,6 +321,11 @@ paths:
           type: string
           required: true
           description: "UID"
+        - in: path
+          name: userUid
+          type: string
+          required: true
+          description: "ユーザーUID"
       responses:
         204:
           description: "プロフィールが正常に削除されました"
@@ -405,6 +437,7 @@ paths:
         - in: path
           name: healthCheckupID
           type: string
+          format: UUID
           required: true
           description: "検査結果UUID"
       responses:
@@ -448,6 +481,7 @@ paths:
         - in: path
           name: healthCheckupID
           type: string
+          format: UUID
           required: true
           description: "検査結果UUID"
         - in: body
@@ -497,6 +531,7 @@ paths:
         - in: header
           name: X-UID
           type: string
+          format: UUID
           required: true
           description: "UID"
         - in: path
@@ -516,6 +551,295 @@ paths:
                 type: string
                 description: "エラータイプ"
                 example: "HealthCheckupNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+  /hospitals:
+    get:
+      tags:
+        - hospital
+      summary: "病院一覧取得"
+      description: "病院一覧を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+      responses:
+        200:
+          description: "病院一覧取得成功"
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Hospital"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+  /hospitals/{hospitalID}:
+    get:
+      tags:
+        - hospital
+      summary: "病院情報取得"
+      description: "病院情報を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+        - in: path
+          name: hospitalID
+          type: string
+          format: UUID
+          required: true
+          description: "病院UUID"
+      responses:
+        200:
+          description: "病院情報取得成功"
+          schema:
+            $ref: "#/definitions/Hospital"
+        404:
+          description: "指定された病院が存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "HospitalNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+  /hospitals/{hospitalID}/doctors:
+    get:
+      tags:
+        - doctor
+      summary: "病院ごとの医師一覧取得"
+      description: "病院の医師一覧を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+        - in: path
+          name: hospitalID
+          type: string
+          format: UUID
+          required: true
+          description: "病院UUID"
+      responses:
+        200:
+          description: "医師一覧取得成功"
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Doctor"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+  /doctors:
+    post:
+      tags:
+        - doctor
+      summary: "医師登録"
+      description: "医師を登録します"
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+        - in: body
+          name: doctor
+          description: "医師情報"
+          required: true
+          schema:
+            $ref: "#/definitions/DoctorRequest"
+      responses:
+        200:
+          description: "医師登録成功"
+          schema:
+            $ref: "#/definitions/DoctorRequest"
+        400:
+          description: "不正なデータが送信されました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "InvalidData"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+  /doctors/{doctorUid}:
+    get:
+      tags:
+        - doctor
+      summary: "医師情報取得"
+      description: "医師情報を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+        - in: path
+          name: doctorUid
+          type: string
+          required: true
+          description: "医師UID"
+      responses:
+        200:
+          description: "医師情報取得成功"
+          schema:
+            $ref: "#/definitions/Doctor"
+        404:
+          description: "指定された医師が存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "DoctorNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+    put:
+      tags:
+        - doctor
+      summary: "医師情報更新"
+      description: "医師情報を更新します"
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+        - in: path
+          name: doctorUid
+          type: string
+          required: true
+          description: "医師UID"
+        - in: body
+          name: doctor
+          description: "医師情報"
+          required: true
+          schema:
+            $ref: "#/definitions/DoctorRequest"
+      responses:
+        200:
+          description: "医師情報更新成功"
+          schema:
+            $ref: "#/definitions/DoctorRequest"
+        400:
+          description: "不正なデータが送信されました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "InvalidData"
+        404:
+          description: "指定された医師が存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "DoctorNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+    delete:
+      tags:
+        - doctor
+      summary: "医師削除"
+      description: "医師を削除します"
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+        - in: path
+          name: doctorUid
+          type: string
+          required: true
+          description: "医師UID"
+      responses:
+        204:
+          description: "医師削除成功"
+        404:
+          description: "指定された医師が存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "DoctorNotFound"
         500:
           description: "サーバーエラーが発生しました"
           schema:
@@ -647,6 +971,7 @@ definitions:
     properties:
       healthCheckupID:
         type: string
+        format: UUID
         description: "検査結果UUID"
         example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
       date:
@@ -686,3 +1011,85 @@ definitions:
         type: string
         description: "マークダウンで表記されるカルテ情報"
         example: "## 2020年1月1日\n- 体温: 36.5\n- 血圧: 120/80\n- 診断: 軽度の風邪"
+  Hospital:
+    type: object
+    properties:
+      hospitalID:
+        type: string
+        format: UUID
+        description: "病院UUID"
+        example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      hospitalName:
+        type: string
+        description: "病院名"
+        example: "東京都立大学病院"
+      address:
+        type: string
+        description: "病院住所"
+        example: "東京都新宿区1-1-1"
+      postalCode:
+        type: string
+        description: "病院郵便番号"
+        example: "123-4567"
+      phoneNumber:
+        type: string
+        description: "病院電話番号"
+        example: "090-1234-5678"
+  Doctor:
+    type: object
+    properties:
+      doctorUid:
+        type: string
+        description: "医師UID"
+        example: "1234567890"
+      hospitalID:
+        type: string
+        description: "病院UUID"
+        example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      doctorName:
+        type: string
+        description: "医師名"
+        example: "山田 太郎"
+      doctorIcon:
+        type: string
+        format: byte
+        description: "医師アイコン画像"
+      phoneNumber:
+        type: string
+        description: "医師電話番号"
+        example: "090-1234-5678"
+      chatSupportHours:
+        type: string
+        description: "チャットサポート時間"
+        example: "9:00-17:00"
+      callSupportHours:
+        type: string
+        description: "通話サポート時間"
+        example: "9:00-17:00"
+  DoctorRequest:
+    type: object
+    properties:
+      hospitalID:
+        type: string
+        description: "病院UUID"
+        example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      doctorName:
+        type: string
+        description: "医師名"
+        example: "山田 太郎"
+      doctorIcon:
+        type: string
+        format: byte
+        description: "医師アイコン画像"
+      phoneNumber:
+        type: string
+        description: "医師電話番号"
+        example: "090-1234-5678"
+      chatSupportHours:
+        type: string
+        description: "チャットサポート時間"
+        example: "9:00-17:00"
+      callSupportHours:
+        type: string
+        description: "通話サポート時間"
+        example: "9:00-17:00"
