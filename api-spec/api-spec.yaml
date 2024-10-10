@@ -27,7 +27,41 @@ basePath: '/api'
 schemes:
   - https
 paths:
-  /users:
+  /user:
+    get:
+      tags:
+        - user
+      summary: "ユーザー情報取得"
+      description: "ユーザー情報を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+      responses:
+        200:
+          description: "ユーザー情報取得成功"
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: "指定されたユーザーが存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "UserNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
     post:
       summary: "ユーザー登録"
       description: "ユーザーを登録します"
@@ -38,6 +72,11 @@ paths:
       tags:
         - user
       parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
         - in: body
           name: user
           description: "ユーザー情報"
@@ -67,52 +106,17 @@ paths:
                 type: string
                 description: "エラータイプ"
                 example: "ServerError"
-  /users/{uid}:
-    get:
-      tags:
-        - user
-      summary: "ユーザー情報取得"
-      description: "ユーザー情報を取得します"
-      parameters:
-        - in: path
-          name: uid
-          description: "User ID"
-          required: true
-          type: string
-      responses:
-        200:
-          description: "ユーザー情報取得成功"
-          schema:
-            $ref: "#/definitions/User"
-        404:
-          description: "指定されたユーザーが存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "UserNotFound"
-        500:
-          description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
     delete:
       tags:
         - user
       summary: "ユーザー削除"
       description: "ユーザーを削除します"
       parameters:
-        - in: path
-          name: uid
-          description: "User ID"
-          required: true
+        - in: header
+          name: X-UID
           type: string
+          required: true
+          description: "UID"
       responses:
         204:
           description: "ユーザー削除成功"
@@ -134,18 +138,18 @@ paths:
                 type: string
                 description: "エラータイプ"
                 example: "ServerError"
-  /users/{uid}/profiles:
+  /user/profiles:
     get:
       summary: "ユーザープロフィール取得"
       description: "ユーザーのプロフィールデータを取得します"
       tags:
         - user
       parameters:
-        - in: path
-          name: uid
-          description: "User ID"
-          required: true
+        - in: header
+          name: X-UID
           type: string
+          required: true
+          description: "UID"
       responses:
         200:
           description: "プロフィール取得成功"
@@ -179,11 +183,11 @@ paths:
       tags:
         - user
       parameters:
-        - in: path
-          name: uid
-          description: "User ID"
-          required: true
+        - in: header
+          name: X-UID
           type: string
+          required: true
+          description: "UID"
         - in: body
           name: profile
           description: "ユーザーのプロフィールデータ"
@@ -233,11 +237,11 @@ paths:
       tags:
         - user
       parameters:
-        - in: path
-          name: uid
-          description: "User ID"
-          required: true
+        - in: header
+          name: X-UID
           type: string
+          required: true
+          description: "UID"
         - in: body
           name: profile
           description: "ユーザーのプロフィールデータ"
@@ -283,11 +287,11 @@ paths:
       tags:
         - user
       parameters:
-        - in: path
-          name: uid
-          description: "User ID"
-          required: true
+        - in: header
+          name: X-UID
           type: string
+          required: true
+          description: "UID"
       responses:
         204:
           description: "プロフィールが正常に削除されました"
@@ -309,6 +313,70 @@ paths:
                 type: string
                 description: "エラータイプ"
                 example: "ServerError"
+  /health_checkup:
+    get:
+      tags:
+        - user
+      summary: "健康診断結果取得"
+      description: "ユーザーの健康診断結果を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          type: string
+          required: true
+          description: "UID"
+      responses:
+        200:
+          description: "健康診断結果取得成功"
+          schema:
+            type: object
+            properties:
+              uid:
+                type: string
+                description: "User ID"
+                example: "1234567890"
+              healthCheckupResults:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                      format: date
+                      description: "健康診断日"
+                      example: "2020-01-01"
+                    bodyTemperature:
+                      type: number
+                      description: "体温"
+                      example: 36.5
+                    bloodPressure:
+                      type: string
+                      description: "血圧"
+                      example: "120/80"
+                    medicalRecord:
+                      type: string
+                      description: "マークダウンで表記されるカルテ情報"
+                      example: ""
+
+        404:
+          description: "指定されたユーザーが存在しません"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "UserNotFound"
+        500:
+          description: "サーバーエラーが発生しました"
+          schema:
+            type: object
+            properties:
+              errorType:
+                type: string
+                description: "エラータイプ"
+                example: "ServerError"
+
 
 definitions:
   User:
