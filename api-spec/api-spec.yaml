@@ -331,9 +331,12 @@ paths:
         200:
           description: "検査結果一覧取得成功"
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/HealthCheckup"
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/HealthCheckup"
         500:
           description: "サーバーエラーが発生しました"
           schema:
