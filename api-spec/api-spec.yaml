@@ -2548,6 +2548,12 @@ paths:
           schema:
             type: string
             description: "UID"
+        - in: path
+          name: reminderID
+          required: true
+          schema:
+            type: string
+            description: "リマインダーのID"
       requestBody:
         required: true
         content:
