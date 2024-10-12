@@ -489,10 +489,136 @@ components:
           type: string
           description: "家族名"
           example: "山田 太郎"
+
+    Medicine:
+      type: object
+      properties:
+        medicineID:
+          type: string
+          format: UUID
+          description: "薬のUUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        medicineName:
+          type: string
+          description: "薬の名前"
+          example: "パラセタモール"
+        quantity:
+          type: integer
+          description: "薬の残量"
+          example: 20
+
+    MedicineRequest:
+      type: object
+      properties:
+        medicineName:
+          type: string
+          description: "薬の名前"
+          example: "パラセタモール"
+        quantity:
+          type: integer
+          description: "薬の残量"
+          example: 20
+
+    MedicineReminder:
+      type: object
+      properties:
+        medicineReminderID:
+          type: string
+          format: UUID
+          description: "リマインダーUUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        medicineName:
+          type: string
+          description: "薬の名前"
+          example: "パラセタモール"
+        reminderTime:
+          type: string
+          format: date-time
+          description: "リマインダー日時"
+          example: "2024-10-10T09:00:00Z"
+    
+    MedicineReminderRequest:
+      type: object
+      properties:
+        medicineName:
+          type: string
+          description: "薬の名前"
+          example: "パラセタモール"
+        reminderTime:
+          type: string
+          format: date-time
+          description: "リマインダー日時"
+          example: "2024-10-10T09:00:00Z"
+
+    ChronicDisease:
+      type: object
+      properties:
+        diseaseID:
+          type: string
+          format: UUID
+          description: "持病のUUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        diseaseName:
+          type: string
+          description: "持病名"
+          example: "高血圧"
+
+    ChronicDiseaseRequest:
+      type: object
+      properties:
+        diseaseName:
+          type: string
+          description: "持病名"
+          example: "糖尿病"
+        aiSentTime:
+          type: string
+          format: date-time
+          description: "AIに送信した時間"
+          example: "2024-10-12T10:00:00Z"
+
+    CallReservation:
+      type: object
+      properties:
+        callReservationID:
+          type: string
+          format: UUID
+          description: "通話予約UUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        doctorUid:
+          type: string
+          description: "医師UID"
+          example: "1234567890"
+        userID:
+          type: string
+          description: "ユーザーID"
+          example: "1234567890"
+        callTime:
+          type: string
+          format: date-time
+          description: "予約通話日時"
+          example: "2024-10-12T15:00:00Z"
+
+    CallReservationRequest:
+      type: object
+      properties:
+        doctorUid:
+          type: string
+          description: "医師UID"
+          example: "1234567890"
+        userID:
+          type: string
+          description: "ユーザーID"
+          example: "1234567890"
+        callTime:
+          type: string
+          format: date-time
+          description: "予約通話日時"
+          example: "2024-10-12T15:00:00Z"
+
 tags:
   - name: user
     description: "ユーザー情報"
-  - name: primaryDoctors
+  - name: primary_doctors
     description: "主治医情報"
   - name: health_checkup
     description: "検査情報"
@@ -863,7 +989,7 @@ paths:
   /primary_doctors:
     get:
       tags:
-        - primaryDoctors
+        - primary_doctors
       summary: "主治医取得"
       description: "ユーザーの主治医情報を取得します"
       parameters:
@@ -909,7 +1035,7 @@ paths:
                     example: "ServerError"
     post:
       tags:
-        - primaryDoctors
+        - primary_doctors
       summary: "主治医登録"
       description: "ユーザーの主治医を登録します"
       parameters:
@@ -981,7 +1107,7 @@ paths:
                     example: "ServerError"
     put:
       tags:
-        - primaryDoctors
+        - primary_doctors
       summary: "主治医更新"
       description: "ユーザーの主治医を更新します"
       parameters:
@@ -2136,6 +2262,675 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "FamilyEmailNotFound"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+  /medicines:
+    get:
+      tags:
+        - medicine
+      summary: "おくすり一覧取得"
+      description: "登録してある薬の名前と残量を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      responses:
+        "200":
+          description: "おくすり取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Medicine"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    post:
+      tags:
+        - medicine
+      summary: "おくすり追加"
+      description: "新しい薬を追加します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MedicineRequest"
+      responses:
+        "200":
+          description: "おくすり追加成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Medicine"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+  /medicines/{medicineID}:
+    put:
+      tags:
+        - medicine
+      summary: "おくすり更新"
+      description: "登録済みの薬の情報を更新します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: medicineID
+          required: true
+          schema:
+            type: string
+            format: UUID
+            description: "薬のID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MedicineRequest"
+      responses:
+        "200":
+          description: "おくすり更新成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Medicine"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+    delete:
+      tags:
+        - medicine
+      summary: "おくすり削除"
+      description: "登録済みの薬を削除します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: medicineID
+          required: true
+          schema:
+            type: string
+            description: "削除する薬のID"
+      responses:
+        "204":
+          description: "おくすり削除成功"
+        "404":
+          description: "指定された薬が存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "MedicineNotFound"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+  /medicine_reminders:
+    get:
+      tags:
+        - medicine
+      summary: "おくすりリマインダー取得"
+      description: "登録してあるリマインダーの日時を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      responses:
+        "200":
+          description: "おくすりリマインダー取得成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MedicineReminder"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    post:
+      tags:
+        - medicine
+      summary: "おくすりリマインダー追加"
+      description: "おくすりのリマインダーを追加します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MedicineReminderRequest"
+      responses:
+        "200":
+          description: "おくすりリマインダー追加成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MedicineReminder"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+  /medicine_reminders/{reminderID}:
+    put:
+      tags:
+        - medicine
+      summary: "おくすりリマインダー更新"
+      description: "おくすりのリマインダー日時を更新します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MedicineReminderRequest"
+      responses:
+        "200":
+          description: "リマインダー更新成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MedicineReminder"
+        "400":
+          description: "不正なデータが送信されました"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    delete:
+      tags:
+        - medicine
+      summary: "おくすりリマインダー削除"
+      description: "おくすりのリマインダーを削除します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: reminderID
+          required: true
+          schema:
+            type: string
+            description: "削除するリマインダーのID"
+      responses:
+        "204":
+          description: "リマインダー削除成功"
+        "404":
+          description: "指定されたリマインダーが存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ReminderNotFound"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+  /chronic_diseases:
+    get:
+      tags:
+        - chromic_disease
+      summary: "持病一覧取得"
+      description: "登録してある持病名を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      responses:
+        "200":
+          description: "持病一覧取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ChronicDisease"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+    post:
+      tags:
+        - chromic_disease
+      summary: "持病追加"
+      description: "検索した持病を追加します"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChronicDiseaseRequest"
+      responses:
+        "200":
+          description: "持病追加成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChronicDisease"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+    delete:
+      tags:
+        - chromic_disease
+      summary: "持病削除"
+      description: "持病を削除します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: query
+          name: diseaseName
+          required: true
+          schema:
+            type: string
+            description: "削除する持病名"
+      responses:
+        "204":
+          description: "持病削除成功"
+        "404":
+          description: "指定された持病が存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "DiseaseNotFound"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+  /calls:
+    get:
+      tags:
+        - call
+      summary: "通話予約取得"
+      description: "医師とユーザーの通話予約情報を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: query
+          name: doctorUid
+          required: true
+          schema:
+            type: string
+            description: "医師UID"
+        - in: query
+          name: userID
+          required: true
+          schema:
+            type: string
+            description: "ユーザーID"
+      responses:
+        "200":
+          description: "通話予約取得成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CallReservation"
+        "404":
+          description: "通話予約が見つかりません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "CallReservationNotFound"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+    post:
+      tags:
+        - call
+      summary: "通話予約追加"
+      description: "医師とユーザー間の通話予約を追加します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CallReservationRequest"
+      responses:
+        "200":
+          description: "通話予約追加成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CallReservation"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+  /calls/{callReservationID}:
+    put:
+      tags:
+        - call
+      summary: "通話予約更新"
+      description: "通話予約の日時を更新します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: callReservationID
+          required: true
+          schema:
+            type: string
+            format: UUID
+            description: "通話予約ID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CallReservationRequest"
+      responses:
+        "200":
+          description: "通話予約更新成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CallReservation"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+    delete:
+      tags:
+        - call
+      summary: "通話予約削除"
+      description: "通話予約を削除します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: callReservationID
+          required: true
+          schema:
+            type: string
+            format: UUID
+            description: "通話予約ID"
+      responses:
+        "204":
+          description: "通話予約削除成功"
+        "404":
+          description: "通話予約が見つかりません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "CallReservationNotFound"
         "500":
           description: "サーバーエラーが発生しました"
           content:
