@@ -1,11 +1,11 @@
 openapi: 3.0.0
 info:
-  version: '1.0.0'
-  title: 'Unicorn API'
-  description: 'API for managing unicorn.'
+  version: "1.0.0"
+  title: "Unicorn API"
+  description: "API for managing unicorn."
 servers:
   - url: https://xxxx.run.app
-    description: 'Backend server'
+    description: "Backend server"
 
 components:
   #  securitySchemes:
@@ -53,7 +53,7 @@ components:
         gender:
           type: string
           description: "ユーザーの性別"
-          enum: [ "male", "female", "other" ]
+          enum: ["male", "female", "other"]
           example: "male"
         birthDate:
           type: string
@@ -103,7 +103,7 @@ components:
         gender:
           type: string
           description: "ユーザーの性別"
-          enum: [ "male", "female", "other" ]
+          enum: ["male", "female", "other"]
           example: "male"
         birthDate:
           type: string
@@ -462,7 +462,33 @@ components:
           description: "メッセージ内容"
           example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
 
+    FamilyEmail:
+      type: object
+      properties:
+        familyEmailID:
+          format: UUID
+          type: string
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        email:
+          type: string
+          description: "家族メールアドレス"
+          example: "sample@sample.com"
+        familyName:
+          type: string
+          description: "家族名"
+          example: "山田 太郎"
 
+    FamilyEmailRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: "家族メールアドレス"
+          example: "sample@sample.com"
+        familyName:
+          type: string
+          description: "家族名"
+          example: "山田 太郎"
 tags:
   - name: user
     description: "ユーザー情報"
@@ -482,6 +508,8 @@ tags:
     description: "家族メール情報"
   - name: medicine
     description: "薬情報"
+  - name: chromic_disease
+    description: "持病情報"
   - name: call
     description: "通話情報"
 
@@ -500,13 +528,13 @@ paths:
             type: string
             description: "UID"
       responses:
-        '200':
+        "200":
           description: "ユーザー情報取得成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-        '404':
+        "404":
           description: "指定されたユーザーが存在しません"
           content:
             application/json:
@@ -517,7 +545,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "UserNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -547,13 +575,13 @@ paths:
             schema:
               $ref: "#/components/schemas/UserRequest"
       responses:
-        '200':
+        "200":
           description: "ユーザー登録成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserRequest"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -564,7 +592,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -588,9 +616,9 @@ paths:
             type: string
             description: "UID"
       responses:
-        '204':
+        "204":
           description: "ユーザー削除成功"
-        '404':
+        "404":
           description: "指定されたユーザーが存在しません"
           content:
             application/json:
@@ -601,7 +629,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "UserNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -633,13 +661,13 @@ paths:
             type: string
             description: "ユーザーUID"
       responses:
-        '200':
+        "200":
           description: "プロフィール取得成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserProfiles"
-        '404':
+        "404":
           description: "指定されたユーザーが存在しません"
           content:
             application/json:
@@ -650,7 +678,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "UserNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -686,13 +714,13 @@ paths:
             schema:
               $ref: "#/components/schemas/UserProfilesRequest"
       responses:
-        '200':
+        "200":
           description: "プロフィールが正常に登録されました"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserProfilesRequest"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -703,7 +731,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '404':
+        "404":
           description: "指定されたユーザーが存在しません"
           content:
             application/json:
@@ -714,7 +742,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "UserNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -750,13 +778,13 @@ paths:
             schema:
               $ref: "#/components/schemas/UserProfilesRequest"
       responses:
-        '200':
+        "200":
           description: "プロフィールが正常に更新されました"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserProfilesRequest"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -767,7 +795,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '404':
+        "404":
           description: "指定されたユーザーが存在しません"
           content:
             application/json:
@@ -778,7 +806,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "UserNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -808,9 +836,9 @@ paths:
             type: string
             description: "ユーザーUID"
       responses:
-        '204':
+        "204":
           description: "プロフィールが正常に削除されました"
-        '404':
+        "404":
           description: "指定されたユーザーが存在しません"
           content:
             application/json:
@@ -821,7 +849,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "UserNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -832,7 +860,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
-  /users/{userUid/primary_doctors:
+  /primary_doctors:
     get:
       tags:
         - primaryDoctors
@@ -845,14 +873,8 @@ paths:
           schema:
             type: string
             description: "UID"
-        - in: path
-          name: userUid
-          required: true
-          schema:
-            type: string
-            description: "ユーザーUID"
       responses:
-        '200':
+        "200":
           description: "主治医情報取得成功"
           content:
             application/json:
@@ -863,7 +885,7 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Doctor"
-        '404':
+        "404":
           description: "指定されたユーザーが存在しません"
           content:
             application/json:
@@ -874,7 +896,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "UserNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -897,12 +919,6 @@ paths:
           schema:
             type: string
             description: "UID"
-        - in: path
-          name: userUid
-          required: true
-          schema:
-            type: string
-            description: "ユーザーUID"
       requestBody:
         required: true
         content:
@@ -917,7 +933,7 @@ paths:
                     description: "医師UID"
                     example: "1234567890"
       responses:
-        '200':
+        "200":
           description: "主治医登録成功"
           content:
             application/json:
@@ -930,7 +946,7 @@ paths:
                       type: string
                       description: "医師UID"
                       example: "1234567890"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -941,7 +957,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '404':
+        "404":
           description: "指定されたユーザーが存在しません"
           content:
             application/json:
@@ -952,7 +968,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "UserNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -975,12 +991,6 @@ paths:
           schema:
             type: string
             description: "UID"
-        - in: path
-          name: userUid
-          required: true
-          schema:
-            type: string
-            description: "ユーザーUID"
       requestBody:
         required: true
         content:
@@ -995,7 +1005,7 @@ paths:
                     description: "医師UID"
                     example: "1234567890"
       responses:
-        '200':
+        "200":
           description: "主治医更新成功"
           content:
             application/json:
@@ -1006,7 +1016,7 @@ paths:
                     type: string
                     description: "医師UID"
                     example: "1234567890"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -1017,7 +1027,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '404':
+        "404":
           description: "指定されたユーザーが存在しません"
           content:
             application/json:
@@ -1028,7 +1038,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "UserNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1053,7 +1063,7 @@ paths:
             type: string
             description: "UID"
       responses:
-        '200':
+        "200":
           description: "検査結果一覧取得成功"
           content:
             application/json:
@@ -1064,7 +1074,7 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/HealthCheckup"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1094,13 +1104,13 @@ paths:
             schema:
               $ref: "#/components/schemas/HealthCheckupRequest"
       responses:
-        '200':
+        "200":
           description: "検査結果登録成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthCheckupResponse"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -1111,7 +1121,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1144,13 +1154,13 @@ paths:
             format: UUID
             description: "検査結果UUID"
       responses:
-        '200':
+        "200":
           description: "検査結果取得成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthCheckup"
-        '404':
+        "404":
           description: "指定された検査結果が存在しません"
           content:
             application/json:
@@ -1161,7 +1171,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "HealthCheckupNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1198,13 +1208,13 @@ paths:
             schema:
               $ref: "#/components/schemas/HealthCheckupRequest"
       responses:
-        '200':
+        "200":
           description: "検査結果更新成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthCheckupRequest"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -1215,7 +1225,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '404':
+        "404":
           description: "指定された検査結果が存在しません"
           content:
             application/json:
@@ -1226,7 +1236,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "HealthCheckupNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1257,9 +1267,9 @@ paths:
             type: string
             description: "検査結果UUID"
       responses:
-        '204':
+        "204":
           description: "検査結果削除成功"
-        '404':
+        "404":
           description: "指定された検査結果が存在しません"
           content:
             application/json:
@@ -1270,7 +1280,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "HealthCheckupNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1294,7 +1304,7 @@ paths:
             type: string
             description: "UID"
       responses:
-        '200':
+        "200":
           description: "病院一覧取得成功"
           content:
             application/json:
@@ -1305,7 +1315,7 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Hospital"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1338,13 +1348,13 @@ paths:
             format: UUID
             description: "病院UUID"
       responses:
-        '200':
+        "200":
           description: "病院情報取得成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Hospital"
-        '404':
+        "404":
           description: "指定された病院が存在しません"
           content:
             application/json:
@@ -1355,7 +1365,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "HospitalNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1387,7 +1397,7 @@ paths:
             format: UUID
             description: "病院UUID"
       responses:
-        '200':
+        "200":
           description: "医師一覧取得成功"
           content:
             application/json:
@@ -1398,7 +1408,7 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Doctor"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1437,7 +1447,7 @@ paths:
           required: false
           description: "病院名の部分一致検索"
       responses:
-        '200':
+        "200":
           description: "検索結果のリスト"
           content:
             application/json:
@@ -1448,7 +1458,7 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Doctor"
-        '400':
+        "400":
           description: "不正なクエリパラメータが送信されました"
           content:
             application/json:
@@ -1459,7 +1469,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidQuery"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1489,13 +1499,13 @@ paths:
             schema:
               $ref: "#/components/schemas/DoctorRequest"
       responses:
-        '200':
+        "200":
           description: "医師登録成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/DoctorResponse"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -1506,7 +1516,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1538,13 +1548,13 @@ paths:
             type: string
             description: "医師UID"
       responses:
-        '200':
+        "200":
           description: "医師情報取得成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Doctor"
-        '404':
+        "404":
           description: "指定された医師が存在しません"
           content:
             application/json:
@@ -1555,7 +1565,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "DoctorNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1591,13 +1601,13 @@ paths:
             schema:
               $ref: "#/components/schemas/DoctorRequest"
       responses:
-        '200':
+        "200":
           description: "医師情報更新成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/DoctorResponse"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -1608,7 +1618,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '404':
+        "404":
           description: "指定された医師が存在しません"
           content:
             application/json:
@@ -1619,7 +1629,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "DoctorNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1650,9 +1660,9 @@ paths:
             type: string
             description: "医師UID"
       responses:
-        '204':
+        "204":
           description: "医師削除成功"
-        '404':
+        "404":
           description: "指定された医師が存在しません"
           content:
             application/json:
@@ -1663,7 +1673,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "DoctorNotFound"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1689,7 +1699,7 @@ paths:
             type: string
             description: "UID"
       responses:
-        '200':
+        "200":
           description: "診療科一覧取得成功"
           content:
             application/json:
@@ -1700,7 +1710,7 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Department"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1725,7 +1735,7 @@ paths:
             type: string
             description: "UID"
       responses:
-        '200':
+        "200":
           description: "チャット一覧取得成功"
           content:
             application/json:
@@ -1736,7 +1746,7 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Chat"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1766,13 +1776,13 @@ paths:
             schema:
               $ref: "#/components/schemas/ChatRequest"
       responses:
-        '200':
+        "200":
           description: "チャットが作成されました"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ChatRequest"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -1783,7 +1793,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1815,7 +1825,7 @@ paths:
             format: UUID
             description: "チャットUUID"
       responses:
-        '200':
+        "200":
           description: "メッセージ一覧表示成功"
           content:
             application/json:
@@ -1826,7 +1836,7 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Message"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1863,13 +1873,13 @@ paths:
             schema:
               $ref: "#/components/schemas/MessageRequest"
       responses:
-        '200':
+        "200":
           description: "メッセージ送信成功"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Message"
-        '400':
+        "400":
           description: "不正なデータが送信されました"
           content:
             application/json:
@@ -1880,7 +1890,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        '500':
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
@@ -1920,9 +1930,9 @@ paths:
             format: UUID
             description: "メッセージUUID"
       responses:
-        '204':
+        "204":
           description: "メッセージ削除成功"
-        '404':
+        "404":
           description: "指定されたメッセージが存在しません"
           content:
             application/json:
@@ -1933,7 +1943,200 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "MessageNotFound"
-        '500':
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+  /family_emails:
+    get:
+      tags:
+        - family_email
+      summary: "家族メールアドレス一覧取得"
+      description: "家族メールアドレス一覧を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      responses:
+        "200":
+          description: "家族メールアドレス一覧取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FamilyEmail"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    post:
+      tags:
+        - family_email
+      summary: "家族メールアドレス登録"
+      description: "家族メールアドレスを登録します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FamilyEmailRequest"
+      responses:
+        "200":
+          description: "家族メールアドレス登録成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FamilyEmail"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+  /family_emails/{familyEmailID}:
+    put:
+      tags:
+        - family_email
+      summary: "家族メールアドレス更新"
+      description: "家族メールアドレスを更新します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: familyEmailID
+          required: true
+          schema:
+            type: string
+            format: UUID
+            description: "家族メールアドレスUUID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FamilyEmailRequest"
+      responses:
+        "200":
+          description: "家族メールアドレス更新成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FamilyEmail"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "404":
+          description: "指定された家族メールアドレスが存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "FamilyEmailNotFound"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    delete:
+      tags:
+        - family_email
+      summary: "家族メールアドレス削除"
+      description: "家族メールアドレスを削除します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: familyEmailID
+          required: true
+          schema:
+            type: string
+            format: UUID
+            description: "家族メールアドレスUUID"
+      responses:
+        "204":
+          description: "家族メールアドレス削除成功"
+        "404":
+          description: "指定された家族メールアドレスが存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "FamilyEmailNotFound"
+        "500":
           description: "サーバーエラーが発生しました"
           content:
             application/json:
