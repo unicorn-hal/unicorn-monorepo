@@ -1,21 +1,395 @@
-swagger: '2.0'
+openapi: 3.0.0
 info:
   version: '1.0.0'
   title: 'Unicorn API'
   description: 'API for managing unicorn.'
+servers:
+  - url: https://xxxx.run.app
+    description: 'Backend server'
 
-x-google-backend:
-  address: https://xxxx.run.app
-  deadline: 30.0
+components:
+  #  securitySchemes:
+  #    firebase:
+  #      type: oauth2
+  #      flows:
+  #        implicit:
+  #          authorizationUrl: ""
+  #      x-google-issuer: "https://securetoken.google.com/xxxx"
+  #      x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+  #      x-google-audiences: "xxxx"
 
-securityDefinitions:
-  firebase:
-    authorizationUrl: ""
-    flow: "implicit"
-    type: "oauth2"
-    x-google-issuer: "https://securetoken.google.com/xxxx"
-    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
-    x-google-audiences: "xxxx"
+  schemas:
+    User:
+      type: object
+      properties:
+        uid:
+          type: string
+          description: "User ID"
+          example: "1234567890"
+        fcmTokenId:
+          type: string
+          description: "FCMトークンID"
+          example: "fcm_token_id"
+
+    UserRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          description: "User ID"
+          example: "1234567890"
+        fcmTokenId:
+          type: string
+          description: "FCMトークンID"
+          example: "fcm_token_id"
+
+    UserProfilesRequest:
+      type: object
+      properties:
+        userName:
+          type: string
+          description: "ユーザーの氏名"
+          example: "山田 太郎"
+        gender:
+          type: string
+          description: "ユーザーの性別"
+          enum: [ "male", "female", "other" ]
+          example: "male"
+        birthDate:
+          type: string
+          format: date
+          description: "ユーザーの生年月日"
+          example: "1990-01-01"
+        address:
+          type: string
+          description: "ユーザーの住所"
+          example: "東京都新宿区1-1-1"
+        postalCode:
+          type: string
+          description: "ユーザーの郵便番号"
+          example: "123-4567"
+        phoneNumber:
+          type: string
+          description: "ユーザーの電話番号"
+          example: "090-1234-5678"
+        iconImage:
+          type: string
+          format: byte
+          description: "Base64エンコードされた画像データ"
+        bodyHeight:
+          type: integer
+          description: "ユーザーの身長（cm単位）"
+          example: 180
+        bodyWeight:
+          type: integer
+          description: "ユーザーの体重（kg単位）"
+          example: 75
+        occupation:
+          type: string
+          description: "ユーザーの職業"
+          example: "エンジニア"
+
+    UserProfiles:
+      type: object
+      properties:
+        uid:
+          type: string
+          description: "User ID"
+          example: "1234567890"
+        userName:
+          type: string
+          description: "ユーザーの氏名"
+          example: "山田 太郎"
+        gender:
+          type: string
+          description: "ユーザーの性別"
+          enum: [ "male", "female", "other" ]
+          example: "male"
+        birthDate:
+          type: string
+          format: date
+          description: "ユーザーの生年月日"
+          example: "1990-01-01"
+        address:
+          type: string
+          description: "ユーザーの住所"
+          example: "東京都新宿区1-1-1"
+        postalCode:
+          type: string
+          description: "ユーザーの郵便番号"
+          example: "123-4567"
+        phoneNumber:
+          type: string
+          description: "ユーザーの電話番号"
+          example: "090-1234-5678"
+        iconImage:
+          type: string
+          format: byte
+          description: "Base64エンコードされた画像データ"
+        bodyHeight:
+          type: integer
+          description: "ユーザーの身長（cm単位）"
+          example: 180
+        bodyWeight:
+          type: integer
+          description: "ユーザーの体重（kg単位）"
+          example: 75
+        occupation:
+          type: string
+          description: "ユーザーの職業"
+          example: "エンジニア"
+
+    HealthCheckup:
+      type: object
+      properties:
+        healthCheckupID:
+          type: string
+          format: UUID
+          description: "検査結果UUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        date:
+          type: string
+          format: date
+          description: "健康診断日"
+          example: "2020-01-01"
+        bodyTemperature:
+          type: number
+          description: "体温"
+          example: 36.5
+        bloodPressure:
+          type: string
+          description: "血圧"
+          example: "120/80"
+        medicalRecord:
+          type: string
+          description: "マークダウンで表記されるカルテ情報"
+          example: "## 2020年1月1日\n- 体温: 36.5\n- 血圧: 120/80\n- 診断: 軽度の風邪"
+
+    HealthCheckupRequest:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          description: "検査日"
+          example: "2020-01-01"
+        bodyTemperature:
+          type: number
+          description: "体温"
+          example: 36.5
+        bloodPressure:
+          type: string
+          description: "血圧"
+          example: "120/80"
+        medicalRecord:
+          type: string
+          description: "マークダウンで表記されるカルテ情報"
+          example: "## 2020年1月1日\n- 体温: 36.5\n- 血圧: 120/80\n- 診断: 軽度の風邪"
+
+    Hospital:
+      type: object
+      properties:
+        hospitalID:
+          type: string
+          format: UUID
+          description: "病院UUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        hospitalName:
+          type: string
+          description: "病院名"
+          example: "東京都立大学病院"
+        address:
+          type: string
+          description: "病院住所"
+          example: "東京都新宿区1-1-1"
+        postalCode:
+          type: string
+          description: "病院郵便番号"
+          example: "123-4567"
+        phoneNumber:
+          type: string
+          description: "病院電話番号"
+          example: "090-1234-5678"
+
+    Doctor:
+      type: object
+      properties:
+        doctorUid:
+          type: string
+          description: "医師UID"
+          example: "1234567890"
+        hospitalID:
+          type: string
+          description: "病院UUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        doctorName:
+          type: string
+          description: "医師名"
+          example: "山田 太郎"
+        doctorIcon:
+          type: string
+          format: byte
+          description: "医師アイコン画像"
+        departments:
+          type: array
+          items:
+            type: object
+            properties:
+              departmentName:
+                type: string
+                description: "診療科名"
+                example: "内科"
+              departmentID:
+                type: string
+                format: UUID
+                description: "診療科UUID"
+                example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        email:
+          type: string
+          description: "医師メールアドレス"
+          example: "sample@mail.com"
+        phoneNumber:
+          type: string
+          description: "医師電話番号"
+          example: "090-1234-5678"
+        chatSupportHours:
+          type: string
+          description: "チャットサポート時間"
+          example: "9:00-17:00"
+        callSupportHours:
+          type: string
+          description: "通話サポート時間"
+          example: "9:00-17:00"
+
+    DoctorRequest:
+      type: object
+      properties:
+        hospitalID:
+          type: string
+          description: "病院UUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        doctorName:
+          type: string
+          description: "医師名"
+          example: "山田 太郎"
+        doctorIcon:
+          type: string
+          format: byte
+          description: "医師アイコン画像"
+        departments:
+          type: array
+          items:
+            type: string
+            format: UUID
+            description: "診療科UUID"
+            example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        email:
+          type: string
+          description: "医師メールアドレス"
+          example: "sample@mail.com"
+        phoneNumber:
+          type: string
+          description: "医師電話番号"
+          example: "090-1234-5678"
+        chatSupportHours:
+          type: string
+          description: "チャットサポート時間"
+          example: "9:00-17:00"
+        callSupportHours:
+          type: string
+          description: "通話サポート時間"
+          example: "9:00-17:00"
+
+    Department:
+      type: object
+      properties:
+        departmentID:
+          type: string
+          format: UUID
+          description: "診療科UUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        departmentName:
+          type: string
+          description: "診療科名"
+          example: "内科"
+
+    Chat:
+      type: object
+      properties:
+        chatID:
+          format: UUID
+          type: string
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        doctorID:
+          type: string
+          description: "医師ID"
+          example: "1234567890"
+        userID:
+          type: string
+          description: "ユーザーID"
+          example: "1234567890"
+        latestMessageText:
+          type: string
+          nullable: true
+          description: "最新メッセージ内容"
+          example: "Hello, World!"
+        latestMessageTimestamp:
+          type: string
+          nullable: true
+          description: "最新メッセージ送信日時"
+          format: date-time
+          example: "2020-01-01T00:00:00Z"
+
+    ChatRequest:
+      type: object
+      properties:
+        doctorID:
+          type: string
+          description: "医師ID"
+          example: "1234567890"
+        userID:
+          type: string
+          description: "ユーザーID"
+          example: "1234567890"
+
+    Message:
+      type: object
+      properties:
+        messageID:
+          format: UUID
+          type: string
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        chatID:
+          format: UUID
+          type: string
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        senderID:
+          type: string
+          description: "送信者ID"
+          example: "1234567890"
+        content:
+          description: "メッセージ内容"
+          type: string
+          example: "Hello, World!"
+        timestamp:
+          type: string
+          description: "メッセージ送信日時"
+          format: date-time
+          example: "2020-01-01T00:00:00Z"
+
+    MessageRequest:
+      type: object
+      properties:
+        senderID:
+          type: string
+          description: "送信者ID"
+          example: "1234567890"
+        content:
+          type: string
+          format: UUID
+          description: "メッセージ内容"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+
 security:
   - firebase: [ ]
 
@@ -28,6 +402,8 @@ tags:
     description: "病院情報"
   - name: doctor
     description: "医師情報"
+  - name: department
+    description: "診療科情報"
   - name: chat
     description: "チャット情報"
   - name: family_email
@@ -36,10 +412,7 @@ tags:
     description: "薬情報"
   - name: call
     description: "通話情報"
-host: 'https://xxxx.run.app'
-basePath: '/api'
-schemes:
-  - https
+
 paths:
   /user:
     get:
@@ -50,76 +423,79 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
       responses:
-        200:
+        '200':
           description: "ユーザー情報取得成功"
-          schema:
-            $ref: "#/definitions/User"
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '404':
           description: "指定されたユーザーが存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "UserNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "UserNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
     post:
-      summary: "ユーザー登録"
-      description: "ユーザーを登録します"
-      consumes:
-        - application/json
-      produces:
-        - application/json
       tags:
         - user
-      parameters:
-        - in: header
-          name: X-UID
-          type: string
-          required: true
-          description: "UID"
-        - in: body
-          name: user
-          description: "ユーザー情報"
-          required: true
-          schema:
-            $ref: "#/definitions/UserRequest"
+      summary: "ユーザー登録"
+      description: "ユーザーを登録します"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
       responses:
-        200:
+        '200':
           description: "ユーザー登録成功"
-          schema:
-            $ref: "#/definitions/UserRequest"
-        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserRequest"
+        '400':
           description: "不正なデータが送信されました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "InvalidData"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
     delete:
       tags:
         - user
@@ -128,30 +504,35 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
       responses:
-        204:
+        '204':
           description: "ユーザー削除成功"
-        404:
+        '404':
           description: "指定されたユーザーが存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "UserNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "UserNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
   /users/{userUid}/profiles:
     get:
       summary: "ユーザープロフィール取得"
@@ -161,192 +542,191 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
         - in: path
           name: userUid
-          type: string
           required: true
-          description: "ユーザーUID"
+          schema:
+            type: string
+            description: "ユーザーUID"
       responses:
-        200:
+        '200':
           description: "プロフィール取得成功"
-          schema:
-            $ref: "#/definitions/UserProfiles"
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfiles"
+        '404':
           description: "指定されたユーザーが存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "UserNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "UserNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
     post:
+      tags:
+        - user
       summary: "ユーザープロフィール登録"
       description: "ユーザーの個人情報を登録する"
-      consumes:
-        - application/json
-      produces:
-        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfilesRequest"
+      responses:
+        '200':
+          description: "プロフィールが正常に登録されました"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfilesRequest"
+        '400':
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        '404':
+          description: "指定されたユーザーが存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "UserNotFound"
+        '500':
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    put:
       tags:
         - user
-      parameters:
-        - in: header
-          name: X-UID
-          type: string
-          required: true
-          description: "UID"
-        - in: path
-          name: userUid
-          type: string
-          required: true
-          description: "ユーザーUID"
-        - in: body
-          name: profile
-          description: "ユーザーのプロフィールデータ"
-          required: true
-          schema:
-            $ref: "#/definitions/UserProfilesRequest"
-
-      responses:
-        200:
-          description: "プロフィールが正常に登録されました"
-          schema:
-            $ref: "#/definitions/UserProfilesRequest"
-        400:
-          description: "不正なデータが送信されました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "InvalidData"
-        404:
-          description: "指定されたユーザーが存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "UserNotFound"
-        500:
-          description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
-    put:
       summary: "ユーザープロフィール更新"
       description: "ユーザーの個人情報を更新する"
-      consumes:
-        - application/json
-      produces:
-        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfilesRequest"
+      responses:
+        '200':
+          description: "プロフィールが正常に更新されました"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfilesRequest"
+        '400':
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        '404':
+          description: "指定されたユーザーが存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "UserNotFound"
+        '500':
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    delete:
       tags:
         - user
-      parameters:
-        - in: header
-          name: X-UID
-          type: string
-          required: true
-          description: "UID"
-        - in: path
-          name: userUid
-          type: string
-          required: true
-          description: "ユーザーUID"
-        - in: body
-          name: profile
-          description: "ユーザーのプロフィールデータ"
-          required: true
-          schema:
-            $ref: "#/definitions/UserProfilesRequest"
-
-      responses:
-        200:
-          description: "プロフィールが正常に更新されました"
-          schema:
-            $ref: "#/definitions/UserProfilesRequest"
-        400:
-          description: "不正なデータが送信されました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "InvalidData"
-        404:
-          description: "指定されたユーザーが存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "UserNotFound"
-        500:
-          description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
-    delete:
       summary: "ユーザープロフィール削除"
       description: "ユーザーの個人情報を削除する"
-      tags:
-        - user
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
         - in: path
           name: userUid
-          type: string
           required: true
-          description: "ユーザーUID"
+          schema:
+            type: string
+            description: "ユーザーUID"
       responses:
-        204:
+        '204':
           description: "プロフィールが正常に削除されました"
-        404:
+        '404':
           description: "指定されたユーザーが存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "UserNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "UserNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
   /health_checkups:
     get:
       tags:
@@ -356,72 +736,74 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
       responses:
-        200:
+        '200':
           description: "検査結果一覧取得成功"
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: "#/definitions/HealthCheckup"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/HealthCheckup"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
     post:
       tags:
         - health_checkup
       summary: "検査結果登録"
       description: "ユーザーの健康診断結果を登録します"
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: X-UID
-          type: string
-          required: true
-          description: "UID"
-        - in: body
-          name: healthCheckup
-          description: "ユーザーの健康診断結果"
-          required: true
-          schema:
-            $ref: "#/definitions/HealthCheckupRequest"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HealthCheckupRequest"
       responses:
-        200:
+        '200':
           description: "検査結果登録成功"
-          schema:
-            $ref: "#/definitions/HealthCheckup"
-        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthCheckup"
+        '400':
           description: "不正なデータが送信されました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "InvalidData"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
   /health_checkups/{healthCheckupID}:
     get:
       tags:
@@ -431,97 +813,97 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
         - in: path
           name: healthCheckupID
-          type: string
-          format: UUID
           required: true
-          description: "検査結果UUID"
+          schema:
+            type: string
+            format: UUID
+            description: "検査結果UUID"
       responses:
-        200:
+        '200':
           description: "検査結果取得成功"
-          schema:
-            $ref: "#/definitions/HealthCheckup"
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthCheckup"
+        '404':
           description: "指定された検査結果が存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "HealthCheckupNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "HealthCheckupNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
     put:
       tags:
         - health_checkup
       summary: "検査結果更新"
       description: "ユーザーの健康診断結果を更新します"
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: X-UID
-          type: string
-          required: true
-          description: "UID"
-        - in: path
-          name: healthCheckupID
-          type: string
-          format: UUID
-          required: true
-          description: "検査結果UUID"
-        - in: body
-          name: healthCheckup
-          description: "ユーザーの健康診断結果"
-          required: true
-          schema:
-            $ref: "#/definitions/HealthCheckupRequest"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HealthCheckupRequest"
       responses:
-        200:
+        '200':
           description: "検査結果更新成功"
-          schema:
-            $ref: "#/definitions/HealthCheckup"
-        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthCheckup"
+        '400':
           description: "不正なデータが送信されました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "InvalidData"
-        404:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        '404':
           description: "指定された検査結果が存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "HealthCheckupNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "HealthCheckupNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
     delete:
       tags:
         - health_checkup
@@ -530,36 +912,41 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
-          format: UUID
           required: true
-          description: "UID"
+          schema:
+            type: string
+            format: UUID
+            description: "UID"
         - in: path
           name: healthCheckupID
-          type: string
           required: true
-          description: "検査結果UUID"
+          schema:
+            type: string
+            description: "検査結果UUID"
       responses:
-        204:
+        '204':
           description: "検査結果削除成功"
-        404:
+        '404':
           description: "指定された検査結果が存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "HealthCheckupNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "HealthCheckupNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
   /hospitals:
     get:
       tags:
@@ -569,28 +956,34 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
       responses:
-        200:
+        '200':
           description: "病院一覧取得成功"
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: "#/definitions/Hospital"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Hospital"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
   /hospitals/{hospitalID}:
     get:
       tags:
@@ -600,38 +993,47 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
         - in: path
           name: hospitalID
-          type: string
-          format: UUID
           required: true
-          description: "病院UUID"
+          schema:
+            type: string
+            format: UUID
+            description: "病院UUID"
       responses:
-        200:
+        '200':
           description: "病院情報取得成功"
-          schema:
-            $ref: "#/definitions/Hospital"
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hospital"
+        '404':
           description: "指定された病院が存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "HospitalNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "HospitalNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
   /hospitals/{hospitalID}/doctors:
     get:
       tags:
@@ -641,79 +1043,83 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
         - in: path
           name: hospitalID
-          type: string
-          format: UUID
           required: true
-          description: "病院UUID"
+          schema:
+            type: string
+            format: UUID
+            description: "病院UUID"
       responses:
-        200:
+        '200':
           description: "医師一覧取得成功"
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: "#/definitions/Doctor"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Doctor"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
   /doctors:
     post:
       tags:
         - doctor
       summary: "医師登録"
       description: "医師を登録します"
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: X-UID
-          type: string
-          required: true
-          description: "UID"
-        - in: body
-          name: doctor
-          description: "医師情報"
-          required: true
-          schema:
-            $ref: "#/definitions/DoctorRequest"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Doctor"
       responses:
-        200:
+        '200':
           description: "医師登録成功"
-          schema:
-            $ref: "#/definitions/DoctorRequest"
-        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Doctor"
+        '400':
           description: "不正なデータが送信されました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "InvalidData"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
   /doctors/{doctorUid}:
     get:
       tags:
@@ -723,95 +1129,97 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
         - in: path
           name: doctorUid
-          type: string
           required: true
-          description: "医師UID"
+          schema:
+            type: string
+            description: "医師UID"
       responses:
-        200:
+        '200':
           description: "医師情報取得成功"
-          schema:
-            $ref: "#/definitions/Doctor"
-        404:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Doctor"
+        '404':
           description: "指定された医師が存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "DoctorNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "DoctorNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
     put:
       tags:
         - doctor
       summary: "医師情報更新"
       description: "医師情報を更新します"
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: X-UID
-          type: string
-          required: true
-          description: "UID"
-        - in: path
-          name: doctorUid
-          type: string
-          required: true
-          description: "医師UID"
-        - in: body
-          name: doctor
-          description: "医師情報"
-          required: true
-          schema:
-            $ref: "#/definitions/DoctorRequest"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Doctor"
       responses:
-        200:
+        '200':
           description: "医師情報更新成功"
-          schema:
-            $ref: "#/definitions/DoctorRequest"
-        400:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Doctor"
+        '400':
           description: "不正なデータが送信されました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "InvalidData"
-        404:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        '404':
           description: "指定された医師が存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "DoctorNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "DoctorNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
     delete:
       tags:
         - doctor
@@ -820,276 +1228,287 @@ paths:
       parameters:
         - in: header
           name: X-UID
-          type: string
           required: true
-          description: "UID"
+          schema:
+            type: string
+            description: "UID"
         - in: path
           name: doctorUid
-          type: string
           required: true
-          description: "医師UID"
+          schema:
+            type: string
+            description: "医師UID"
       responses:
-        204:
+        '204':
           description: "医師削除成功"
-        404:
+        '404':
           description: "指定された医師が存在しません"
-          schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "DoctorNotFound"
-        500:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "DoctorNotFound"
+        '500':
           description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+  /departments:
+    get:
+      tags:
+        - department
+      summary: "診療科一覧取得"
+      description: "診療科一覧を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
           schema:
-            type: object
-            properties:
-              errorType:
-                type: string
-                description: "エラータイプ"
-                example: "ServerError"
-definitions:
-  User:
-    type: object
-    properties:
-      uid:
-        type: string
-        description: "User ID"
-        example: "1234567890"
-      fcmTokenId:
-        type: string
-        description: "FCMトークンID"
-        example: "fcm_token_id"
-  UserRequest:
-    type: object
-    properties:
-      uid:
-        type: string
-        description: "User ID"
-        example: "1234567890"
-      fcmTokenId:
-        type: string
-        description: "FCMトークンID"
-        example: "fcm_token_id"
-  UserProfilesRequest:
-    type: object
-    properties:
-      userName:
-        type: string
-        description: "ユーザーの氏名"
-        example: "山田 太郎"
-      gender:
-        type: string
-        description: "ユーザーの性別"
-        enum: [ "male", "female", "other" ]
-        example: "male"
-      birthDate:
-        type: string
-        format: date
-        description: "ユーザーの生年月日"
-        example: "1990-01-01"
-      address:
-        type: string
-        description: "ユーザーの住所"
-        example: "東京都新宿区1-1-1"
-      postalCode:
-        type: string
-        description: "ユーザーの郵便番号"
-        example: "123-4567"
-      phoneNumber:
-        type: string
-        description: "ユーザーの電話番号"
-        example: "090-1234-5678"
-      iconImage:
-        type: string
-        format: byte
-        description: "Base64エンコードされた画像データ"
-      bodyHeight:
-        type: integer
-        description: "ユーザーの身長（cm単位）"
-        example: 180
-      bodyWeight:
-        type: integer
-        description: "ユーザーの体重（kg単位）"
-        example: 75
-      occupation:
-        type: string
-        description: "ユーザーの職業"
-        example: "エンジニア"
-  UserProfiles:
-    type: object
-    properties:
-      uid:
-        type: string
-        description: "User ID"
-        example: "1234567890"
-      userName:
-        type: string
-        description: "ユーザーの氏名"
-        example: "山田 太郎"
-      gender:
-        type: string
-        description: "ユーザーの性別"
-        enum: [ "male", "female", "other" ]
-        example: "male"
-      birthDate:
-        type: string
-        format: date
-        description: "ユーザーの生年月日"
-        example: "1990-01-01"
-      address:
-        type: string
-        description: "ユーザーの住所"
-        example: "東京都新宿区1-1-1"
-      postalCode:
-        type: string
-        description: "ユーザーの郵便番号"
-        example: "123-4567"
-      phoneNumber:
-        type: string
-        description: "ユーザーの電話番号"
-        example: "090-1234-5678"
-      iconImage:
-        type: string
-        format: byte
-        description: "Base64エンコードされた画像データ"
-      bodyHeight:
-        type: integer
-        description: "ユーザーの身長（cm単位）"
-        example: 180
-      bodyWeight:
-        type: integer
-        description: "ユーザーの体重（kg単位）"
-        example: 75
-      occupation:
-        type: string
-        description: "ユーザーの職業"
-        example: "エンジニア"
-  HealthCheckup:
-    type: object
-    properties:
-      healthCheckupID:
-        type: string
-        format: UUID
-        description: "検査結果UUID"
-        example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-      date:
-        type: string
-        format: date
-        description: "健康診断日"
-        example: "2020-01-01"
-      bodyTemperature:
-        type: number
-        description: "体温"
-        example: 36.5
-      bloodPressure:
-        type: string
-        description: "血圧"
-        example: "120/80"
-      medicalRecord:
-        type: string
-        description: "マークダウンで表記されるカルテ情報"
-        example: "## 2020年1月1日\n- 体温: 36.5\n- 血圧: 120/80\n- 診断: 軽度の風邪"
-  HealthCheckupRequest:
-    type: object
-    properties:
-      date:
-        type: string
-        format: date
-        description: "検査日"
-        example: "2020-01-01"
-      bodyTemperature:
-        type: number
-        description: "体温"
-        example: 36.5
-      bloodPressure:
-        type: string
-        description: "血圧"
-        example: "120/80"
-      medicalRecord:
-        type: string
-        description: "マークダウンで表記されるカルテ情報"
-        example: "## 2020年1月1日\n- 体温: 36.5\n- 血圧: 120/80\n- 診断: 軽度の風邪"
-  Hospital:
-    type: object
-    properties:
-      hospitalID:
-        type: string
-        format: UUID
-        description: "病院UUID"
-        example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-      hospitalName:
-        type: string
-        description: "病院名"
-        example: "東京都立大学病院"
-      address:
-        type: string
-        description: "病院住所"
-        example: "東京都新宿区1-1-1"
-      postalCode:
-        type: string
-        description: "病院郵便番号"
-        example: "123-4567"
-      phoneNumber:
-        type: string
-        description: "病院電話番号"
-        example: "090-1234-5678"
-  Doctor:
-    type: object
-    properties:
-      doctorUid:
-        type: string
-        description: "医師UID"
-        example: "1234567890"
-      hospitalID:
-        type: string
-        description: "病院UUID"
-        example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-      doctorName:
-        type: string
-        description: "医師名"
-        example: "山田 太郎"
-      doctorIcon:
-        type: string
-        format: byte
-        description: "医師アイコン画像"
-      phoneNumber:
-        type: string
-        description: "医師電話番号"
-        example: "090-1234-5678"
-      chatSupportHours:
-        type: string
-        description: "チャットサポート時間"
-        example: "9:00-17:00"
-      callSupportHours:
-        type: string
-        description: "通話サポート時間"
-        example: "9:00-17:00"
-  DoctorRequest:
-    type: object
-    properties:
-      hospitalID:
-        type: string
-        description: "病院UUID"
-        example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-      doctorName:
-        type: string
-        description: "医師名"
-        example: "山田 太郎"
-      doctorIcon:
-        type: string
-        format: byte
-        description: "医師アイコン画像"
-      phoneNumber:
-        type: string
-        description: "医師電話番号"
-        example: "090-1234-5678"
-      chatSupportHours:
-        type: string
-        description: "チャットサポート時間"
-        example: "9:00-17:00"
-      callSupportHours:
-        type: string
-        description: "通話サポート時間"
-        example: "9:00-17:00"
+            type: string
+            description: "UID"
+      responses:
+        '200':
+          description: "診療科一覧取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Department"
+        '500':
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+  /chats:
+    get:
+      tags:
+        - chat
+      summary: "チャット一覧取得"
+      description: "チャット一覧を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      responses:
+        '200':
+          description: "チャット一覧取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Chat"
+        '500':
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    post:
+      tags:
+        - chat
+      summary: "チャット作成"
+      description: "新しいチャットを作成します"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatRequest"
+      responses:
+        '200':
+          description: "チャットが作成されました"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chat"
+        '400':
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        '500':
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+  /chats/{chatID}/messages:
+    get:
+      tags:
+        - chat
+      summary: "メッセージ一覧表示"
+      description: "メッセージを一覧表示します。"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: chatID
+          required: true
+          schema:
+            type: string
+            format: UUID
+            description: "チャットUUID"
+      responses:
+        '200':
+          description: "メッセージ一覧表示成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Message"
+        '500':
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    post:
+      tags:
+        - chat
+      summary: "メッセージ送信"
+      description: "メッセージを送信します"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageRequest"
+      responses:
+        '200':
+          description: "メッセージ送信成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        '400':
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        '500':
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
+  /chats/{chatID}/messages/{messageID}:
+    delete:
+      tags:
+        - chat
+      summary: "メッセージ削除"
+      description: "メッセージを削除します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: chatID
+          required: true
+          schema:
+            type: string
+            format: UUID
+            description: "チャットUUID"
+        - in: path
+          name: messageID
+          required: true
+          schema:
+            type: string
+            format: UUID
+            description: "メッセージUUID"
+      responses:
+        '204':
+          description: "メッセージ削除成功"
+        '404':
+          description: "指定されたメッセージが存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "MessageNotFound"
+        '500':
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
