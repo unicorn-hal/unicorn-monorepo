@@ -23,16 +23,17 @@ exports.callsCallReservationIDDELETE = function(xUID,callReservationID) {
  * body CallReservationRequest 
  * callReservationID String 
  * xUID String 
- * returns CallReservation
+ * returns CallReservationResponse
  **/
 exports.callsCallReservationIDPUT = function(body,callReservationID,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
   "callReservationID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "doctorUid" : "1234567890",
-  "userID" : "1234567890",
-  "callTime" : "2024-10-12T15:00:00Z"
+  "callEndTime" : "2024-10-12T15:30:00Z",
+  "doctorID" : "1234567890",
+  "callStartTime" : "2024-10-12T15:00:00Z",
+  "userID" : "1234567890"
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -48,18 +49,19 @@ exports.callsCallReservationIDPUT = function(body,callReservationID,xUID) {
  * 医師とユーザーの通話予約情報を取得します
  *
  * xUID String 
- * doctorUid String 
+ * doctorID String 
  * userID String 
  * returns CallReservation
  **/
-exports.callsGET = function(xUID,doctorUid,userID) {
+exports.callsGET = function(xUID,doctorID,userID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
   "callReservationID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "doctorUid" : "1234567890",
-  "userID" : "1234567890",
-  "callTime" : "2024-10-12T15:00:00Z"
+  "callEndTime" : "2024-10-12T15:30:00Z",
+  "doctorID" : "1234567890",
+  "callStartTime" : "2024-10-12T15:00:00Z",
+  "userID" : "1234567890"
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -76,16 +78,17 @@ exports.callsGET = function(xUID,doctorUid,userID) {
  *
  * body CallReservationRequest 
  * xUID String 
- * returns CallReservation
+ * returns CallReservationResponse
  **/
 exports.callsPOST = function(body,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
   "callReservationID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "doctorUid" : "1234567890",
-  "userID" : "1234567890",
-  "callTime" : "2024-10-12T15:00:00Z"
+  "callEndTime" : "2024-10-12T15:30:00Z",
+  "doctorID" : "1234567890",
+  "callStartTime" : "2024-10-12T15:00:00Z",
+  "userID" : "1234567890"
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

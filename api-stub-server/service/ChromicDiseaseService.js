@@ -21,7 +21,7 @@ exports.chronic_diseasesDELETE = function(xUID,diseaseName) {
  * 登録してある持病名を取得します
  *
  * xUID String 
- * returns inline_response_200_9
+ * returns inline_response_200_8
  **/
 exports.chronic_diseasesGET = function(xUID) {
   return new Promise(function(resolve, reject) {
@@ -49,7 +49,7 @@ exports.chronic_diseasesGET = function(xUID) {
  * 検索した持病を追加します
  *
  * body ChronicDiseaseRequest 
- * returns ChronicDisease
+ * returns ChronicDiseaseResponse
  **/
 exports.chronic_diseasesPOST = function(body) {
   return new Promise(function(resolve, reject) {

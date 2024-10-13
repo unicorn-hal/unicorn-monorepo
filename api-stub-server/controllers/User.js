@@ -3,8 +3,8 @@
 var utils = require('../utils/writer.js');
 var User = require('../service/UserService');
 
-module.exports.userDELETE = function userDELETE (req, res, next, xUID) {
-  User.userDELETE(xUID)
+module.exports.usersPOST = function usersPOST (req, res, next, body, xUID) {
+  User.usersPOST(body, xUID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -13,8 +13,8 @@ module.exports.userDELETE = function userDELETE (req, res, next, xUID) {
     });
 };
 
-module.exports.userGET = function userGET (req, res, next, xUID) {
-  User.userGET(xUID)
+module.exports.usersUserIDDELETE = function usersUserIDDELETE (req, res, next, xUID, userID) {
+  User.usersUserIDDELETE(xUID, userID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -23,8 +23,8 @@ module.exports.userGET = function userGET (req, res, next, xUID) {
     });
 };
 
-module.exports.userPOST = function userPOST (req, res, next, body, xUID) {
-  User.userPOST(body, xUID)
+module.exports.usersUserIDGET = function usersUserIDGET (req, res, next, xUID, userID) {
+  User.usersUserIDGET(xUID, userID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -33,38 +33,8 @@ module.exports.userPOST = function userPOST (req, res, next, body, xUID) {
     });
 };
 
-module.exports.usersUserUidProfilesDELETE = function usersUserUidProfilesDELETE (req, res, next, xUID, userUid) {
-  User.usersUserUidProfilesDELETE(xUID, userUid)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
-
-module.exports.usersUserUidProfilesGET = function usersUserUidProfilesGET (req, res, next, xUID, userUid) {
-  User.usersUserUidProfilesGET(xUID, userUid)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
-
-module.exports.usersUserUidProfilesPOST = function usersUserUidProfilesPOST (req, res, next, body, userUid, xUID) {
-  User.usersUserUidProfilesPOST(body, userUid, xUID)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
-
-module.exports.usersUserUidProfilesPUT = function usersUserUidProfilesPUT (req, res, next, body, userUid, xUID) {
-  User.usersUserUidProfilesPUT(body, userUid, xUID)
+module.exports.usersUserIDPUT = function usersUserIDPUT (req, res, next, body, userID, xUID) {
+  User.usersUserIDPUT(body, userID, xUID)
     .then(function (response) {
       utils.writeJson(res, response);
     })

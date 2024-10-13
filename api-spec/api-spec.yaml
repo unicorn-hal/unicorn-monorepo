@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.0.0"
+  version: "1.1.0"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -19,13 +19,52 @@ components:
   #      x-google-audiences: "xxxx"
 
   schemas:
-    User:
+    Account:
       type: object
       properties:
         uid:
           type: string
           description: "User ID"
           example: "1234567890"
+        role:
+          type: string
+          description: "User Role"
+          enum: ["user", "doctor"]
+          example: "user"
+        fcmTokenId:
+          type: string
+          description: "FCMトークンID"
+          example: "fcm_token_id"
+
+    AccountRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          description: "User ID"
+          example: "1234567890"
+        role:
+          type: string
+          description: "User Role"
+          enum: ["user", "doctor"]
+          example: "user"
+        fcmTokenId:
+          type: string
+          description: "FCMトークンID"
+          example: "fcm_token_id"
+    
+    AccountResponse:
+      type: object
+      properties:
+        uid:
+          type: string
+          description: "User ID"
+          example: "1234567890"
+        role:
+          type: string
+          description: "User Role"
+          enum: ["user", "doctor"]
+          example: "user"
         fcmTokenId:
           type: string
           description: "FCMトークンID"
@@ -34,22 +73,14 @@ components:
     UserRequest:
       type: object
       properties:
-        uid:
+        firstName:
           type: string
-          description: "User ID"
-          example: "1234567890"
-        fcmTokenId:
+          description: "ユーザーの名"
+          example: "太郎"
+        lastName:
           type: string
-          description: "FCMトークンID"
-          example: "fcm_token_id"
-
-    UserProfilesRequest:
-      type: object
-      properties:
-        userName:
-          type: string
-          description: "ユーザーの氏名"
-          example: "山田 太郎"
+          description: "ユーザーの姓"
+          example: "山田"
         gender:
           type: string
           description: "ユーザーの性別"
@@ -76,6 +107,7 @@ components:
           type: string
           format: byte
           description: "Base64エンコードされた画像データ"
+          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
         bodyHeight:
           type: integer
           description: "ユーザーの身長（cm単位）"
@@ -89,17 +121,21 @@ components:
           description: "ユーザーの職業"
           example: "エンジニア"
 
-    UserProfiles:
+    User:
       type: object
       properties:
-        uid:
+        userID:
           type: string
           description: "User ID"
           example: "1234567890"
-        userName:
+        firstName:
           type: string
-          description: "ユーザーの氏名"
-          example: "山田 太郎"
+          description: "ユーザーの名"
+          example: "太郎"
+        lastName:
+          type: string
+          description: "ユーザーの姓"
+          example: "山田"
         gender:
           type: string
           description: "ユーザーの性別"
@@ -126,6 +162,7 @@ components:
           type: string
           format: byte
           description: "Base64エンコードされた画像データ"
+          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
         bodyHeight:
           type: integer
           description: "ユーザーの身長（cm単位）"
@@ -138,6 +175,44 @@ components:
           type: string
           description: "ユーザーの職業"
           example: "エンジニア"
+
+    UserResponse:
+      type: object
+      properties:
+        userID:
+          type: string
+          description: "User ID"
+          example: "1234567890"
+        firstName:
+          type: string
+          description: "ユーザーの名"
+          example: "太郎"
+        lastName:
+          type: string
+          description: "ユーザーの姓"
+          example: "山田"
+        phoneNumber:
+          type: string
+          description: "ユーザーの電話番号"
+          example: "090-1234-5678"
+        iconImage:
+          type: string
+          format: byte
+          description: "Base64エンコードされた画像データ"
+          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+        bodyHeight:
+          type: integer
+          description: "ユーザーの身長（cm単位）"
+          example: 180
+        bodyWeight:
+          type: integer
+          description: "ユーザーの体重（kg単位）"
+          example: 75
+        occupation:
+          type: string
+          description: "ユーザーの職業"
+          example: "エンジニア"
+        
 
     HealthCheckup:
       type: object
@@ -239,9 +314,9 @@ components:
     Doctor:
       type: object
       properties:
-        doctorUid:
+        doctorID:
           type: string
-          description: "医師UID"
+          description: "医師ID"
           example: "1234567890"
         hospital:
           type: object
@@ -255,14 +330,19 @@ components:
               type: string
               description: "病院名"
               example: "東京都立大学病院"
-        doctorName:
+        firstName:
           type: string
-          description: "医師名"
-          example: "山田 太郎"
+          description: "医師の名"
+          example: "太郎"
+        lastName:
+          type: string
+          description: "医師の姓"
+          example: "山田"
         doctorIcon:
           type: string
           format: byte
           description: "医師アイコン画像"
+          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
         departments:
           type: array
           items:
@@ -301,14 +381,19 @@ components:
           type: string
           description: "病院UUID"
           example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-        doctorName:
+        firstName:
           type: string
-          description: "医師名"
-          example: "山田 太郎"
+          description: "医師の名"
+          example: "太郎"
+        lastName:
+          type: string
+          description: "医師の姓"
+          example: "山田"
         doctorIcon:
           type: string
           format: byte
           description: "医師アイコン画像"
+          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
         departments:
           type: array
           items:
@@ -324,14 +409,22 @@ components:
           type: string
           description: "医師電話番号"
           example: "090-1234-5678"
-        chatSupportHours:
+        chatSupportStartHour:
           type: string
-          description: "チャットサポート時間"
-          example: "9:00-17:00"
-        callSupportHours:
+          description: "チャットサポート開始時間"
+          example: "9:00"
+        chatSupportEndHour:
           type: string
-          description: "通話サポート時間"
-          example: "9:00-17:00"
+          description: "チャットサポート終了時間"
+          example: "17:00"
+        callSupportStartHour:
+          type: string
+          description: "通話サポート開始時間"
+          example: "9:00"
+        callSupportEndHour:
+          type: string
+          description: "通話サポート終了時間"
+          example: "17:00"
 
     DoctorResponse:
       type: object
@@ -363,15 +456,22 @@ components:
           type: string
           description: "医師電話番号"
           example: "090-1234-5678"
-        chatSupportHours:
+        chatSupportStartHour:
           type: string
-          description: "チャットサポート時間"
-          example: "9:00-17:00"
-        callSupportHours:
+          description: "チャットサポート開始時間"
+          example: "9:00"
+        chatSupportEndHour:
           type: string
-          description: "通話サポート時間"
-          example: "9:00-17:00"
-
+          description: "チャットサポート終了時間"
+          example: "17:00"
+        callSupportStartHour:
+          type: string
+          description: "通話サポート開始時間"
+          example: "9:00"
+        callSupportEndHour:
+          type: string
+          description: "通話サポート終了時間"
+          example: "17:00"
     Department:
       type: object
       properties:
@@ -392,20 +492,52 @@ components:
           format: UUID
           type: string
           example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-        doctorID:
-          type: string
-          description: "医師ID"
-          example: "1234567890"
-        userID:
-          type: string
-          description: "ユーザーID"
-          example: "1234567890"
+        doctor:
+          type: object
+          properties:
+            doctorID:
+              type: string
+              description: "医師ID"
+              example: "1234567890"
+            doctorIcon:
+              type: string
+              format: byte
+              description: "医師アイコン画像"
+              example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+            firstName:
+              type: string
+              description: "医師の名"
+              example: "太郎"
+            lastName:
+              type: string
+              description: "医師の姓"
+              example: "山田"
+        user:
+          type: object
+          properties:
+            userID:
+              type: string
+              description: "ユーザーID"
+              example: "1234567890"
+            userIcon:
+              type: string
+              format: byte
+              description: "ユーザーアイコン画像"
+              example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+            firstName:
+              type: string
+              description: "ユーザーの名"
+              example: "太郎"
+            lastName:
+              type: string
+              description: "ユーザーの姓"
+              example: "山田"
         latestMessageText:
           type: string
           nullable: true
           description: "最新メッセージ内容"
           example: "Hello, World!"
-        latestMessageTimestamp:
+        latestMessageSentAt:
           type: string
           nullable: true
           description: "最新メッセージ送信日時"
@@ -423,7 +555,23 @@ components:
           type: string
           description: "ユーザーID"
           example: "1234567890"
-
+    
+    ChatResponse:
+      type: object
+      properties:
+        chatID:
+          format: UUID
+          type: string
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        doctorID:
+          type: string
+          description: "医師ID"
+          example: "1234567890"
+        userID:
+          type: string
+          description: "ユーザーID"
+          example: "1234567890"
+          
     Message:
       type: object
       properties:
@@ -439,11 +587,24 @@ components:
           type: string
           description: "送信者ID"
           example: "1234567890"
+        firstName:
+          type: string
+          description: "送信者の名"
+          example: "太郎"
+        lastName:
+          type: string
+          description: "送信者の姓"
+          example: "山田"
+        iconImage:
+          type: string
+          format: byte
+          description: "Base64エンコードされた画像データ"
+          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
         content:
           description: "メッセージ内容"
           type: string
           example: "Hello, World!"
-        timestamp:
+        sentAt:
           type: string
           description: "メッセージ送信日時"
           format: date-time
@@ -452,6 +613,23 @@ components:
     MessageRequest:
       type: object
       properties:
+        senderID:
+          type: string
+          description: "送信者ID"
+          example: "1234567890"
+        content:
+          type: string
+          format: UUID
+          description: "メッセージ内容"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    
+    MessageResponse:
+      type: object
+      properties:
+        messageID:
+          format: UUID
+          type: string
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
         senderID:
           type: string
           description: "送信者ID"
@@ -473,10 +651,14 @@ components:
           type: string
           description: "家族メールアドレス"
           example: "sample@sample.com"
-        familyName:
+        firstName:
           type: string
-          description: "家族名"
-          example: "山田 太郎"
+          description: "家族の名"
+          example: "太郎"
+        lastName:
+          type: string
+          description: "家族の姓"
+          example: "山田"
 
     FamilyEmailRequest:
       type: object
@@ -485,10 +667,34 @@ components:
           type: string
           description: "家族メールアドレス"
           example: "sample@sample.com"
-        familyName:
+        firstName:
           type: string
-          description: "家族名"
-          example: "山田 太郎"
+          description: "家族の名"
+          example: "太郎"
+        lastName:
+          type: string
+          description: "家族の姓"
+          example: "山田"
+    
+    FamilyEmailResponse:
+      type: object
+      properties:
+        familyEmailID:
+          format: UUID
+          type: string
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        email:
+          type: string
+          description: "家族メールアドレス"
+          example: "sample@sample.com"
+        firstName:
+          type: string
+          description: "家族の名"
+          example: "太郎"
+        lastName:
+          type: string
+          description: "家族の姓"
+          example: "山田"
 
     Medicine:
       type: object
@@ -502,10 +708,26 @@ components:
           type: string
           description: "薬の名前"
           example: "パラセタモール"
+        count:
+          type: integer
+          description: "薬の初期残量"
+          example: 30
         quantity:
           type: integer
           description: "薬の残量"
           example: 20
+
+    MedicinePostRequest:
+      type: object
+      properties:
+        medicineName:
+          type: string
+          description: "薬の名前"
+          example: "パラセタモール"
+        count:
+          type: integer
+          description: "薬の初期残量"
+          example: 30
 
     MedicineRequest:
       type: object
@@ -518,37 +740,27 @@ components:
           type: integer
           description: "薬の残量"
           example: 20
-
-    MedicineReminder:
+    
+    MedicineResponse:
       type: object
       properties:
-        medicineReminderID:
+        medicineID:
           type: string
           format: UUID
-          description: "リマインダーUUID"
+          description: "薬のUUID"
           example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
         medicineName:
           type: string
           description: "薬の名前"
           example: "パラセタモール"
-        reminderTime:
-          type: string
-          format: date-time
-          description: "リマインダー日時"
-          example: "2024-10-10T09:00:00Z"
-    
-    MedicineReminderRequest:
-      type: object
-      properties:
-        medicineName:
-          type: string
-          description: "薬の名前"
-          example: "パラセタモール"
-        reminderTime:
-          type: string
-          format: date-time
-          description: "リマインダー日時"
-          example: "2024-10-10T09:00:00Z"
+        count:
+          type: integer
+          description: "薬の初期残量"
+          example: 30
+        quantity:
+          type: integer
+          description: "薬の残量"
+          example: 20
 
     ChronicDisease:
       type: object
@@ -570,11 +782,19 @@ components:
           type: string
           description: "持病名"
           example: "糖尿病"
-        aiSentTime:
+    
+    ChronicDiseaseResponse:
+      type: object
+      properties:
+        diseaseID:
           type: string
-          format: date-time
-          description: "AIに送信した時間"
-          example: "2024-10-12T10:00:00Z"
+          format: UUID
+          description: "持病のUUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        diseaseName:
+          type: string
+          description: "持病名"
+          example: "高血圧"
 
     CallReservation:
       type: object
@@ -584,38 +804,97 @@ components:
           format: UUID
           description: "通話予約UUID"
           example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-        doctorUid:
+        doctorID:
           type: string
-          description: "医師UID"
+          description: "医師ID"
           example: "1234567890"
         userID:
           type: string
           description: "ユーザーID"
           example: "1234567890"
-        callTime:
+        callStartTime:
           type: string
           format: date-time
-          description: "予約通話日時"
+          description: "通話開始時間"
           example: "2024-10-12T15:00:00Z"
+        callEndTime:
+          type: string
+          format: date-time
+          description: "通話終了時間"
+          example: "2024-10-12T15:30:00Z"
 
     CallReservationRequest:
       type: object
       properties:
-        doctorUid:
+        doctorID:
           type: string
-          description: "医師UID"
+          description: "医師ID"
           example: "1234567890"
         userID:
           type: string
           description: "ユーザーID"
           example: "1234567890"
-        callTime:
+        callStartTime:
           type: string
           format: date-time
-          description: "予約通話日時"
+          description: "通話開始時間"
           example: "2024-10-12T15:00:00Z"
-
+        callEndTime:
+          type: string
+          format: date-time
+          description: "通話終了時間"
+          example: "2024-10-12T15:30:00Z"
+    CallReservationResponse:
+      type: object
+      properties:
+        callReservationID:
+          type: string
+          format: UUID
+          description: "通話予約UUID"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        doctorID:
+          type: string
+          description: "医師ID"
+          example: "1234567890"
+        userID:
+          type: string
+          description: "ユーザーID"
+          example: "1234567890"
+        callStartTime:
+          type: string
+          format: date-time
+          description: "通話開始時間"
+          example: "2024-10-12T15:00:00Z"
+        callEndTime:
+          type: string
+          format: date-time
+          description: "通話終了時間"
+          example: "2024-10-12T15:30:00Z"
+    PrimaryDoctorsRequest:
+      type: object
+      properties:
+        doctorIDs:
+          type: array
+          items:
+            type: string
+            description: "医師ID"
+            example: "1234567890"
+    PrimaryDoctorsResponse:
+      type: object
+      properties:
+        userID:
+          type: string
+          description: "ユーザーID"
+          example: "1234567890"
+        doctorIDs:
+          type: array
+          items:
+            type: string
+            description: "医師ID"
+            example: "1234567890"
 tags:
+  - name: account
+    description: "アカウント情報"
   - name: user
     description: "ユーザー情報"
   - name: primary_doctors
@@ -640,12 +919,12 @@ tags:
     description: "通話情報"
 
 paths:
-  /user:
+  /accounts:
     get:
       tags:
-        - user
-      summary: "ユーザー情報取得"
-      description: "ユーザー情報を取得します"
+        - account
+      summary: "アカウント情報取得"
+      description: "アカウント情報を取得します"
       parameters:
         - in: header
           name: X-UID
@@ -655,13 +934,13 @@ paths:
             description: "UID"
       responses:
         "200":
-          description: "ユーザー情報取得成功"
+          description: "アカウント情報取得成功"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/Account"
         "404":
-          description: "指定されたユーザーが存在しません"
+          description: "指定されたアカウントが存在しません"
           content:
             application/json:
               schema:
@@ -684,9 +963,9 @@ paths:
                     example: "ServerError"
     post:
       tags:
-        - user
-      summary: "ユーザー登録"
-      description: "ユーザーを登録します"
+        - account
+      summary: "アカウント登録"
+      description: "アカウントを登録します"
       parameters:
         - in: header
           name: X-UID
@@ -699,14 +978,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRequest"
+              $ref: "#/components/schemas/AccountRequest"
       responses:
         "200":
-          description: "ユーザー登録成功"
+          description: "アカウント登録成功"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserRequest"
+                $ref: "#/components/schemas/AccountResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -731,9 +1010,9 @@ paths:
                     example: "ServerError"
     delete:
       tags:
-        - user
-      summary: "ユーザー削除"
-      description: "ユーザーを削除します"
+        - account
+      summary: "アカウント削除"
+      description: "アカウントを削除します"
       parameters:
         - in: header
           name: X-UID
@@ -743,9 +1022,9 @@ paths:
             description: "UID"
       responses:
         "204":
-          description: "ユーザー削除成功"
+          description: "アカウント削除成功"
         "404":
-          description: "指定されたユーザーが存在しません"
+          description: "指定されたアカウントが存在しません"
           content:
             application/json:
               schema:
@@ -766,8 +1045,55 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
-
-  /users/{userUid}/profiles:
+  /users:
+    post:
+      tags:
+        - user
+      summary: "ユーザープロフィール登録"
+      description: "ユーザーの個人情報を登録する"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+      responses:
+        "200":
+          description: "ユーザーが正常に登録されました"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+  /users/{userID}:
     get:
       summary: "ユーザープロフィール取得"
       description: "ユーザーのプロフィールデータを取得します"
@@ -781,82 +1107,18 @@ paths:
             type: string
             description: "UID"
         - in: path
-          name: userUid
+          name: userID
           required: true
           schema:
             type: string
-            description: "ユーザーUID"
+            description: "ユーザーID"
       responses:
         "200":
           description: "プロフィール取得成功"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserProfiles"
-        "404":
-          description: "指定されたユーザーが存在しません"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "UserNotFound"
-        "500":
-          description: "サーバーエラーが発生しました"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "ServerError"
-    post:
-      tags:
-        - user
-      summary: "ユーザープロフィール登録"
-      description: "ユーザーの個人情報を登録する"
-      parameters:
-        - in: header
-          name: X-UID
-          required: true
-          schema:
-            type: string
-            description: "UID"
-        - in: path
-          name: userUid
-          required: true
-          schema:
-            type: string
-            description: "ユーザーUID"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserProfilesRequest"
-      responses:
-        "200":
-          description: "プロフィールが正常に登録されました"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserProfilesRequest"
-        "400":
-          description: "不正なデータが送信されました"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "InvalidData"
+                $ref: "#/components/schemas/User"
         "404":
           description: "指定されたユーザーが存在しません"
           content:
@@ -892,24 +1154,24 @@ paths:
             type: string
             description: "UID"
         - in: path
-          name: userUid
+          name: userID
           required: true
           schema:
             type: string
-            description: "ユーザーUID"
+            description: "ユーザーID"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserProfilesRequest"
+              $ref: "#/components/schemas/UserRequest"
       responses:
         "200":
-          description: "プロフィールが正常に更新されました"
+          description: "ユーザーが正常に更新されました"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserProfilesRequest"
+                $ref: "#/components/schemas/UserResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -946,8 +1208,8 @@ paths:
     delete:
       tags:
         - user
-      summary: "ユーザープロフィール削除"
-      description: "ユーザーの個人情報を削除する"
+      summary: "ユーザー削除"
+      description: "ユーザーを削除する"
       parameters:
         - in: header
           name: X-UID
@@ -956,14 +1218,14 @@ paths:
             type: string
             description: "UID"
         - in: path
-          name: userUid
+          name: userID
           required: true
           schema:
             type: string
             description: "ユーザーUID"
       responses:
         "204":
-          description: "プロフィールが正常に削除されました"
+          description: "ユーザーが正常に削除されました"
         "404":
           description: "指定されたユーザーが存在しません"
           content:
@@ -1050,28 +1312,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                doctorUIDs:
-                  type: array
-                  items:
-                    type: string
-                    description: "医師UID"
-                    example: "1234567890"
+              $ref: "#/components/schemas/PrimaryDoctorsRequest"
       responses:
         "200":
           description: "主治医登録成功"
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  doctorUIDs:
-                    type: array
-                    items:
-                      type: string
-                      description: "医師UID"
-                      example: "1234567890"
+                $ref: "#/components/schemas/PrimaryDoctorsResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -1083,17 +1331,6 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        "404":
-          description: "指定されたユーザーが存在しません"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "UserNotFound"
         "500":
           description: "サーバーエラーが発生しました"
           content:
@@ -1122,26 +1359,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                doctorUIDs:
-                  type: array
-                  items:
-                    type: string
-                    description: "医師UID"
-                    example: "1234567890"
+              $ref: "#/components/schemas/PrimaryDoctorsRequest"
       responses:
         "200":
           description: "主治医更新成功"
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  doctorUid:
-                    type: string
-                    description: "医師UID"
-                    example: "1234567890"
+                $ref: "#/components/schemas/PrimaryDoctorsResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -1153,17 +1378,6 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        "404":
-          description: "指定されたユーザーが存在しません"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "UserNotFound"
         "500":
           description: "サーバーエラーが発生しました"
           content:
@@ -1560,14 +1774,14 @@ paths:
           required: false
           description: "医者名の部分一致検索"
         - in: query
-          name: departmentId
+          name: departmentID
           schema:
             type: string
             format: uuid
           required: false
           description: "診療科IDで検索"
         - in: query
-          name: hospitalID
+          name: hospitalName
           schema:
             type: string
           required: false
@@ -1654,7 +1868,7 @@ paths:
                     description: "エラータイプ"
                     example: "ServerError"
 
-  /doctors/{doctorUid}:
+  /doctors/{doctorID}:
     get:
       tags:
         - doctor
@@ -1668,11 +1882,11 @@ paths:
             type: string
             description: "UID"
         - in: path
-          name: doctorUid
+          name: doctorID
           required: true
           schema:
             type: string
-            description: "医師UID"
+            description: "医師ID"
       responses:
         "200":
           description: "医師情報取得成功"
@@ -1715,11 +1929,11 @@ paths:
             type: string
             description: "UID"
         - in: path
-          name: doctorUid
+          name: doctorID
           required: true
           schema:
             type: string
-            description: "医師UID"
+            description: "医師ID"
       requestBody:
         required: true
         content:
@@ -1780,11 +1994,11 @@ paths:
             type: string
             description: "UID"
         - in: path
-          name: doctorUid
+          name: doctorID
           required: true
           schema:
             type: string
-            description: "医師UID"
+            description: "医師ID"
       responses:
         "204":
           description: "医師削除成功"
@@ -1852,7 +2066,7 @@ paths:
       tags:
         - chat
       summary: "チャット一覧取得"
-      description: "チャット一覧を取得します"
+      description: "チャット一覧を取得します(userプロパティは、医師の管理者画面で使用します)"
       parameters:
         - in: header
           name: X-UID
@@ -1907,7 +2121,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ChatRequest"
+                $ref: "#/components/schemas/ChatResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -2004,7 +2218,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -2140,7 +2354,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FamilyEmail"
+                $ref: "#/components/schemas/FamilyEmailResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -2195,7 +2409,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FamilyEmail"
+                $ref: "#/components/schemas/FamilyEmailResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -2326,14 +2540,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MedicineRequest"
+              $ref: "#/components/schemas/MedicinePostRequest"
       responses:
         "200":
           description: "おくすり追加成功"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Medicine"
+                $ref: "#/components/schemas/MedicineResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -2389,7 +2603,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Medicine"
+                $ref: "#/components/schemas/MedicineResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -2457,173 +2671,6 @@ paths:
                     description: "エラータイプ"
                     example: "ServerError"
 
-  /medicine_reminders:
-    get:
-      tags:
-        - medicine
-      summary: "おくすりリマインダー取得"
-      description: "登録してあるリマインダーの日時を取得します"
-      parameters:
-        - in: header
-          name: X-UID
-          required: true
-          schema:
-            type: string
-            description: "UID"
-      responses:
-        "200":
-          description: "おくすりリマインダー取得成功"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MedicineReminder"
-        "500":
-          description: "サーバーエラーが発生しました"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "ServerError"
-    post:
-      tags:
-        - medicine
-      summary: "おくすりリマインダー追加"
-      description: "おくすりのリマインダーを追加します"
-      parameters:
-        - in: header
-          name: X-UID
-          required: true
-          schema:
-            type: string
-            description: "UID"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MedicineReminderRequest"
-      responses:
-        "200":
-          description: "おくすりリマインダー追加成功"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MedicineReminder"
-        "400":
-          description: "不正なデータが送信されました"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "InvalidData"
-        "500":
-          description: "サーバーエラーが発生しました"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "ServerError"
-  /medicine_reminders/{reminderID}:
-    put:
-      tags:
-        - medicine
-      summary: "おくすりリマインダー更新"
-      description: "おくすりのリマインダー日時を更新します"
-      parameters:
-        - in: header
-          name: X-UID
-          required: true
-          schema:
-            type: string
-            description: "UID"
-        - in: path
-          name: reminderID
-          required: true
-          schema:
-            type: string
-            description: "リマインダーのID"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MedicineReminderRequest"
-      responses:
-        "200":
-          description: "リマインダー更新成功"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MedicineReminder"
-        "400":
-          description: "不正なデータが送信されました"
-        "500":
-          description: "サーバーエラーが発生しました"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "ServerError"
-    delete:
-      tags:
-        - medicine
-      summary: "おくすりリマインダー削除"
-      description: "おくすりのリマインダーを削除します"
-      parameters:
-        - in: header
-          name: X-UID
-          required: true
-          schema:
-            type: string
-            description: "UID"
-        - in: path
-          name: reminderID
-          required: true
-          schema:
-            type: string
-            description: "削除するリマインダーのID"
-      responses:
-        "204":
-          description: "リマインダー削除成功"
-        "404":
-          description: "指定されたリマインダーが存在しません"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "ReminderNotFound"
-        "500":
-          description: "サーバーエラーが発生しました"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "ServerError"
-
   /chronic_diseases:
     get:
       tags:
@@ -2678,7 +2725,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ChronicDisease"
+                $ref: "#/components/schemas/ChronicDiseaseResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -2760,11 +2807,11 @@ paths:
             type: string
             description: "UID"
         - in: query
-          name: doctorUid
+          name: doctorID
           required: true
           schema:
             type: string
-            description: "医師UID"
+            description: "医師ID"
         - in: query
           name: userID
           required: true
@@ -2825,7 +2872,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CallReservation"
+                $ref: "#/components/schemas/CallReservationResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
@@ -2880,7 +2927,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CallReservation"
+                $ref: "#/components/schemas/CallReservationResponse"
         "400":
           description: "不正なデータが送信されました"
           content:

@@ -6,7 +6,7 @@
  * 病院一覧を取得します
  *
  * xUID String 
- * returns inline_response_200_3
+ * returns inline_response_200_2
  **/
 exports.hospitalsGET = function(xUID) {
   return new Promise(function(resolve, reject) {

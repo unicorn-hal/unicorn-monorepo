@@ -6,7 +6,7 @@
  * 一週間分の検査結果を取得します
  *
  * xUID String 
- * returns inline_response_200_2
+ * returns inline_response_200_1
  **/
 exports.health_checkupsGET = function(xUID) {
   return new Promise(function(resolve, reject) {

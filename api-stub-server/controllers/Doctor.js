@@ -3,8 +3,8 @@
 var utils = require('../utils/writer.js');
 var Doctor = require('../service/DoctorService');
 
-module.exports.doctorsDoctorUidDELETE = function doctorsDoctorUidDELETE (req, res, next, xUID, doctorUid) {
-  Doctor.doctorsDoctorUidDELETE(xUID, doctorUid)
+module.exports.doctorsDoctorIDDELETE = function doctorsDoctorIDDELETE (req, res, next, xUID, doctorID) {
+  Doctor.doctorsDoctorIDDELETE(xUID, doctorID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -13,8 +13,8 @@ module.exports.doctorsDoctorUidDELETE = function doctorsDoctorUidDELETE (req, re
     });
 };
 
-module.exports.doctorsDoctorUidGET = function doctorsDoctorUidGET (req, res, next, xUID, doctorUid) {
-  Doctor.doctorsDoctorUidGET(xUID, doctorUid)
+module.exports.doctorsDoctorIDGET = function doctorsDoctorIDGET (req, res, next, xUID, doctorID) {
+  Doctor.doctorsDoctorIDGET(xUID, doctorID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -23,8 +23,8 @@ module.exports.doctorsDoctorUidGET = function doctorsDoctorUidGET (req, res, nex
     });
 };
 
-module.exports.doctorsDoctorUidPUT = function doctorsDoctorUidPUT (req, res, next, body, doctorUid, xUID) {
-  Doctor.doctorsDoctorUidPUT(body, doctorUid, xUID)
+module.exports.doctorsDoctorIDPUT = function doctorsDoctorIDPUT (req, res, next, body, doctorID, xUID) {
+  Doctor.doctorsDoctorIDPUT(body, doctorID, xUID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -33,8 +33,8 @@ module.exports.doctorsDoctorUidPUT = function doctorsDoctorUidPUT (req, res, nex
     });
 };
 
-module.exports.doctorsGET = function doctorsGET (req, res, next, doctorName, departmentId, hospitalID) {
-  Doctor.doctorsGET(doctorName, departmentId, hospitalID)
+module.exports.doctorsGET = function doctorsGET (req, res, next, doctorName, departmentID, hospitalName) {
+  Doctor.doctorsGET(doctorName, departmentID, hospitalName)
     .then(function (response) {
       utils.writeJson(res, response);
     })

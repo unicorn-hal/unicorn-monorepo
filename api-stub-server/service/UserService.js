@@ -2,103 +2,24 @@
 
 
 /**
- * ユーザー削除
- * ユーザーを削除します
- *
- * xUID String 
- * no response value expected for this operation
- **/
-exports.userDELETE = function(xUID) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
-}
-
-
-/**
- * ユーザー情報取得
- * ユーザー情報を取得します
- *
- * xUID String 
- * returns User
- **/
-exports.userGET = function(xUID) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "uid" : "1234567890",
-  "fcmTokenId" : "fcm_token_id"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
-
-
-/**
- * ユーザー登録
- * ユーザーを登録します
+ * ユーザープロフィール登録
+ * ユーザーの個人情報を登録する
  *
  * body UserRequest 
  * xUID String 
- * returns UserRequest
+ * returns UserResponse
  **/
-exports.userPOST = function(body,xUID) {
+exports.usersPOST = function(body,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "uid" : "1234567890",
-  "fcmTokenId" : "fcm_token_id"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
-
-
-/**
- * ユーザープロフィール削除
- * ユーザーの個人情報を削除する
- *
- * xUID String 
- * userUid String 
- * no response value expected for this operation
- **/
-exports.usersUserUidProfilesDELETE = function(xUID,userUid) {
-  return new Promise(function(resolve, reject) {
-    resolve();
-  });
-}
-
-
-/**
- * ユーザープロフィール取得
- * ユーザーのプロフィールデータを取得します
- *
- * xUID String 
- * userUid String 
- * returns UserProfiles
- **/
-exports.usersUserUidProfilesGET = function(xUID,userUid) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "uid" : "1234567890",
-  "address" : "東京都新宿区1-1-1",
+  "firstName" : "太郎",
+  "lastName" : "山田",
   "phoneNumber" : "090-1234-5678",
   "occupation" : "エンジニア",
-  "gender" : "male",
-  "iconImage" : "",
-  "postalCode" : "123-4567",
+  "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
   "bodyHeight" : 180,
-  "userName" : "山田 太郎",
-  "birthDate" : "1990-01-01T00:00:00.000+00:00",
+  "userID" : "1234567890",
   "bodyWeight" : 75
 };
     if (Object.keys(examples).length > 0) {
@@ -111,26 +32,42 @@ exports.usersUserUidProfilesGET = function(xUID,userUid) {
 
 
 /**
- * ユーザープロフィール登録
- * ユーザーの個人情報を登録する
+ * ユーザー削除
+ * ユーザーを削除する
  *
- * body UserProfilesRequest 
- * userUid String 
  * xUID String 
- * returns UserProfilesRequest
+ * userID String 
+ * no response value expected for this operation
  **/
-exports.usersUserUidProfilesPOST = function(body,userUid,xUID) {
+exports.usersUserIDDELETE = function(xUID,userID) {
+  return new Promise(function(resolve, reject) {
+    resolve();
+  });
+}
+
+
+/**
+ * ユーザープロフィール取得
+ * ユーザーのプロフィールデータを取得します
+ *
+ * xUID String 
+ * userID String 
+ * returns User
+ **/
+exports.usersUserIDGET = function(xUID,userID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
+  "firstName" : "太郎",
+  "lastName" : "山田",
   "address" : "東京都新宿区1-1-1",
   "phoneNumber" : "090-1234-5678",
   "occupation" : "エンジニア",
   "gender" : "male",
-  "iconImage" : "",
+  "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
   "postalCode" : "123-4567",
   "bodyHeight" : 180,
-  "userName" : "山田 太郎",
+  "userID" : "1234567890",
   "birthDate" : "1990-01-01T00:00:00.000+00:00",
   "bodyWeight" : 75
 };
@@ -147,24 +84,22 @@ exports.usersUserUidProfilesPOST = function(body,userUid,xUID) {
  * ユーザープロフィール更新
  * ユーザーの個人情報を更新する
  *
- * body UserProfilesRequest 
- * userUid String 
+ * body UserRequest 
+ * userID String 
  * xUID String 
- * returns UserProfilesRequest
+ * returns UserResponse
  **/
-exports.usersUserUidProfilesPUT = function(body,userUid,xUID) {
+exports.usersUserIDPUT = function(body,userID,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "address" : "東京都新宿区1-1-1",
+  "firstName" : "太郎",
+  "lastName" : "山田",
   "phoneNumber" : "090-1234-5678",
   "occupation" : "エンジニア",
-  "gender" : "male",
-  "iconImage" : "",
-  "postalCode" : "123-4567",
+  "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
   "bodyHeight" : 180,
-  "userName" : "山田 太郎",
-  "birthDate" : "1990-01-01T00:00:00.000+00:00",
+  "userID" : "1234567890",
   "bodyWeight" : 75
 };
     if (Object.keys(examples).length > 0) {

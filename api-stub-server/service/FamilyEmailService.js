@@ -23,14 +23,15 @@ exports.family_emailsFamilyEmailIDDELETE = function(xUID,familyEmailID) {
  * body FamilyEmailRequest 
  * familyEmailID String 
  * xUID String 
- * returns FamilyEmail
+ * returns FamilyEmailResponse
  **/
 exports.family_emailsFamilyEmailIDPUT = function(body,familyEmailID,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
+  "firstName" : "太郎",
+  "lastName" : "山田",
   "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "familyName" : "山田 太郎",
   "email" : "sample@sample.com"
 };
     if (Object.keys(examples).length > 0) {
@@ -47,19 +48,21 @@ exports.family_emailsFamilyEmailIDPUT = function(body,familyEmailID,xUID) {
  * 家族メールアドレス一覧を取得します
  *
  * xUID String 
- * returns inline_response_200_7
+ * returns inline_response_200_6
  **/
 exports.family_emailsGET = function(xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
   "data" : [ {
+    "firstName" : "太郎",
+    "lastName" : "山田",
     "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "familyName" : "山田 太郎",
     "email" : "sample@sample.com"
   }, {
+    "firstName" : "太郎",
+    "lastName" : "山田",
     "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "familyName" : "山田 太郎",
     "email" : "sample@sample.com"
   } ]
 };
@@ -78,14 +81,15 @@ exports.family_emailsGET = function(xUID) {
  *
  * body FamilyEmailRequest 
  * xUID String 
- * returns FamilyEmail
+ * returns FamilyEmailResponse
  **/
 exports.family_emailsPOST = function(body,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
+  "firstName" : "太郎",
+  "lastName" : "山田",
   "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "familyName" : "山田 太郎",
   "email" : "sample@sample.com"
 };
     if (Object.keys(examples).length > 0) {

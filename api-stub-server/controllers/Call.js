@@ -23,8 +23,8 @@ module.exports.callsCallReservationIDPUT = function callsCallReservationIDPUT (r
     });
 };
 
-module.exports.callsGET = function callsGET (req, res, next, xUID, doctorUid, userID) {
-  Call.callsGET(xUID, doctorUid, userID)
+module.exports.callsGET = function callsGET (req, res, next, xUID, doctorID, userID) {
+  Call.callsGET(xUID, doctorID, userID)
     .then(function (response) {
       utils.writeJson(res, response);
     })

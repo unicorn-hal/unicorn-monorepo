@@ -2,391 +2,380 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.0.0
+  version: 1.1.0
 servers:
-  - url: https://xxxx.run.app
-    description: Backend server
+- url: https://xxxx.run.app
+  description: Backend server
 tags:
-  - name: user
-    description: ユーザー情報
-  - name: primary_doctors
-    description: 主治医情報
-  - name: health_checkup
-    description: 検査情報
-  - name: hospital
-    description: 病院情報
-  - name: doctor
-    description: 医師情報
-  - name: department
-    description: 診療科情報
-  - name: chat
-    description: チャット情報
-  - name: family_email
-    description: 家族メール情報
-  - name: medicine
-    description: 薬情報
-  - name: chromic_disease
-    description: 持病情報
-  - name: call
-    description: 通話情報
+- name: account
+  description: アカウント情報
+- name: user
+  description: ユーザー情報
+- name: primary_doctors
+  description: 主治医情報
+- name: health_checkup
+  description: 検査情報
+- name: hospital
+  description: 病院情報
+- name: doctor
+  description: 医師情報
+- name: department
+  description: 診療科情報
+- name: chat
+  description: チャット情報
+- name: family_email
+  description: 家族メール情報
+- name: medicine
+  description: 薬情報
+- name: chromic_disease
+  description: 持病情報
+- name: call
+  description: 通話情報
 paths:
-  /user:
+  /accounts:
     get:
       tags:
-        - user
-      summary: ユーザー情報取得
-      description: ユーザー情報を取得します
-      operationId: userGET
+      - account
+      summary: アカウント情報取得
+      description: アカウント情報を取得します
+      operationId: accountsGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       responses:
         "200":
-          description: ユーザー情報取得成功
+          description: アカウント情報取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: '#/components/schemas/Account'
         "404":
-          description: 指定されたユーザーが存在しません
+          description: 指定されたアカウントが存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404"
+                $ref: '#/components/schemas/inline_response_404'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
-      x-swagger-router-controller: User
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Account
     post:
       tags:
-        - user
-      summary: ユーザー登録
-      description: ユーザーを登録します
-      operationId: userPOST
+      - account
+      summary: アカウント登録
+      description: アカウントを登録します
+      operationId: accountsPOST
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRequest"
+              $ref: '#/components/schemas/AccountRequest'
         required: true
       responses:
         "200":
-          description: ユーザー登録成功
+          description: アカウント登録成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserRequest"
+                $ref: '#/components/schemas/AccountResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
-      x-swagger-router-controller: User
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Account
     delete:
       tags:
-        - user
-      summary: ユーザー削除
-      description: ユーザーを削除します
-      operationId: userDELETE
+      - account
+      summary: アカウント削除
+      description: アカウントを削除します
+      operationId: accountsDELETE
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       responses:
         "204":
-          description: ユーザー削除成功
+          description: アカウント削除成功
         "404":
-          description: 指定されたユーザーが存在しません
+          description: 指定されたアカウントが存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404"
+                $ref: '#/components/schemas/inline_response_404'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Account
+  /users:
+    post:
+      tags:
+      - user
+      summary: ユーザープロフィール登録
+      description: ユーザーの個人情報を登録する
+      operationId: usersPOST
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        "200":
+          description: ユーザーが正常に登録されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: User
-  /users/{userUid}/profiles:
+  /users/{userID}:
     get:
       tags:
-        - user
+      - user
       summary: ユーザープロフィール取得
       description: ユーザーのプロフィールデータを取得します
-      operationId: usersUserUidProfilesGET
+      operationId: usersUserIDGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: userUid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: ユーザーUID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: userID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ユーザーID
       responses:
         "200":
           description: プロフィール取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserProfiles"
+                $ref: '#/components/schemas/User'
         "404":
           description: 指定されたユーザーが存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404"
+                $ref: '#/components/schemas/inline_response_404'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: User
     put:
       tags:
-        - user
+      - user
       summary: ユーザープロフィール更新
       description: ユーザーの個人情報を更新する
-      operationId: usersUserUidProfilesPUT
+      operationId: usersUserIDPUT
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: userUid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: ユーザーUID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: userID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ユーザーID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserProfilesRequest"
+              $ref: '#/components/schemas/UserRequest'
         required: true
       responses:
         "200":
-          description: プロフィールが正常に更新されました
+          description: ユーザーが正常に更新されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserProfilesRequest"
+                $ref: '#/components/schemas/UserResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "404":
           description: 指定されたユーザーが存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404"
+                $ref: '#/components/schemas/inline_response_404'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
-      x-swagger-router-controller: User
-    post:
-      tags:
-        - user
-      summary: ユーザープロフィール登録
-      description: ユーザーの個人情報を登録する
-      operationId: usersUserUidProfilesPOST
-      parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: userUid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: ユーザーUID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserProfilesRequest"
-        required: true
-      responses:
-        "200":
-          description: プロフィールが正常に登録されました
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserProfilesRequest"
-        "400":
-          description: 不正なデータが送信されました
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_400"
-        "404":
-          description: 指定されたユーザーが存在しません
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_404"
-        "500":
-          description: サーバーエラーが発生しました
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: User
     delete:
       tags:
-        - user
-      summary: ユーザープロフィール削除
-      description: ユーザーの個人情報を削除する
-      operationId: usersUserUidProfilesDELETE
+      - user
+      summary: ユーザー削除
+      description: ユーザーを削除する
+      operationId: usersUserIDDELETE
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: userUid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: ユーザーUID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: userID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ユーザーUID
       responses:
         "204":
-          description: プロフィールが正常に削除されました
+          description: ユーザーが正常に削除されました
         "404":
           description: 指定されたユーザーが存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404"
+                $ref: '#/components/schemas/inline_response_404'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: User
   /primary_doctors:
     get:
       tags:
-        - primary_doctors
+      - primary_doctors
       summary: 主治医取得
       description: ユーザーの主治医情報を取得します
       operationId: primary_doctorsGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       responses:
         "200":
           description: 主治医情報取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200"
+                $ref: '#/components/schemas/inline_response_200'
         "404":
           description: 指定されたユーザーが存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404"
+                $ref: '#/components/schemas/inline_response_404'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: PrimaryDoctors
     put:
       tags:
-        - primary_doctors
+      - primary_doctors
       summary: 主治医更新
       description: ユーザーの主治医を更新します
       operationId: primary_doctorsPUT
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/primary_doctors_body"
+              $ref: '#/components/schemas/PrimaryDoctorsRequest'
         required: true
       responses:
         "200":
@@ -394,46 +383,40 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200_1"
+                $ref: '#/components/schemas/PrimaryDoctorsResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
-        "404":
-          description: 指定されたユーザーが存在しません
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_404"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: PrimaryDoctors
     post:
       tags:
-        - primary_doctors
+      - primary_doctors
       summary: 主治医登録
       description: ユーザーの主治医を登録します
       operationId: primary_doctorsPOST
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/primary_doctors_body_1"
+              $ref: '#/components/schemas/PrimaryDoctorsRequest'
         required: true
       responses:
         "200":
@@ -441,76 +424,70 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/primary_doctors_body_1"
+                $ref: '#/components/schemas/PrimaryDoctorsResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
-        "404":
-          description: 指定されたユーザーが存在しません
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_404"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: PrimaryDoctors
   /health_checkups:
     get:
       tags:
-        - health_checkup
+      - health_checkup
       summary: 検査結果一覧取得
       description: 一週間分の検査結果を取得します
       operationId: health_checkupsGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       responses:
         "200":
           description: 検査結果一覧取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200_2"
+                $ref: '#/components/schemas/inline_response_200_1'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: HealthCheckup
     post:
       tags:
-        - health_checkup
+      - health_checkup
       summary: 検査結果登録
       description: ユーザーの健康診断結果を登録します
       operationId: health_checkupsPOST
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/HealthCheckupRequest"
+              $ref: '#/components/schemas/HealthCheckupRequest'
         required: true
       responses:
         "200":
@@ -518,94 +495,94 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckupResponse"
+                $ref: '#/components/schemas/HealthCheckupResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: HealthCheckup
   /health_checkups/{healthCheckupID}:
     get:
       tags:
-        - health_checkup
+      - health_checkup
       summary: 検査結果取得
       description: ユーザーの健康診断結果を取得します
       operationId: health_checkupsHealthCheckupIDGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: healthCheckupID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 検査結果UUID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: healthCheckupID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 検査結果UUID
+          format: UUID
       responses:
         "200":
           description: 検査結果取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckup"
+                $ref: '#/components/schemas/HealthCheckup'
         "404":
           description: 指定された検査結果が存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_1"
+                $ref: '#/components/schemas/inline_response_404_1'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: HealthCheckup
     put:
       tags:
-        - health_checkup
+      - health_checkup
       summary: 検査結果更新
       description: ユーザーの健康診断結果を更新します
       operationId: health_checkupsHealthCheckupIDPUT
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: healthCheckupID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 検査結果UUID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: healthCheckupID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 検査結果UUID
+          format: UUID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/HealthCheckupRequest"
+              $ref: '#/components/schemas/HealthCheckupRequest'
         required: true
       responses:
         "200":
@@ -613,50 +590,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckupRequest"
+                $ref: '#/components/schemas/HealthCheckupRequest'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "404":
           description: 指定された検査結果が存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_1"
+                $ref: '#/components/schemas/inline_response_404_1'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: HealthCheckup
     delete:
       tags:
-        - health_checkup
+      - health_checkup
       summary: 検査結果削除
       description: ユーザーの健康診断結果を削除します
       operationId: health_checkupsHealthCheckupIDDELETE
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-
-        - name: healthCheckupID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 検査結果UUID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+          format: UUID
+      - name: healthCheckupID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 検査結果UUID
       responses:
         "204":
           description: 検査結果削除成功
@@ -665,201 +642,201 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_1"
+                $ref: '#/components/schemas/inline_response_404_1'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500_1"
+                $ref: '#/components/schemas/inline_response_500_1'
       x-swagger-router-controller: HealthCheckup
   /hospitals:
     get:
       tags:
-        - hospital
+      - hospital
       summary: 病院一覧取得
       description: 病院一覧を取得します
       operationId: hospitalsGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       responses:
         "200":
           description: 病院一覧取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200_3"
+                $ref: '#/components/schemas/inline_response_200_2'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Hospital
   /hospitals/{hospitalID}:
     get:
       tags:
-        - hospital
+      - hospital
       summary: 病院情報取得
       description: 病院情報を取得します
       operationId: hospitalsHospitalIDGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: hospitalID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 病院UUID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: hospitalID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 病院UUID
+          format: UUID
       responses:
         "200":
           description: 病院情報取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Hospital"
+                $ref: '#/components/schemas/Hospital'
         "404":
           description: 指定された病院が存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_2"
+                $ref: '#/components/schemas/inline_response_404_2'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Hospital
   /hospitals/{hospitalID}/doctors:
     get:
       tags:
-        - doctor
+      - doctor
       summary: 病院ごとの医師一覧取得
       description: 病院の医師一覧を取得します
       operationId: hospitalsHospitalIDDoctorsGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: hospitalID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 病院UUID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: hospitalID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 病院UUID
+          format: UUID
       responses:
         "200":
           description: 医師一覧取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200"
+                $ref: '#/components/schemas/inline_response_200'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Doctor
   /doctors:
     get:
       tags:
-        - doctor
+      - doctor
       summary: 医師検索
       description: 医者名、診療科、病院名で医師を検索します。全ての条件に一致する医師を返します（AND検索）。
       operationId: doctorsGET
       parameters:
-        - name: doctorName
-          in: query
-          description: 医者名の部分一致検索
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-        - name: departmentId
-          in: query
-          description: 診療科IDで検索
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
-
-        - name: hospitalID
-          in: query
-          description: 病院名の部分一致検索
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: string
+      - name: doctorName
+        in: query
+        description: 医者名の部分一致検索
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: departmentID
+        in: query
+        description: 診療科IDで検索
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: uuid
+      - name: hospitalName
+        in: query
+        description: 病院名の部分一致検索
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       responses:
         "200":
           description: 検索結果のリスト
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200"
+                $ref: '#/components/schemas/inline_response_200'
         "400":
           description: 不正なクエリパラメータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400_1"
+                $ref: '#/components/schemas/inline_response_400_1'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Doctor
     post:
       tags:
-        - doctor
+      - doctor
       summary: 医師登録
       description: 医師を登録します
       operationId: doctorsPOST
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DoctorRequest"
+              $ref: '#/components/schemas/DoctorRequest'
         required: true
       responses:
         "200":
@@ -867,92 +844,92 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DoctorResponse"
+                $ref: '#/components/schemas/DoctorResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Doctor
-  /doctors/{doctorUid}:
+  /doctors/{doctorID}:
     get:
       tags:
-        - doctor
+      - doctor
       summary: 医師情報取得
       description: 医師情報を取得します
-      operationId: doctorsDoctorUidGET
+      operationId: doctorsDoctorIDGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: doctorUid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 医師UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: doctorID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 医師ID
       responses:
         "200":
           description: 医師情報取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Doctor"
+                $ref: '#/components/schemas/Doctor'
         "404":
           description: 指定された医師が存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_3"
+                $ref: '#/components/schemas/inline_response_404_3'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Doctor
     put:
       tags:
-        - doctor
+      - doctor
       summary: 医師情報更新
       description: 医師情報を更新します
-      operationId: doctorsDoctorUidPUT
+      operationId: doctorsDoctorIDPUT
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: doctorUid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 医師UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: doctorID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 医師ID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DoctorRequest"
+              $ref: '#/components/schemas/DoctorRequest'
         required: true
       responses:
         "200":
@@ -960,49 +937,49 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DoctorResponse"
+                $ref: '#/components/schemas/DoctorResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "404":
           description: 指定された医師が存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_3"
+                $ref: '#/components/schemas/inline_response_404_3'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Doctor
     delete:
       tags:
-        - doctor
+      - doctor
       summary: 医師削除
       description: 医師を削除します
-      operationId: doctorsDoctorUidDELETE
+      operationId: doctorsDoctorIDDELETE
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: doctorUid
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 医師UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: doctorID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 医師ID
       responses:
         "204":
           description: 医師削除成功
@@ -1011,94 +988,94 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_3"
+                $ref: '#/components/schemas/inline_response_404_3'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Doctor
   /departments:
     get:
       tags:
-        - department
+      - department
       summary: 診療科一覧取得
       description: 診療科一覧を取得します
       operationId: departmentsGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       responses:
         "200":
           description: 診療科一覧取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200_4"
+                $ref: '#/components/schemas/inline_response_200_3'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Department
   /chats:
     get:
       tags:
-        - chat
+      - chat
       summary: チャット一覧取得
-      description: チャット一覧を取得します
+      description: チャット一覧を取得します(userプロパティは、医師の管理者画面で使用します)
       operationId: chatsGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       responses:
         "200":
           description: チャット一覧取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200_5"
+                $ref: '#/components/schemas/inline_response_200_4'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Chat
     post:
       tags:
-        - chat
+      - chat
       summary: チャット作成
       description: 新しいチャットを作成します
       operationId: chatsPOST
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ChatRequest"
+              $ref: '#/components/schemas/ChatRequest'
         required: true
       responses:
         "200":
@@ -1106,88 +1083,88 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ChatRequest"
+                $ref: '#/components/schemas/ChatResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Chat
   /chats/{chatID}/messages:
     get:
       tags:
-        - chat
+      - chat
       summary: メッセージ一覧表示
       description: メッセージを一覧表示します。
       operationId: chatsChatIDMessagesGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: chatID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: チャットUUID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: chatID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: チャットUUID
+          format: UUID
       responses:
         "200":
           description: メッセージ一覧表示成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200_6"
+                $ref: '#/components/schemas/inline_response_200_5'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Chat
     post:
       tags:
-        - chat
+      - chat
       summary: メッセージ送信
       description: メッセージを送信します
       operationId: chatsChatIDMessagesPOST
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: chatID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: チャットUUID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: chatID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: チャットUUID
+          format: UUID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MessageRequest"
+              $ref: '#/components/schemas/MessageRequest'
         required: true
       responses:
         "200":
@@ -1195,54 +1172,54 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: '#/components/schemas/MessageResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Chat
   /chats/{chatID}/messages/{messageID}:
     delete:
       tags:
-        - chat
+      - chat
       summary: メッセージ削除
       description: メッセージを削除します
       operationId: chatsChatIDMessagesMessageIDDELETE
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: chatID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: チャットUUID
-
-        - name: messageID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: メッセージUUID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: chatID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: チャットUUID
+          format: UUID
+      - name: messageID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: メッセージUUID
+          format: UUID
       responses:
         "204":
           description: メッセージ削除成功
@@ -1251,64 +1228,64 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_4"
+                $ref: '#/components/schemas/inline_response_404_4'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Chat
   /family_emails:
     get:
       tags:
-        - family_email
+      - family_email
       summary: 家族メールアドレス一覧取得
       description: 家族メールアドレス一覧を取得します
       operationId: family_emailsGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       responses:
         "200":
           description: 家族メールアドレス一覧取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200_7"
+                $ref: '#/components/schemas/inline_response_200_6'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: FamilyEmail
     post:
       tags:
-        - family_email
+      - family_email
       summary: 家族メールアドレス登録
       description: 家族メールアドレスを登録します
       operationId: family_emailsPOST
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FamilyEmailRequest"
+              $ref: '#/components/schemas/FamilyEmailRequest'
         required: true
       responses:
         "200":
@@ -1316,50 +1293,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FamilyEmail"
+                $ref: '#/components/schemas/FamilyEmailResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: FamilyEmail
   /family_emails/{familyEmailID}:
     put:
       tags:
-        - family_email
+      - family_email
       summary: 家族メールアドレス更新
       description: 家族メールアドレスを更新します
       operationId: family_emailsFamilyEmailIDPUT
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: familyEmailID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 家族メールアドレスUUID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: familyEmailID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 家族メールアドレスUUID
+          format: UUID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FamilyEmailRequest"
+              $ref: '#/components/schemas/FamilyEmailRequest'
         required: true
       responses:
         "200":
@@ -1367,50 +1344,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FamilyEmail"
+                $ref: '#/components/schemas/FamilyEmailResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "404":
           description: 指定された家族メールアドレスが存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_5"
+                $ref: '#/components/schemas/inline_response_404_5'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: FamilyEmail
     delete:
       tags:
-        - family_email
+      - family_email
       summary: 家族メールアドレス削除
       description: 家族メールアドレスを削除します
       operationId: family_emailsFamilyEmailIDDELETE
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: familyEmailID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 家族メールアドレスUUID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: familyEmailID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 家族メールアドレスUUID
+          format: UUID
       responses:
         "204":
           description: 家族メールアドレス削除成功
@@ -1419,64 +1396,64 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_5"
+                $ref: '#/components/schemas/inline_response_404_5'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: FamilyEmail
   /medicines:
     get:
       tags:
-        - medicine
+      - medicine
       summary: おくすり一覧取得
       description: 登録してある薬の名前と残量を取得します
       operationId: medicinesGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       responses:
         "200":
           description: おくすり取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200_8"
+                $ref: '#/components/schemas/inline_response_200_7'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Medicine
     post:
       tags:
-        - medicine
+      - medicine
       summary: おくすり追加
       description: 新しい薬を追加します
       operationId: medicinesPOST
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MedicineRequest"
+              $ref: '#/components/schemas/MedicinePostRequest'
         required: true
       responses:
         "200":
@@ -1484,50 +1461,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Medicine"
+                $ref: '#/components/schemas/MedicineResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Medicine
   /medicines/{medicineID}:
     put:
       tags:
-        - medicine
+      - medicine
       summary: おくすり更新
       description: 登録済みの薬の情報を更新します
       operationId: medicinesMedicineIDPUT
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: medicineID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 薬のID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: medicineID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 薬のID
+          format: UUID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MedicineRequest"
+              $ref: '#/components/schemas/MedicineRequest'
         required: true
       responses:
         "200":
@@ -1535,43 +1512,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Medicine"
+                $ref: '#/components/schemas/MedicineResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Medicine
     delete:
       tags:
-        - medicine
+      - medicine
       summary: おくすり削除
       description: 登録済みの薬を削除します
       operationId: medicinesMedicineIDDELETE
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: medicineID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 削除する薬のID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: medicineID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 削除する薬のID
       responses:
         "204":
           description: おくすり削除成功
@@ -1580,203 +1557,47 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_6"
+                $ref: '#/components/schemas/inline_response_404_6'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
-      x-swagger-router-controller: Medicine
-  /medicine_reminders:
-    get:
-      tags:
-        - medicine
-      summary: おくすりリマインダー取得
-      description: 登録してあるリマインダーの日時を取得します
-      operationId: medicine_remindersGET
-      parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-      responses:
-        "200":
-          description: おくすりリマインダー取得成功
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MedicineReminder"
-        "500":
-          description: サーバーエラーが発生しました
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_500"
-      x-swagger-router-controller: Medicine
-    post:
-      tags:
-        - medicine
-      summary: おくすりリマインダー追加
-      description: おくすりのリマインダーを追加します
-      operationId: medicine_remindersPOST
-      parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MedicineReminderRequest"
-        required: true
-      responses:
-        "200":
-          description: おくすりリマインダー追加成功
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MedicineReminder"
-        "400":
-          description: 不正なデータが送信されました
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_400"
-        "500":
-          description: サーバーエラーが発生しました
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_500"
-      x-swagger-router-controller: Medicine
-  /medicine_reminders/{reminderID}:
-    put:
-      tags:
-        - medicine
-      summary: おくすりリマインダー更新
-      description: おくすりのリマインダー日時を更新します
-      operationId: medicine_remindersReminderIDPUT
-      parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: reminderID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: リマインダーのID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MedicineReminderRequest"
-        required: true
-      responses:
-        "200":
-          description: リマインダー更新成功
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MedicineReminder"
-        "400":
-          description: 不正なデータが送信されました
-        "500":
-          description: サーバーエラーが発生しました
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_500"
-      x-swagger-router-controller: Medicine
-    delete:
-      tags:
-        - medicine
-      summary: おくすりリマインダー削除
-      description: おくすりのリマインダーを削除します
-      operationId: medicine_remindersReminderIDDELETE
-      parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: reminderID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 削除するリマインダーのID
-      responses:
-        "204":
-          description: リマインダー削除成功
-        "404":
-          description: 指定されたリマインダーが存在しません
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_404_7"
-        "500":
-          description: サーバーエラーが発生しました
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Medicine
   /chronic_diseases:
     get:
       tags:
-        - chromic_disease
+      - chromic_disease
       summary: 持病一覧取得
       description: 登録してある持病名を取得します
       operationId: chronic_diseasesGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       responses:
         "200":
           description: 持病一覧取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200_9"
+                $ref: '#/components/schemas/inline_response_200_8'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: ChromicDisease
     post:
       tags:
-        - chromic_disease
+      - chromic_disease
       summary: 持病追加
       description: 検索した持病を追加します
       operationId: chronic_diseasesPOST
@@ -1784,7 +1605,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ChronicDiseaseRequest"
+              $ref: '#/components/schemas/ChronicDiseaseRequest'
         required: true
       responses:
         "200":
@@ -1792,43 +1613,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ChronicDisease"
+                $ref: '#/components/schemas/ChronicDiseaseResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: ChromicDisease
     delete:
       tags:
-        - chromic_disease
+      - chromic_disease
       summary: 持病削除
       description: 持病を削除します
       operationId: chronic_diseasesDELETE
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: diseaseName
-          in: query
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: string
-            description: 削除する持病名
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: diseaseName
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          description: 削除する持病名
       responses:
         "204":
           description: 持病削除成功
@@ -1837,86 +1658,86 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_8"
+                $ref: '#/components/schemas/inline_response_404_7'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: ChromicDisease
   /calls:
     get:
       tags:
-        - call
+      - call
       summary: 通話予約取得
       description: 医師とユーザーの通話予約情報を取得します
       operationId: callsGET
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: doctorUid
-          in: query
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: string
-            description: 医師UID
-        - name: userID
-          in: query
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: string
-            description: ユーザーID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: doctorID
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          description: 医師ID
+      - name: userID
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          description: ユーザーID
       responses:
         "200":
           description: 通話予約取得成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CallReservation"
+                $ref: '#/components/schemas/CallReservation'
         "404":
           description: 通話予約が見つかりません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_9"
+                $ref: '#/components/schemas/inline_response_404_8'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Call
     post:
       tags:
-        - call
+      - call
       summary: 通話予約追加
       description: 医師とユーザー間の通話予約を追加します
       operationId: callsPOST
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CallReservationRequest"
+              $ref: '#/components/schemas/CallReservationRequest'
         required: true
       responses:
         "200":
@@ -1924,50 +1745,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CallReservation"
+                $ref: '#/components/schemas/CallReservationResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Call
   /calls/{callReservationID}:
     put:
       tags:
-        - call
+      - call
       summary: 通話予約更新
       description: 通話予約の日時を更新します
       operationId: callsCallReservationIDPUT
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: callReservationID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 通話予約ID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: callReservationID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 通話予約ID
+          format: UUID
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CallReservationRequest"
+              $ref: '#/components/schemas/CallReservationRequest'
         required: true
       responses:
         "200":
@@ -1975,44 +1796,44 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CallReservation"
+                $ref: '#/components/schemas/CallReservationResponse'
         "400":
           description: 不正なデータが送信されました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_400"
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Call
     delete:
       tags:
-        - call
+      - call
       summary: 通話予約削除
       description: 通話予約を削除します
       operationId: callsCallReservationIDDELETE
       parameters:
-        - name: X-UID
-          in: header
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: UID
-        - name: callReservationID
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: string
-            description: 通話予約ID
-
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: callReservationID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 通話予約ID
+          format: UUID
       responses:
         "204":
           description: 通話予約削除成功
@@ -2021,59 +1842,97 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_9"
+                $ref: '#/components/schemas/inline_response_404_8'
         "500":
           description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_500"
+                $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Call
 components:
   schemas:
-    User:
+    Account:
       type: object
       properties:
         uid:
           type: string
           description: User ID
           example: "1234567890"
+        role:
+          type: string
+          description: User Role
+          example: user
+          enum:
+          - user
+          - doctor
         fcmTokenId:
           type: string
           description: FCMトークンID
           example: fcm_token_id
       example:
         uid: "1234567890"
+        role: user
+        fcmTokenId: fcm_token_id
+    AccountRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          description: User ID
+          example: "1234567890"
+        role:
+          type: string
+          description: User Role
+          example: user
+          enum:
+          - user
+          - doctor
+        fcmTokenId:
+          type: string
+          description: FCMトークンID
+          example: fcm_token_id
+    AccountResponse:
+      type: object
+      properties:
+        uid:
+          type: string
+          description: User ID
+          example: "1234567890"
+        role:
+          type: string
+          description: User Role
+          example: user
+          enum:
+          - user
+          - doctor
+        fcmTokenId:
+          type: string
+          description: FCMトークンID
+          example: fcm_token_id
+      example:
+        uid: "1234567890"
+        role: user
         fcmTokenId: fcm_token_id
     UserRequest:
       type: object
       properties:
-        uid:
+        firstName:
           type: string
-          description: User ID
-          example: "1234567890"
-        fcmTokenId:
+          description: ユーザーの名
+          example: 太郎
+        lastName:
           type: string
-          description: FCMトークンID
-          example: fcm_token_id
-      example:
-        uid: "1234567890"
-        fcmTokenId: fcm_token_id
-    UserProfilesRequest:
-      type: object
-      properties:
-        userName:
-          type: string
-          description: ユーザーの氏名
-          example: 山田 太郎
+          description: ユーザーの姓
+          example: 山田
         gender:
           type: string
           description: ユーザーの性別
           example: male
           enum:
-            - male
-            - female
-            - other
+          - male
+          - female
+          - other
         birthDate:
           type: string
           description: ユーザーの生年月日
@@ -2095,6 +1954,68 @@ components:
           type: string
           description: Base64エンコードされた画像データ
           format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+        bodyHeight:
+          type: integer
+          description: ユーザーの身長（cm単位）
+          example: 180
+        bodyWeight:
+          type: integer
+          description: ユーザーの体重（kg単位）
+          example: 75
+        occupation:
+          type: string
+          description: ユーザーの職業
+          example: エンジニア
+    User:
+      type: object
+      properties:
+        userID:
+          type: string
+          description: User ID
+          example: "1234567890"
+        firstName:
+          type: string
+          description: ユーザーの名
+          example: 太郎
+        lastName:
+          type: string
+          description: ユーザーの姓
+          example: 山田
+        gender:
+          type: string
+          description: ユーザーの性別
+          example: male
+          enum:
+          - male
+          - female
+          - other
+        birthDate:
+          type: string
+          description: ユーザーの生年月日
+          format: date
+          example: 1990-01-01
+        address:
+          type: string
+          description: ユーザーの住所
+          example: 東京都新宿区1-1-1
+        postalCode:
+          type: string
+          description: ユーザーの郵便番号
+          example: 123-4567
+        phoneNumber:
+          type: string
+          description: ユーザーの電話番号
+          example: 090-1234-5678
+        iconImage:
+          type: string
+          description: Base64エンコードされた画像データ
+          format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
         bodyHeight:
           type: integer
           description: ユーザーの身長（cm単位）
@@ -2108,48 +2029,35 @@ components:
           description: ユーザーの職業
           example: エンジニア
       example:
+        firstName: 太郎
+        lastName: 山田
         address: 東京都新宿区1-1-1
         phoneNumber: 090-1234-5678
         occupation: エンジニア
         gender: male
-        iconImage: ""
+        iconImage: !!binary |-
+          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+          MlZ2VW9EUVJTR3Y3VlE=
         postalCode: 123-4567
         bodyHeight: 180
-        userName: 山田 太郎
+        userID: "1234567890"
         birthDate: 1990-01-01T00:00:00.000+00:00
         bodyWeight: 75
-    UserProfiles:
+    UserResponse:
       type: object
       properties:
-        uid:
+        userID:
           type: string
           description: User ID
           example: "1234567890"
-        userName:
+        firstName:
           type: string
-          description: ユーザーの氏名
-          example: 山田 太郎
-        gender:
+          description: ユーザーの名
+          example: 太郎
+        lastName:
           type: string
-          description: ユーザーの性別
-          example: male
-          enum:
-            - male
-            - female
-            - other
-        birthDate:
-          type: string
-          description: ユーザーの生年月日
-          format: date
-          example: 1990-01-01
-        address:
-          type: string
-          description: ユーザーの住所
-          example: 東京都新宿区1-1-1
-        postalCode:
-          type: string
-          description: ユーザーの郵便番号
-          example: 123-4567
+          description: ユーザーの姓
+          example: 山田
         phoneNumber:
           type: string
           description: ユーザーの電話番号
@@ -2158,6 +2066,9 @@ components:
           type: string
           description: Base64エンコードされた画像データ
           format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
         bodyHeight:
           type: integer
           description: ユーザーの身長（cm単位）
@@ -2171,16 +2082,15 @@ components:
           description: ユーザーの職業
           example: エンジニア
       example:
-        uid: "1234567890"
-        address: 東京都新宿区1-1-1
+        firstName: 太郎
+        lastName: 山田
         phoneNumber: 090-1234-5678
         occupation: エンジニア
-        gender: male
-        iconImage: ""
-        postalCode: 123-4567
+        iconImage: !!binary |-
+          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+          MlZ2VW9EUVJTR3Y3VlE=
         bodyHeight: 180
-        userName: 山田 太郎
-        birthDate: 1990-01-01T00:00:00.000+00:00
+        userID: "1234567890"
         bodyWeight: 75
     HealthCheckup:
       type: object
@@ -2188,7 +2098,7 @@ components:
         healthCheckupID:
           type: string
           description: 検査結果UUID
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         date:
           type: string
@@ -2260,7 +2170,7 @@ components:
         healthCheckupID:
           type: string
           description: 検査結果UUID
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         date:
           type: string
@@ -2299,7 +2209,7 @@ components:
         hospitalID:
           type: string
           description: 病院UUID
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         hospitalName:
           type: string
@@ -2326,24 +2236,31 @@ components:
     Doctor:
       type: object
       properties:
-        doctorUid:
+        doctorID:
           type: string
-          description: 医師UID
+          description: 医師ID
           example: "1234567890"
         hospital:
-          $ref: "#/components/schemas/Doctor_hospital"
-        doctorName:
+          $ref: '#/components/schemas/Doctor_hospital'
+        firstName:
           type: string
-          description: 医師名
-          example: 山田 太郎
+          description: 医師の名
+          example: 太郎
+        lastName:
+          type: string
+          description: 医師の姓
+          example: 山田
         doctorIcon:
           type: string
           description: 医師アイコン画像
           format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
         departments:
           type: array
           items:
-            $ref: "#/components/schemas/Doctor_departments"
+            $ref: '#/components/schemas/Doctor_departments'
         email:
           type: string
           description: 医師メールアドレス
@@ -2361,20 +2278,23 @@ components:
           description: 通話サポート時間
           example: 9:00-17:00
       example:
-        doctorName: 山田 太郎
+        firstName: 太郎
+        lastName: 山田
         chatSupportHours: 9:00-17:00
         phoneNumber: 090-1234-5678
         callSupportHours: 9:00-17:00
-        doctorUid: "1234567890"
+        doctorID: "1234567890"
         departments:
-          - departmentName: 内科
-            departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          - departmentName: 内科
-            departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - departmentName: 内科
+          departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - departmentName: 内科
+          departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         hospital:
           hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           hospitalName: 東京都立大学病院
-        doctorIcon: ""
+        doctorIcon: !!binary |-
+          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+          MlZ2VW9EUVJTR3Y3VlE=
         email: sample@mail.com
     DoctorRequest:
       type: object
@@ -2383,20 +2303,27 @@ components:
           type: string
           description: 病院UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        doctorName:
+        firstName:
           type: string
-          description: 医師名
-          example: 山田 太郎
+          description: 医師の名
+          example: 太郎
+        lastName:
+          type: string
+          description: 医師の姓
+          example: 山田
         doctorIcon:
           type: string
           description: 医師アイコン画像
           format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
         departments:
           type: array
           items:
             type: string
             description: 診療科UUID
-
+            format: UUID
             example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         email:
           type: string
@@ -2406,14 +2333,22 @@ components:
           type: string
           description: 医師電話番号
           example: 090-1234-5678
-        chatSupportHours:
+        chatSupportStartHour:
           type: string
-          description: チャットサポート時間
-          example: 9:00-17:00
-        callSupportHours:
+          description: チャットサポート開始時間
+          example: 9:00
+        chatSupportEndHour:
           type: string
-          description: 通話サポート時間
-          example: 9:00-17:00
+          description: チャットサポート終了時間
+          example: 17:00
+        callSupportStartHour:
+          type: string
+          description: 通話サポート開始時間
+          example: 9:00
+        callSupportEndHour:
+          type: string
+          description: 通話サポート終了時間
+          example: 17:00
     DoctorResponse:
       type: object
       properties:
@@ -2434,7 +2369,7 @@ components:
           items:
             type: string
             description: 診療科UUID
-
+            format: UUID
             example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         email:
           type: string
@@ -2444,23 +2379,33 @@ components:
           type: string
           description: 医師電話番号
           example: 090-1234-5678
-        chatSupportHours:
+        chatSupportStartHour:
           type: string
-          description: チャットサポート時間
-          example: 9:00-17:00
-        callSupportHours:
+          description: チャットサポート開始時間
+          example: 9:00
+        chatSupportEndHour:
           type: string
-          description: 通話サポート時間
-          example: 9:00-17:00
+          description: チャットサポート終了時間
+          example: 17:00
+        callSupportStartHour:
+          type: string
+          description: 通話サポート開始時間
+          example: 9:00
+        callSupportEndHour:
+          type: string
+          description: 通話サポート終了時間
+          example: 17:00
       example:
         doctorName: 山田 太郎
-        chatSupportHours: 9:00-17:00
         phoneNumber: 090-1234-5678
-        callSupportHours: 9:00-17:00
         hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        chatSupportEndHour: 17:00
+        callSupportStartHour: 9:00
         departments:
-          - f47ac10b-58cc-4372-a567-0e02b2c3d479
-          - f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+        chatSupportStartHour: 9:00
+        callSupportEndHour: 17:00
         doctorIcon: ""
         email: sample@mail.com
     Department:
@@ -2469,7 +2414,7 @@ components:
         departmentID:
           type: string
           description: 診療科UUID
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         departmentName:
           type: string
@@ -2483,33 +2428,41 @@ components:
       properties:
         chatID:
           type: string
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        doctorID:
-          type: string
-          description: 医師ID
-          example: "1234567890"
-        userID:
-          type: string
-          description: ユーザーID
-          example: "1234567890"
+        doctor:
+          $ref: '#/components/schemas/Chat_doctor'
+        user:
+          $ref: '#/components/schemas/Chat_user'
         latestMessageText:
           type: string
           description: 最新メッセージ内容
           nullable: true
           example: "Hello, World!"
-        latestMessageTimestamp:
+        latestMessageSentAt:
           type: string
           description: 最新メッセージ送信日時
           format: date-time
           nullable: true
           example: 2020-01-01T00:00:00Z
       example:
-        latestMessageTimestamp: 2020-01-01T00:00:00Z
+        doctor:
+          firstName: 太郎
+          lastName: 山田
+          doctorID: "1234567890"
+          doctorIcon: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+        latestMessageSentAt: 2020-01-01T00:00:00Z
         chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        doctorID: "1234567890"
         latestMessageText: "Hello, World!"
-        userID: "1234567890"
+        user:
+          firstName: 太郎
+          lastName: 山田
+          userIcon: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+          userID: "1234567890"
     ChatRequest:
       type: object
       properties:
@@ -2521,7 +2474,23 @@ components:
           type: string
           description: ユーザーID
           example: "1234567890"
+    ChatResponse:
+      type: object
+      properties:
+        chatID:
+          type: string
+          format: UUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        doctorID:
+          type: string
+          description: 医師ID
+          example: "1234567890"
+        userID:
+          type: string
+          description: ユーザーID
+          example: "1234567890"
       example:
+        chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         doctorID: "1234567890"
         userID: "1234567890"
     Message:
@@ -2529,31 +2498,51 @@ components:
       properties:
         messageID:
           type: string
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chatID:
           type: string
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         senderID:
           type: string
           description: 送信者ID
           example: "1234567890"
+        firstName:
+          type: string
+          description: 送信者の名
+          example: 太郎
+        lastName:
+          type: string
+          description: 送信者の姓
+          example: 山田
+        iconImage:
+          type: string
+          description: Base64エンコードされた画像データ
+          format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
         content:
           type: string
           description: メッセージ内容
           example: "Hello, World!"
-        timestamp:
+        sentAt:
           type: string
           description: メッセージ送信日時
           format: date-time
           example: 2020-01-01T00:00:00Z
       example:
+        firstName: 太郎
+        lastName: 山田
         senderID: "1234567890"
         chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        iconImage: !!binary |-
+          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+          MlZ2VW9EUVJTR3Y3VlE=
         messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        sentAt: 2020-01-01T00:00:00Z
         content: "Hello, World!"
-        timestamp: 2020-01-01T00:00:00Z
     MessageRequest:
       type: object
       properties:
@@ -2564,26 +2553,51 @@ components:
         content:
           type: string
           description: メッセージ内容
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    MessageResponse:
+      type: object
+      properties:
+        messageID:
+          type: string
+          format: UUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        senderID:
+          type: string
+          description: 送信者ID
+          example: "1234567890"
+        content:
+          type: string
+          description: メッセージ内容
+          format: UUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+      example:
+        senderID: "1234567890"
+        messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        content: f47ac10b-58cc-4372-a567-0e02b2c3d479
     FamilyEmail:
       type: object
       properties:
         familyEmailID:
           type: string
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         email:
           type: string
           description: 家族メールアドレス
           example: sample@sample.com
-        familyName:
+        firstName:
           type: string
-          description: 家族名
-          example: 山田 太郎
+          description: 家族の名
+          example: 太郎
+        lastName:
+          type: string
+          description: 家族の姓
+          example: 山田
       example:
+        firstName: 太郎
+        lastName: 山田
         familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        familyName: 山田 太郎
         email: sample@sample.com
     FamilyEmailRequest:
       type: object
@@ -2592,22 +2606,54 @@ components:
           type: string
           description: 家族メールアドレス
           example: sample@sample.com
-        familyName:
+        firstName:
           type: string
-          description: 家族名
-          example: 山田 太郎
+          description: 家族の名
+          example: 太郎
+        lastName:
+          type: string
+          description: 家族の姓
+          example: 山田
+    FamilyEmailResponse:
+      type: object
+      properties:
+        familyEmailID:
+          type: string
+          format: UUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        email:
+          type: string
+          description: 家族メールアドレス
+          example: sample@sample.com
+        firstName:
+          type: string
+          description: 家族の名
+          example: 太郎
+        lastName:
+          type: string
+          description: 家族の姓
+          example: 山田
+      example:
+        firstName: 太郎
+        lastName: 山田
+        familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        email: sample@sample.com
     Medicine:
       type: object
       properties:
         medicineID:
           type: string
           description: 薬のUUID
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         medicineName:
           type: string
           description: 薬の名前
           example: パラセタモール
+        count:
+          type: integer
+          description: 薬の初期残量
+          example: 30
         quantity:
           type: integer
           description: 薬の残量
@@ -2615,7 +2661,19 @@ components:
       example:
         quantity: 20
         medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        count: 30
         medicineName: パラセタモール
+    MedicinePostRequest:
+      type: object
+      properties:
+        medicineName:
+          type: string
+          description: 薬の名前
+          example: パラセタモール
+        count:
+          type: integer
+          description: 薬の初期残量
+          example: 30
     MedicineRequest:
       type: object
       properties:
@@ -2627,46 +2685,38 @@ components:
           type: integer
           description: 薬の残量
           example: 20
-    MedicineReminder:
+    MedicineResponse:
       type: object
       properties:
-        medicineReminderID:
+        medicineID:
           type: string
-          description: リマインダーUUID
-
+          description: 薬のUUID
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         medicineName:
           type: string
           description: 薬の名前
           example: パラセタモール
-        reminderTime:
-          type: string
-          description: リマインダー日時
-          format: date-time
-          example: 2024-10-10T09:00:00Z
+        count:
+          type: integer
+          description: 薬の初期残量
+          example: 30
+        quantity:
+          type: integer
+          description: 薬の残量
+          example: 20
       example:
-        medicineReminderID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        reminderTime: 2024-10-10T09:00:00Z
+        quantity: 20
+        medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        count: 30
         medicineName: パラセタモール
-    MedicineReminderRequest:
-      type: object
-      properties:
-        medicineName:
-          type: string
-          description: 薬の名前
-          example: パラセタモール
-        reminderTime:
-          type: string
-          description: リマインダー日時
-          format: date-time
-          example: 2024-10-10T09:00:00Z
     ChronicDisease:
       type: object
       properties:
         diseaseID:
           type: string
           description: 持病のUUID
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         diseaseName:
           type: string
@@ -2682,53 +2732,133 @@ components:
           type: string
           description: 持病名
           example: 糖尿病
-        aiSentTime:
+    ChronicDiseaseResponse:
+      type: object
+      properties:
+        diseaseID:
           type: string
-          description: AIに送信した時間
-          format: date-time
-          example: 2024-10-12T10:00:00Z
+          description: 持病のUUID
+          format: UUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        diseaseName:
+          type: string
+          description: 持病名
+          example: 高血圧
+      example:
+        diseaseName: 高血圧
+        diseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
     CallReservation:
       type: object
       properties:
         callReservationID:
           type: string
           description: 通話予約UUID
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        doctorUid:
+        doctorID:
           type: string
-          description: 医師UID
+          description: 医師ID
           example: "1234567890"
         userID:
           type: string
           description: ユーザーID
           example: "1234567890"
-        callTime:
+        callStartTime:
           type: string
-          description: 予約通話日時
+          description: 通話開始時間
           format: date-time
           example: 2024-10-12T15:00:00Z
+        callEndTime:
+          type: string
+          description: 通話終了時間
+          format: date-time
+          example: 2024-10-12T15:30:00Z
       example:
         callReservationID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        doctorUid: "1234567890"
+        callEndTime: 2024-10-12T15:30:00Z
+        doctorID: "1234567890"
+        callStartTime: 2024-10-12T15:00:00Z
         userID: "1234567890"
-        callTime: 2024-10-12T15:00:00Z
     CallReservationRequest:
       type: object
       properties:
-        doctorUid:
+        doctorID:
           type: string
-          description: 医師UID
+          description: 医師ID
           example: "1234567890"
         userID:
           type: string
           description: ユーザーID
           example: "1234567890"
-        callTime:
+        callStartTime:
           type: string
-          description: 予約通話日時
+          description: 通話開始時間
           format: date-time
           example: 2024-10-12T15:00:00Z
+        callEndTime:
+          type: string
+          description: 通話終了時間
+          format: date-time
+          example: 2024-10-12T15:30:00Z
+    CallReservationResponse:
+      type: object
+      properties:
+        callReservationID:
+          type: string
+          description: 通話予約UUID
+          format: UUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        doctorID:
+          type: string
+          description: 医師ID
+          example: "1234567890"
+        userID:
+          type: string
+          description: ユーザーID
+          example: "1234567890"
+        callStartTime:
+          type: string
+          description: 通話開始時間
+          format: date-time
+          example: 2024-10-12T15:00:00Z
+        callEndTime:
+          type: string
+          description: 通話終了時間
+          format: date-time
+          example: 2024-10-12T15:30:00Z
+      example:
+        callReservationID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        callEndTime: 2024-10-12T15:30:00Z
+        doctorID: "1234567890"
+        callStartTime: 2024-10-12T15:00:00Z
+        userID: "1234567890"
+    PrimaryDoctorsRequest:
+      type: object
+      properties:
+        doctorIDs:
+          type: array
+          items:
+            type: string
+            description: 医師ID
+            example: "1234567890"
+    PrimaryDoctorsResponse:
+      type: object
+      properties:
+        userID:
+          type: string
+          description: ユーザーID
+          example: "1234567890"
+        doctorIDs:
+          type: array
+          items:
+            type: string
+            description: 医師ID
+            example: "1234567890"
+      example:
+        doctorIDs:
+        - "1234567890"
+        - "1234567890"
+        userID: "1234567890"
     inline_response_404:
       type: object
       properties:
@@ -2756,97 +2886,72 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/Doctor"
+            $ref: '#/components/schemas/Doctor'
       example:
         data:
-          - doctorName: 山田 太郎
-            chatSupportHours: 9:00-17:00
-            phoneNumber: 090-1234-5678
-            callSupportHours: 9:00-17:00
-            doctorUid: "1234567890"
-            departments:
-              - departmentName: 内科
-                departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-              - departmentName: 内科
-                departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            hospital:
-              hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-              hospitalName: 東京都立大学病院
-            doctorIcon: ""
-            email: sample@mail.com
-          - doctorName: 山田 太郎
-            chatSupportHours: 9:00-17:00
-            phoneNumber: 090-1234-5678
-            callSupportHours: 9:00-17:00
-            doctorUid: "1234567890"
-            departments:
-              - departmentName: 内科
-                departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-              - departmentName: 内科
-                departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            hospital:
-              hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-              hospitalName: 東京都立大学病院
-            doctorIcon: ""
-            email: sample@mail.com
-    primary_doctors_body:
-      type: object
-      properties:
-        doctorUIDs:
-          type: array
-          items:
-            type: string
-            description: 医師UID
-            example: "1234567890"
+        - firstName: 太郎
+          lastName: 山田
+          chatSupportHours: 9:00-17:00
+          phoneNumber: 090-1234-5678
+          callSupportHours: 9:00-17:00
+          doctorID: "1234567890"
+          departments:
+          - departmentName: 内科
+            departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          - departmentName: 内科
+            departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          hospital:
+            hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            hospitalName: 東京都立大学病院
+          doctorIcon: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+          email: sample@mail.com
+        - firstName: 太郎
+          lastName: 山田
+          chatSupportHours: 9:00-17:00
+          phoneNumber: 090-1234-5678
+          callSupportHours: 9:00-17:00
+          doctorID: "1234567890"
+          departments:
+          - departmentName: 内科
+            departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          - departmentName: 内科
+            departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          hospital:
+            hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            hospitalName: 東京都立大学病院
+          doctorIcon: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+          email: sample@mail.com
     inline_response_200_1:
       type: object
       properties:
-        doctorUid:
-          type: string
-          description: 医師UID
-          example: "1234567890"
-      example:
-        doctorUid: "1234567890"
-    primary_doctors_body_1:
-      type: object
-      properties:
-        doctorUIDs:
-          type: array
-          items:
-            type: string
-            description: 医師UID
-            example: "1234567890"
-      example:
-        doctorUIDs:
-          - "1234567890"
-          - "1234567890"
-    inline_response_200_2:
-      type: object
-      properties:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/HealthCheckup"
+            $ref: '#/components/schemas/HealthCheckup'
       example:
         data:
-          - date: 2020-01-01T00:00:00.000+00:00
-            bloodPressure: 120/80
-            healthCheckupID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            bodyTemperature: 36.5
-            medicalRecord: |-
-              ## 2020年1月1日
-              - 体温: 36.5
-              - 血圧: 120/80
-              - 診断: 軽度の風邪
-          - date: 2020-01-01T00:00:00.000+00:00
-            bloodPressure: 120/80
-            healthCheckupID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            bodyTemperature: 36.5
-            medicalRecord: |-
-              ## 2020年1月1日
-              - 体温: 36.5
-              - 血圧: 120/80
-              - 診断: 軽度の風邪
+        - date: 2020-01-01T00:00:00.000+00:00
+          bloodPressure: 120/80
+          healthCheckupID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          bodyTemperature: 36.5
+          medicalRecord: |-
+            ## 2020年1月1日
+            - 体温: 36.5
+            - 血圧: 120/80
+            - 診断: 軽度の風邪
+        - date: 2020-01-01T00:00:00.000+00:00
+          bloodPressure: 120/80
+          healthCheckupID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          bodyTemperature: 36.5
+          medicalRecord: |-
+            ## 2020年1月1日
+            - 体温: 36.5
+            - 血圧: 120/80
+            - 診断: 軽度の風邪
     inline_response_404_1:
       type: object
       properties:
@@ -2860,25 +2965,25 @@ components:
         errorType:
           type: string
           description: エラータイプ
-    inline_response_200_3:
+    inline_response_200_2:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/Hospital"
+            $ref: '#/components/schemas/Hospital'
       example:
         data:
-          - address: 東京都新宿区1-1-1
-            phoneNumber: 090-1234-5678
-            hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            postalCode: 123-4567
-            hospitalName: 東京都立大学病院
-          - address: 東京都新宿区1-1-1
-            phoneNumber: 090-1234-5678
-            hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            postalCode: 123-4567
-            hospitalName: 東京都立大学病院
+        - address: 東京都新宿区1-1-1
+          phoneNumber: 090-1234-5678
+          hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          postalCode: 123-4567
+          hospitalName: 東京都立大学病院
+        - address: 東京都新宿区1-1-1
+          phoneNumber: 090-1234-5678
+          hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          postalCode: 123-4567
+          hospitalName: 東京都立大学病院
     inline_response_404_2:
       type: object
       properties:
@@ -2900,57 +3005,91 @@ components:
           type: string
           description: エラータイプ
           example: DoctorNotFound
+    inline_response_200_3:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Department'
+      example:
+        data:
+        - departmentName: 内科
+          departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - departmentName: 内科
+          departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
     inline_response_200_4:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/Department"
+            $ref: '#/components/schemas/Chat'
       example:
         data:
-          - departmentName: 内科
-            departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          - departmentName: 内科
-            departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - doctor:
+            firstName: 太郎
+            lastName: 山田
+            doctorID: "1234567890"
+            doctorIcon: !!binary |-
+              VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+              MlZ2VW9EUVJTR3Y3VlE=
+          latestMessageSentAt: 2020-01-01T00:00:00Z
+          chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          latestMessageText: "Hello, World!"
+          user:
+            firstName: 太郎
+            lastName: 山田
+            userIcon: !!binary |-
+              VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+              MlZ2VW9EUVJTR3Y3VlE=
+            userID: "1234567890"
+        - doctor:
+            firstName: 太郎
+            lastName: 山田
+            doctorID: "1234567890"
+            doctorIcon: !!binary |-
+              VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+              MlZ2VW9EUVJTR3Y3VlE=
+          latestMessageSentAt: 2020-01-01T00:00:00Z
+          chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          latestMessageText: "Hello, World!"
+          user:
+            firstName: 太郎
+            lastName: 山田
+            userIcon: !!binary |-
+              VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+              MlZ2VW9EUVJTR3Y3VlE=
+            userID: "1234567890"
     inline_response_200_5:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/Chat"
+            $ref: '#/components/schemas/Message'
       example:
         data:
-          - latestMessageTimestamp: 2020-01-01T00:00:00Z
-            chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            doctorID: "1234567890"
-            latestMessageText: "Hello, World!"
-            userID: "1234567890"
-          - latestMessageTimestamp: 2020-01-01T00:00:00Z
-            chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            doctorID: "1234567890"
-            latestMessageText: "Hello, World!"
-            userID: "1234567890"
-    inline_response_200_6:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/Message"
-      example:
-        data:
-          - senderID: "1234567890"
-            chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            content: "Hello, World!"
-            timestamp: 2020-01-01T00:00:00Z
-          - senderID: "1234567890"
-            chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            content: "Hello, World!"
-            timestamp: 2020-01-01T00:00:00Z
+        - firstName: 太郎
+          lastName: 山田
+          senderID: "1234567890"
+          chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          iconImage: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+          messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          sentAt: 2020-01-01T00:00:00Z
+          content: "Hello, World!"
+        - firstName: 太郎
+          lastName: 山田
+          senderID: "1234567890"
+          chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          iconImage: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+          messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          sentAt: 2020-01-01T00:00:00Z
+          content: "Hello, World!"
     inline_response_404_4:
       type: object
       properties:
@@ -2958,21 +3097,23 @@ components:
           type: string
           description: エラータイプ
           example: MessageNotFound
-    inline_response_200_7:
+    inline_response_200_6:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/FamilyEmail"
+            $ref: '#/components/schemas/FamilyEmail'
       example:
         data:
-          - familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            familyName: 山田 太郎
-            email: sample@sample.com
-          - familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            familyName: 山田 太郎
-            email: sample@sample.com
+        - firstName: 太郎
+          lastName: 山田
+          familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          email: sample@sample.com
+        - firstName: 太郎
+          lastName: 山田
+          familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          email: sample@sample.com
     inline_response_404_5:
       type: object
       properties:
@@ -2980,21 +3121,23 @@ components:
           type: string
           description: エラータイプ
           example: FamilyEmailNotFound
-    inline_response_200_8:
+    inline_response_200_7:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/Medicine"
+            $ref: '#/components/schemas/Medicine'
       example:
         data:
-          - quantity: 20
-            medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            medicineName: パラセタモール
-          - quantity: 20
-            medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            medicineName: パラセタモール
+        - quantity: 20
+          medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          count: 30
+          medicineName: パラセタモール
+        - quantity: 20
+          medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          count: 30
+          medicineName: パラセタモール
     inline_response_404_6:
       type: object
       properties:
@@ -3002,34 +3145,27 @@ components:
           type: string
           description: エラータイプ
           example: MedicineNotFound
+    inline_response_200_8:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChronicDisease'
+      example:
+        data:
+        - diseaseName: 高血圧
+          diseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - diseaseName: 高血圧
+          diseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
     inline_response_404_7:
       type: object
       properties:
         errorType:
           type: string
           description: エラータイプ
-          example: ReminderNotFound
-    inline_response_200_9:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: "#/components/schemas/ChronicDisease"
-      example:
-        data:
-          - diseaseName: 高血圧
-            diseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          - diseaseName: 高血圧
-            diseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    inline_response_404_8:
-      type: object
-      properties:
-        errorType:
-          type: string
-          description: エラータイプ
           example: DiseaseNotFound
-    inline_response_404_9:
+    inline_response_404_8:
       type: object
       properties:
         errorType:
@@ -3042,7 +3178,7 @@ components:
         hospitalID:
           type: string
           description: 病院UUID
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         hospitalName:
           type: string
@@ -3061,8 +3197,66 @@ components:
         departmentID:
           type: string
           description: 診療科UUID
-
+          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
       example:
         departmentName: 内科
         departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    Chat_doctor:
+      type: object
+      properties:
+        doctorID:
+          type: string
+          description: 医師ID
+          example: "1234567890"
+        doctorIcon:
+          type: string
+          description: 医師アイコン画像
+          format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+        firstName:
+          type: string
+          description: 医師の名
+          example: 太郎
+        lastName:
+          type: string
+          description: 医師の姓
+          example: 山田
+      example:
+        firstName: 太郎
+        lastName: 山田
+        doctorID: "1234567890"
+        doctorIcon: !!binary |-
+          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+          MlZ2VW9EUVJTR3Y3VlE=
+    Chat_user:
+      type: object
+      properties:
+        userID:
+          type: string
+          description: ユーザーID
+          example: "1234567890"
+        userIcon:
+          type: string
+          description: ユーザーアイコン画像
+          format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+        firstName:
+          type: string
+          description: ユーザーの名
+          example: 太郎
+        lastName:
+          type: string
+          description: ユーザーの姓
+          example: 山田
+      example:
+        firstName: 太郎
+        lastName: 山田
+        userIcon: !!binary |-
+          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+          MlZ2VW9EUVJTR3Y3VlE=
+        userID: "1234567890"
