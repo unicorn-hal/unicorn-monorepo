@@ -4,7 +4,7 @@ info:
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
-  - url: https://xxxx.run.app
+  - url: https://api-stub-server-384446500375.asia-east1.run.app/
     description: "Backend server"
 
 components:
