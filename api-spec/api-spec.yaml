@@ -8,16 +8,6 @@ servers:
     description: "Backend server"
 
 components:
-  #  securitySchemes:
-  #    firebase:
-  #      type: oauth2
-  #      flows:
-  #        implicit:
-  #          authorizationUrl: ""
-  #      x-google-issuer: "https://securetoken.google.com/xxxx"
-  #      x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
-  #      x-google-audiences: "xxxx"
-
   schemas:
     Account:
       type: object
