@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.1.0
+  version: 1.1.1
 servers:
 - url: https://xxxx.run.app
   description: Backend server
@@ -533,7 +533,6 @@ paths:
         schema:
           type: string
           description: 検査結果UUID
-          format: UUID
       responses:
         "200":
           description: 検査結果取得成功
@@ -577,7 +576,6 @@ paths:
         schema:
           type: string
           description: 検査結果UUID
-          format: UUID
       requestBody:
         content:
           application/json:
@@ -625,7 +623,6 @@ paths:
         schema:
           type: string
           description: UID
-          format: UUID
       - name: healthCheckupID
         in: path
         required: true
@@ -704,7 +701,6 @@ paths:
         schema:
           type: string
           description: 病院UUID
-          format: UUID
       responses:
         "200":
           description: 病院情報取得成功
@@ -749,7 +745,6 @@ paths:
         schema:
           type: string
           description: 病院UUID
-          format: UUID
       responses:
         "200":
           description: 医師一覧取得成功
@@ -788,7 +783,6 @@ paths:
         explode: true
         schema:
           type: string
-          format: uuid
       - name: hospitalName
         in: query
         description: 病院名の部分一致検索
@@ -1121,7 +1115,6 @@ paths:
         schema:
           type: string
           description: チャットUUID
-          format: UUID
       responses:
         "200":
           description: メッセージ一覧表示成功
@@ -1159,7 +1152,6 @@ paths:
         schema:
           type: string
           description: チャットUUID
-          format: UUID
       requestBody:
         content:
           application/json:
@@ -1210,7 +1202,6 @@ paths:
         schema:
           type: string
           description: チャットUUID
-          format: UUID
       - name: messageID
         in: path
         required: true
@@ -1219,7 +1210,6 @@ paths:
         schema:
           type: string
           description: メッセージUUID
-          format: UUID
       responses:
         "204":
           description: メッセージ削除成功
@@ -1331,7 +1321,6 @@ paths:
         schema:
           type: string
           description: 家族メールアドレスUUID
-          format: UUID
       requestBody:
         content:
           application/json:
@@ -1387,7 +1376,6 @@ paths:
         schema:
           type: string
           description: 家族メールアドレスUUID
-          format: UUID
       responses:
         "204":
           description: 家族メールアドレス削除成功
@@ -1499,7 +1487,6 @@ paths:
         schema:
           type: string
           description: 薬のID
-          format: UUID
       requestBody:
         content:
           application/json:
@@ -1783,7 +1770,6 @@ paths:
         schema:
           type: string
           description: 通話予約ID
-          format: UUID
       requestBody:
         content:
           application/json:
@@ -1833,7 +1819,6 @@ paths:
         schema:
           type: string
           description: 通話予約ID
-          format: UUID
       responses:
         "204":
           description: 通話予約削除成功
@@ -2098,7 +2083,6 @@ components:
         healthCheckupID:
           type: string
           description: 検査結果UUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         date:
           type: string
@@ -2170,7 +2154,6 @@ components:
         healthCheckupID:
           type: string
           description: 検査結果UUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         date:
           type: string
@@ -2209,7 +2192,6 @@ components:
         hospitalID:
           type: string
           description: 病院UUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         hospitalName:
           type: string
@@ -2323,7 +2305,6 @@ components:
           items:
             type: string
             description: 診療科UUID
-            format: UUID
             example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         email:
           type: string
@@ -2369,7 +2350,6 @@ components:
           items:
             type: string
             description: 診療科UUID
-            format: UUID
             example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         email:
           type: string
@@ -2414,7 +2394,6 @@ components:
         departmentID:
           type: string
           description: 診療科UUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         departmentName:
           type: string
@@ -2428,7 +2407,6 @@ components:
       properties:
         chatID:
           type: string
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         doctor:
           $ref: '#/components/schemas/Chat_doctor'
@@ -2479,7 +2457,6 @@ components:
       properties:
         chatID:
           type: string
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         doctorID:
           type: string
@@ -2498,11 +2475,9 @@ components:
       properties:
         messageID:
           type: string
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chatID:
           type: string
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         senderID:
           type: string
@@ -2553,14 +2528,12 @@ components:
         content:
           type: string
           description: メッセージ内容
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     MessageResponse:
       type: object
       properties:
         messageID:
           type: string
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         senderID:
           type: string
@@ -2569,7 +2542,6 @@ components:
         content:
           type: string
           description: メッセージ内容
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
       example:
         senderID: "1234567890"
@@ -2580,7 +2552,6 @@ components:
       properties:
         familyEmailID:
           type: string
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         email:
           type: string
@@ -2619,7 +2590,6 @@ components:
       properties:
         familyEmailID:
           type: string
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         email:
           type: string
@@ -2644,7 +2614,6 @@ components:
         medicineID:
           type: string
           description: 薬のUUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         medicineName:
           type: string
@@ -2691,7 +2660,6 @@ components:
         medicineID:
           type: string
           description: 薬のUUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         medicineName:
           type: string
@@ -2716,7 +2684,6 @@ components:
         diseaseID:
           type: string
           description: 持病のUUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         diseaseName:
           type: string
@@ -2738,7 +2705,6 @@ components:
         diseaseID:
           type: string
           description: 持病のUUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         diseaseName:
           type: string
@@ -2753,7 +2719,6 @@ components:
         callReservationID:
           type: string
           description: 通話予約UUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         doctorID:
           type: string
@@ -2806,7 +2771,6 @@ components:
         callReservationID:
           type: string
           description: 通話予約UUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         doctorID:
           type: string
@@ -3178,7 +3142,6 @@ components:
         hospitalID:
           type: string
           description: 病院UUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         hospitalName:
           type: string
@@ -3197,7 +3160,6 @@ components:
         departmentID:
           type: string
           description: 診療科UUID
-          format: UUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
       example:
         departmentName: 内科

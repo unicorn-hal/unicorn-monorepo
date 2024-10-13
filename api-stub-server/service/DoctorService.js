@@ -95,7 +95,7 @@ exports.doctorsDoctorIDPUT = function(body,doctorID,xUID) {
  * 医者名、診療科、病院名で医師を検索します。全ての条件に一致する医師を返します（AND検索）。
  *
  * doctorName String 医者名の部分一致検索 (optional)
- * departmentID UUID 診療科IDで検索 (optional)
+ * departmentID String 診療科IDで検索 (optional)
  * hospitalName String 病院名の部分一致検索 (optional)
  * returns inline_response_200
  **/
