@@ -22,37 +22,14 @@ exports.primary_doctorsGET = function(xUID) {
     "departments" : [ {
       "departmentName" : "内科",
       "departmentID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    }, {
-      "departmentName" : "内科",
-      "departmentID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    } ],
+    }],
     "hospital" : {
       "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
       "hospitalName" : "東京都立大学病院"
     },
     "doctorIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
     "email" : "sample@mail.com"
-  }, {
-    "firstName" : "太郎",
-    "lastName" : "山田",
-    "chatSupportHours" : "9:00-17:00",
-    "phoneNumber" : "090-1234-5678",
-    "callSupportHours" : "9:00-17:00",
-    "doctorID" : "1234567890",
-    "departments" : [ {
-      "departmentName" : "内科",
-      "departmentID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    }, {
-      "departmentName" : "内科",
-      "departmentID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    } ],
-    "hospital" : {
-      "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-      "hospitalName" : "東京都立大学病院"
-    },
-    "doctorIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
-    "email" : "sample@mail.com"
-  } ]
+  }]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

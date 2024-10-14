@@ -37,10 +37,7 @@ exports.doctorsDoctorIDGET = function(xUID,doctorID) {
   "departments" : [ {
     "departmentName" : "内科",
     "departmentID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-  }, {
-    "departmentName" : "内科",
-    "departmentID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-  } ],
+  }],
   "hospital" : {
     "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "hospitalName" : "東京都立大学病院"

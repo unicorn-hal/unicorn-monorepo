@@ -22,16 +22,7 @@ exports.chatsChatIDMessagesGET = function(xUID,chatID) {
     "messageID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "sentAt" : "2020-01-01T00:00:00Z",
     "content" : "Hello, World!"
-  }, {
-    "firstName" : "太郎",
-    "lastName" : "山田",
-    "senderID" : "1234567890",
-    "chatID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
-    "messageID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "sentAt" : "2020-01-01T00:00:00Z",
-    "content" : "Hello, World!"
-  } ]
+  }]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -111,23 +102,7 @@ exports.chatsGET = function(xUID) {
       "userIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
       "userID" : "1234567890"
     }
-  }, {
-    "doctor" : {
-      "firstName" : "太郎",
-      "lastName" : "山田",
-      "doctorID" : "1234567890",
-      "doctorIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE="
-    },
-    "latestMessageSentAt" : "2020-01-01T00:00:00Z",
-    "chatID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "latestMessageText" : "Hello, World!",
-    "user" : {
-      "firstName" : "太郎",
-      "lastName" : "山田",
-      "userIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
-      "userID" : "1234567890"
-    }
-  } ]
+  }]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

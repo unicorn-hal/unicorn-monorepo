@@ -18,13 +18,7 @@ exports.hospitalsGET = function(xUID) {
     "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "postalCode" : "123-4567",
     "hospitalName" : "東京都立大学病院"
-  }, {
-    "address" : "東京都新宿区1-1-1",
-    "phoneNumber" : "090-1234-5678",
-    "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "postalCode" : "123-4567",
-    "hospitalName" : "東京都立大学病院"
-  } ]
+  }]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

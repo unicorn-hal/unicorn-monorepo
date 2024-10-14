@@ -30,10 +30,7 @@ exports.chronic_diseasesGET = function(xUID) {
   "data" : [ {
     "diseaseName" : "高血圧",
     "diseaseID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-  }, {
-    "diseaseName" : "高血圧",
-    "diseaseID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-  } ]
+  }]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

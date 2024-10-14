@@ -17,12 +17,7 @@ exports.medicinesGET = function(xUID) {
     "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "count" : 30,
     "medicineName" : "パラセタモール"
-  }, {
-    "quantity" : 20,
-    "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "count" : 30,
-    "medicineName" : "パラセタモール"
-  } ]
+  }]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
