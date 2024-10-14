@@ -4,7 +4,7 @@ info:
   description: API for managing unicorn.
   version: 1.1.1
 servers:
-- url: https://xxxx.run.app
+- url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
 tags:
 - name: account
@@ -588,7 +588,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthCheckupRequest'
+                $ref: '#/components/schemas/HealthCheckupResponse'
         "400":
           description: 不正なデータが送信されました
           content:
@@ -2139,15 +2139,6 @@ components:
             - 体温: 36.5
             - 血圧: 120/80
             - 診断: 軽度の風邪
-      example:
-        date: 2020-01-01T00:00:00.000+00:00
-        bloodPressure: 120/80
-        bodyTemperature: 36.5
-        medicalRecord: |-
-          ## 2020年1月1日
-          - 体温: 36.5
-          - 血圧: 120/80
-          - 診断: 軽度の風邪
     HealthCheckupResponse:
       type: object
       properties:

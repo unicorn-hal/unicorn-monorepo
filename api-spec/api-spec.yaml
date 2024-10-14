@@ -1528,7 +1528,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckupRequest"
+                $ref: "#/components/schemas/HealthCheckupResponse"
         "400":
           description: "不正なデータが送信されました"
           content:
