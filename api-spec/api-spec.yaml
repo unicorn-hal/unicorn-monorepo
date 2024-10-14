@@ -643,6 +643,15 @@ components:
           type: string
           description: "家族の姓"
           example: "山田"
+        iconImage:
+          type: string
+          format: byte
+          description: "Base64エンコードされた画像データ"
+          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+        phoneNumber:
+          type: string
+          description: "家族の電話番号"
+          example: "090-1234-5678"
 
     FamilyEmailRequest:
       type: object
@@ -659,6 +668,15 @@ components:
           type: string
           description: "家族の姓"
           example: "山田"
+        iconImage:
+          type: string
+          format: byte
+          description: "Base64エンコードされた画像データ"
+          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+        phoneNumber:
+          type: string
+          description: "家族の電話番号"
+          example: "090-1234-5678"
 
     FamilyEmailResponse:
       type: object
@@ -678,6 +696,15 @@ components:
           type: string
           description: "家族の姓"
           example: "山田"
+        iconImage:
+          type: string
+          format: byte
+          description: "Base64エンコードされた画像データ"
+          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+        phoneNumber:
+          type: string
+          description: "家族の電話番号"
+          example: "090-1234-5678"
 
     Medicine:
       type: object

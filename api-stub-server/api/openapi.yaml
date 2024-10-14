@@ -2556,10 +2556,25 @@ components:
           type: string
           description: 家族の姓
           example: 山田
+        iconImage:
+          type: string
+          description: Base64エンコードされた画像データ
+          format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+        phoneNumber:
+          type: string
+          description: 家族の電話番号
+          example: 090-1234-5678
       example:
         firstName: 太郎
         lastName: 山田
+        phoneNumber: 090-1234-5678
         familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        iconImage: !!binary |-
+          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+          MlZ2VW9EUVJTR3Y3VlE=
         email: sample@sample.com
     FamilyEmailRequest:
       type: object
@@ -2576,6 +2591,17 @@ components:
           type: string
           description: 家族の姓
           example: 山田
+        iconImage:
+          type: string
+          description: Base64エンコードされた画像データ
+          format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+        phoneNumber:
+          type: string
+          description: 家族の電話番号
+          example: 090-1234-5678
     FamilyEmailResponse:
       type: object
       properties:
@@ -2594,10 +2620,25 @@ components:
           type: string
           description: 家族の姓
           example: 山田
+        iconImage:
+          type: string
+          description: Base64エンコードされた画像データ
+          format: byte
+          example: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
+        phoneNumber:
+          type: string
+          description: 家族の電話番号
+          example: 090-1234-5678
       example:
         firstName: 太郎
         lastName: 山田
+        phoneNumber: 090-1234-5678
         familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        iconImage: !!binary |-
+          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+          MlZ2VW9EUVJTR3Y3VlE=
         email: sample@sample.com
     Medicine:
       type: object
@@ -3063,11 +3104,19 @@ components:
         data:
         - firstName: 太郎
           lastName: 山田
+          phoneNumber: 090-1234-5678
           familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          iconImage: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
           email: sample@sample.com
         - firstName: 太郎
           lastName: 山田
+          phoneNumber: 090-1234-5678
           familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          iconImage: !!binary |-
+            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
+            MlZ2VW9EUVJTR3Y3VlE=
           email: sample@sample.com
     inline_response_404_5:
       type: object
