@@ -25,7 +25,7 @@ class GreetingGetTest {
     fun `should return 200 when greeting is called`() {
         val greeting = GreetingDto(
             id = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479"),
-            message = "Hello, World"
+            message = "Hello, World!"
         )
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/greetings/${greeting.id}"))
 
