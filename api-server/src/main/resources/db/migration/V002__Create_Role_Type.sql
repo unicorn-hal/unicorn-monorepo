@@ -1,4 +1,4 @@
-CREATE TYPE "Role" AS ENUM (
+CREATE TYPE Role AS ENUM (
   'user',
   'doctor'
 );
