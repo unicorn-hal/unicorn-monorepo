@@ -1,6 +1,5 @@
 package com.unicorn.api.config
 
-import com.unicorn.api.config.FirebaseAuthenticationFilter
 import org.springframework.web.filter.CorsFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -16,7 +15,10 @@ class SecurityConfig(
 ) {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http.cors { }
+        http.cors {}
+        http.csrf { csrf ->
+            csrf.disable()
+        }
 
         firebaseAuthenticationFilter?.let {
             http.addFilterBefore(it, UsernamePasswordAuthenticationFilter::class.java)
