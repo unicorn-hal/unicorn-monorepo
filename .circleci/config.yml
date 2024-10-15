@@ -18,6 +18,8 @@ jobs:
         SPRING_DATASOURCE_USERNAME: postgres
         SPRING_DATASOURCE_PASSWORD: password
         SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+        FIREBASE_CREDENTIALS_JSON: $FIREBASE_CREDENTIALS_JSON
+        FILTER_FIREBASE_AUTHENTICATION_ENABLED: false
     working_directory: ~/project/api-server
     steps:
       - checkout:
