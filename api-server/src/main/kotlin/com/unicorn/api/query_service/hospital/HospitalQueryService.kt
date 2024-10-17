@@ -80,7 +80,7 @@ class HospitalQueryServiceImpl(
 }
 
 data class HospitalResult(
-    val hospitals: List<HospitalDto>
+    val data: List<HospitalDto>
 )
 
 data class HospitalDto(
