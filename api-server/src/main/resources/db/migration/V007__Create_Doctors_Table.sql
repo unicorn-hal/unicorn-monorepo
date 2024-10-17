@@ -1,11 +1,11 @@
-CREATE TABLE "Doctors" (
-  "doctorID" varchar PRIMARY KEY REFERENCES "Accounts" ("uid"),
-  "hospitalID" uuid NOT NULL REFERENCES "Hospitals" ("hospitalID"),
-  "firstName" varchar NOT NULL,
-  "lastName" varchar NOT NULL,
-  "doctorIcon" bytea,
+CREATE TABLE doctors (
+  "doctor_id" varchar PRIMARY KEY REFERENCES "accounts" ("uid"),
+  "hospital_id" uuid NOT NULL REFERENCES "hospitals" ("hospital_id"),
+  "first_name" varchar NOT NULL,
+  "last_name" varchar NOT NULL,
+  "doctor_icon" bytea,
   "email" varchar NOT NULL,
-  "createdAt" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "deletedAt" timestamp DEFAULT null
+  "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" timestamp DEFAULT CURRENT_TIMESTAMP,
+  "deleted_at" timestamp DEFAULT null
 );

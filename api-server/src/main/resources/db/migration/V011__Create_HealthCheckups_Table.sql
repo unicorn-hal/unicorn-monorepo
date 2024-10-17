@@ -1,10 +1,11 @@
-CREATE TABLE "HealthCheckups" (
-  "healthCheckupID" uuid PRIMARY KEY,
-  "checkupedUserID" varchar NOT NULL REFERENCES "Users" ("userID"),
-  "bodyTemperature" decimal NOT NULL,
-  "bloodPressure" varchar NOT NULL,
-  "medicalRecord" text NOT NULL,
-  "createdAt" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "deletedAt" timestamp DEFAULT null
+CREATE TABLE health_checkups
+(
+    "health_checkup_id" uuid PRIMARY KEY,
+    "checkuped_user_id" varchar NOT NULL REFERENCES "users" ("user_id"),
+    "body_temperature"  decimal NOT NULL,
+    "blood_pressure"    varchar NOT NULL,
+    "medical_record"    text    NOT NULL,
+    "created_at"        timestamp DEFAULT CURRENT_TIMESTAMP,
+    "updated_at"        timestamp DEFAULT CURRENT_TIMESTAMP,
+    "deleted_at"        timestamp DEFAULT null
 );

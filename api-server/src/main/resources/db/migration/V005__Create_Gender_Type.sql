@@ -1,4 +1,4 @@
-CREATE TYPE Gender AS ENUM (
+CREATE TYPE gender AS ENUM (
   'male',
   'female',
   'other'
