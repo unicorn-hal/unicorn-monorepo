@@ -1,4 +1,4 @@
-INSERT INTO Departments (departmentID, departmentName)
+INSERT INTO "Departments" ("departmentID", "departmentName")
 VALUES
 ('a1dcb69e-472f-4a57-90a2-f2c63b62ec90', '総合内科'),
 ('b68a87a3-b7f1-4b85-b0ab-6c620d68d791', '循環器内科'),
