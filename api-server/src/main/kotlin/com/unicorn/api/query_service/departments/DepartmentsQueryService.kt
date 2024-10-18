@@ -16,16 +16,16 @@ class DepartmentsQueryServiceImpl(
     override fun get(): DepartmentsResult {
         val sql = """
             SELECT 
-                "departmentID",
-                "departmentName"
-            FROM "Departments";
+                "department_id",
+                "department_name"
+            FROM departments;
         """.trimIndent()
         val departments = namedParameterJdbcTemplate.query(
             sql,
             { rs, _ ->
                 DepartmentsDto(
-                    departmentID = UUID.fromString(rs.getString("departmentID")),
-                    departmentName = rs.getString("departmentName")
+                    departmentID = UUID.fromString(rs.getString("department_id")),
+                    departmentName = rs.getString("department_name")
                 )
             }
         )
