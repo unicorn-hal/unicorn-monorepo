@@ -23,6 +23,16 @@ class AccountTest {
     }
 
     @Test
+    fun `should not create account with blank uid`() {
+        try {
+            Account.create("", "user", "fcmTokenId")
+            assert(false)
+        } catch (e: IllegalArgumentException) {
+            assert(e.message == "uid should not be blank")
+        }
+    }
+
+    @Test
     fun `should create account from store`() {
         val account = Account.fromStore("uid", "user", "fcmTokenId")
 

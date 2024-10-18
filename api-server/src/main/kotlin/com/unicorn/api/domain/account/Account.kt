@@ -46,7 +46,9 @@ enum class Role {
 @JvmInline
 value class UID(val value: String) {
     init {
-        require(value.isNotBlank())
+        require(value.isNotBlank()) {
+            "uid should not be blank"
+        }
     }
 }
 
