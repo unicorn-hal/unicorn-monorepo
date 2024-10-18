@@ -1,6 +1,6 @@
-CREATE TABLE "Accounts" (
+CREATE TABLE accounts (
   "uid" varchar PRIMARY KEY,
-  "fcmTokenID" varchar NOT NULL,
-  "role" Role NOT NULL,
+  "fcm_token_id" varchar NOT NULL,
+  "role" role NOT NULL,
   "deletedAt" timestamp DEFAULT null
 );

@@ -1,4 +1,4 @@
-CREATE TABLE "Departments" (
-  "departmentID" uuid PRIMARY KEY,
-  "departmentName" varchar NOT NULL
+CREATE TABLE departments (
+  "department_id" uuid PRIMARY KEY,
+  "department_name" varchar NOT NULL
 );
