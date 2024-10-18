@@ -1,17 +1,19 @@
-CREATE TABLE "Users" (
-  "userID" varchar PRIMARY KEY REFERENCES "Accounts" ("uid"),
-  "firstName" varchar NOT NULL,
-  "lastName" varchar NOT NULL,
-  "gender" Gender NOT NULL,
-  "birthDate" date NOT NULL,
-  "address" varchar NOT NULL,
-  "postalCode" varchar NOT NULL,
-  "phoneNumber" varchar NOT NULL,
-  "iconImage" bytea,
-  "bodyHeight" decimal NOT NULL,
-  "bodyWeight" decimal NOT NULL,
-  "occupation" varchar NOT NULL,
-  "createdAt" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP,
-  "deletedAt" timestamp DEFAULT null
+CREATE TABLE users
+(
+    "user_id"      varchar PRIMARY KEY REFERENCES "accounts" ("uid"),
+    "first_name"   varchar NOT NULL,
+    "last_name"    varchar NOT NULL,
+    "gender"       gender  NOT NULL,
+    "email"        varchar NOT NULL,
+    "birth_date"   date    NOT NULL,
+    "address"      varchar NOT NULL,
+    "postal_code"  varchar NOT NULL,
+    "phone_number" varchar NOT NULL,
+    "icon_image"   bytea,
+    "body_height"  decimal NOT NULL,
+    "body_weight"  decimal NOT NULL,
+    "occupation"   varchar NOT NULL,
+    "created_at"   timestamp DEFAULT CURRENT_TIMESTAMP,
+    "updated_at"   timestamp DEFAULT CURRENT_TIMESTAMP,
+    "deleted_at"   timestamp DEFAULT null
 );

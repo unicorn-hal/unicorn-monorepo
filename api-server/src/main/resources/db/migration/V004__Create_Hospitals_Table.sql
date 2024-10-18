@@ -1,8 +1,8 @@
-CREATE TABLE "Hospitals" (
-  "hospitalID" uuid PRIMARY KEY,
-  "hospitalName" varchar NOT NULL,
-  "postalCode" varchar NOT NULL,
+CREATE TABLE hospitals (
+  "hospital_id" uuid PRIMARY KEY,
+  "hospital_name" varchar NOT NULL,
+  "postal_code" varchar NOT NULL,
   "address" varchar NOT NULL,
-  "phoneNumber" varchar NOT NULL,
-  "deletedAt" timestamp DEFAULT null
+  "phone_number" varchar NOT NULL,
+  "deleted_at" timestamp DEFAULT null
 );
