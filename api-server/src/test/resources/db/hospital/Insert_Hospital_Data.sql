@@ -1,0 +1,18 @@
+INSERT INTO "hospitals" ("hospital_id",
+                         "hospital_name",
+                         "postal_code",
+                         "address",
+                         "phone_number",
+                         "deleted_at")
+VALUES ('d8bfa31d-54b9-4c64-a499-6c522517e5f7',
+        'きくち内科医院',
+        '4228064',
+        '静岡県静岡市駿河区新川2-8-3',
+        '0542847171',
+        null),
+       ('762a7a7e-41e4-46c2-b36c-f2b302cae3e7',
+        '内科杉山医院',
+        '4200008',
+        '静岡県静岡市葵区水道町10-5',
+        '0542712377',
+        null);
