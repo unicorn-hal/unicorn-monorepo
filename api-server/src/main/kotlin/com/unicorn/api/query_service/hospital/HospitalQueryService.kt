@@ -7,7 +7,7 @@ import java.util.UUID
 
 interface HospitalQueryService {
     fun getHospitals(): HospitalResult
-    fun getBy(hospitalID: String): HospitalDto?
+    fun getBy(hospitalID: UUID): HospitalDto?
 }
 
 @Service
@@ -16,7 +16,6 @@ class HospitalQueryServiceImpl(
 ) : HospitalQueryService {
 
     override fun getHospitals(): HospitalResult {
-        // language=SQL
         val sql = """
             SELECT
                 hospital_id,
@@ -44,11 +43,8 @@ class HospitalQueryServiceImpl(
         return HospitalResult(hospitals)
     }
 
-    override fun getBy(hospitalID: String): HospitalDto? {
-        // UUID型に変換
-        val hospital_uuid = UUID.fromString(hospitalID)
-        
-        // language=SQL
+    override fun getBy(hospitalID: UUID): HospitalDto? {
+
         val sql = """
             SELECT
                 hospital_id,
@@ -62,7 +58,7 @@ class HospitalQueryServiceImpl(
         """.trimIndent()
 
         val sqlParams = MapSqlParameterSource()
-            .addValue("hospitalID", hospital_uuid)
+            .addValue("hospitalID", hospitalID)
 
         return namedParameterJdbcTemplate.query(
             sql,
@@ -80,7 +76,7 @@ class HospitalQueryServiceImpl(
 }
 
 data class HospitalResult(
-    val hospitals: List<HospitalDto>
+    val data: List<HospitalDto>
 )
 
 data class HospitalDto(
