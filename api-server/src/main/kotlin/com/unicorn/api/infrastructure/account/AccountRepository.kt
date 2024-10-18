@@ -1,0 +1,71 @@
+package com.unicorn.api.infrastructure.account
+
+import com.unicorn.api.domain.account.Account
+import com.unicorn.api.domain.account.UID
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.stereotype.Repository
+
+interface AccountRepository {
+    fun store(account: Account): Unit
+    fun getOrNullByUid(uid: UID): Account?
+    fun delete(account: Account): Unit
+}
+
+@Repository
+class AccountRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) : AccountRepository {
+    override fun store(account: Account) {
+        // language=postgresql
+        val sql = """
+            INSERT INTO accounts (uid, role, fcm_token_id)
+            VALUES (:uid, :role::role, :fcmTokenId)
+        """.trimIndent()
+
+        val sqlParams = MapSqlParameterSource()
+            .addValue("uid", account.uid.value)
+            .addValue("role", account.role.toString())
+            .addValue("fcmTokenId", account.fcmTokenId.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun getOrNullByUid(uid: UID): Account? {
+        // language=postgresql
+        val sql = """
+            SELECT
+                uid,
+                role,
+                fcm_token_id
+            FROM accounts
+            WHERE uid = :uid AND deleted_at IS NULL
+        """.trimIndent()
+
+        val sqlParams = MapSqlParameterSource()
+            .addValue("uid", uid.value)
+
+        return namedParameterJdbcTemplate.query(
+            sql,
+            sqlParams
+        ) { rs, _ ->
+            Account.fromStore(
+                uid = rs.getString("uid"),
+                role = rs.getString("role"),
+                fcmTokenId = rs.getString("fcm_token_id")
+            )
+        }.firstOrNull()
+    }
+
+    override fun delete(account: Account) {
+        // language=postgresql
+        val sql = """
+            UPDATE accounts
+            SET deleted_at = NOW()
+            WHERE uid = :uid
+        """.trimIndent()
+
+        val sqlParams = MapSqlParameterSource()
+            .addValue("uid", account.uid.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+}
