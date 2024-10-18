@@ -7,6 +7,8 @@ servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
 tags:
+- name: app_config
+  description: ネイティブアプリ設定
 - name: account
   description: アカウント情報
 - name: user
@@ -32,6 +34,36 @@ tags:
 - name: call
   description: 通話情報
 paths:
+  /app_config:
+    get:
+      tags:
+      - app_config
+      summary: アプリ設定取得
+      description: アプリの設定情報を取得します
+      operationId: app_configGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      responses:
+        "200":
+          description: アプリ設定取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: AppConfig
   /accounts:
     get:
       tags:
@@ -342,7 +374,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: '#/components/schemas/inline_response_200_1'
         "404":
           description: 指定されたユーザーが存在しません
           content:
@@ -460,7 +492,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200_2'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -669,7 +701,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_2'
+                $ref: '#/components/schemas/inline_response_200_3'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -751,7 +783,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: '#/components/schemas/inline_response_200_1'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -797,7 +829,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: '#/components/schemas/inline_response_200_1'
         "400":
           description: 不正なクエリパラメータが送信されました
           content:
@@ -1012,7 +1044,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_3'
+                $ref: '#/components/schemas/inline_response_200_4'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1042,7 +1074,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_4'
+                $ref: '#/components/schemas/inline_response_200_5'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1121,7 +1153,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_5'
+                $ref: '#/components/schemas/inline_response_200_6'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1248,7 +1280,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_6'
+                $ref: '#/components/schemas/inline_response_200_7'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1414,7 +1446,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_7'
+                $ref: '#/components/schemas/inline_response_200_8'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1574,7 +1606,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_8'
+                $ref: '#/components/schemas/inline_response_200_9'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1910,6 +1942,10 @@ components:
           type: string
           description: ユーザーの姓
           example: 山田
+        email:
+          type: string
+          description: ユーザーのメールアドレス
+          example: test@test.com
         gender:
           type: string
           description: ユーザーの性別
@@ -1969,6 +2005,10 @@ components:
           type: string
           description: ユーザーの姓
           example: 山田
+        email:
+          type: string
+          description: ユーザーのメールアドレス
+          example: test@test.com
         gender:
           type: string
           description: ユーザーの性別
@@ -2014,10 +2054,8 @@ components:
           description: ユーザーの職業
           example: エンジニア
       example:
-        firstName: 太郎
         lastName: 山田
         address: 東京都新宿区1-1-1
-        phoneNumber: 090-1234-5678
         occupation: エンジニア
         gender: male
         iconImage: !!binary |-
@@ -2027,7 +2065,10 @@ components:
         bodyHeight: 180
         userID: "1234567890"
         birthDate: 1990-01-01T00:00:00.000+00:00
+        firstName: 太郎
+        phoneNumber: 090-1234-5678
         bodyWeight: 75
+        email: test@test.com
     UserResponse:
       type: object
       properties:
@@ -2043,6 +2084,10 @@ components:
           type: string
           description: ユーザーの姓
           example: 山田
+        email:
+          type: string
+          description: ユーザーのメールアドレス
+          example: test@test.com
         phoneNumber:
           type: string
           description: ユーザーの電話番号
@@ -2077,6 +2122,7 @@ components:
         bodyHeight: 180
         userID: "1234567890"
         bodyWeight: 75
+        email: test@test.com
     HealthCheckup:
       type: object
       properties:
@@ -2855,13 +2901,14 @@ components:
         - "1234567890"
         - "1234567890"
         userID: "1234567890"
-    inline_response_404:
+    inline_response_200:
       type: object
       properties:
-        errorType:
-          type: string
-          description: エラータイプ
-          example: UserNotFound
+        available:
+          type: boolean
+          example: true
+      example:
+        available: true
     inline_response_500:
       type: object
       properties:
@@ -2869,6 +2916,13 @@ components:
           type: string
           description: エラータイプ
           example: ServerError
+    inline_response_404:
+      type: object
+      properties:
+        errorType:
+          type: string
+          description: エラータイプ
+          example: UserNotFound
     inline_response_400:
       type: object
       properties:
@@ -2876,7 +2930,7 @@ components:
           type: string
           description: エラータイプ
           example: InvalidData
-    inline_response_200:
+    inline_response_200_1:
       type: object
       properties:
         data:
@@ -2921,7 +2975,7 @@ components:
             VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
             MlZ2VW9EUVJTR3Y3VlE=
           email: sample@mail.com
-    inline_response_200_1:
+    inline_response_200_2:
       type: object
       properties:
         data:
@@ -2961,7 +3015,7 @@ components:
         errorType:
           type: string
           description: エラータイプ
-    inline_response_200_2:
+    inline_response_200_3:
       type: object
       properties:
         data:
@@ -3001,7 +3055,7 @@ components:
           type: string
           description: エラータイプ
           example: DoctorNotFound
-    inline_response_200_3:
+    inline_response_200_4:
       type: object
       properties:
         data:
@@ -3014,7 +3068,7 @@ components:
           departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         - departmentName: 内科
           departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    inline_response_200_4:
+    inline_response_200_5:
       type: object
       properties:
         data:
@@ -3057,7 +3111,7 @@ components:
               VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
               MlZ2VW9EUVJTR3Y3VlE=
             userID: "1234567890"
-    inline_response_200_5:
+    inline_response_200_6:
       type: object
       properties:
         data:
@@ -3093,7 +3147,7 @@ components:
           type: string
           description: エラータイプ
           example: MessageNotFound
-    inline_response_200_6:
+    inline_response_200_7:
       type: object
       properties:
         data:
@@ -3125,7 +3179,7 @@ components:
           type: string
           description: エラータイプ
           example: FamilyEmailNotFound
-    inline_response_200_7:
+    inline_response_200_8:
       type: object
       properties:
         data:
@@ -3149,7 +3203,7 @@ components:
           type: string
           description: エラータイプ
           example: MedicineNotFound
-    inline_response_200_8:
+    inline_response_200_9:
       type: object
       properties:
         data:

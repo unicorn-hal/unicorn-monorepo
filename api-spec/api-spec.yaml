@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.1.1"
+  version: "1.2.1"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -81,6 +81,10 @@ components:
           type: string
           description: "ユーザーの姓"
           example: "山田"
+        email:
+          type: string
+          description: "ユーザーのメールアドレス"
+          example: "test@test.com"
         gender:
           type: string
           description: "ユーザーの性別"
@@ -136,6 +140,10 @@ components:
           type: string
           description: "ユーザーの姓"
           example: "山田"
+        email:
+          type: string
+          description: "ユーザーのメールアドレス"
+          example: "test@test.com"
         gender:
           type: string
           description: "ユーザーの性別"
@@ -191,6 +199,10 @@ components:
           type: string
           description: "ユーザーの姓"
           example: "山田"
+        email:
+          type: string
+          description: "ユーザーのメールアドレス"
+          example: "test@test.com"
         phoneNumber:
           type: string
           description: "ユーザーの電話番号"
@@ -897,6 +909,8 @@ components:
             description: "医師ID"
             example: "1234567890"
 tags:
+  - name: app_config
+    description: "ネイティブアプリ設定"
   - name: account
     description: "アカウント情報"
   - name: user
@@ -923,6 +937,41 @@ tags:
     description: "通話情報"
 
 paths:
+  /app_config:
+    get:
+      tags:
+        - app_config
+      summary: "アプリ設定取得"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      description: "アプリの設定情報を取得します"
+      responses:
+        "200":
+          description: "アプリ設定取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  available:
+                    type: boolean
+                    example: true
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
   /accounts:
     get:
       tags:

@@ -11,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
+import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import java.sql.ResultSet
 import java.util.*
 
-@ActiveProfiles("test")
+@TestPropertySource(locations = ["classpath:application-test.properties"])
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
