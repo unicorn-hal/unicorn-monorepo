@@ -1,9 +1,11 @@
 package com.unicorn.api.domain.account
 
+import java.time.OffsetDateTime
+
 data class Account private constructor(
     val uid: UID,
     val role: Role,
-    val fcmTokenId: FCMTokenId
+    val fcmTokenId: FCMTokenId,
 ) {
     class InvalidRoleException : IllegalArgumentException("role is invalid")
 

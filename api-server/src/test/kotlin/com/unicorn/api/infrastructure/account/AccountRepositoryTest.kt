@@ -19,6 +19,7 @@ import java.sql.ResultSet
 @SpringBootTest
 @Transactional
 @Sql("/db/account/Insert_Account_Data.sql")
+@Sql("/db/account/Insert_Deleted_Account_Data.sql")
 class AccountRepositoryTest {
     @Autowired
     private lateinit var accountRepository: AccountRepository
@@ -51,6 +52,23 @@ class AccountRepositoryTest {
             uid = "uid",
             role = "user",
             fcmTokenId = "fcmTokenId"
+        )
+
+        accountRepository.store(account)
+
+        val storedAccount = findAccountByUid(account.uid.value)
+
+        assert(storedAccount?.uid == account.uid)
+        assert(storedAccount?.role == account.role)
+        assert(storedAccount?.fcmTokenId == account.fcmTokenId)
+    }
+
+    @Test
+    fun `should store account with already deleted uid`() {
+        val account = Account.create(
+            uid = "test2",
+            role = "user",
+            fcmTokenId = "fcm_token_id"
         )
 
         accountRepository.store(account)
