@@ -21,10 +21,28 @@ class AccountRepositoryImpl(private val namedParameterJdbcTemplate: NamedParamet
             VALUES (:uid, :role::role, :fcmTokenId)
         """.trimIndent()
 
+        // language=postgresql
+        val updateSql = """
+            UPDATE accounts
+            SET deleted_at = NULL
+            WHERE uid = :uid
+        """.trimIndent()
+
         val sqlParams = MapSqlParameterSource()
             .addValue("uid", account.uid.value)
             .addValue("role", account.role.toString())
             .addValue("fcmTokenId", account.fcmTokenId.value)
+
+        val updateSqlParams = MapSqlParameterSource()
+            .addValue("uid", account.uid.value)
+
+        val deletedAccount = getDeletedAccountOrNull(account.uid)
+
+        // 論理削除されたアカウントが存在する場合、復元する
+        if (deletedAccount != null) {
+            namedParameterJdbcTemplate.update(updateSql, updateSqlParams)
+            return
+        }
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }
@@ -52,7 +70,7 @@ class AccountRepositoryImpl(private val namedParameterJdbcTemplate: NamedParamet
                 role = rs.getString("role"),
                 fcmTokenId = rs.getString("fcm_token_id")
             )
-        }.firstOrNull()
+        }.singleOrNull()
     }
 
     override fun delete(account: Account) {
@@ -67,5 +85,31 @@ class AccountRepositoryImpl(private val namedParameterJdbcTemplate: NamedParamet
             .addValue("uid", account.uid.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    private fun getDeletedAccountOrNull(uid: UID): Account? {
+        // language=postgresql
+        val sql = """
+            SELECT
+                uid,
+                role,
+                fcm_token_id
+            FROM accounts
+            WHERE uid = :uid AND deleted_at IS NOT NULL
+        """.trimIndent()
+
+        val sqlParams = MapSqlParameterSource()
+            .addValue("uid", uid.value)
+
+        return namedParameterJdbcTemplate.query(
+            sql,
+            sqlParams
+        ) { rs, _ ->
+            Account.fromStore(
+                uid = rs.getString("uid"),
+                role = rs.getString("role"),
+                fcmTokenId = rs.getString("fcm_token_id")
+            )
+        }.singleOrNull()
     }
 }
