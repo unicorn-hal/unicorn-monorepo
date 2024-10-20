@@ -26,6 +26,13 @@ class SaveAccountServiceImpl(
             role = role,
             fcmTokenId = fcmTokenId
         )
+
+        val existingAccount = accountRepository.getOrNullByUid(account.uid)
+
+        if (existingAccount != null) {
+            throw IllegalArgumentException("account already exists")
+        }
+
         accountRepository.store(account)
 
         return account

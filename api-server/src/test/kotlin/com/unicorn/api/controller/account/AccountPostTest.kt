@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@Sql("/db/account/Insert_Account_Data.sql")
+@Sql("/db/account/Insert_Deleted_Account_Data.sql")
 class AccountPostTest {
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -35,7 +38,7 @@ class AccountPostTest {
 
         val result = mockMvc.perform(
             MockMvcRequestBuilders.post("/accounts").headers(HttpHeaders().apply {
-                add("X-UID", "uid")
+                add("X-UID", account.uid)
             })
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(account)))
@@ -47,7 +50,50 @@ class AccountPostTest {
                 "role": "${account.role}",
                 "fcmTokenId": "${account.fcmTokenId}"
             }
-        """.trimIndent()))
+        """.trimIndent(), true))
+    }
+
+    @Test
+    fun `should return 200 when deleted account is restored`() {
+        val account = AccountPostRequest(
+            uid = "test2",
+            role = "user",
+            fcmTokenId = "fcm_token_id"
+        )
+
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders.post("/accounts").headers(HttpHeaders().apply {
+                add("X-UID", account.uid)
+            })
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(account)))
+
+        result.andExpect(status().isOk)
+        result.andExpect(content().json("""
+            {
+                "uid": "${account.uid}",
+                "role": "${account.role}",
+                "fcmTokenId": "${account.fcmTokenId}"
+            }
+        """.trimIndent(), true))
+    }
+
+    @Test
+    fun `should return 400 when uid is already exists`() {
+        val account = AccountPostRequest(
+            uid = "test",
+            role = "user",
+            fcmTokenId = "fcmTokenId"
+        )
+
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders.post("/accounts").headers(HttpHeaders().apply {
+                add("X-UID", account.uid)
+            })
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(account)))
+
+        result.andExpect(status().isBadRequest)
     }
 
     @Test
@@ -60,7 +106,7 @@ class AccountPostTest {
 
         val result = mockMvc.perform(
             MockMvcRequestBuilders.post("/accounts").headers(HttpHeaders().apply {
-                add("X-UID", "uid")
+                add("X-UID", account.uid)
             })
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(account)))
@@ -78,7 +124,7 @@ class AccountPostTest {
 
         val result = mockMvc.perform(
             MockMvcRequestBuilders.post("/accounts").headers(HttpHeaders().apply {
-                add("X-UID", "uid")
+                add("X-UID", account.uid)
             })
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(account)))
