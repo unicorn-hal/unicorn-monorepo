@@ -31,9 +31,9 @@ exports.family_emailsFamilyEmailIDPUT = function(body,familyEmailID,xUID) {
     examples['application/json'] = {
   "firstName" : "太郎",
   "lastName" : "山田",
-  "phoneNumber" : "090-1234-5678",
+  "phoneNumber" : "09012345678",
   "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
+  "iconImageUrl" : "https://placehold.jp/150x150.png",
   "email" : "sample@sample.com"
 };
     if (Object.keys(examples).length > 0) {
@@ -50,7 +50,7 @@ exports.family_emailsFamilyEmailIDPUT = function(body,familyEmailID,xUID) {
  * 家族メールアドレス一覧を取得します
  *
  * xUID String 
- * returns inline_response_200_6
+ * returns inline_response_200_7
  **/
 exports.family_emailsGET = function(xUID) {
   return new Promise(function(resolve, reject) {
@@ -59,11 +59,18 @@ exports.family_emailsGET = function(xUID) {
   "data" : [ {
     "firstName" : "太郎",
     "lastName" : "山田",
-    "phoneNumber" : "090-1234-5678",
+    "phoneNumber" : "09012345678",
     "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
+    "iconImageUrl" : "https://placehold.jp/150x150.png",
     "email" : "sample@sample.com"
-  }]
+  }, {
+    "firstName" : "太郎",
+    "lastName" : "山田",
+    "phoneNumber" : "09012345678",
+    "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "iconImageUrl" : "https://placehold.jp/150x150.png",
+    "email" : "sample@sample.com"
+  } ]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -88,9 +95,9 @@ exports.family_emailsPOST = function(body,xUID) {
     examples['application/json'] = {
   "firstName" : "太郎",
   "lastName" : "山田",
-  "phoneNumber" : "090-1234-5678",
+  "phoneNumber" : "09012345678",
   "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
+  "iconImageUrl" : "https://placehold.jp/150x150.png",
   "email" : "sample@sample.com"
 };
     if (Object.keys(examples).length > 0) {

@@ -30,19 +30,22 @@ exports.doctorsDoctorIDGET = function(xUID,doctorID) {
     examples['application/json'] = {
   "firstName" : "太郎",
   "lastName" : "山田",
+  "doctorIconUrl" : "https://placehold.jp/150x150.png",
   "chatSupportHours" : "9:00-17:00",
-  "phoneNumber" : "090-1234-5678",
+  "phoneNumber" : "09012345678",
   "callSupportHours" : "9:00-17:00",
   "doctorID" : "1234567890",
   "departments" : [ {
     "departmentName" : "内科",
     "departmentID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-  }],
+  }, {
+    "departmentName" : "内科",
+    "departmentID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  } ],
   "hospital" : {
     "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "hospitalName" : "東京都立大学病院"
   },
-  "doctorIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
   "email" : "sample@mail.com"
 };
     if (Object.keys(examples).length > 0) {
@@ -68,14 +71,14 @@ exports.doctorsDoctorIDPUT = function(body,doctorID,xUID) {
     var examples = {};
     examples['application/json'] = {
   "doctorName" : "山田 太郎",
-  "phoneNumber" : "090-1234-5678",
+  "doctorIconUrl" : "https://placehold.jp/150x150.png",
+  "phoneNumber" : "09012345678",
   "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "chatSupportEndHour" : "17:00",
   "callSupportStartHour" : "9:00",
-  "departments" : [ "f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479" ],
+  "departments" : [ "f47ac10b-58cc-4372-a567-0e02b2c3d479"],
   "chatSupportStartHour" : "9:00",
   "callSupportEndHour" : "17:00",
-  "doctorIcon" : "",
   "email" : "sample@mail.com"
 };
     if (Object.keys(examples).length > 0) {
@@ -94,7 +97,7 @@ exports.doctorsDoctorIDPUT = function(body,doctorID,xUID) {
  * doctorName String 医者名の部分一致検索 (optional)
  * departmentID String 診療科IDで検索 (optional)
  * hospitalName String 病院名の部分一致検索 (optional)
- * returns inline_response_200
+ * returns inline_response_200_1
  **/
 exports.doctorsGET = function(doctorName,departmentID,hospitalName) {
   return new Promise(function(resolve, reject) {
@@ -103,8 +106,9 @@ exports.doctorsGET = function(doctorName,departmentID,hospitalName) {
   "data" : [ {
     "firstName" : "太郎",
     "lastName" : "山田",
+    "doctorIconUrl" : "https://placehold.jp/150x150.png",
     "chatSupportHours" : "9:00-17:00",
-    "phoneNumber" : "090-1234-5678",
+    "phoneNumber" : "09012345678",
     "callSupportHours" : "9:00-17:00",
     "doctorID" : "1234567890",
     "departments" : [ {
@@ -118,13 +122,13 @@ exports.doctorsGET = function(doctorName,departmentID,hospitalName) {
       "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
       "hospitalName" : "東京都立大学病院"
     },
-    "doctorIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
     "email" : "sample@mail.com"
   }, {
     "firstName" : "太郎",
     "lastName" : "山田",
+    "doctorIconUrl" : "https://placehold.jp/150x150.png",
     "chatSupportHours" : "9:00-17:00",
-    "phoneNumber" : "090-1234-5678",
+    "phoneNumber" : "09012345678",
     "callSupportHours" : "9:00-17:00",
     "doctorID" : "1234567890",
     "departments" : [ {
@@ -138,7 +142,6 @@ exports.doctorsGET = function(doctorName,departmentID,hospitalName) {
       "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
       "hospitalName" : "東京都立大学病院"
     },
-    "doctorIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
     "email" : "sample@mail.com"
   } ]
 };
@@ -164,14 +167,14 @@ exports.doctorsPOST = function(body,xUID) {
     var examples = {};
     examples['application/json'] = {
   "doctorName" : "山田 太郎",
-  "phoneNumber" : "090-1234-5678",
+  "doctorIconUrl" : "https://placehold.jp/150x150.png",
+  "phoneNumber" : "09012345678",
   "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "chatSupportEndHour" : "17:00",
   "callSupportStartHour" : "9:00",
   "departments" : [ "f47ac10b-58cc-4372-a567-0e02b2c3d479", "f47ac10b-58cc-4372-a567-0e02b2c3d479" ],
   "chatSupportStartHour" : "9:00",
   "callSupportEndHour" : "17:00",
-  "doctorIcon" : "",
   "email" : "sample@mail.com"
 };
     if (Object.keys(examples).length > 0) {
@@ -189,7 +192,7 @@ exports.doctorsPOST = function(body,xUID) {
  *
  * xUID String 
  * hospitalID String 
- * returns inline_response_200
+ * returns inline_response_200_1
  **/
 exports.hospitalsHospitalIDDoctorsGET = function(xUID,hospitalID) {
   return new Promise(function(resolve, reject) {
@@ -198,8 +201,9 @@ exports.hospitalsHospitalIDDoctorsGET = function(xUID,hospitalID) {
   "data" : [ {
     "firstName" : "太郎",
     "lastName" : "山田",
+    "doctorIconUrl" : "https://placehold.jp/150x150.png",
     "chatSupportHours" : "9:00-17:00",
-    "phoneNumber" : "090-1234-5678",
+    "phoneNumber" : "09012345678",
     "callSupportHours" : "9:00-17:00",
     "doctorID" : "1234567890",
     "departments" : [ {
@@ -213,13 +217,13 @@ exports.hospitalsHospitalIDDoctorsGET = function(xUID,hospitalID) {
       "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
       "hospitalName" : "東京都立大学病院"
     },
-    "doctorIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
     "email" : "sample@mail.com"
   }, {
     "firstName" : "太郎",
     "lastName" : "山田",
+    "doctorIconUrl" : "https://placehold.jp/150x150.png",
     "chatSupportHours" : "9:00-17:00",
-    "phoneNumber" : "090-1234-5678",
+    "phoneNumber" : "09012345678",
     "callSupportHours" : "9:00-17:00",
     "doctorID" : "1234567890",
     "departments" : [ {
@@ -233,7 +237,6 @@ exports.hospitalsHospitalIDDoctorsGET = function(xUID,hospitalID) {
       "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
       "hospitalName" : "東京都立大学病院"
     },
-    "doctorIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
     "email" : "sample@mail.com"
   } ]
 };

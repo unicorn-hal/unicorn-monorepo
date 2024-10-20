@@ -6,7 +6,7 @@
  * ユーザーの主治医情報を取得します
  *
  * xUID String 
- * returns inline_response_200
+ * returns inline_response_200_1
  **/
 exports.primary_doctorsGET = function(xUID) {
   return new Promise(function(resolve, reject) {
@@ -15,8 +15,9 @@ exports.primary_doctorsGET = function(xUID) {
   "data" : [ {
     "firstName" : "太郎",
     "lastName" : "山田",
+    "doctorIconUrl" : "https://placehold.jp/150x150.png",
     "chatSupportHours" : "9:00-17:00",
-    "phoneNumber" : "090-1234-5678",
+    "phoneNumber" : "09012345678",
     "callSupportHours" : "9:00-17:00",
     "doctorID" : "1234567890",
     "departments" : [ {
@@ -27,7 +28,6 @@ exports.primary_doctorsGET = function(xUID) {
       "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
       "hospitalName" : "東京都立大学病院"
     },
-    "doctorIcon" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
     "email" : "sample@mail.com"
   }]
 };

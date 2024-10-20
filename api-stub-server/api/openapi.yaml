@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.1.1
+  version: 1.2.1
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -1966,18 +1966,15 @@ components:
         postalCode:
           type: string
           description: ユーザーの郵便番号
-          example: 123-4567
+          example: "1234567"
         phoneNumber:
           type: string
           description: ユーザーの電話番号
-          example: 090-1234-5678
-        iconImage:
+          example: "09012345678"
+        iconImageUrl:
           type: string
-          description: Base64エンコードされた画像データ
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         bodyHeight:
           type: number
           description: ユーザーの身長（cm単位）
@@ -2029,18 +2026,15 @@ components:
         postalCode:
           type: string
           description: ユーザーの郵便番号
-          example: 123-4567
+          example: "1234567"
         phoneNumber:
           type: string
           description: ユーザーの電話番号
-          example: 090-1234-5678
-        iconImage:
+          example: "09012345678"
+        iconImageUrl:
           type: string
-          description: Base64エンコードされた画像データ
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         bodyHeight:
           type: number
           description: ユーザーの身長（cm単位）
@@ -2058,15 +2052,13 @@ components:
         address: 東京都新宿区1-1-1
         occupation: エンジニア
         gender: male
-        iconImage: !!binary |-
-          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-          MlZ2VW9EUVJTR3Y3VlE=
-        postalCode: 123-4567
+        iconImageUrl: https://placehold.jp/150x150.png
+        postalCode: "1234567"
         bodyHeight: 180.5
         userID: "1234567890"
         birthDate: 1990-01-01T00:00:00.000+00:00
         firstName: 太郎
-        phoneNumber: 090-1234-5678
+        phoneNumber: "09012345678"
         bodyWeight: 75.5
         email: test@test.com
     UserResponse:
@@ -2091,14 +2083,11 @@ components:
         phoneNumber:
           type: string
           description: ユーザーの電話番号
-          example: 090-1234-5678
-        iconImage:
+          example: "09012345678"
+        iconImageUrl:
           type: string
-          description: Base64エンコードされた画像データ
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         bodyHeight:
           type: number
           description: ユーザーの身長（cm単位）
@@ -2114,14 +2103,12 @@ components:
       example:
         firstName: 太郎
         lastName: 山田
-        phoneNumber: 090-1234-5678
+        phoneNumber: "09012345678"
         occupation: エンジニア
-        iconImage: !!binary |-
-          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-          MlZ2VW9EUVJTR3Y3VlE=
-        bodyHeight: 1805
+        iconImageUrl: https://placehold.jp/150x150.png
+        bodyHeight: 180.5
         userID: "1234567890"
-        bodyWeight: 75
+        bodyWeight: 75.5
         email: test@test.com
     HealthCheckup:
       type: object
@@ -2241,16 +2228,16 @@ components:
         postalCode:
           type: string
           description: 病院郵便番号
-          example: 123-4567
+          example: "1234567"
         phoneNumber:
           type: string
           description: 病院電話番号
-          example: 090-1234-5678
+          example: "09012345678"
       example:
         address: 東京都新宿区1-1-1
-        phoneNumber: 090-1234-5678
+        phoneNumber: "09012345678"
         hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        postalCode: 123-4567
+        postalCode: "1234567"
         hospitalName: 東京都立大学病院
     Doctor:
       type: object
@@ -2269,13 +2256,10 @@ components:
           type: string
           description: 医師の姓
           example: 山田
-        doctorIcon:
+        doctorIconUrl:
           type: string
-          description: 医師アイコン画像
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         departments:
           type: array
           items:
@@ -2287,7 +2271,7 @@ components:
         phoneNumber:
           type: string
           description: 医師電話番号
-          example: 090-1234-5678
+          example: "09012345678"
         chatSupportHours:
           type: string
           description: チャットサポート時間
@@ -2299,8 +2283,9 @@ components:
       example:
         firstName: 太郎
         lastName: 山田
+        doctorIconUrl: https://placehold.jp/150x150.png
         chatSupportHours: 9:00-17:00
-        phoneNumber: 090-1234-5678
+        phoneNumber: "09012345678"
         callSupportHours: 9:00-17:00
         doctorID: "1234567890"
         departments:
@@ -2311,9 +2296,6 @@ components:
         hospital:
           hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           hospitalName: 東京都立大学病院
-        doctorIcon: !!binary |-
-          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-          MlZ2VW9EUVJTR3Y3VlE=
         email: sample@mail.com
     DoctorRequest:
       type: object
@@ -2330,13 +2312,10 @@ components:
           type: string
           description: 医師の姓
           example: 山田
-        doctorIcon:
+        doctorIconUrl:
           type: string
-          description: 医師アイコン画像
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         departments:
           type: array
           items:
@@ -2350,7 +2329,7 @@ components:
         phoneNumber:
           type: string
           description: 医師電話番号
-          example: 090-1234-5678
+          example: "09012345678"
         chatSupportStartHour:
           type: string
           description: チャットサポート開始時間
@@ -2378,10 +2357,10 @@ components:
           type: string
           description: 医師名
           example: 山田 太郎
-        doctorIcon:
+        doctorIconUrl:
           type: string
-          description: 医師アイコン画像
-          format: byte
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         departments:
           type: array
           items:
@@ -2395,7 +2374,7 @@ components:
         phoneNumber:
           type: string
           description: 医師電話番号
-          example: 090-1234-5678
+          example: "09012345678"
         chatSupportStartHour:
           type: string
           description: チャットサポート開始時間
@@ -2414,7 +2393,8 @@ components:
           example: 17:00
       example:
         doctorName: 山田 太郎
-        phoneNumber: 090-1234-5678
+        doctorIconUrl: https://placehold.jp/150x150.png
+        phoneNumber: "09012345678"
         hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chatSupportEndHour: 17:00
         callSupportStartHour: 9:00
@@ -2423,7 +2403,6 @@ components:
         - f47ac10b-58cc-4372-a567-0e02b2c3d479
         chatSupportStartHour: 9:00
         callSupportEndHour: 17:00
-        doctorIcon: ""
         email: sample@mail.com
     Department:
       type: object
@@ -2464,19 +2443,15 @@ components:
         doctor:
           firstName: 太郎
           lastName: 山田
+          doctorIconUrl: https://placehold.jp/150x150.png
           doctorID: "1234567890"
-          doctorIcon: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
         latestMessageSentAt: 2020-01-01T00:00:00Z
         chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         latestMessageText: "Hello, World!"
         user:
           firstName: 太郎
           lastName: 山田
-          userIcon: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          userIconUrl: https://placehold.jp/150x150.png
           userID: "1234567890"
     ChatRequest:
       type: object
@@ -2528,13 +2503,10 @@ components:
           type: string
           description: 送信者の姓
           example: 山田
-        iconImage:
+        iconImageUrl:
           type: string
-          description: Base64エンコードされた画像データ
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         content:
           type: string
           description: メッセージ内容
@@ -2549,9 +2521,7 @@ components:
         lastName: 山田
         senderID: "1234567890"
         chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        iconImage: !!binary |-
-          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-          MlZ2VW9EUVJTR3Y3VlE=
+        iconImageUrl: https://placehold.jp/150x150.png
         messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         sentAt: 2020-01-01T00:00:00Z
         content: "Hello, World!"
@@ -2602,25 +2572,20 @@ components:
           type: string
           description: 家族の姓
           example: 山田
-        iconImage:
+        iconImageUrl:
           type: string
-          description: Base64エンコードされた画像データ
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         phoneNumber:
           type: string
           description: 家族の電話番号
-          example: 090-1234-5678
+          example: "09012345678"
       example:
         firstName: 太郎
         lastName: 山田
-        phoneNumber: 090-1234-5678
+        phoneNumber: "09012345678"
         familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        iconImage: !!binary |-
-          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-          MlZ2VW9EUVJTR3Y3VlE=
+        iconImageUrl: https://placehold.jp/150x150.png
         email: sample@sample.com
     FamilyEmailRequest:
       type: object
@@ -2637,17 +2602,14 @@ components:
           type: string
           description: 家族の姓
           example: 山田
-        iconImage:
+        iconImageUrl:
           type: string
-          description: Base64エンコードされた画像データ
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         phoneNumber:
           type: string
           description: 家族の電話番号
-          example: 090-1234-5678
+          example: "09012345678"
     FamilyEmailResponse:
       type: object
       properties:
@@ -2666,25 +2628,20 @@ components:
           type: string
           description: 家族の姓
           example: 山田
-        iconImage:
+        iconImageUrl:
           type: string
-          description: Base64エンコードされた画像データ
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         phoneNumber:
           type: string
           description: 家族の電話番号
-          example: 090-1234-5678
+          example: "09012345678"
       example:
         firstName: 太郎
         lastName: 山田
-        phoneNumber: 090-1234-5678
+        phoneNumber: "09012345678"
         familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        iconImage: !!binary |-
-          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-          MlZ2VW9EUVJTR3Y3VlE=
+        iconImageUrl: https://placehold.jp/150x150.png
         email: sample@sample.com
     Medicine:
       type: object
@@ -2941,8 +2898,9 @@ components:
         data:
         - firstName: 太郎
           lastName: 山田
+          doctorIconUrl: https://placehold.jp/150x150.png
           chatSupportHours: 9:00-17:00
-          phoneNumber: 090-1234-5678
+          phoneNumber: "09012345678"
           callSupportHours: 9:00-17:00
           doctorID: "1234567890"
           departments:
@@ -2953,14 +2911,12 @@ components:
           hospital:
             hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
             hospitalName: 東京都立大学病院
-          doctorIcon: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
           email: sample@mail.com
         - firstName: 太郎
           lastName: 山田
+          doctorIconUrl: https://placehold.jp/150x150.png
           chatSupportHours: 9:00-17:00
-          phoneNumber: 090-1234-5678
+          phoneNumber: "09012345678"
           callSupportHours: 9:00-17:00
           doctorID: "1234567890"
           departments:
@@ -2971,9 +2927,6 @@ components:
           hospital:
             hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
             hospitalName: 東京都立大学病院
-          doctorIcon: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
           email: sample@mail.com
     inline_response_200_2:
       type: object
@@ -3025,14 +2978,14 @@ components:
       example:
         data:
         - address: 東京都新宿区1-1-1
-          phoneNumber: 090-1234-5678
+          phoneNumber: "09012345678"
           hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          postalCode: 123-4567
+          postalCode: "1234567"
           hospitalName: 東京都立大学病院
         - address: 東京都新宿区1-1-1
-          phoneNumber: 090-1234-5678
+          phoneNumber: "09012345678"
           hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          postalCode: 123-4567
+          postalCode: "1234567"
           hospitalName: 東京都立大学病院
     inline_response_404_2:
       type: object
@@ -3080,36 +3033,28 @@ components:
         - doctor:
             firstName: 太郎
             lastName: 山田
+            doctorIconUrl: https://placehold.jp/150x150.png
             doctorID: "1234567890"
-            doctorIcon: !!binary |-
-              VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-              MlZ2VW9EUVJTR3Y3VlE=
           latestMessageSentAt: 2020-01-01T00:00:00Z
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           latestMessageText: "Hello, World!"
           user:
             firstName: 太郎
             lastName: 山田
-            userIcon: !!binary |-
-              VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-              MlZ2VW9EUVJTR3Y3VlE=
+            userIconUrl: https://placehold.jp/150x150.png
             userID: "1234567890"
         - doctor:
             firstName: 太郎
             lastName: 山田
+            doctorIconUrl: https://placehold.jp/150x150.png
             doctorID: "1234567890"
-            doctorIcon: !!binary |-
-              VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-              MlZ2VW9EUVJTR3Y3VlE=
           latestMessageSentAt: 2020-01-01T00:00:00Z
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           latestMessageText: "Hello, World!"
           user:
             firstName: 太郎
             lastName: 山田
-            userIcon: !!binary |-
-              VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-              MlZ2VW9EUVJTR3Y3VlE=
+            userIconUrl: https://placehold.jp/150x150.png
             userID: "1234567890"
     inline_response_200_6:
       type: object
@@ -3124,9 +3069,7 @@ components:
           lastName: 山田
           senderID: "1234567890"
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          iconImage: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          iconImageUrl: https://placehold.jp/150x150.png
           messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           sentAt: 2020-01-01T00:00:00Z
           content: "Hello, World!"
@@ -3134,9 +3077,7 @@ components:
           lastName: 山田
           senderID: "1234567890"
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          iconImage: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          iconImageUrl: https://placehold.jp/150x150.png
           messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           sentAt: 2020-01-01T00:00:00Z
           content: "Hello, World!"
@@ -3158,19 +3099,15 @@ components:
         data:
         - firstName: 太郎
           lastName: 山田
-          phoneNumber: 090-1234-5678
+          phoneNumber: "09012345678"
           familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          iconImage: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          iconImageUrl: https://placehold.jp/150x150.png
           email: sample@sample.com
         - firstName: 太郎
           lastName: 山田
-          phoneNumber: 090-1234-5678
+          phoneNumber: "09012345678"
           familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          iconImage: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          iconImageUrl: https://placehold.jp/150x150.png
           email: sample@sample.com
     inline_response_404_5:
       type: object
@@ -3265,13 +3202,10 @@ components:
           type: string
           description: 医師ID
           example: "1234567890"
-        doctorIcon:
+        doctorIconUrl:
           type: string
-          description: 医師アイコン画像
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         firstName:
           type: string
           description: 医師の名
@@ -3283,10 +3217,8 @@ components:
       example:
         firstName: 太郎
         lastName: 山田
+        doctorIconUrl: https://placehold.jp/150x150.png
         doctorID: "1234567890"
-        doctorIcon: !!binary |-
-          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-          MlZ2VW9EUVJTR3Y3VlE=
     Chat_user:
       type: object
       properties:
@@ -3294,13 +3226,10 @@ components:
           type: string
           description: ユーザーID
           example: "1234567890"
-        userIcon:
+        userIconUrl:
           type: string
-          description: ユーザーアイコン画像
-          format: byte
-          example: !!binary |-
-            VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-            MlZ2VW9EUVJTR3Y3VlE=
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
         firstName:
           type: string
           description: ユーザーの名
@@ -3312,7 +3241,5 @@ components:
       example:
         firstName: 太郎
         lastName: 山田
-        userIcon: !!binary |-
-          VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMr
-          MlZ2VW9EUVJTR3Y3VlE=
+        userIconUrl: https://placehold.jp/150x150.png
         userID: "1234567890"

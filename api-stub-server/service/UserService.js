@@ -15,9 +15,9 @@ exports.usersPOST = function(body,xUID) {
     examples['application/json'] = {
   "firstName" : "太郎",
   "lastName" : "山田",
-  "phoneNumber" : "090-1234-5678",
+  "phoneNumber" : "09012345678",
   "occupation" : "エンジニア",
-  "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
+  "iconImageUrl" : "https://placehold.jp/150x150.png",
   "bodyHeight" : 180.5,
   "userID" : "1234567890",
   "bodyWeight" : 75.5,
@@ -63,14 +63,14 @@ exports.usersUserIDGET = function(xUID,userID) {
   "address" : "東京都新宿区1-1-1",
   "occupation" : "エンジニア",
   "gender" : "male",
-  "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
-  "postalCode" : "123-4567",
-  "bodyHeight" : 180,
+  "iconImageUrl" : "https://placehold.jp/150x150.png",
+  "postalCode" : "1234567",
+  "bodyHeight" : 180.5,
   "userID" : "1234567890",
   "birthDate" : "1990-01-01T00:00:00.000+00:00",
   "firstName" : "太郎",
-  "phoneNumber" : "090-1234-5678",
-  "bodyWeight" : 75,
+  "phoneNumber" : "09012345678",
+  "bodyWeight" : 75.5,
   "email" : "test@test.com"
 };
     if (Object.keys(examples).length > 0) {
@@ -97,12 +97,12 @@ exports.usersUserIDPUT = function(body,userID,xUID) {
     examples['application/json'] = {
   "firstName" : "太郎",
   "lastName" : "山田",
-  "phoneNumber" : "090-1234-5678",
+  "phoneNumber" : "09012345678",
   "occupation" : "エンジニア",
-  "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
-  "bodyHeight" : 180,
+  "iconImageUrl" : "https://placehold.jp/150x150.png",
+  "bodyHeight" : 180.5,
   "userID" : "1234567890",
-  "bodyWeight" : 75,
+  "bodyWeight" : 75.5,
   "email" : "test@test.com"
 };
     if (Object.keys(examples).length > 0) {

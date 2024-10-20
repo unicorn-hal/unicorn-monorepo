@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.2.1"
+  version: "1.2.2"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -102,16 +102,15 @@ components:
         postalCode:
           type: string
           description: "ユーザーの郵便番号"
-          example: "123-4567"
+          example: "1234567"
         phoneNumber:
           type: string
           description: "ユーザーの電話番号"
-          example: "090-1234-5678"
-        iconImage:
+          example: "09012345678"
+        iconImageUrl:
           type: string
-          format: byte
-          description: "Base64エンコードされた画像データ"
-          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
         bodyHeight:
           type: number
           description: "ユーザーの身長（cm単位）"
@@ -161,16 +160,15 @@ components:
         postalCode:
           type: string
           description: "ユーザーの郵便番号"
-          example: "123-4567"
+          example: "1234567"
         phoneNumber:
           type: string
           description: "ユーザーの電話番号"
-          example: "090-1234-5678"
-        iconImage:
+          example: "09012345678"
+        iconImageUrl:
           type: string
-          format: byte
-          description: "Base64エンコードされた画像データ"
-          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
         bodyHeight:
           type: number
           description: "ユーザーの身長（cm単位）"
@@ -206,12 +204,11 @@ components:
         phoneNumber:
           type: string
           description: "ユーザーの電話番号"
-          example: "090-1234-5678"
-        iconImage:
+          example: "09012345678"
+        iconImageUrl:
           type: string
-          format: byte
-          description: "Base64エンコードされた画像データ"
-          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
         bodyHeight:
           type: number
           description: "ユーザーの身長（cm単位）"
@@ -314,11 +311,11 @@ components:
         postalCode:
           type: string
           description: "病院郵便番号"
-          example: "123-4567"
+          example: "1234567"
         phoneNumber:
           type: string
           description: "病院電話番号"
-          example: "090-1234-5678"
+          example: "09012345678"
     Doctor:
       type: object
       properties:
@@ -345,11 +342,10 @@ components:
           type: string
           description: "医師の姓"
           example: "山田"
-        doctorIcon:
+        doctorIconUrl:
           type: string
-          format: byte
-          description: "医師アイコン画像"
-          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
         departments:
           type: array
           items:
@@ -370,7 +366,7 @@ components:
         phoneNumber:
           type: string
           description: "医師電話番号"
-          example: "090-1234-5678"
+          example: "09012345678"
         chatSupportHours:
           type: string
           description: "チャットサポート時間"
@@ -395,11 +391,10 @@ components:
           type: string
           description: "医師の姓"
           example: "山田"
-        doctorIcon:
+        doctorIconUrl:
           type: string
-          format: byte
-          description: "医師アイコン画像"
-          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
         departments:
           type: array
           items:
@@ -413,7 +408,7 @@ components:
         phoneNumber:
           type: string
           description: "医師電話番号"
-          example: "090-1234-5678"
+          example: "09012345678"
         chatSupportStartHour:
           type: string
           description: "チャットサポート開始時間"
@@ -442,10 +437,10 @@ components:
           type: string
           description: "医師名"
           example: "山田 太郎"
-        doctorIcon:
+        doctorIconUrl:
           type: string
-          format: byte
-          description: "医師アイコン画像"
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
         departments:
           type: array
           items:
@@ -459,7 +454,7 @@ components:
         phoneNumber:
           type: string
           description: "医師電話番号"
-          example: "090-1234-5678"
+          example: "09012345678"
         chatSupportStartHour:
           type: string
           description: "チャットサポート開始時間"
@@ -502,11 +497,10 @@ components:
               type: string
               description: "医師ID"
               example: "1234567890"
-            doctorIcon:
+            doctorIconUrl:
               type: string
-              format: byte
-              description: "医師アイコン画像"
-              example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+              description: "画像URL"
+              example: https://placehold.jp/150x150.png
             firstName:
               type: string
               description: "医師の名"
@@ -522,11 +516,10 @@ components:
               type: string
               description: "ユーザーID"
               example: "1234567890"
-            userIcon:
+            userIconUrl:
               type: string
-              format: byte
-              description: "ユーザーアイコン画像"
-              example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+              description: "画像URL"
+              example: https://placehold.jp/150x150.png
             firstName:
               type: string
               description: "ユーザーの名"
@@ -595,11 +588,10 @@ components:
           type: string
           description: "送信者の姓"
           example: "山田"
-        iconImage:
+        iconImageUrl:
           type: string
-          format: byte
-          description: "Base64エンコードされた画像データ"
-          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
         content:
           description: "メッセージ内容"
           type: string
@@ -655,15 +647,14 @@ components:
           type: string
           description: "家族の姓"
           example: "山田"
-        iconImage:
+        iconImageUrl:
           type: string
-          format: byte
-          description: "Base64エンコードされた画像データ"
-          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
         phoneNumber:
           type: string
           description: "家族の電話番号"
-          example: "090-1234-5678"
+          example: "09012345678"
 
     FamilyEmailRequest:
       type: object
@@ -680,15 +671,14 @@ components:
           type: string
           description: "家族の姓"
           example: "山田"
-        iconImage:
+        iconImageUrl:
           type: string
-          format: byte
-          description: "Base64エンコードされた画像データ"
-          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
         phoneNumber:
           type: string
           description: "家族の電話番号"
-          example: "090-1234-5678"
+          example: "09012345678"
 
     FamilyEmailResponse:
       type: object
@@ -708,15 +698,14 @@ components:
           type: string
           description: "家族の姓"
           example: "山田"
-        iconImage:
+        iconImageUrl:
           type: string
-          format: byte
-          description: "Base64エンコードされた画像データ"
-          example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
         phoneNumber:
           type: string
           description: "家族の電話番号"
-          example: "090-1234-5678"
+          example: "09012345678"
 
     Medicine:
       type: object

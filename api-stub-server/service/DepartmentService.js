@@ -6,7 +6,7 @@
  * 診療科一覧を取得します
  *
  * xUID String 
- * returns inline_response_200_3
+ * returns inline_response_200_4
  **/
 exports.departmentsGET = function(xUID) {
   return new Promise(function(resolve, reject) {

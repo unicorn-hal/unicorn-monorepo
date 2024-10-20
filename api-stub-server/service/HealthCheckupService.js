@@ -6,7 +6,7 @@
  * 一週間分の検査結果を取得します
  *
  * xUID String 
- * returns inline_response_200_1
+ * returns inline_response_200_2
  **/
 exports.health_checkupsGET = function(xUID) {
   return new Promise(function(resolve, reject) {
@@ -18,7 +18,13 @@ exports.health_checkupsGET = function(xUID) {
     "healthCheckupID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "bodyTemperature" : 36.5,
     "medicalRecord" : "## 2020年1月1日\n- 体温: 36.5\n- 血圧: 120/80\n- 診断: 軽度の風邪"
-  }]
+  }, {
+    "date" : "2020-01-01T00:00:00.000+00:00",
+    "bloodPressure" : "120/80",
+    "healthCheckupID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "bodyTemperature" : 36.5,
+    "medicalRecord" : "## 2020年1月1日\n- 体温: 36.5\n- 血圧: 120/80\n- 診断: 軽度の風邪"
+  } ]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
