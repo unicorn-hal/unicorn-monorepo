@@ -113,13 +113,13 @@ components:
           description: "Base64エンコードされた画像データ"
           example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
         bodyHeight:
-          type: integer
+          type: number
           description: "ユーザーの身長（cm単位）"
-          example: 180
+          example: 180.5
         bodyWeight:
-          type: integer
+          type: number
           description: "ユーザーの体重（kg単位）"
-          example: 75
+          example: 75.5
         occupation:
           type: string
           description: "ユーザーの職業"
@@ -172,13 +172,13 @@ components:
           description: "Base64エンコードされた画像データ"
           example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
         bodyHeight:
-          type: integer
+          type: number
           description: "ユーザーの身長（cm単位）"
-          example: 180
+          example: 180.5
         bodyWeight:
-          type: integer
+          type: number
           description: "ユーザーの体重（kg単位）"
-          example: 75
+          example: 75.5
         occupation:
           type: string
           description: "ユーザーの職業"
@@ -213,13 +213,13 @@ components:
           description: "Base64エンコードされた画像データ"
           example: "VBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABjElEQVRIS+2VvUoDQRSGv7VQ"
         bodyHeight:
-          type: integer
+          type: number
           description: "ユーザーの身長（cm単位）"
-          example: 180
+          example: 180.5
         bodyWeight:
-          type: integer
+          type: number
           description: "ユーザーの体重（kg単位）"
-          example: 75
+          example: 75.5
         occupation:
           type: string
           description: "ユーザーの職業"

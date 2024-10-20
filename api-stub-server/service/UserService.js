@@ -18,9 +18,9 @@ exports.usersPOST = function(body,xUID) {
   "phoneNumber" : "090-1234-5678",
   "occupation" : "エンジニア",
   "iconImage" : "VkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBWUNBWUFBQURnZHozNEFBQUJqRWxFUVZSSVMrMlZ2VW9EUVJTR3Y3VlE=",
-  "bodyHeight" : 180,
+  "bodyHeight" : 180.5,
   "userID" : "1234567890",
-  "bodyWeight" : 75,
+  "bodyWeight" : 75.5,
   "email" : "test@test.com"
 };
     if (Object.keys(examples).length > 0) {
