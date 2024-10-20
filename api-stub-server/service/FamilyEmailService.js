@@ -63,14 +63,7 @@ exports.family_emailsGET = function(xUID) {
     "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "iconImageUrl" : "https://placehold.jp/150x150.png",
     "email" : "sample@sample.com"
-  }, {
-    "firstName" : "太郎",
-    "lastName" : "山田",
-    "phoneNumber" : "09012345678",
-    "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "iconImageUrl" : "https://placehold.jp/150x150.png",
-    "email" : "sample@sample.com"
-  } ]
+  }]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

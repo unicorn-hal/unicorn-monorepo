@@ -102,23 +102,7 @@ exports.chatsGET = function(xUID) {
       "userIconUrl" : "https://placehold.jp/150x150.png",
       "userID" : "1234567890"
     }
-  }, {
-    "doctor" : {
-      "firstName" : "太郎",
-      "lastName" : "山田",
-      "doctorIconUrl" : "https://placehold.jp/150x150.png",
-      "doctorID" : "1234567890"
-    },
-    "latestMessageSentAt" : "2020-01-01T00:00:00Z",
-    "chatID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "latestMessageText" : "Hello, World!",
-    "user" : {
-      "firstName" : "太郎",
-      "lastName" : "山田",
-      "userIconUrl" : "https://placehold.jp/150x150.png",
-      "userID" : "1234567890"
-    }
-  } ]
+  }]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
