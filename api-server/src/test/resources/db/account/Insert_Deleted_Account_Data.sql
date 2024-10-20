@@ -1,0 +1,1 @@
+INSERT INTO accounts (uid, role, fcm_token_id, deleted_at) VALUES ('test2', 'user', 'fcm_token_id', '2020-01-01 00:00:00');
