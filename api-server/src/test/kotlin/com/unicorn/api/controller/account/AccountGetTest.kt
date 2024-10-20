@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 @AutoConfigureMockMvc
 @Transactional
 @Sql("/db/account/Insert_Account_Data.sql")
+@Sql("/db/account/Insert_Deleted_Account_Data.sql")
 class AccountGetTest {
 
     @Autowired
@@ -50,6 +51,15 @@ class AccountGetTest {
         val result = mockMvc.perform(
             MockMvcRequestBuilders.get("/accounts")
             .header("X-UID", "invalid"))
+
+        result.andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun `should return 404 when account is deleted`() {
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders.get("/accounts")
+            .header("X-UID", "test2"))
 
         result.andExpect(status().isNotFound)
     }
