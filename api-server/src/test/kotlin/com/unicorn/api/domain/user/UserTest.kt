@@ -152,6 +152,7 @@ class UserTest {
             iconImageUrl = IconImageUrl("http://example.com/newicon.png"),
             bodyHeight = BodyHeight(182.0),
             bodyWeight = BodyWeight(78.0),
+            gender = Gender.valueOf("male"),
             occupation = Occupation("Senior Engineer")
         )
 
