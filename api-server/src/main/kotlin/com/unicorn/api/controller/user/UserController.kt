@@ -1,5 +1,6 @@
 package com.unicorn.api.controller.user
 
+import com.unicorn.api.application_service.user.DeleteUserService
 import com.unicorn.api.application_service.user.SaveUserService
 import com.unicorn.api.application_service.user.UpdateUserService
 import com.unicorn.api.controller.api_response.ResponseError
@@ -13,7 +14,8 @@ import java.time.LocalDate
 @Controller
 class UserController(
     private val saveUserService: SaveUserService,
-    private val updateUserService: UpdateUserService
+    private val updateUserService: UpdateUserService,
+    private val deleteUserService: DeleteUserService
 ) {
     @PostMapping("/users")
     fun save(@RequestHeader("X-UID") uid: String, @RequestBody userPostRequest: UserPostRequest): ResponseEntity<*> {
@@ -36,6 +38,18 @@ class UserController(
         try {
             val result = updateUserService.update(UserID(userID), userPutRequest)
             return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @DeleteMapping("/users/{userID}")
+    fun delete(@RequestHeader("X-UID") uid: String, @PathVariable userID: String): ResponseEntity<Any> {
+        try {
+            deleteUserService.delete(UserID(userID))
+            return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
         } catch (e: Exception) {
