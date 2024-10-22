@@ -197,6 +197,24 @@ components:
           type: string
           description: "ユーザーの姓"
           example: "山田"
+        gender:
+          type: string
+          description: "ユーザーの性別"
+          enum: [ "male", "female", "other" ]
+          example: "male"
+        birthDate:
+          type: string
+          format: date
+          description: "ユーザーの生年月日"
+          example: "1990-01-01"
+        address:
+          type: string
+          description: "ユーザーの住所"
+          example: "東京都新宿区1-1-1"
+        postalCode:
+          type: string
+          description: "ユーザーの郵便番号"
+          example: "1234567"
         email:
           type: string
           description: "ユーザーのメールアドレス"
