@@ -1,7 +1,6 @@
 package com.unicorn.api.domain.user
 
 import java.time.LocalDate
-import java.util.Date
 
 data class User private constructor(
     val userID: UserID,
@@ -88,6 +87,7 @@ data class User private constructor(
         firstName: FirstName,
         lastName: LastName,
         email: Email,
+        gender: Gender,
         birthDate: BirthDate,
         address: Address,
         postalCode: PostalCode,
@@ -102,6 +102,7 @@ data class User private constructor(
             lastName = lastName,
             email = email,
             birthDate = birthDate,
+            gender = gender,
             address = address,
             postalCode = postalCode,
             phoneNumber = phoneNumber,
