@@ -28,9 +28,6 @@ import java.time.LocalDate
 class UserDeleteTest {
 
     @Autowired
-    private lateinit var objectMapper: ObjectMapper
-
-    @Autowired
     private lateinit var mockMvc: MockMvc
 
     @Test

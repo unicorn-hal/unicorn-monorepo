@@ -23,7 +23,7 @@ class UserController(
     fun get(@RequestHeader("X-UID") uid: String, @PathVariable userID: String): ResponseEntity<*> {
         try {
             val result = userQueryService.getOrNullBy(userID)
-                ?: return ResponseEntity.status(404).body(ResponseError("Not Found"))
+                ?: return ResponseEntity.status(404).body(ResponseError("User not found"))
 
             return ResponseEntity.ok(result)
         } catch (e: Exception) {
