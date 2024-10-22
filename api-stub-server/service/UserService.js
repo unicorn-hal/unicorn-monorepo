@@ -13,13 +13,17 @@ exports.usersPOST = function(body,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "firstName" : "太郎",
   "lastName" : "山田",
-  "phoneNumber" : "09012345678",
+  "address" : "東京都新宿区1-1-1",
   "occupation" : "エンジニア",
+  "gender" : "male",
   "iconImageUrl" : "https://placehold.jp/150x150.png",
+  "postalCode" : "1234567",
   "bodyHeight" : 180.5,
   "userID" : "1234567890",
+  "birthDate" : "1990-01-01T00:00:00.000+00:00",
+  "firstName" : "太郎",
+  "phoneNumber" : "09012345678",
   "bodyWeight" : 75.5,
   "email" : "test@test.com"
 };
@@ -95,13 +99,17 @@ exports.usersUserIDPUT = function(body,userID,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "firstName" : "太郎",
   "lastName" : "山田",
-  "phoneNumber" : "09012345678",
+  "address" : "東京都新宿区1-1-1",
   "occupation" : "エンジニア",
+  "gender" : "male",
   "iconImageUrl" : "https://placehold.jp/150x150.png",
+  "postalCode" : "1234567",
   "bodyHeight" : 180.5,
   "userID" : "1234567890",
+  "birthDate" : "1990-01-01T00:00:00.000+00:00",
+  "firstName" : "太郎",
+  "phoneNumber" : "09012345678",
   "bodyWeight" : 75.5,
   "email" : "test@test.com"
 };
