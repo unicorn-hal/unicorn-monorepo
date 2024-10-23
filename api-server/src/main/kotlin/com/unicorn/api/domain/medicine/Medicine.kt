@@ -46,7 +46,6 @@ data class Medicine private constructor(
         quantity: Quantity
     ): Medicine {
         return this.copy(
-            medicineID = this.medicineID,
             medicineName = medicineName,
             count = count,
             quantity = quantity
