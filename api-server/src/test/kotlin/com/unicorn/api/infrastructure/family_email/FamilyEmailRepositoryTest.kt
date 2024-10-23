@@ -112,4 +112,28 @@ class FamilyEmailRepositoryTest {
         assertEquals("09012345678", foundFamilyEmail.phoneNumber.value)
         assertEquals("https://example.com", foundFamilyEmail.iconImageUrl?.value)
     }
+
+    @Test
+    fun `Should not be found if deleted_at is not NULL`() {
+        val familyEmailID = FamilyEmailID(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d471"))
+        val foundFamilyEmail = FamilyEmailRepository.getOrNullBy(familyEmailID)
+        assertNull(foundFamilyEmail)
+    }
+
+    @Test
+    fun `should delete family email`() {
+        val familyEmail = FamilyEmail.create(
+            familyEmailID = UUID.randomUUID(),
+            email = "sample@sample.com",
+            familyFirstName = "太郎",
+            familyLastName = "山田",
+            phoneNumber = "09012345678",
+            iconImageUrl = "http://example.com/icon.png"
+        )
+        val userID = UserID("test")
+        FamilyEmailRepository.store(familyEmail, userID)
+        FamilyEmailRepository.delete(familyEmail)
+        val deletedFamilyEmail = FamilyEmailRepository.getOrNullBy(familyEmail.familyEmailID)
+        assertNull(deletedFamilyEmail)
+    }
 }
