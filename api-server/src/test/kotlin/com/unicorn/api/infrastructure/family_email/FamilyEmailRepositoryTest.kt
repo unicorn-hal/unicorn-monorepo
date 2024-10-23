@@ -81,23 +81,23 @@ class FamilyEmailRepositoryTest {
     @Test
     fun `should update family email`() {
         val familyEmail = FamilyEmail.create(
-            familyEmailID = UUID.randomUUID(),
-            email = "sample@sample.com",
-            familyFirstName = "太郎",
-            familyLastName = "山田",
-            phoneNumber = "09012345678",
+            familyEmailID = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d470"),
+            email = "test@test.com",
+            familyFirstName = "test",
+            familyLastName = "test",
+            phoneNumber = "07012345678",
             iconImageUrl = "http://example.com/icon.png"
         )
         val userID = UserID("test")
         FamilyEmailRepository.store(familyEmail, userID)
 
-        val storedFamilyEmail = findFamilyEmailByID(familyEmail.familyEmailID.value)
-        assertEquals(familyEmail.familyEmailID, storedFamilyEmail?.familyEmailID)
-        assertEquals(familyEmail.email, storedFamilyEmail?.email)
-        assertEquals(familyEmail.familyFirstName, storedFamilyEmail?.familyFirstName)
-        assertEquals(familyEmail.familyLastName, storedFamilyEmail?.familyLastName)
-        assertEquals(familyEmail.phoneNumber, storedFamilyEmail?.phoneNumber)
-        assertEquals(familyEmail.iconImageUrl, storedFamilyEmail?.iconImageUrl)
+        val result = findFamilyEmailByID(familyEmail.familyEmailID.value)
+        assertEquals(familyEmail.familyEmailID, result?.familyEmailID)
+        assertEquals(familyEmail.email, result?.email)
+        assertEquals(familyEmail.familyFirstName, result?.familyFirstName)
+        assertEquals(familyEmail.familyLastName, result?.familyLastName)
+        assertEquals(familyEmail.phoneNumber, result?.phoneNumber)
+        assertEquals(familyEmail.iconImageUrl, result?.iconImageUrl)
     }
 
     @Test
