@@ -12,13 +12,13 @@ data class Medicine private constructor(
 ) {
     companion object {
         fun fromStore(
-           medicineID: String,
+           medicineID: UUID,
            medicineName: String,
            count: Int,
            quantity: Int
         ): Medicine {
             return Medicine(
-                medicineID = MedicineID.fromString(medicineID),
+                medicineID = MedicineID(medicineID),
                 medicineName = MedicineName(medicineName),
                 count = Count(count),
                 quantity = Quantity(quantity)
@@ -26,13 +26,13 @@ data class Medicine private constructor(
         }
 
         fun create(
-           medicineID: String,
+           medicineID: UUID,
            medicineName: String,
            count: Int,
            quantity: Int
         ): Medicine {
             return Medicine(
-                medicineID = MedicineID.fromString(medicineID),
+                medicineID = MedicineID(medicineID),
                 medicineName = MedicineName(medicineName),
                 count = Count(count),
                 quantity = Quantity(quantity)
@@ -60,15 +60,15 @@ value class MedicineID(val value: UUID) {
     init {
         require(value.toString().isNotBlank()) { "medicineID should not be blank" }
     }
-    companion object {
-        fun fromString(id: String): MedicineID {
-            return try {
-                MedicineID(UUID.fromString(id))
-            } catch (e: IllegalArgumentException) {
-                throw InvalidMedicineIDException("Invalid medicine ID: $id")
-            }
-        }
-    }
+     companion object {
+         fun fromString(id: String): MedicineID {
+             return try {
+                 MedicineID(UUID.fromString(id))
+             } catch (e: IllegalArgumentException) {
+                 throw InvalidMedicineIDException("Invalid medicine ID: $id")
+             }
+         }
+     }
 }
 
 @JvmInline

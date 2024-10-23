@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
 @SpringBootTest
@@ -48,7 +49,7 @@ class MedicineRepositoryTest {
             sqlParams
         ) { rs, _ ->
             Medicine.fromStore(
-                medicineID = rs.getString("medicine_id"),
+                medicineID = rs.getObject("medicine_id", UUID::class.java),
                 medicineName = rs.getString("medicine_name"),
                 count = rs.getInt("count"),
                 quantity = rs.getInt("quantity")
@@ -59,7 +60,7 @@ class MedicineRepositoryTest {
     @Test
     fun `should store medicine`() {
         val medicine = Medicine.create(
-            medicineID = "123e4567-e89b-12d3-a456-426614174004",
+            medicineID = UUID.fromString("123e4567-e89b-12d3-a456-426614174004"),
             medicineName = "Aspirin",
             count = 10,
             quantity = 5
@@ -78,7 +79,7 @@ class MedicineRepositoryTest {
     @Test
     fun `should update medicine`() {
         val medicine = Medicine.create(
-            medicineID = "123e4567-e89b-12d3-a456-426614174001",
+            medicineID = UUID.fromString("123e4567-e89b-12d3-a456-426614174001"),
             medicineName = "Ibuprofen",
             count = 20,
             quantity = 3
@@ -115,7 +116,7 @@ class MedicineRepositoryTest {
         val medicineIDString = "123e4567-e89b-12d3-a456-426614174004"
         val medicineID = MedicineID.fromString(medicineIDString)
         val medicine = Medicine.create(
-            medicineID = medicineIDString,
+            medicineID = UUID.fromString(medicineIDString),
             medicineName = "Test Medicine",
             count = 1,
             quantity = 1

@@ -9,7 +9,7 @@ class MedicineTest {
     @Test
     fun `should create medicine`() {
         val medicine = Medicine.create(
-            medicineID = UUID.randomUUID().toString(),
+            medicineID = UUID.randomUUID(),
             medicineName = "Paracetamol",
             count = 10,
             quantity = 20
@@ -24,7 +24,7 @@ class MedicineTest {
     @Test
     fun `should create medicine from store`() {
         val medicine = Medicine.fromStore(
-            medicineID = UUID.randomUUID().toString(),
+            medicineID = UUID.randomUUID(),
             medicineName = "Ibuprofen",
             count = 15,
             quantity = 30
@@ -48,7 +48,7 @@ class MedicineTest {
     fun `should not create medicine with blank name`() {
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Medicine.create(
-                medicineID = UUID.randomUUID().toString(),
+                medicineID = UUID.randomUUID(),
                 medicineName = "",
                 count = 5,
                 quantity = 10
@@ -61,7 +61,7 @@ class MedicineTest {
     fun `should not create medicine with negative count`() {
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Medicine.create(
-                medicineID = UUID.randomUUID().toString(),
+                medicineID = UUID.randomUUID(),
                 medicineName = "Aspirin",
                 count = -1,
                 quantity = 10
@@ -74,7 +74,7 @@ class MedicineTest {
     fun `should not create medicine with zero quantity`() {
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Medicine.create(
-                medicineID = UUID.randomUUID().toString(),
+                medicineID = UUID.randomUUID(),
                 medicineName = "Aspirin",
                 count = 5,
                 quantity = 0
@@ -86,7 +86,7 @@ class MedicineTest {
     @Test
     fun `should update medicine information`() {
         val medicine = Medicine.create(
-            medicineID = UUID.randomUUID().toString(),
+            medicineID = UUID.randomUUID(),
             medicineName = "Amoxicillin",
             count = 20,
             quantity = 50

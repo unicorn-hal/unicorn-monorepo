@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
 import com.unicorn.api.domain.medicine.Medicine
 import com.unicorn.api.domain.medicine.MedicineID
+import java.util.*
 
 interface MedicineRepository {
     fun store(medicine: Medicine, userID: UserID): Medicine
@@ -77,7 +78,7 @@ class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
             sqlParams
         ) { rs, _ ->
             Medicine.fromStore(
-                medicineID = rs.getString("medicine_id"),
+                medicineID = rs.getObject("medicine_id", UUID::class.java),
                 medicineName = rs.getString("medicine_name"),
                 count = rs.getInt("count"),
                 quantity = rs.getInt("quantity")
