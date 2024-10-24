@@ -69,35 +69,35 @@ data class FamilyEmail private constructor(
 @JvmInline
 value class FamilyEmailID(val value: UUID){
     init{
-        require(value != UUID(0L,0L)){" familyEmailID should not be null UUID"}
+        require(value != UUID(0L,0L)){"familyEmailID should not be null UUID"}
     }
 }
 
 @JvmInline
 value class Email(val value: String){
     init{
-        require(value.isNotBlank()){" email should not be blank"}
+        require(value.isNotBlank()){"email should not be blank"}
     }
 }
 
 @JvmInline
 value class FamilyFirstName(val value: String){
     init{
-        require(value.isNotBlank()){" family first name should not be blank"}
+        require(value.isNotBlank()){"family first name should not be blank"}
     }
 }
 
 @JvmInline
 value class FamilyLastName(val value: String){
     init{
-        require(value.isNotBlank()){" family last name should not be blank"}
+        require(value.isNotBlank()){"family last name should not be blank"}
     }
 }
 
 @JvmInline
 value class PhoneNumber(val value: String){
     init{
-        require(value.all{ it.isDigit() }){" phoneNumber should be all digits"}
+        require(value.all{ it.isDigit() }){"phoneNumber should be all digits"}
     }
 }
 

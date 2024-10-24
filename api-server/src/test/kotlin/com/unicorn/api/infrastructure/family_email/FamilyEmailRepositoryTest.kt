@@ -29,7 +29,7 @@ class FamilyEmailRepositoryTest {
     private lateinit var namedParameterJdbcTemplate: NamedParameterJdbcTemplate
 
     private fun findFamilyEmailByID(familyEmailID: UUID): FamilyEmail? {
-        //language=PostgreSQL
+        //language=postgresql
         val sql = """
             SELECT
                 family_email_id,
@@ -116,6 +116,13 @@ class FamilyEmailRepositoryTest {
     @Test
     fun `Should not be found if deleted_at is not NULL`() {
         val familyEmailID = FamilyEmailID(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d471"))
+        val foundFamilyEmail = FamilyEmailRepository.getOrNullBy(familyEmailID)
+        assertNull(foundFamilyEmail)
+    }
+
+    @Test
+    fun ` should return null when family email does not exist`() {
+        val familyEmailID = FamilyEmailID(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d472"))
         val foundFamilyEmail = FamilyEmailRepository.getOrNullBy(familyEmailID)
         assertNull(foundFamilyEmail)
     }

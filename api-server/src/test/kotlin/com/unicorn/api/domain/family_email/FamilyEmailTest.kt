@@ -66,4 +66,79 @@ class FamilyEmailTest {
         assertEquals("08087654321", updatedFamilyEmail.phoneNumber.value)
         assertEquals("http://example.com/newicon.png", updatedFamilyEmail.iconImageUrl?.value)
     }
+
+    @Test
+    fun `should return an error message when null UUID`() {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            FamilyEmail.create(
+                familyEmailID = UUID(0L,0L),
+                email = "sample@sample.com",
+                familyFirstName = "太郎",
+                familyLastName = "山田",
+                phoneNumber = "09012345678",
+                iconImageUrl = "http://example.com/icon.png"
+            )
+        }
+        assertEquals("familyEmailID should not be null UUID", exception.message)
+    }
+
+    @Test
+    fun `should return an error message when null email`() {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            FamilyEmail.create(
+                familyEmailID = UUID.randomUUID(),
+                email = "",
+                familyFirstName = "太郎",
+                familyLastName = "山田",
+                phoneNumber = "09012345678",
+                iconImageUrl = "http://example.com/icon.png"
+            )
+        }
+        assertEquals("email should not be blank", exception.message)
+    }
+
+    @Test
+    fun `should return an error message when null fimilyFirstName`() {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            FamilyEmail.create(
+                familyEmailID = UUID.randomUUID(),
+                email = "sample@sample.com",
+                familyFirstName = "",
+                familyLastName = "山田",
+                phoneNumber = "09012345678",
+                iconImageUrl = "http://example.com/icon.png"
+            )
+        }
+        assertEquals("family first name should not be blank", exception.message)
+    }
+
+    @Test
+    fun `should return an error message when null fimilyLastName`() {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            FamilyEmail.create(
+                familyEmailID = UUID.randomUUID(),
+                email = "sample@sample.com",
+                familyFirstName = "太郎",
+                familyLastName = "",
+                phoneNumber = "09012345678",
+                iconImageUrl = "http://example.com/icon.png"
+            )
+        }
+        assertEquals("family last name should not be blank", exception.message)
+    }
+
+    @Test
+    fun `should return an error message when null phoneNumber`() {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            FamilyEmail.create(
+                familyEmailID = UUID.randomUUID(),
+                email = "sample@sample.com",
+                familyFirstName = "太郎",
+                familyLastName = "山田",
+                phoneNumber = "aaa",
+                iconImageUrl = "http://example.com/icon.png"
+            )
+        }
+        assertEquals("phoneNumber should be all digits", exception.message)
+    }
 }
