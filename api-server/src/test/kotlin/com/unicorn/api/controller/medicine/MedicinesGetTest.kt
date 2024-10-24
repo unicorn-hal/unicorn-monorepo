@@ -27,7 +27,7 @@ class MedicinesGetTest {
     @Test
     fun `should return 200 with correct medicine data`() {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/medicines").headers(HttpHeaders().apply {
-            add("X-UID", "test-uid")
+            add("X-UID", "test")
         }))
 
         result.andExpect(status().isOk)
