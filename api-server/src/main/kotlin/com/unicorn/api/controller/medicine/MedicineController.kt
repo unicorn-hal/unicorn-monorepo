@@ -6,6 +6,7 @@ import com.unicorn.api.controller.user.UserPutRequest
 import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.medicine.MedicineID
 import com.unicorn.api.domain.user.UserID
+
 import com.unicorn.api.query_service.medicine.MedicineQueryService
 import com.unicorn.api.query_service.user.UserQueryService
 import org.springframework.http.ResponseEntity
@@ -23,12 +24,12 @@ class MedicineController(
         return try {
             val user = userQueryService.getOrNullBy(uid)
 
-            if (user != null) {
-                val result = medicineQueryService.getMedicines(uid)
-                ResponseEntity.ok(result)
-            } else {
-                ResponseEntity.status(400).body("User not found")
+            if (user == null) {
+                return ResponseEntity.status(400).body("User not found")
             }
+
+            val result = medicineQueryService.getMedicines(uid)
+            ResponseEntity.ok(result)
         } catch (e: Exception) {
             ResponseEntity.status(500).body("Internal Server Error")
         }
