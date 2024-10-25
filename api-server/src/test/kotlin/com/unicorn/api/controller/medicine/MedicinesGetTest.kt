@@ -64,4 +64,13 @@ class MedicinesGetTest {
         """.trimIndent(), true))
     }
 
+    @Test
+    fun `should return 400 when uid is invalid`() {
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/medicines").headers(HttpHeaders().apply {
+            add("X-UID", "invalid-uid")
+        }))
+
+        result.andExpect(status().isBadRequest)
+        result.andExpect(content().string("User not found"))
+    }
 }

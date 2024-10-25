@@ -16,6 +16,7 @@ class MedicineQueryServiceImpl(
 ) : MedicineQueryService {
 
     override fun getMedicines(uid: String): MedicineResult {
+        // language=postgresql
         val sql = """
             SELECT
                 medicine_id,
