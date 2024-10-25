@@ -33,8 +33,8 @@ class FamilyEmailQueryServiceImpl(
             FamilyEmailDto(
                 familyEmailID = UUID.fromString(rs.getString("family_email_id")),
                 email = rs.getString("email"),
-                familyFirstName = rs.getString("family_first_name"),
-                familyLastName = rs.getString("family_last_name"),
+                firstName = rs.getString("family_first_name"),
+                lastName = rs.getString("family_last_name"),
                 phoneNumber = rs.getString("phone_number"),
                 iconImageUrl = rs.getString("icon_image_url")
             )
@@ -46,8 +46,8 @@ class FamilyEmailQueryServiceImpl(
 data class FamilyEmailDto(
     val familyEmailID: UUID,
     val email: String,
-    val familyFirstName: String,
-    val familyLastName: String,
+    val firstName: String,
+    val lastName: String,
     val phoneNumber: String,
     val iconImageUrl: String?
 )

@@ -39,8 +39,8 @@ class FamilyEmailsGetTest {
                     {
                         "familyEmailID": "f47ac10b-58cc-4372-a567-0e02b2c3d470",
                         "email": "sample@sample.com",
-                        "familyFirstName": "太郎",
-                        "familyLastName": "山田",
+                        "firstName": "太郎",
+                        "lastName": "山田",
                         "phoneNumber": "09012345678",
                         "iconImageUrl": "https://example.com"
                     }
