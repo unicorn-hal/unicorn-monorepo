@@ -1,5 +1,6 @@
 package com.unicorn.api.domain.medicine
 
+import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.util.UUID
@@ -8,17 +9,16 @@ class MedicineTest {
 
     @Test
     fun `should create medicine`() {
+        val userID = UserID("test")
         val medicine = Medicine.create(
-            medicineID = UUID.randomUUID(),
             medicineName = "Paracetamol",
-            count = 10,
-            quantity = 20
+            userID = userID,
+            count = 10
         )
 
-        assertEquals(medicine.medicineID.value.toString(), medicine.medicineID.value.toString()) // UUIDの比較
+        assertEquals(medicine.medicineID.value.toString(), medicine.medicineID.value.toString())
         assertEquals("Paracetamol", medicine.medicineName.value)
         assertEquals(10, medicine.count.value)
-        assertEquals(20, medicine.quantity.value)
     }
 
     @Test
@@ -26,11 +26,12 @@ class MedicineTest {
         val medicine = Medicine.fromStore(
             medicineID = UUID.randomUUID(),
             medicineName = "Ibuprofen",
+            userID = "test",
             count = 15,
             quantity = 30
         )
 
-        assertEquals(medicine.medicineID.value.toString(), medicine.medicineID.value.toString()) // UUIDの比較
+        assertEquals(medicine.medicineID.value.toString(), medicine.medicineID.value.toString())
         assertEquals("Ibuprofen", medicine.medicineName.value)
         assertEquals(15, medicine.count.value)
         assertEquals(30, medicine.quantity.value)
@@ -46,12 +47,12 @@ class MedicineTest {
 
     @Test
     fun `should not create medicine with blank name`() {
+        val userID = UserID("test")
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Medicine.create(
-                medicineID = UUID.randomUUID(),
                 medicineName = "",
-                count = 5,
-                quantity = 10
+                userID = userID,
+                count = 5
             )
         }
         assertEquals("medicine name should not be blank", exception.message)
@@ -59,12 +60,12 @@ class MedicineTest {
 
     @Test
     fun `should not create medicine with negative count`() {
+        val userID = UserID("test")
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Medicine.create(
-                medicineID = UUID.randomUUID(),
                 medicineName = "Aspirin",
-                count = -1,
-                quantity = 10
+                userID = userID,
+                count = -1
             )
         }
         assertEquals("count should be 0 or greater", exception.message)
@@ -72,34 +73,51 @@ class MedicineTest {
 
     @Test
     fun `should not create medicine with zero quantity`() {
+        val userID = UserID("test")
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Medicine.create(
-                medicineID = UUID.randomUUID(),
                 medicineName = "Aspirin",
-                count = 5,
-                quantity = 0
+                userID = userID,
+                count = -5
             )
         }
-        assertEquals("quantity should be greater than 0", exception.message)
+        assertEquals("count should be 0 or greater", exception.message)
+    }
+
+    @Test
+    fun `should not update medicine with quantity is smaller than count`() {
+        val userID = UserID("test")
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            val medicine = Medicine.create(
+                medicineName = "Aspirin",
+                userID = userID,
+                count = 20
+            )
+
+            medicine.update(
+                medicineName = MedicineName("Amoxicillin Extended"),
+                quantity = Quantity(50)
+            )
+        }
+        assertEquals("quantity should be smaller than count.", exception.message)
     }
 
     @Test
     fun `should update medicine information`() {
+        val userID = UserID("test")
         val medicine = Medicine.create(
-            medicineID = UUID.randomUUID(),
             medicineName = "Amoxicillin",
+            userID = userID,
             count = 20,
-            quantity = 50
         )
 
         val updatedMedicine = medicine.update(
             medicineName = MedicineName("Amoxicillin Extended"),
-            count = Count(25),
-            quantity = Quantity(60)
+            quantity = Quantity(18)
         )
 
         assertEquals("Amoxicillin Extended", updatedMedicine.medicineName.value)
-        assertEquals(25, updatedMedicine.count.value)
-        assertEquals(60, updatedMedicine.quantity.value)
+        assertEquals(20, medicine.count.value)
+        assertEquals(18, updatedMedicine.quantity.value)
     }
 }

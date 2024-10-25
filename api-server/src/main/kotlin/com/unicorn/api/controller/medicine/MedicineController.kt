@@ -4,6 +4,7 @@ import com.unicorn.api.application_service.medicine.SaveMedicineService
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.controller.user.UserPutRequest
 import com.unicorn.api.domain.account.UID
+import com.unicorn.api.domain.medicine.MedicineID
 import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.query_service.medicine.MedicineQueryService
 import com.unicorn.api.query_service.user.UserQueryService
@@ -36,16 +37,8 @@ class MedicineController(
     @PostMapping("/medicines")
     fun save(@RequestHeader("X-UID") uid: String, @RequestBody medicinePostRequest: MedicinePostRequest): ResponseEntity<*> {
         try {
-            val user = userQueryService.getOrNullBy(uid)
-                ?: return ResponseEntity.status(400).body(ResponseError("User not found"))
 
-            val medicinePostData = MedicinePostData(
-                medicineName = medicinePostRequest.medicineName,
-                count = medicinePostRequest.count,
-                quantity = medicinePostRequest.quantity
-            )
-
-            val result = saveMedicineService.save(UID(uid), medicinePostData)
+            val result = saveMedicineService.save(UID(uid), medicinePostRequest)
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
@@ -57,13 +50,6 @@ class MedicineController(
 
 data class MedicinePostRequest(
     val medicineName: String,
-    val count: Int,
-    val quantity: Int
-)
-
-data class MedicinePostData(
-    val medicineName: String,
-    val count: Int,
-    val quantity: Int
+    val count: Int
 )
 

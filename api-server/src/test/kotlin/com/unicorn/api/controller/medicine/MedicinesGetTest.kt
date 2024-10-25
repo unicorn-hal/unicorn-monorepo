@@ -38,25 +38,25 @@ class MedicinesGetTest {
                     {
                         "medicineID": "123e4567-e89b-12d3-a456-426614174000",
                         "medicineName": "Paracetamol",
-                        "count": 5,
+                        "count": 50,
                         "quantity": 10
                     },
                     {
                         "medicineID": "123e4567-e89b-12d3-a456-426614174001",
                         "medicineName": "Ibuprofen",
-                        "count": 3,
+                        "count": 30,
                         "quantity": 15
                     },
                     {
                         "medicineID": "123e4567-e89b-12d3-a456-426614174002",
                         "medicineName": "Aspirin",
-                        "count": 8,
+                        "count": 80,
                         "quantity": 20
                     },
                     {
                         "medicineID": "123e4567-e89b-12d3-a456-426614174003",
                         "medicineName": "Amoxicillin",
-                        "count": 2,
+                        "count": 20,
                         "quantity": 5
                     }
                 ]

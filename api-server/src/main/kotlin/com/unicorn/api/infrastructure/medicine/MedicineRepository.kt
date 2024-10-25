@@ -9,7 +9,7 @@ import com.unicorn.api.domain.medicine.MedicineID
 import java.util.*
 
 interface MedicineRepository {
-    fun store(medicine: Medicine, userID: UID): Medicine
+    fun store(medicine: Medicine): Medicine
     fun getOrNullBy(medicineID: MedicineID): Medicine?
     fun delete(medicine: Medicine): Unit
 }
@@ -17,7 +17,7 @@ interface MedicineRepository {
 @Repository
 class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) : MedicineRepository {
 
-    override fun store(medicine: Medicine, userID: UID): Medicine {
+    override fun store(medicine: Medicine): Medicine {
         // language=postgresql
         val sql = """
             INSERT INTO medicines (
@@ -46,7 +46,7 @@ class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
 
         val sqlParams = MapSqlParameterSource()
             .addValue("medicineID", medicine.medicineID.value)
-            .addValue("userID", userID.value)
+            .addValue("userID", medicine.userID.value)
             .addValue("medicineName", medicine.medicineName.value)
             .addValue("count", medicine.count.value)
             .addValue("quantity", medicine.quantity.value)
@@ -79,6 +79,7 @@ class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
             Medicine.fromStore(
                 medicineID = rs.getObject("medicine_id", UUID::class.java),
                 medicineName = rs.getString("medicine_name"),
+                userID = rs.getString("user_id"),
                 count = rs.getInt("count"),
                 quantity = rs.getInt("quantity")
             )

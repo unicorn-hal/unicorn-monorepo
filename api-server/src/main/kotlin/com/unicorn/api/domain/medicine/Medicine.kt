@@ -7,6 +7,7 @@ import java.util.*
 data class Medicine private constructor(
     val medicineID: MedicineID,
     val medicineName: MedicineName,
+    val userID: UserID,
     val count: Count,
     val quantity: Quantity
 ) {
@@ -14,40 +15,43 @@ data class Medicine private constructor(
         fun fromStore(
            medicineID: UUID,
            medicineName: String,
+           userID: String,
            count: Int,
            quantity: Int
         ): Medicine {
             return Medicine(
                 medicineID = MedicineID(medicineID),
                 medicineName = MedicineName(medicineName),
+                userID = UserID(userID),
                 count = Count(count),
                 quantity = Quantity(quantity)
             )
         }
 
         fun create(
-           medicineID: UUID,
            medicineName: String,
-           count: Int,
-           quantity: Int
+           userID: UserID,
+           count: Int
         ): Medicine {
             return Medicine(
-                medicineID = MedicineID(medicineID),
+                medicineID = MedicineID(UUID.randomUUID()),
                 medicineName = MedicineName(medicineName),
+                userID = userID,
                 count = Count(count),
-                quantity = Quantity(quantity)
+                quantity = Quantity(count)
             )
         }
     }
 
     fun update(
         medicineName: MedicineName,
-        count: Count,
         quantity: Quantity
     ): Medicine {
+        require(quantity.value <= count.value) {
+            "quantity should be smaller than count."
+        }
         return this.copy(
             medicineName = medicineName,
-            count = count,
             quantity = quantity
         )
     }

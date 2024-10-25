@@ -36,8 +36,7 @@ class MedicinePostTest {
     fun `should return 200 when medicine is created`() {
         val medicineRequest = MedicinePostRequest(
             medicineName = "medicineName",
-            count = 10,
-            quantity = 5000
+            count = 10
         )
 
         val userID = "test"
@@ -56,15 +55,13 @@ class MedicinePostTest {
 
         assertTrue(responseContent.contains(medicineRequest.medicineName))
         assertTrue(responseContent.contains(medicineRequest.count.toString()))
-        assertTrue(responseContent.contains(medicineRequest.quantity.toString()))
     }
 
     @Test
     fun `should return 400 when medicineName is missing`() {
         val medicineRequest = MedicinePostRequest(
             medicineName = "",
-            count = 10,
-            quantity = 5000
+            count = 10
         )
 
         val userID = "test"
@@ -84,29 +81,7 @@ class MedicinePostTest {
     fun `should return 400 when count is negative`() {
         val medicineRequest = MedicinePostRequest(
             medicineName = "medicineName",
-            count = -5,
-            quantity = 5000
-        )
-
-        val userID = "test"
-
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/medicines").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(medicineRequest))
-        )
-
-        result.andExpect(status().isBadRequest)
-    }
-
-    @Test
-    fun `should return 400 when quantity is negative`() {
-        val medicineRequest = MedicinePostRequest(
-            medicineName = "medicineName",
-            count = 10,
-            quantity = -100
+            count = -5
         )
 
         val userID = "test"
