@@ -39,8 +39,8 @@ class FamilyEmailPostTest {
     fun `should return 200 when family email is created`() {
         val familyEmail = FamilyEmailPostRequest(
             email = "sample@sample.com",
-            firstName = "test",
-            lastName = "test",
+            firstName = "山田",
+            lastName = "太郎",
             phoneNumber = "09012345678",
             iconImageUrl = "http://example.com/icon.png"
         )
@@ -55,20 +55,25 @@ class FamilyEmailPostTest {
                 .content(objectMapper.writeValueAsString(familyEmail))
         )
         result.andExpect(status().isOk)
-        val responseContent = result.andReturn().response.contentAsString
-        assertTrue(responseContent.contains(familyEmail.email))
-        assertTrue(responseContent.contains(familyEmail.firstName))
-        assertTrue(responseContent.contains(familyEmail.lastName))
-        assertTrue(responseContent.contains(familyEmail.phoneNumber))
-        assertTrue(responseContent.contains(familyEmail.iconImageUrl))
+        result.andExpect(content().json(
+            // language=json
+            """
+            {
+                "email": "${familyEmail.email}",
+                "firstName": "${familyEmail.firstName}",
+                "lastName": "${familyEmail.lastName}",
+                "phoneNumber": "${familyEmail.phoneNumber}",
+                "iconImageUrl": "${familyEmail.iconImageUrl}"
+            }
+            """.trimIndent()))
     }
 
     @Test
     fun `should return 400 when user not found`() {
         val familyEmail = FamilyEmailPostRequest(
             email = "sample@sample.com",
-            firstName = "test",
-            lastName = "test",
+            firstName = "山田",
+            lastName = "太郎",
             phoneNumber = "09012345678",
             iconImageUrl = "http://example.com/icon.png"
         )
