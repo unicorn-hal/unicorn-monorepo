@@ -35,8 +35,8 @@ class FamilyEmailRepositoryImpl(
                 :familyEmailID,
                 :userID,
                 :email,
-                :familyFirstName,
-                :familyLastName,
+                :firstName,
+                :lastName,
                 :phoneNumber,
                 :iconImageUrl,
                 NOW()
@@ -56,8 +56,8 @@ class FamilyEmailRepositoryImpl(
             .addValue("familyEmailID", familyEmail.familyEmailID.value)
             .addValue("userID", userID.value)
             .addValue("email", familyEmail.email.value)
-            .addValue("familyFirstName", familyEmail.familyFirstName.value)
-            .addValue("familyLastName", familyEmail.familyLastName.value)
+            .addValue("firstName", familyEmail.firstName.value)
+            .addValue("lastName", familyEmail.lastName.value)
             .addValue("phoneNumber", familyEmail.phoneNumber.value)
             .addValue("iconImageUrl", familyEmail.iconImageUrl?.value)
 
@@ -90,8 +90,8 @@ class FamilyEmailRepositoryImpl(
             FamilyEmail.fromStore(
                 familyEmailID = UUID.fromString(rs.getString("family_email_id")),
                 email = rs.getString("email"),
-                familyFirstName = rs.getString("family_first_name"),
-                familyLastName = rs.getString("family_last_name"),
+                firstName = rs.getString("family_first_name"),
+                lastName = rs.getString("family_last_name"),
                 phoneNumber = rs.getString("phone_number"),
                 iconImageUrl = rs.getString("icon_image_url")
             )

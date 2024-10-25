@@ -50,8 +50,8 @@ class FamilyEmailRepositoryTest {
             FamilyEmail.fromStore(
                 familyEmailID = UUID.fromString(rs.getString("family_email_id")),
                 email = rs.getString("email"),
-                familyFirstName = rs.getString("family_first_name"),
-                familyLastName = rs.getString("family_last_name"),
+                firstName = rs.getString("family_first_name"),
+                lastName = rs.getString("family_last_name"),
                 phoneNumber = rs.getString("phone_number"),
                 iconImageUrl = rs.getString("icon_image_url")
             )
@@ -63,8 +63,8 @@ class FamilyEmailRepositoryTest {
         val familyEmail = FamilyEmail.create(
             familyEmailID = UUID.randomUUID(),
             email = "test2@example.com",
-            familyFirstName = "test",
-            familyLastName = "test",
+            firstName = "test",
+            lastName = "test",
             phoneNumber = "07012345678",
             iconImageUrl = "http://example.com/icon.png"
         )
@@ -73,8 +73,8 @@ class FamilyEmailRepositoryTest {
         val storedFamilyEmail = findFamilyEmailByID(familyEmail.familyEmailID.value)
         assertEquals(familyEmail.familyEmailID, storedFamilyEmail?.familyEmailID)
         assertEquals(familyEmail.email, storedFamilyEmail?.email)
-        assertEquals(familyEmail.familyFirstName, storedFamilyEmail?.familyFirstName)
-        assertEquals(familyEmail.familyLastName, storedFamilyEmail?.familyLastName)
+        assertEquals(familyEmail.firstName, storedFamilyEmail?.firstName)
+        assertEquals(familyEmail.lastName, storedFamilyEmail?.lastName)
         assertEquals(familyEmail.phoneNumber, storedFamilyEmail?.phoneNumber)
         assertEquals(familyEmail.iconImageUrl, storedFamilyEmail?.iconImageUrl)
     }
@@ -83,8 +83,8 @@ class FamilyEmailRepositoryTest {
         val familyEmail = FamilyEmail.create(
             familyEmailID = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d470"),
             email = "test@test.com",
-            familyFirstName = "test",
-            familyLastName = "test",
+            firstName = "test",
+            lastName = "test",
             phoneNumber = "07012345678",
             iconImageUrl = "http://example.com/icon.png"
         )
@@ -94,8 +94,8 @@ class FamilyEmailRepositoryTest {
         val result = findFamilyEmailByID(familyEmail.familyEmailID.value)
         assertEquals(familyEmail.familyEmailID, result?.familyEmailID)
         assertEquals(familyEmail.email, result?.email)
-        assertEquals(familyEmail.familyFirstName, result?.familyFirstName)
-        assertEquals(familyEmail.familyLastName, result?.familyLastName)
+        assertEquals(familyEmail.firstName, result?.firstName)
+        assertEquals(familyEmail.lastName, result?.lastName)
         assertEquals(familyEmail.phoneNumber, result?.phoneNumber)
         assertEquals(familyEmail.iconImageUrl, result?.iconImageUrl)
     }
@@ -107,8 +107,8 @@ class FamilyEmailRepositoryTest {
         assertNotNull(foundFamilyEmail)
         assertEquals(familyEmailID, foundFamilyEmail!!.familyEmailID)
         assertEquals("sample@sample.com", foundFamilyEmail.email.value)
-        assertEquals("太郎", foundFamilyEmail.familyFirstName.value)
-        assertEquals("山田", foundFamilyEmail.familyLastName.value)
+        assertEquals("太郎", foundFamilyEmail.firstName.value)
+        assertEquals("山田", foundFamilyEmail.lastName.value)
         assertEquals("09012345678", foundFamilyEmail.phoneNumber.value)
         assertEquals("https://example.com", foundFamilyEmail.iconImageUrl?.value)
     }
@@ -132,8 +132,8 @@ class FamilyEmailRepositoryTest {
         val familyEmail = FamilyEmail.create(
             familyEmailID = UUID.randomUUID(),
             email = "sample@sample.com",
-            familyFirstName = "太郎",
-            familyLastName = "山田",
+            firstName = "太郎",
+            lastName = "山田",
             phoneNumber = "09012345678",
             iconImageUrl = "http://example.com/icon.png"
         )

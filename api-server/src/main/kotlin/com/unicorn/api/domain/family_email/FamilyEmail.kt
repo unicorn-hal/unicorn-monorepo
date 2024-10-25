@@ -6,8 +6,8 @@ import java.util.*
 data class FamilyEmail private constructor(
     val familyEmailID: FamilyEmailID,
     val email: Email,
-    val familyFirstName: FamilyFirstName,
-    val familyLastName: FamilyLastName,
+    val firstName: FirstName,
+    val lastName: LastName,
     val phoneNumber: PhoneNumber,
     val iconImageUrl: IconImageUrl?
 ) {
@@ -15,16 +15,16 @@ data class FamilyEmail private constructor(
         fun fromStore(
             familyEmailID: UUID,
             email: String,
-            familyFirstName: String,
-            familyLastName: String,
+            firstName: String,
+            lastName: String,
             phoneNumber: String,
             iconImageUrl: String?
         ): FamilyEmail {
             return FamilyEmail(
                 familyEmailID = FamilyEmailID(familyEmailID),
                 email = Email(email),
-                familyFirstName = FamilyFirstName(familyFirstName),
-                familyLastName = FamilyLastName(familyLastName),
+                firstName = FirstName(firstName),
+                lastName = LastName(lastName),
                 phoneNumber = PhoneNumber(phoneNumber),
                 iconImageUrl = iconImageUrl?.let { IconImageUrl(it) }
             )
@@ -33,16 +33,16 @@ data class FamilyEmail private constructor(
         fun create(
             familyEmailID: UUID,
             email: String,
-            familyFirstName: String,
-            familyLastName: String,
+            firstName: String,
+            lastName: String,
             phoneNumber: String,
             iconImageUrl: String?
         ): FamilyEmail {
             return FamilyEmail(
                 familyEmailID = FamilyEmailID(familyEmailID),
                 email = Email(email),
-                familyFirstName = FamilyFirstName(familyFirstName),
-                familyLastName = FamilyLastName(familyLastName),
+                firstName = FirstName(firstName),
+                lastName = LastName(lastName),
                 phoneNumber = PhoneNumber(phoneNumber),
                 iconImageUrl = iconImageUrl?.let { IconImageUrl(it) }
             )
@@ -51,15 +51,15 @@ data class FamilyEmail private constructor(
 
     fun update(
         email: Email,
-        familyFirstName: FamilyFirstName,
-        familyLastName: FamilyLastName,
+        firstName: FirstName,
+        lastName: LastName,
         phoneNumber: PhoneNumber,
         iconImageUrl: IconImageUrl?
     ): FamilyEmail {
         return this.copy(
             email = email,
-            familyFirstName = familyFirstName,
-            familyLastName = familyLastName,
+            firstName = firstName,
+            lastName = lastName,
             phoneNumber = phoneNumber,
             iconImageUrl = iconImageUrl
         )
@@ -81,16 +81,16 @@ value class Email(val value: String){
 }
 
 @JvmInline
-value class FamilyFirstName(val value: String){
+value class FirstName(val value: String){
     init{
-        require(value.isNotBlank()){"family first name should not be blank"}
+        require(value.isNotBlank()){"first name should not be blank"}
     }
 }
 
 @JvmInline
-value class FamilyLastName(val value: String){
+value class LastName(val value: String){
     init{
-        require(value.isNotBlank()){"family last name should not be blank"}
+        require(value.isNotBlank()){"last name should not be blank"}
     }
 }
 
