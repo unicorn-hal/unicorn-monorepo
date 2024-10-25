@@ -1,19 +1,20 @@
 package com.unicorn.api.query_service.family_email
 
+import com.unicorn.api.domain.user.UserID
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Service
 import java.util.*
 
 interface FamilyEmailQueryService {
-    fun get(uid: String): FamilyEmailResult
+    fun get(userID: UserID): FamilyEmailResult
 }
 
 @Service
 class FamilyEmailQueryServiceImpl(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
 ) : FamilyEmailQueryService {
-    override fun get(uid: String): FamilyEmailResult {
+    override fun get(userID: UserID): FamilyEmailResult {
         //language=postgresql
         val sql = """
             SELECT
@@ -27,7 +28,7 @@ class FamilyEmailQueryServiceImpl(
             WHERE user_id = :userID 
             AND deleted_at IS NULL
         """.trimIndent()
-        val sqlParams = MapSqlParameterSource().addValue("userID", uid)
+        val sqlParams = MapSqlParameterSource().addValue("userID", userID.value)
         val familyEmails = namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
             FamilyEmailDto(
                 familyEmailID = UUID.fromString(rs.getString("family_email_id")),

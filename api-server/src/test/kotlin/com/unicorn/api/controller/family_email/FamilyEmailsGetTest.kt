@@ -48,4 +48,19 @@ class FamilyEmailsGetTest {
             }
             """.trimIndent(), true))
     }
+
+    @Test
+    fun `should return 404 when user is not found`() {
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/family_emails").headers(HttpHeaders().apply {
+            add("X-UID", "notFound")
+        }))
+        result.andExpect(status().isNotFound)
+        result.andExpect(content().json(
+            // language=json
+            """
+            {
+                "errorType": "User not found"
+            }
+            """.trimIndent(), true))
+    }
 }
