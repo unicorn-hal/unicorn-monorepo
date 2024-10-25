@@ -2,7 +2,9 @@ package com.unicorn.api.controller.medicine
 
 import com.unicorn.api.application_service.medicine.SaveMedicineService
 import com.unicorn.api.controller.api_response.ResponseError
+import com.unicorn.api.controller.user.UserPutRequest
 import com.unicorn.api.domain.account.UID
+import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.query_service.medicine.MedicineQueryService
 import com.unicorn.api.query_service.user.UserQueryService
 import org.springframework.http.ResponseEntity
@@ -37,10 +39,7 @@ class MedicineController(
             val user = userQueryService.getOrNullBy(uid)
                 ?: return ResponseEntity.status(400).body(ResponseError("User not found"))
 
-            val medicineID = UUID.randomUUID()
-
             val medicinePostData = MedicinePostData(
-                medicineID = medicineID,
                 medicineName = medicinePostRequest.medicineName,
                 count = medicinePostRequest.count,
                 quantity = medicinePostRequest.quantity
@@ -63,7 +62,6 @@ data class MedicinePostRequest(
 )
 
 data class MedicinePostData(
-    val medicineID: UUID,
     val medicineName: String,
     val count: Int,
     val quantity: Int

@@ -23,11 +23,8 @@ class SaveMedicineServiceImpl(
         val account = accountRepository.getOrNullByUid(uid)
         requireNotNull(account) { "Account not found" }
 
-        val existingMedicine = medicineRepository.getOrNullBy(MedicineID(medicinePostData.medicineID))
-        require(existingMedicine == null) { "Medicine already exists" }
-
         val medicine = Medicine.create(
-            medicineID = medicinePostData.medicineID,
+            medicineID = UUID.randomUUID(),
             medicineName = medicinePostData.medicineName,
             count = medicinePostData.count,
             quantity = medicinePostData.quantity
