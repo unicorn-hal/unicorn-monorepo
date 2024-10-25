@@ -1,9 +1,7 @@
 package com.unicorn.api.infrastructure.medicine
 
-import com.unicorn.api.domain.medicine.Count
-import com.unicorn.api.domain.medicine.Medicine
-import com.unicorn.api.domain.medicine.MedicineID
-import com.unicorn.api.domain.medicine.MedicineName
+import com.unicorn.api.domain.account.UID
+import com.unicorn.api.domain.medicine.*
 import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -51,6 +49,7 @@ class MedicineRepositoryTest {
             Medicine.fromStore(
                 medicineID = rs.getObject("medicine_id", UUID::class.java),
                 medicineName = rs.getString("medicine_name"),
+                userID = rs.getString("user_id"),
                 count = rs.getInt("count"),
                 quantity = rs.getInt("quantity")
             )
@@ -59,15 +58,14 @@ class MedicineRepositoryTest {
 
     @Test
     fun `should store medicine`() {
+        val userID = UserID("test")
         val medicine = Medicine.create(
-            medicineID = UUID.fromString("123e4567-e89b-12d3-a456-426614174004"),
             medicineName = "Aspirin",
-            count = 10,
-            quantity = 5
+            userID = userID,
+            count = 10
         )
 
-        val userID = UserID("test")
-        medicineRepository.store(medicine, userID)
+        medicineRepository.store(medicine)
 
         val storedMedicine = findMedicineByID(medicine.medicineID)
         assert(storedMedicine?.medicineID == medicine.medicineID)
@@ -78,24 +76,25 @@ class MedicineRepositoryTest {
 
     @Test
     fun `should update medicine`() {
-        val medicine = Medicine.create(
+        val userID = UserID("test")
+        val medicine = Medicine.fromStore(
             medicineID = UUID.fromString("123e4567-e89b-12d3-a456-426614174001"),
             medicineName = "Ibuprofen",
-            count = 20,
-            quantity = 3
+            userID = userID.value,
+            count = 30,
+            quantity = 15
+        )
+        val updatedMedicine = medicine.update(
+            medicineName = medicine.medicineName,
+            quantity = Quantity(10)
         )
 
-        val userID = UserID("test")
-        medicineRepository.store(medicine, userID)
+        medicineRepository.store(updatedMedicine)
 
-        // Update the medicine
-        val updatedMedicine = medicine.copy(medicineName = MedicineName("Ibuprofen Extra"), count = Count(15))
-        medicineRepository.store(updatedMedicine, userID)
-
-        val result = findMedicineByID(updatedMedicine.medicineID)
-        assert(result?.medicineID == updatedMedicine.medicineID)
+        val result = findMedicineByID(medicine.medicineID)
+        assert(result?.medicineID == medicine.medicineID)
         assert(result?.medicineName == updatedMedicine.medicineName)
-        assert(result?.count == updatedMedicine.count)
+        assert(result?.count == medicine.count)
         assert(result?.quantity == updatedMedicine.quantity)
     }
 
@@ -107,7 +106,7 @@ class MedicineRepositoryTest {
 
         assert(foundMedicine?.medicineID == medicineID)
         assert(foundMedicine?.medicineName?.value == "Aspirin")
-        assert(foundMedicine?.count?.value == 8)
+        assert(foundMedicine?.count?.value == 80)
         assert(foundMedicine?.quantity?.value == 20)
     }
 
@@ -115,15 +114,15 @@ class MedicineRepositoryTest {
     fun `should delete medicine`() {
         val medicineIDString = "123e4567-e89b-12d3-a456-426614174004"
         val medicineID = MedicineID.fromString(medicineIDString)
+        val userID = UserID("test")
         val medicine = Medicine.create(
-            medicineID = UUID.fromString(medicineIDString),
             medicineName = "Test Medicine",
-            count = 1,
-            quantity = 1
+            userID = userID,
+            count = 1
         )
 
-        val userID = UserID("test")
-        medicineRepository.store(medicine, userID)
+
+        medicineRepository.store(medicine)
 
         // Delete the medicine
         medicineRepository.delete(medicine)
