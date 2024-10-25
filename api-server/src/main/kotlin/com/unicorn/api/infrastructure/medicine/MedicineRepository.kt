@@ -1,7 +1,6 @@
 package com.unicorn.api.infrastructure.medicine
 
-import com.unicorn.api.domain.medicine.*
-import com.unicorn.api.domain.user.UserID
+import com.unicorn.api.domain.account.UID
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -10,7 +9,7 @@ import com.unicorn.api.domain.medicine.MedicineID
 import java.util.*
 
 interface MedicineRepository {
-    fun store(medicine: Medicine, userID: UserID): Medicine
+    fun store(medicine: Medicine, userID: UID): Medicine
     fun getOrNullBy(medicineID: MedicineID): Medicine?
     fun delete(medicine: Medicine): Unit
 }
@@ -18,7 +17,7 @@ interface MedicineRepository {
 @Repository
 class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) : MedicineRepository {
 
-    override fun store(medicine: Medicine, userID: UserID): Medicine {
+    override fun store(medicine: Medicine, userID: UID): Medicine {
         // language=postgresql
         val sql = """
             INSERT INTO medicines (

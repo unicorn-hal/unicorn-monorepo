@@ -1,10 +1,10 @@
 package com.unicorn.api.infrastructure.medicine
 
+import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.medicine.Count
 import com.unicorn.api.domain.medicine.Medicine
 import com.unicorn.api.domain.medicine.MedicineID
 import com.unicorn.api.domain.medicine.MedicineName
-import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -66,7 +66,7 @@ class MedicineRepositoryTest {
             quantity = 5
         )
 
-        val userID = UserID("test")
+        val userID = UID("test")
         medicineRepository.store(medicine, userID)
 
         val storedMedicine = findMedicineByID(medicine.medicineID)
@@ -85,7 +85,7 @@ class MedicineRepositoryTest {
             quantity = 3
         )
 
-        val userID = UserID("test")
+        val userID = UID("test")
         medicineRepository.store(medicine, userID)
 
         // Update the medicine
@@ -122,7 +122,7 @@ class MedicineRepositoryTest {
             quantity = 1
         )
 
-        val userID = UserID("test")
+        val userID = UID("test")
         medicineRepository.store(medicine, userID)
 
         // Delete the medicine
