@@ -18,7 +18,7 @@ class FamilyEmailController(
     fun get(@RequestHeader("X-UID") uid: String): ResponseEntity<*> {
         try{
             userQueryService.getOrNullBy(uid)
-                ?: return ResponseEntity.status(404).body(ResponseError("User not found"))
+                ?: return ResponseEntity.status(400).body(ResponseError("User not found"))
 
             val result = familyEmailQueryService.get(UserID(uid))
             return ResponseEntity.ok(result)

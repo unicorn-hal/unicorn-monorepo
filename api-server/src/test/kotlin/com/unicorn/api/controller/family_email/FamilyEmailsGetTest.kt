@@ -50,11 +50,11 @@ class FamilyEmailsGetTest {
     }
 
     @Test
-    fun `should return 404 when user is not found`() {
+    fun `should return 400 when user is not found`() {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/family_emails").headers(HttpHeaders().apply {
             add("X-UID", "notFound")
         }))
-        result.andExpect(status().isNotFound)
+        result.andExpect(status().isBadRequest)
         result.andExpect(content().json(
             // language=json
             """
