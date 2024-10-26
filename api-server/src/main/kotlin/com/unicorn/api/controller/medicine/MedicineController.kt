@@ -53,10 +53,10 @@ class MedicineController(
     fun update(
         @RequestHeader("X-UID") uid: String,
         @RequestBody medicinePutRequest: MedicinePutRequest,
-        @PathVariable medicineID: String
+        @PathVariable medicineID: UUID
     ): ResponseEntity<*> {
         try {
-            val result = updateMedicineService.update(MedicineID(UUID.fromString(medicineID)), UserID(uid), medicinePutRequest)
+            val result = updateMedicineService.update(MedicineID(medicineID), UserID(uid), medicinePutRequest)
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))

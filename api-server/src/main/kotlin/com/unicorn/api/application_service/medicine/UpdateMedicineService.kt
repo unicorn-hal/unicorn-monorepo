@@ -21,11 +21,12 @@ class UpdateMedicineServiceImpl(
 ) : UpdateMedicineService {
     override fun update(medicineID: MedicineID, userID: UserID, medicinePutRequest: MedicinePutRequest): Medicine {
         val user = userRepository.getOrNullBy(userID)
-        val medicine = medicineRepository.getOrNullBy(medicineID)
 
         requireNotNull(user) {
             "User not found"
         }
+
+        val medicine = medicineRepository.getOrNullBy(medicineID)
 
         requireNotNull(medicine) {
             "Medicine not found"
