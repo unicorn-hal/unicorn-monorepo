@@ -2,19 +2,22 @@ package com.unicorn.api.controller.family_email
 
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.user.UserID
+import com.unicorn.api.domain.family_email.FamilyEmailID
 import com.unicorn.api.query_service.user.UserQueryService
 import com.unicorn.api.query_service.family_email.FamilyEmailQueryService
 import com.unicorn.api.application_service.family_email.SaveFamilyEmailService
+import com.unicorn.api.application_service.family_email.UpdateFamilyEmailService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
-
+import java.util.UUID
 
 @Controller
 class FamilyEmailController(
     private val userQueryService: UserQueryService,
     private val familyEmailQueryService: FamilyEmailQueryService,
-    private val saveFamilyEmailService: SaveFamilyEmailService
+    private val saveFamilyEmailService: SaveFamilyEmailService,
+    private val updateFamilyEmailService: UpdateFamilyEmailService
 ) {
     @GetMapping("/family_emails")
     fun get(@RequestHeader("X-UID") uid: String): ResponseEntity<*> {
@@ -40,6 +43,18 @@ class FamilyEmailController(
             return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
         }
     }
+
+    @PutMapping("/family_emails/{familyEmailID}")
+    fun put(@RequestHeader("X-UID") uid: String, @RequestBody familyEmailPutRequest: FamilyEmailPutRequest, @PathVariable familyEmailID: UUID): ResponseEntity<*> {
+        try {
+            val result = updateFamilyEmailService.update(FamilyEmailID(familyEmailID), UserID(uid), familyEmailPutRequest)
+            return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
 }
 
 data class FamilyEmailPostRequest(
@@ -47,5 +62,13 @@ data class FamilyEmailPostRequest(
     val firstName: String,
     val lastName: String,
     val phoneNumber: String,
-    val iconImageUrl: String
+    val iconImageUrl: String?
+)
+
+data class FamilyEmailPutRequest(
+    val email: String,
+    val firstName: String,
+    val lastName: String,
+    val phoneNumber: String,
+    val iconImageUrl: String?
 )
