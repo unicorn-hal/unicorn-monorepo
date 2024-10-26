@@ -1,5 +1,6 @@
 package com.unicorn.api.controller.medicine
 
+import com.unicorn.api.application_service.medicine.DeleteMedicineService
 import com.unicorn.api.application_service.medicine.SaveMedicineService
 import com.unicorn.api.application_service.medicine.UpdateMedicineService
 import com.unicorn.api.controller.api_response.ResponseError
@@ -18,7 +19,8 @@ class MedicineController(
     private val medicineQueryService: MedicineQueryService,
     private val userQueryService: UserQueryService,
     private val saveMedicineService: SaveMedicineService,
-    private val updateMedicineService: UpdateMedicineService
+    private val updateMedicineService: UpdateMedicineService,
+    private val deleteMedicineService: DeleteMedicineService
 ) {
     @GetMapping("/medicines")
     fun getMedicines(@RequestHeader("X-UID") uid: String): ResponseEntity<*> {
@@ -58,6 +60,18 @@ class MedicineController(
         try {
             val result = updateMedicineService.update(MedicineID(medicineID), UserID(uid), medicinePutRequest)
             return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @DeleteMapping("/medicines/{medicineID}")
+    fun delete(@RequestHeader("X-UID") uid: String, @PathVariable medicineID: UUID): ResponseEntity<Any> {
+        try {
+            deleteMedicineService.delete(UserID(uid), MedicineID(medicineID))
+            return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
         } catch (e: Exception) {
