@@ -45,9 +45,9 @@ class FamilyEmailController(
     }
 
     @PutMapping("/family_emails/{familyEmailID}")
-    fun put(@RequestHeader("X-UID") uid: String, @RequestBody familyEmailPutRequest: FamilyEmailPutRequest, @PathVariable familyEmailID: String): ResponseEntity<*> {
+    fun put(@RequestHeader("X-UID") uid: String, @RequestBody familyEmailPutRequest: FamilyEmailPutRequest, @PathVariable familyEmailID: UUID): ResponseEntity<*> {
         try {
-            val result = updateFamilyEmailService.update(FamilyEmailID(UUID.fromString(familyEmailID)), UserID(uid), familyEmailPutRequest)
+            val result = updateFamilyEmailService.update(FamilyEmailID(familyEmailID), UserID(uid), familyEmailPutRequest)
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
@@ -62,7 +62,7 @@ data class FamilyEmailPostRequest(
     val firstName: String,
     val lastName: String,
     val phoneNumber: String,
-    val iconImageUrl: String
+    val iconImageUrl: String?
 )
 
 data class FamilyEmailPutRequest(
@@ -70,5 +70,5 @@ data class FamilyEmailPutRequest(
     val firstName: String,
     val lastName: String,
     val phoneNumber: String,
-    val iconImageUrl: String
+    val iconImageUrl: String?
 )

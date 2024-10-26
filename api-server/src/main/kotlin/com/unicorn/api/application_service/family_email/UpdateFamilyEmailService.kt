@@ -29,7 +29,7 @@ class UpdateFamilyEmailServiceImpl(
             firstName = FirstName(familyEmailPutRequest.firstName),
             lastName = LastName(familyEmailPutRequest.lastName),
             phoneNumber = PhoneNumber(familyEmailPutRequest.phoneNumber),
-            iconImageUrl = IconImageUrl(familyEmailPutRequest.iconImageUrl)
+            iconImageUrl = familyEmailPutRequest.iconImageUrl?.let { IconImageUrl(it) }
         )
         familyEmailRepository.store(updateFamilyEmail)
 
