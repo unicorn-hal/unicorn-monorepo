@@ -59,9 +59,9 @@ class FamilyEmailController(
     }
 
     @DeleteMapping("/family_emails/{familyEmailID}")
-    fun delete(@RequestHeader("X-UID") uid: String, @PathVariable familyEmailID: String): ResponseEntity<Any> {
+    fun delete(@RequestHeader("X-UID") uid: String, @PathVariable familyEmailID: UUID): ResponseEntity<Any> {
         try {
-            deleteFamilyEmailService.delete(FamilyEmailID(UUID.fromString(familyEmailID)), UserID(uid))
+            deleteFamilyEmailService.delete(FamilyEmailID(familyEmailID), UserID(uid))
             return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
