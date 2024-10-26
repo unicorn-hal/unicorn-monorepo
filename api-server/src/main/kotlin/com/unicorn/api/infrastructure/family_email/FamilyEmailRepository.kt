@@ -9,7 +9,7 @@ import java.time.LocalDate
 import java.util.*
 
 interface FamilyEmailRepository {
-    fun store(familyEmail: FamilyEmail, userID: UserID): FamilyEmail
+    fun store(familyEmail: FamilyEmail): FamilyEmail
     fun getOrNullBy(familyEmailID: FamilyEmailID): FamilyEmail?
     fun delete(familyEmail: FamilyEmail): Unit
 }
@@ -19,7 +19,7 @@ class FamilyEmailRepositoryImpl(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
 ) : FamilyEmailRepository {
 
-    override fun store(familyEmail: FamilyEmail, userID: UserID): FamilyEmail {
+    override fun store(familyEmail: FamilyEmail): FamilyEmail {
         // language=postgresql
         val sql = """
             INSERT INTO family_emails (
@@ -54,7 +54,7 @@ class FamilyEmailRepositoryImpl(
 
         val sqlParams = MapSqlParameterSource()
             .addValue("familyEmailID", familyEmail.familyEmailID.value)
-            .addValue("userID", userID.value)
+            .addValue("userID", familyEmail.userID.value)
             .addValue("email", familyEmail.email.value)
             .addValue("firstName", familyEmail.firstName.value)
             .addValue("lastName", familyEmail.lastName.value)
@@ -89,6 +89,7 @@ class FamilyEmailRepositoryImpl(
         ) { rs, _ ->
             FamilyEmail.fromStore(
                 familyEmailID = UUID.fromString(rs.getString("family_email_id")),
+                userID = rs.getString("user_id"),
                 email = rs.getString("email"),
                 firstName = rs.getString("family_first_name"),
                 lastName = rs.getString("family_last_name"),

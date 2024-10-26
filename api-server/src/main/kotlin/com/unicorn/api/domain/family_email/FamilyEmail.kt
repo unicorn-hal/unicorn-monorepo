@@ -1,10 +1,11 @@
 package com.unicorn.api.domain.family_email
 
-import com.unicorn.api.domain.user.*
+import com.unicorn.api.domain.user.UserID
 import java.util.*
 
 data class FamilyEmail private constructor(
     val familyEmailID: FamilyEmailID,
+    val userID: UserID,
     val email: Email,
     val firstName: FirstName,
     val lastName: LastName,
@@ -14,6 +15,7 @@ data class FamilyEmail private constructor(
     companion object {
         fun fromStore(
             familyEmailID: UUID,
+            userID: String,
             email: String,
             firstName: String,
             lastName: String,
@@ -22,6 +24,7 @@ data class FamilyEmail private constructor(
         ): FamilyEmail {
             return FamilyEmail(
                 familyEmailID = FamilyEmailID(familyEmailID),
+                userID = UserID(userID),
                 email = Email(email),
                 firstName = FirstName(firstName),
                 lastName = LastName(lastName),
@@ -31,7 +34,7 @@ data class FamilyEmail private constructor(
         }
 
         fun create(
-            familyEmailID: UUID,
+            userID: String,
             email: String,
             firstName: String,
             lastName: String,
@@ -39,7 +42,8 @@ data class FamilyEmail private constructor(
             iconImageUrl: String?
         ): FamilyEmail {
             return FamilyEmail(
-                familyEmailID = FamilyEmailID(familyEmailID),
+                familyEmailID = FamilyEmailID(UUID.randomUUID()),
+                userID = UserID(userID),
                 email = Email(email),
                 firstName = FirstName(firstName),
                 lastName = LastName(lastName),

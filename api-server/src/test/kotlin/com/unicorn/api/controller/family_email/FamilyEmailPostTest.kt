@@ -77,7 +77,7 @@ class FamilyEmailPostTest {
             phoneNumber = "09012345678",
             iconImageUrl = "http://example.com/icon.png"
         )
-        val userID = ""
+        val userID = "notfound"
 
         val result = mockMvc.perform(
             MockMvcRequestBuilders.post("/family_emails").headers(HttpHeaders().apply {

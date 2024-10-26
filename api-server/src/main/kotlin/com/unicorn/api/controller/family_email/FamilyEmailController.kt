@@ -32,9 +32,6 @@ class FamilyEmailController(
     @PostMapping("/family_emails")
     fun post(@RequestHeader("X-UID") uid: String, @RequestBody familyEmailPostRequest: FamilyEmailPostRequest): ResponseEntity<*> {
         try {
-            userQueryService.getOrNullBy(uid)
-                ?: return ResponseEntity.status(400).body(ResponseError("User not found"))
-
             val result = saveFamilyEmailService.save(UserID(uid), familyEmailPostRequest)
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {

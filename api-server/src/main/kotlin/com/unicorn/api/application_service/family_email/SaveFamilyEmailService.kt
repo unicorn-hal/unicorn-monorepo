@@ -23,7 +23,7 @@ class SaveFamilyEmailServiceImpl(
         requireNotNull(user) { "User not found" }
 
         val familyEmail = FamilyEmail.create(
-            familyEmailID = UUID.randomUUID(),
+            userID = userID.value,
             email = familyEmailPostRequest.email,
             firstName = familyEmailPostRequest.firstName,
             lastName = familyEmailPostRequest.lastName,
@@ -31,7 +31,7 @@ class SaveFamilyEmailServiceImpl(
             iconImageUrl = familyEmailPostRequest.iconImageUrl
         )
 
-        familyEmailRepository.store(familyEmail, userID)
+        familyEmailRepository.store(familyEmail)
 
         return familyEmail
     }

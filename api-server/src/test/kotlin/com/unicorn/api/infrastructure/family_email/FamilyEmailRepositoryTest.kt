@@ -1,7 +1,6 @@
  package com.unicorn.api.infrastructure.family_email
 
 import com.unicorn.api.domain.family_email.*
-import com.unicorn.api.domain.user.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -49,6 +48,7 @@ class FamilyEmailRepositoryTest {
         return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
             FamilyEmail.fromStore(
                 familyEmailID = UUID.fromString(rs.getString("family_email_id")),
+                userID = rs.getString("user_id"),
                 email = rs.getString("email"),
                 firstName = rs.getString("family_first_name"),
                 lastName = rs.getString("family_last_name"),
@@ -61,17 +61,18 @@ class FamilyEmailRepositoryTest {
     @Test
     fun `should store family email`() {
         val familyEmail = FamilyEmail.create(
-            familyEmailID = UUID.randomUUID(),
+            userID = "test",
             email = "test2@example.com",
             firstName = "test",
             lastName = "test",
             phoneNumber = "07012345678",
             iconImageUrl = "http://example.com/icon.png"
         )
-        val userID = UserID("test")
-        FamilyEmailRepository.store(familyEmail, userID)
+        
+
+        FamilyEmailRepository.store(familyEmail)
         val storedFamilyEmail = findFamilyEmailByID(familyEmail.familyEmailID.value)
-        assertEquals(familyEmail.familyEmailID, storedFamilyEmail?.familyEmailID)
+        assertEquals(familyEmail.userID, storedFamilyEmail?.userID)
         assertEquals(familyEmail.email, storedFamilyEmail?.email)
         assertEquals(familyEmail.firstName, storedFamilyEmail?.firstName)
         assertEquals(familyEmail.lastName, storedFamilyEmail?.lastName)
@@ -80,24 +81,32 @@ class FamilyEmailRepositoryTest {
     }
     @Test
     fun `should update family email`() {
-        val familyEmail = FamilyEmail.create(
+        val familyEmail = FamilyEmail.fromStore(
             familyEmailID = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d470"),
-            email = "test@test.com",
-            firstName = "test",
-            lastName = "test",
-            phoneNumber = "07012345678",
-            iconImageUrl = "http://example.com/icon.png"
+            userID = "test",
+            email = "sample@sample.com",
+            firstName = "太郎",
+            lastName = "山田",
+            phoneNumber = "09012345678",
+            iconImageUrl = "https://example.com"
         )
-        val userID = UserID("test")
-        FamilyEmailRepository.store(familyEmail, userID)
+        val updatedFamilyEmail = familyEmail.update(
+            email = Email("test@example.com"),
+            firstName = FirstName("John"),
+            lastName = LastName("Doe"),
+            phoneNumber = PhoneNumber("08087654321"),
+            iconImageUrl = IconImageUrl("http://example.com/newicon.png")
+        )
+        FamilyEmailRepository.store(updatedFamilyEmail)
 
         val result = findFamilyEmailByID(familyEmail.familyEmailID.value)
         assertEquals(familyEmail.familyEmailID, result?.familyEmailID)
-        assertEquals(familyEmail.email, result?.email)
-        assertEquals(familyEmail.firstName, result?.firstName)
-        assertEquals(familyEmail.lastName, result?.lastName)
-        assertEquals(familyEmail.phoneNumber, result?.phoneNumber)
-        assertEquals(familyEmail.iconImageUrl, result?.iconImageUrl)
+        assertEquals(familyEmail.userID, result?.userID)
+        assertEquals(updatedFamilyEmail.email, result?.email)
+        assertEquals(updatedFamilyEmail.firstName, result?.firstName)
+        assertEquals(updatedFamilyEmail.lastName, result?.lastName)
+        assertEquals(updatedFamilyEmail.phoneNumber, result?.phoneNumber)
+        assertEquals(updatedFamilyEmail.iconImageUrl, result?.iconImageUrl)
     }
 
     @Test
@@ -130,15 +139,14 @@ class FamilyEmailRepositoryTest {
     @Test
     fun `should delete family email`() {
         val familyEmail = FamilyEmail.create(
-            familyEmailID = UUID.randomUUID(),
+            userID = "test",
             email = "sample@sample.com",
             firstName = "太郎",
             lastName = "山田",
             phoneNumber = "09012345678",
             iconImageUrl = "http://example.com/icon.png"
         )
-        val userID = UserID("test")
-        FamilyEmailRepository.store(familyEmail, userID)
+        FamilyEmailRepository.store(familyEmail)
         FamilyEmailRepository.delete(familyEmail)
         val deletedFamilyEmail = FamilyEmailRepository.getOrNullBy(familyEmail.familyEmailID)
         assertNull(deletedFamilyEmail)
