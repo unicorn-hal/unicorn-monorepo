@@ -7,6 +7,7 @@ import com.unicorn.api.query_service.user.UserQueryService
 import com.unicorn.api.query_service.family_email.FamilyEmailQueryService
 import com.unicorn.api.application_service.family_email.SaveFamilyEmailService
 import com.unicorn.api.application_service.family_email.UpdateFamilyEmailService
+import com.unicorn.api.application_service.family_email.DeleteFamilyEmailService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -17,7 +18,8 @@ class FamilyEmailController(
     private val userQueryService: UserQueryService,
     private val familyEmailQueryService: FamilyEmailQueryService,
     private val saveFamilyEmailService: SaveFamilyEmailService,
-    private val updateFamilyEmailService: UpdateFamilyEmailService
+    private val updateFamilyEmailService: UpdateFamilyEmailService,
+    private val deleteFamilyEmailService: DeleteFamilyEmailService
 ) {
     @GetMapping("/family_emails")
     fun get(@RequestHeader("X-UID") uid: String): ResponseEntity<*> {
@@ -55,7 +57,19 @@ class FamilyEmailController(
             return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
         }
     }
-}
+
+    @DeleteMapping("/family_emails/{familyEmailID}")
+    fun delete(@RequestHeader("X-UID") uid: String, @PathVariable familyEmailID: String): ResponseEntity<Any> {
+        try {
+            deleteFamilyEmailService.delete(FamilyEmailID(UUID.fromString(familyEmailID)), UserID(uid))
+            return ResponseEntity.noContent().build()
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
+}       
 
 data class FamilyEmailPostRequest(
     val email: String,
