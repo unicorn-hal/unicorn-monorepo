@@ -14,6 +14,7 @@ import com.unicorn.api.infrastructure.department.DepartmentRepository
 import com.unicorn.api.infrastructure.doctor.DoctorRepository
 import com.unicorn.api.infrastructure.hospital.HospitalRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 interface DoctorUpdateService {
     fun update(doctorID: DoctorID, doctorPutRequest: DoctorPutRequest): DoctorPutRequest
@@ -27,6 +28,7 @@ class DoctorUpdateServiceImpl(
     private val callSupportRepository: CallSupportRepository,
     private val chatSupportRepository: ChatSupportRepository
 ) : DoctorUpdateService {
+    @Transactional
     override fun update(doctorID: DoctorID, doctorPutRequest: DoctorPutRequest): DoctorPutRequest {
         val doctor = doctorRepository.getOrNullBy(doctorID)
         requireNotNull(doctor) { "Doctor not found" }
