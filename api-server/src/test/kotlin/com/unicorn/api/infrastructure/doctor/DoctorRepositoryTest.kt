@@ -124,11 +124,20 @@ class DoctorRepositoryTest {
 
     @Test
     fun `should delete doctor`() {
-        val doctorID = DoctorID("doctor")
+        val doctor = Doctor.fromStore(
+            doctorID = "doctor",
+            hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
+            firstName = "test",
+            lastName = "test",
+            email = "test@test.com",
+            phoneNumber = "1234567890",
+            doctorIconUrl = "https://example.com",
+            departments = listOf(UUID.fromString("b68a87a3-b7f1-4b85-b0ab-6c620d68d791")),
+        )
 
-        doctorRepository.delete(doctorID)
+        doctorRepository.delete(doctor)
 
-        val act = findUserByDoctorID(doctorID.value)
+        val act = findUserByDoctorID(doctor.doctorID.value)
         assertEquals(null, act)
     }
 

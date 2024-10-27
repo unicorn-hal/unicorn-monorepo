@@ -11,7 +11,7 @@ import java.util.*
 interface DoctorRepository {
     fun store(doctor: Doctor): Doctor
     fun getOrNullBy(doctorID: DoctorID): Doctor?
-    fun delete(doctorID: DoctorID): Unit
+    fun delete(doctorID: Doctor): Unit
 }
 
 @Repository
@@ -155,15 +155,15 @@ class DoctorRepositoryImpl(
         }.singleOrNull()
     }
 
-    override fun delete(doctorID: DoctorID) {
+    override fun delete(doctor: Doctor) {
         val sqlParams = MapSqlParameterSource()
-            .addValue("doctorID", doctorID.value)
+            .addValue("doctorID", doctor.doctorID.value)
 
         namedParameterJdbcTemplate.update(deleteSql, sqlParams)
 
         // 関連する診療科との関係を削除
         val deleteRelationParams = MapSqlParameterSource()
-            .addValue("doctorID", doctorID.value)
+            .addValue("doctorID", doctor.doctorID.value)
 
         namedParameterJdbcTemplate.update(deleteRelationSql, deleteRelationParams)
     }

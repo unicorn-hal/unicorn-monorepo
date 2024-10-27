@@ -1,6 +1,7 @@
 package com.unicorn.api.controller.doctor
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.unicorn.api.application_service.doctor.DoctorDeleteService
 import com.unicorn.api.application_service.doctor.DoctorSaveService
 import com.unicorn.api.application_service.doctor.DoctorUpdateService
 import com.unicorn.api.controller.api_response.ResponseError
@@ -8,18 +9,15 @@ import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.doctor.DoctorID
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.*
 import java.time.LocalTime
 import java.util.*
 
 @Controller
 class DoctorController(
     private val doctorSaveService: DoctorSaveService,
-    private val doctorUpdateService: DoctorUpdateService
+    private val doctorUpdateService: DoctorUpdateService,
+    private val doctorDeleteService: DoctorDeleteService
 ) {
     @PostMapping("/doctors")
     fun post(
@@ -45,6 +43,21 @@ class DoctorController(
         try {
             val result = doctorUpdateService.update(DoctorID(doctorID), doctorPutRequest)
             return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @DeleteMapping("/doctors/{doctorID}")
+    fun delete(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable doctorID: String
+    ): ResponseEntity<Any> {
+        try {
+            doctorDeleteService.delete(DoctorID(doctorID))
+            return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
         } catch (e: Exception) {
