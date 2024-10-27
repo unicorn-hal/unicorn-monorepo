@@ -46,7 +46,7 @@ class DepartmentRepositoryImpl(
         val params = MapSqlParameterSource()
             .addValue("departmentIDs", departmentIDs.map { it.value })
 
-        val result =  namedParameterJdbcTemplate.query(sql, params) { rs, _ ->
+        val result = namedParameterJdbcTemplate.query(sql, params) { rs, _ ->
             Department.fromStore(
                 departmentID = UUID.fromString(rs.getString("department_id")),
                 departmentName = rs.getString("department_name")
