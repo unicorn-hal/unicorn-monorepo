@@ -20,10 +20,6 @@ class DoctorTest {
         val phoneNumber = "1234567890"
         val doctorIconUrl = "doctorIconUrl"
         val departments = listOf(DepartmentID(UUID.randomUUID()))
-        val chatSupportStartHour = LocalTime.of(9, 0)
-        val chatSupportEndHour = LocalTime.of(17, 0)
-        val callSupportStartHour = LocalTime.of(9, 0)
-        val callSupportEndHour = LocalTime.of(17, 0)
 
         val doctor = Doctor.create(
             doctorID,
@@ -64,10 +60,6 @@ class DoctorTest {
         val phoneNumber = "1234567890"
         val doctorIconUrl = "doctorIconUrl"
         val departments = listOf(DepartmentID(UUID.randomUUID()))
-        val chatSupportStartHour = LocalTime.of(9, 0)
-        val chatSupportEndHour = LocalTime.of(17, 0)
-        val callSupportStartHour = LocalTime.of(9, 0)
-        val callSupportEndHour = LocalTime.of(17, 0)
 
         val doctor = Doctor.create(
             doctorID,
@@ -77,11 +69,7 @@ class DoctorTest {
             email,
             phoneNumber,
             doctorIconUrl,
-            departments,
-//            chatSupportStartHour,
-//            chatSupportEndHour,
-//            callSupportStartHour,
-//            callSupportEndHour
+            departments
         )
 
         val updatedFirstName = "updatedFirstName"
@@ -93,11 +81,7 @@ class DoctorTest {
             Email(email),
             PhoneNumber(phoneNumber),
             DoctorIconUrl(doctorIconUrl),
-            departments,
-//            ChatSupportStartHour(chatSupportStartHour),
-//            ChatSupportEndHour(chatSupportEndHour),
-//            CallSupportStartHour(callSupportStartHour),
-//            CallSupportEndHour(callSupportEndHour)
+            departments
         )
 
         assertThat(updateDoctor.firstName).isEqualTo(FirstName(updatedFirstName))
@@ -113,10 +97,6 @@ class DoctorTest {
         val phoneNumber = "1234567890"
         val doctorIconUrl = "doctorIconUrl"
         val departments = listOf(DepartmentID(UUID.randomUUID()))
-        val chatSupportStartHour = LocalTime.of(9, 0)
-        val chatSupportEndHour = LocalTime.of(17, 0)
-        val callSupportStartHour = LocalTime.of(9, 0)
-        val callSupportEndHour = LocalTime.of(17, 0)
 
         val exception = assertThrows(IllegalArgumentException::class.java) {
             Doctor.create(
@@ -127,11 +107,7 @@ class DoctorTest {
                 email,
                 phoneNumber,
                 doctorIconUrl,
-                departments,
-//                chatSupportStartHour,
-//                chatSupportEndHour,
-//                callSupportStartHour,
-//                callSupportEndHour
+                departments
             )
         }
 

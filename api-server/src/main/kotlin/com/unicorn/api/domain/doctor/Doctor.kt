@@ -28,11 +28,7 @@ data class Doctor private constructor (
             email: String,
             phoneNumber: String,
             doctorIconUrl: String?,
-            departments: List<DepartmentID>,
-//            chatSupportStartHour: LocalTime,
-//            chatSupportEndHour: LocalTime,
-//            callSupportStartHour: LocalTime,
-//            callSupportEndHour: LocalTime
+            departments: List<DepartmentID>
         ): Doctor {
             return Doctor(
                 doctorID = DoctorID(doctorID),
@@ -42,11 +38,7 @@ data class Doctor private constructor (
                 email = Email(email),
                 phoneNumber = PhoneNumber(phoneNumber),
                 doctorIconUrl = doctorIconUrl?.let { DoctorIconUrl(it) },
-                departments = departments,
-//                chatSupportStartHour = ChatSupportStartHour(chatSupportStartHour),
-//                chatSupportEndHour = ChatSupportEndHour(chatSupportEndHour),
-//                callSupportStartHour = CallSupportStartHour(callSupportStartHour),
-//                callSupportEndHour = CallSupportEndHour(callSupportEndHour)
+                departments = departments
             )
         }
 
@@ -58,11 +50,7 @@ data class Doctor private constructor (
             email: String,
             phoneNumber: String,
             doctorIconUrl: String?,
-            departments: List<UUID>,
-//            chatSupportStartHour: LocalTime,
-//            chatSupportEndHour: LocalTime,
-//            callSupportStartHour: LocalTime,
-//            callSupportEndHour: LocalTime
+            departments: List<UUID>
         ): Doctor {
             return Doctor(
                 doctorID = DoctorID(doctorID),
@@ -72,11 +60,7 @@ data class Doctor private constructor (
                 email = Email(email),
                 phoneNumber = PhoneNumber(phoneNumber),
                 doctorIconUrl = doctorIconUrl?.let { DoctorIconUrl(it) },
-                departments = departments.map { DepartmentID(it) },
-//                chatSupportStartHour = ChatSupportStartHour(chatSupportStartHour),
-//                chatSupportEndHour = ChatSupportEndHour(chatSupportEndHour),
-//                callSupportStartHour = CallSupportStartHour(callSupportStartHour),
-//                callSupportEndHour = CallSupportEndHour(callSupportEndHour)
+                departments = departments.map { DepartmentID(it) }
             )
         }
     }
@@ -88,11 +72,7 @@ data class Doctor private constructor (
         email: Email,
         phoneNumber: PhoneNumber,
         doctorIconUrl: DoctorIconUrl?,
-        departments: List<DepartmentID>,
-//        chatSupportStartHour: ChatSupportStartHour,
-//        chatSupportEndHour: ChatSupportEndHour,
-//        callSupportStartHour: CallSupportStartHour,
-//        callSupportEndHour: CallSupportEndHour
+        departments: List<DepartmentID>
     ): Doctor {
         return this.copy(
             hospitalID = hospitalID,
@@ -101,11 +81,7 @@ data class Doctor private constructor (
             email = email,
             phoneNumber = phoneNumber,
             doctorIconUrl = doctorIconUrl,
-            departments = departments,
-//            chatSupportStartHour = chatSupportStartHour,
-//            chatSupportEndHour = chatSupportEndHour,
-//            callSupportStartHour = callSupportStartHour,
-//            callSupportEndHour = callSupportEndHour
+            departments = departments
         )
     }
 }
@@ -148,31 +124,3 @@ value class PhoneNumber(val value: String) {
 
 @JvmInline
 value class DoctorIconUrl(val value: String)
-
-@JvmInline
-value class ChatSupportStartHour(val value: LocalTime) {
-    init {
-        require(value.isBefore(LocalTime.of(23, 59))) { "start hour should be before 23:59" }
-    }
-}
-
-@JvmInline
-value class ChatSupportEndHour(val value: LocalTime) {
-    init {
-        require(value.isBefore(LocalTime.of(23, 59))) { "end hour should be before 23:59" }
-    }
-}
-
-@JvmInline
-value class CallSupportStartHour(val value: LocalTime) {
-    init {
-        require(value.isBefore(LocalTime.of(23, 59))) { "start hour should be before 23:59" }
-    }
-}
-
-@JvmInline
-value class CallSupportEndHour(val value: LocalTime) {
-    init {
-        require(value.isBefore(LocalTime.of(23, 59))) { "end hour should be before 23:59" }
-    }
-}
