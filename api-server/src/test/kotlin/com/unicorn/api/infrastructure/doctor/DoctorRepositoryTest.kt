@@ -96,6 +96,15 @@ class DoctorRepositoryTest {
     }
 
     @Test
+    fun `should return null when doctor not found`() {
+        val doctorID = DoctorID("not-found")
+
+        val act = doctorRepository.getOrNullBy(doctorID)
+
+        assertEquals(null, act)
+    }
+
+    @Test
     fun `should store doctor`() {
         val doctor = Doctor.fromStore(
             doctorID = "doctor3",
