@@ -42,3 +42,9 @@ kotlin {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+//flyway {
+//	url = "jdbc:postgresql://localhost:5432/unicorn-postgres"
+//	user = "postgres"
+//	password = "password"
+//}
