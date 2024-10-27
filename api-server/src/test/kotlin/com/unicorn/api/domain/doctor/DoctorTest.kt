@@ -5,7 +5,6 @@ import com.unicorn.api.domain.hospital.HospitalID
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
-import java.time.LocalTime
 import java.util.*
 
 class DoctorTest {
@@ -29,11 +28,7 @@ class DoctorTest {
             email,
             phoneNumber,
             doctorIconUrl,
-            departments,
-//            chatSupportStartHour,
-//            chatSupportEndHour,
-//            callSupportStartHour,
-//            callSupportEndHour
+            departments
         )
 
         assertThat(doctor.doctorID).isEqualTo(DoctorID(doctorID))
@@ -44,10 +39,6 @@ class DoctorTest {
         assertThat(doctor.phoneNumber).isEqualTo(PhoneNumber(phoneNumber))
         assertThat(doctor.doctorIconUrl).isEqualTo(DoctorIconUrl(doctorIconUrl))
         assertThat(doctor.departments).isEqualTo(departments)
-//        assertThat(doctor.chatSupportStartHour).isEqualTo(ChatSupportStartHour(chatSupportStartHour))
-//        assertThat(doctor.chatSupportEndHour).isEqualTo(ChatSupportEndHour(chatSupportEndHour))
-//        assertThat(doctor.callSupportStartHour).isEqualTo(CallSupportStartHour(callSupportStartHour))
-//        assertThat(doctor.callSupportEndHour).isEqualTo(CallSupportEndHour(callSupportEndHour))
     }
 
     @Test
