@@ -13,11 +13,7 @@ data class Doctor private constructor (
     val email: Email,
     val phoneNumber: PhoneNumber,
     val doctorIconUrl: DoctorIconUrl?,
-    val departments: List<DepartmentID>,
-//    val chatSupportStartHour: ChatSupportStartHour,
-//    val chatSupportEndHour: ChatSupportEndHour,
-//    val callSupportStartHour: CallSupportStartHour,
-//    val callSupportEndHour: CallSupportEndHour
+    val departments: List<DepartmentID>
 ) {
     companion object {
         fun create(
