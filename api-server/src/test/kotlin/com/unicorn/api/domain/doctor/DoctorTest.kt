@@ -2,10 +2,10 @@ package com.unicorn.api.domain.doctor
 
 import com.unicorn.api.domain.department.DepartmentID
 import com.unicorn.api.domain.hospital.HospitalID
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.util.*
+import kotlin.test.assertEquals
 
 class DoctorTest {
 
@@ -31,14 +31,14 @@ class DoctorTest {
             departments
         )
 
-        assertThat(doctor.doctorID).isEqualTo(DoctorID(doctorID))
-        assertThat(doctor.hospitalID).isEqualTo(hospitalID)
-        assertThat(doctor.firstName).isEqualTo(FirstName(firstName))
-        assertThat(doctor.lastName).isEqualTo(LastName(lastName))
-        assertThat(doctor.email).isEqualTo(Email(email))
-        assertThat(doctor.phoneNumber).isEqualTo(PhoneNumber(phoneNumber))
-        assertThat(doctor.doctorIconUrl).isEqualTo(DoctorIconUrl(doctorIconUrl))
-        assertThat(doctor.departments).isEqualTo(departments)
+        assertEquals(doctorID, doctor.doctorID.value)
+        assertEquals(hospitalID, doctor.hospitalID)
+        assertEquals(firstName, doctor.firstName.value)
+        assertEquals(lastName, doctor.lastName.value)
+        assertEquals(email, doctor.email.value)
+        assertEquals(phoneNumber, doctor.phoneNumber.value)
+        assertEquals(doctorIconUrl, doctor.doctorIconUrl?.value)
+        assertEquals(departments, doctor.departments)
     }
 
     @Test
@@ -75,7 +75,7 @@ class DoctorTest {
             departments
         )
 
-        assertThat(updateDoctor.firstName).isEqualTo(FirstName(updatedFirstName))
+        assertEquals(updatedFirstName, updateDoctor.firstName.value)
     }
 
     @Test
@@ -102,6 +102,6 @@ class DoctorTest {
             )
         }
 
-        assertThat(exception.message).isEqualTo("email should be valid")
+        assertEquals("Invalid email", exception.message)
     }
 }
