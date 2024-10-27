@@ -102,6 +102,6 @@ class DoctorTest {
             )
         }
 
-        assertEquals("Invalid email", exception.message)
+        assertEquals("email should be valid", exception.message)
     }
 }
