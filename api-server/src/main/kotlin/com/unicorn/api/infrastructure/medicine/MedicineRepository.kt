@@ -1,6 +1,5 @@
 package com.unicorn.api.infrastructure.medicine
 
-import com.unicorn.api.domain.account.UID
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
