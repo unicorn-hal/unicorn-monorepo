@@ -17,19 +17,19 @@ import com.unicorn.api.infrastructure.hospital.HospitalRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-interface DoctorSaveService {
+interface SaveDoctorService {
     fun save(uid: UID, doctorPostRequest: DoctorPostRequest): DoctorPostRequest
 }
 
 @Service
-class DoctorSaveServiceImpl(
+class SaveDoctorServiceImpl(
     private val accountRepository: AccountRepository,
     private val doctorRepository: DoctorRepository,
     private val hospitalRepository: HospitalRepository,
     private val departmentRepository: DepartmentRepository,
     private val callSupportRepository: CallSupportRepository,
     private val chatSupportRepository: ChatSupportRepository
-) : DoctorSaveService {
+) : SaveDoctorService {
     @Transactional
     override fun save(uid: UID, doctorPostRequest: DoctorPostRequest): DoctorPostRequest {
         val account = accountRepository.getOrNullByUid(uid)

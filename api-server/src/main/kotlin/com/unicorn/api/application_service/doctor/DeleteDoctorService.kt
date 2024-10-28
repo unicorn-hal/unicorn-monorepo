@@ -7,16 +7,16 @@ import com.unicorn.api.infrastructure.doctor.DoctorRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-interface DoctorDeleteService {
+interface DeleteDoctorService {
     fun delete(doctorID: DoctorID): Unit
 }
 
 @Service
-class DoctorDeleteServiceImpl (
+class DeleteDoctorServiceImpl (
     private val doctorRepository: DoctorRepository,
     private val callSupportRepository: CallSupportRepository,
     private val chatSupportRepository: ChatSupportRepository
-): DoctorDeleteService {
+): DeleteDoctorService {
     @Transactional
     override fun delete(doctorID: DoctorID) {
         val doctor = doctorRepository.getOrNullBy(doctorID)

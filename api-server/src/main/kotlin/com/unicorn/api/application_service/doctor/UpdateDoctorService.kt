@@ -16,18 +16,18 @@ import com.unicorn.api.infrastructure.hospital.HospitalRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-interface DoctorUpdateService {
+interface UpdateDoctorService {
     fun update(doctorID: DoctorID, doctorPutRequest: DoctorPutRequest): DoctorPutRequest
 }
 
 @Service
-class DoctorUpdateServiceImpl(
+class UpdateDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
     private val hospitalRepository: HospitalRepository,
     private val departmentRepository: DepartmentRepository,
     private val callSupportRepository: CallSupportRepository,
     private val chatSupportRepository: ChatSupportRepository
-) : DoctorUpdateService {
+) : UpdateDoctorService {
     @Transactional
     override fun update(doctorID: DoctorID, doctorPutRequest: DoctorPutRequest): DoctorPutRequest {
         val doctor = doctorRepository.getOrNullBy(doctorID)

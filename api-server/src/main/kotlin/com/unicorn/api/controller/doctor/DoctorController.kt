@@ -1,9 +1,7 @@
 package com.unicorn.api.controller.doctor
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import com.unicorn.api.application_service.doctor.DoctorDeleteService
-import com.unicorn.api.application_service.doctor.DoctorSaveService
-import com.unicorn.api.application_service.doctor.DoctorUpdateService
+import com.unicorn.api.application_service.doctor.*
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.department.DepartmentID
@@ -18,9 +16,9 @@ import java.util.*
 
 @Controller
 class DoctorController(
-    private val doctorSaveService: DoctorSaveService,
-    private val doctorUpdateService: DoctorUpdateService,
-    private val doctorDeleteService: DoctorDeleteService,
+    private val saveDoctorService: SaveDoctorService,
+    private val updateDoctorService: UpdateDoctorService,
+    private val deleteDoctorService: DeleteDoctorService,
     private val doctorQueryService: DoctorQueryService
 ) {
     @PostMapping("/doctors")
@@ -29,7 +27,7 @@ class DoctorController(
         @RequestBody doctorPostRequest: DoctorPostRequest
     ): ResponseEntity<*> {
         try {
-            val result = doctorSaveService.save(UID(uid), doctorPostRequest)
+            val result = saveDoctorService.save(UID(uid), doctorPostRequest)
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
@@ -45,7 +43,7 @@ class DoctorController(
         @RequestBody doctorPutRequest: DoctorPutRequest
     ): ResponseEntity<*> {
         try {
-            val result = doctorUpdateService.update(DoctorID(doctorID), doctorPutRequest)
+            val result = updateDoctorService.update(DoctorID(doctorID), doctorPutRequest)
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
@@ -60,7 +58,7 @@ class DoctorController(
         @PathVariable doctorID: String
     ): ResponseEntity<Any> {
         try {
-            doctorDeleteService.delete(DoctorID(doctorID))
+            deleteDoctorService.delete(DoctorID(doctorID))
             return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
