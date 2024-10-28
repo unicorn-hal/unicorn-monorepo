@@ -50,7 +50,7 @@ class AccountPostTest {
                 "role": "${account.role}",
                 "fcmTokenId": "${account.fcmTokenId}"
             }
-        """.trimIndent(), true))
+        """.trimIndent()))
     }
 
     @Test
@@ -75,7 +75,7 @@ class AccountPostTest {
                 "role": "${account.role}",
                 "fcmTokenId": "${account.fcmTokenId}"
             }
-        """.trimIndent(), true))
+        """.trimIndent()))
     }
 
     @Test

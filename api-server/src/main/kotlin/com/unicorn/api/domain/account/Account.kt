@@ -1,7 +1,5 @@
 package com.unicorn.api.domain.account
 
-import java.time.OffsetDateTime
-
 data class Account private constructor(
     val uid: UID,
     val role: Role,
@@ -37,6 +35,14 @@ data class Account private constructor(
                 fcmTokenId = FCMTokenId(fcmTokenId)
             )
         }
+    }
+
+    fun isUser(): Boolean {
+        return role == Role.user
+    }
+
+    fun isDoctor(): Boolean {
+        return role == Role.doctor
     }
 }
 
