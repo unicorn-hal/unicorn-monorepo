@@ -7,6 +7,7 @@ import com.unicorn.api.application_service.doctor.DoctorUpdateService
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.doctor.DoctorID
+import com.unicorn.api.domain.hospital.HospitalID
 import com.unicorn.api.query_service.doctor.DoctorQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -75,6 +76,21 @@ class DoctorController(
         try {
             val result = doctorQueryService.getOrNullBy(DoctorID(doctorID))
                 ?: return ResponseEntity.notFound().build()
+            return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @GetMapping("/hospitals/{hospitalID}/doctors")
+    fun getDoctorsByHospital(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable hospitalID: UUID
+    ): ResponseEntity<Any> {
+        try {
+            val result = doctorQueryService.getBy(HospitalID(hospitalID))
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
