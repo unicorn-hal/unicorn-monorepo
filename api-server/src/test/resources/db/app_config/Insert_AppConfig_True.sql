@@ -1,0 +1,1 @@
+INSERT INTO app_config (app_config_id, available, created_at) VALUES (uuid_generate_v4(), true, NOW());
