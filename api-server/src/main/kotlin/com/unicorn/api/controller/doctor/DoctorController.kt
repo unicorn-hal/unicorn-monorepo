@@ -7,6 +7,7 @@ import com.unicorn.api.application_service.doctor.DoctorUpdateService
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.doctor.DoctorID
+import com.unicorn.api.query_service.doctor.DoctorQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -17,7 +18,8 @@ import java.util.*
 class DoctorController(
     private val doctorSaveService: DoctorSaveService,
     private val doctorUpdateService: DoctorUpdateService,
-    private val doctorDeleteService: DoctorDeleteService
+    private val doctorDeleteService: DoctorDeleteService,
+    private val doctorQueryService: DoctorQueryService
 ) {
     @PostMapping("/doctors")
     fun post(
@@ -58,6 +60,22 @@ class DoctorController(
         try {
             doctorDeleteService.delete(DoctorID(doctorID))
             return ResponseEntity.noContent().build()
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @GetMapping("/doctors/{doctorID}")
+    fun get(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable doctorID: String
+    ): ResponseEntity<Any> {
+        try {
+            val result = doctorQueryService.getOrNullBy(DoctorID(doctorID))
+                ?: return ResponseEntity.notFound().build()
+            return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
         } catch (e: Exception) {
