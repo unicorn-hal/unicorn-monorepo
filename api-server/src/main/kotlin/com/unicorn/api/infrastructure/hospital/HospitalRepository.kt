@@ -42,7 +42,6 @@ class HospitalRepositoryImpl(
                 postalCode = rs.getString("postal_code"),
                 phoneNumber = rs.getString("phone_number")
             )
-        }.firstOrNull()
+        }.singleOrNull()
     }
-
 }

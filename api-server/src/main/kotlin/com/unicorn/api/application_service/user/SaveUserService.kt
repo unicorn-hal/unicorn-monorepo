@@ -22,6 +22,7 @@ class SaveUserServiceImpl(
     override fun save(uid: UID, userPostRequest: UserPostRequest): User {
         val account = accountRepository.getOrNullByUid(uid)
         requireNotNull(account) { "Account not found" }
+        require(account.isUser()) { "Account is not user" }
 
         val existingUser = userRepository.getOrNullBy(UserID(account.uid.value))
         require(existingUser == null) { "User already exists" }
