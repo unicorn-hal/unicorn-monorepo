@@ -6,6 +6,7 @@ import com.unicorn.api.application_service.doctor.DoctorSaveService
 import com.unicorn.api.application_service.doctor.DoctorUpdateService
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.account.UID
+import com.unicorn.api.domain.department.DepartmentID
 import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.hospital.HospitalID
 import com.unicorn.api.query_service.doctor.DoctorQueryService
@@ -91,6 +92,23 @@ class DoctorController(
     ): ResponseEntity<Any> {
         try {
             val result = doctorQueryService.getBy(HospitalID(hospitalID))
+            return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @GetMapping("/doctors")
+    fun getDoctors(
+        @RequestHeader("X-UID") uid: String,
+        @RequestParam departmentID: UUID?,
+        @RequestParam doctorName: String?,
+        @RequestParam hospitalName: String?
+    ): ResponseEntity<Any> {
+        try {
+            val result = doctorQueryService.searchDoctors(departmentID?.let { DepartmentID(it) }, doctorName, hospitalName)
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
