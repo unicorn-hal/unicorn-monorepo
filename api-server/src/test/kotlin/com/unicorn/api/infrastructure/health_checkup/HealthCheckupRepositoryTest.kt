@@ -60,6 +60,7 @@ class HealthCheckupRepositoryTest {
 
     @Test
     fun `should store health checkup`() {
+
         val healthCheckup = HealthCheckup.create(
             userID = "test",
             bodyTemperature = 36.5,
@@ -67,7 +68,9 @@ class HealthCheckupRepositoryTest {
             medicalRecord = "test",
             date = LocalDate.parse("2021-01-01")
         )
+
         healthCheckupRepository.store(healthCheckup)
+
         val storedHealthCheckup = findHealthCheckupByID(healthCheckup.healthCheckupID.value)
         assertEquals(healthCheckup.userID, storedHealthCheckup?.userID)
         assertEquals(healthCheckup.bodyTemperature, storedHealthCheckup?.bodyTemperature)
@@ -78,6 +81,7 @@ class HealthCheckupRepositoryTest {
 
     @Test
     fun `should update health checkup`() {
+
         val healthCheckup = HealthCheckup.fromStore(
             healthCheckupID = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d470"),
             userID = "test",
@@ -107,7 +111,9 @@ class HealthCheckupRepositoryTest {
 
     @Test
     fun `should find health checkup by ID`() {
+
         val healthCheckupID = HealthCheckupID(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d470"))
+
         val foundHealthCheckup = healthCheckupRepository.getOrNullBy(healthCheckupID)
         assertNotNull(foundHealthCheckup)
         assertEquals(healthCheckupID, foundHealthCheckup!!.healthCheckupID)
@@ -120,32 +126,32 @@ class HealthCheckupRepositoryTest {
 
     @Test
     fun `should not be found if deleted_at is not NULL`() {
+
         val healthCheckupID = HealthCheckupID(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d471"))
+
         val foundHealthCheckup = healthCheckupRepository.getOrNullBy(healthCheckupID)
         assertNull(foundHealthCheckup)
     }
 
     @Test
     fun ` should return null when health checkup does not exist`() {
+
         val healthCheckupID = HealthCheckupID(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d472"))
+
         val foundHealthCheckup = healthCheckupRepository.getOrNullBy(healthCheckupID)
         assertNull(foundHealthCheckup)
     }
 
     @Test
     fun `Should delete health checkup`() {
-        val healthCheckup = HealthCheckup.create(
-            userID = "test",
-            bodyTemperature = 36.5,
-            bloodPressure = "120/80",
-            medicalRecord = "test",
-            date = LocalDate.parse("2021-01-01")
-        )
 
-        healthCheckupRepository.store(healthCheckup)
-        healthCheckupRepository.delete(healthCheckup)
-        val foundHealthCheckup = healthCheckupRepository.getOrNullBy(healthCheckup.healthCheckupID)
-        assertNull(foundHealthCheckup)
+        val healthCheckupID = HealthCheckupID(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d470"))
+        val healthCheckup = healthCheckupRepository.getOrNullBy(healthCheckupID)
+
+        healthCheckupRepository.delete(healthCheckup!!)
+        
+        val deletedHealthCheckup = findHealthCheckupByID(healthCheckup.healthCheckupID.value)
+        assertNull(deletedHealthCheckup)
     }
 
 }
