@@ -30,7 +30,6 @@ class AppConfigGetTest {
     }
 
     @Test
-    @Sql("/db/app_config/Clear_AppConfig_Data.sql")
     @Sql("/db/app_config/Insert_AppConfig_False.sql")
     fun `should return 200 with available false when config is present`() {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/app_config"))
