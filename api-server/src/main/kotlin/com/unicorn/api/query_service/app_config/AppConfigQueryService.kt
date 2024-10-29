@@ -4,7 +4,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Service
 
 interface AppConfigQueryService {
-    fun get(): AppConfigResponse
+    fun get(): Boolean?
 }
 
 @Service
@@ -12,24 +12,14 @@ class AppConfigQueryServiceImpl(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
 ) : AppConfigQueryService {
 
-    override fun get(): AppConfigResponse {
+    override fun get(): Boolean? {
         val sql = """
             SELECT available
             FROM app_config
         """.trimIndent()
 
-        val results = namedParameterJdbcTemplate.query(sql) { rs, _ ->
+        return namedParameterJdbcTemplate.query(sql) { rs, _ ->
             rs.getBoolean("available")
-        }
-
-        return when (results.size) {
-            1 -> AppConfigResponse(available = results[0])
-            else -> AppConfigResponse(errorType = "serverError")
-        }
+        }.singleOrNull()
     }
 }
-
-data class AppConfigResponse(
-    val available: Boolean? = null,
-    val errorType: String? = null
-)

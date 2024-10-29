@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@Sql("/db/app_config/Enable_UuidExtension.sql")
 class AppConfigGetTest {
 
     @Autowired private lateinit var mockMvc: MockMvc
@@ -41,7 +40,6 @@ class AppConfigGetTest {
     }
 
     @Test
-    @Sql("/db/app_config/Clear_AppConfig_Data.sql")
     fun `should return 500 with errorType when config is not present`() {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/app_config"))
 
