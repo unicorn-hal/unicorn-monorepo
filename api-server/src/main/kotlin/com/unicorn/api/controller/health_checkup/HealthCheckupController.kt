@@ -15,7 +15,7 @@ import java.time.LocalDate
 class HealthCheckupController(
     private val saveHealthCheckupService: SaveHealthCheckupService
 ) {
-    @PostMapping("/health-checkups")
+    @PostMapping("/health_checkups")
     fun post(
         @RequestHeader("X-UID") uid: String,
         @RequestBody healthCheckupPostRequest: HealthCheckupPostRequest

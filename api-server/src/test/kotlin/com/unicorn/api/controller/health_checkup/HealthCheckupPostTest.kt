@@ -47,7 +47,7 @@ class HealthCheckupPostTest {
         )
         val userID = "test"
 
-        val result = mockMvc.perform(MockMvcRequestBuilders.post("/health-checkups").headers(HttpHeaders().apply{
+        val result = mockMvc.perform(MockMvcRequestBuilders.post("/health_checkups").headers(HttpHeaders().apply{
             add("X-UID", userID)
         })
             .contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +78,7 @@ class HealthCheckupPostTest {
         )
         val userID = "notfound"
 
-        val result = mockMvc.perform(MockMvcRequestBuilders.post("/health-checkups").headers(HttpHeaders().apply{
+        val result = mockMvc.perform(MockMvcRequestBuilders.post("/health_checkups").headers(HttpHeaders().apply{
             add("X-UID", userID)
         })
             .contentType(MediaType.APPLICATION_JSON)
