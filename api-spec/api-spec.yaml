@@ -556,7 +556,7 @@ components:
           nullable: true
           description: "最新メッセージ送信日時"
           format: date-time
-          example: "2020-01-01T00:00:00Z"
+          example: "2020-01-01T00:00:00"
 
     ChatRequest:
       type: object
@@ -618,7 +618,7 @@ components:
           type: string
           description: "メッセージ送信日時"
           format: date-time
-          example: "2020-01-01T00:00:00Z"
+          example: "2020-01-01T00:00:00"
 
     MessageRequest:
       type: object
