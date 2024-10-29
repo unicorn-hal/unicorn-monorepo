@@ -11,6 +11,7 @@ import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
 import org.junit.jupiter.api.Assertions.*
+import java.time.LocalDate
 import java.util.*
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
@@ -52,7 +53,7 @@ class HealthCheckupRepositoryTest {
                 bodyTemperature = rs.getDouble("body_temperature"),
                 bloodPressure = rs.getString("blood_pressure"),
                 medicalRecord = rs.getString("medical_record"),
-                date = rs.getString("checkuped_date")
+                date = rs.getDate("checkuped_date").toLocalDate()
             )
         }.singleOrNull()
     }
@@ -64,7 +65,7 @@ class HealthCheckupRepositoryTest {
             bodyTemperature = 36.5,
             bloodPressure = "120/80",
             medicalRecord = "test",
-            date = "2021-01-01"
+            date = LocalDate.parse("2021-01-01")
         )
         healthCheckupRepository.store(healthCheckup)
         val storedHealthCheckup = findHealthCheckupByID(healthCheckup.healthCheckupID.value)
@@ -83,14 +84,14 @@ class HealthCheckupRepositoryTest {
             bodyTemperature = 36.5,
             bloodPressure = "120/80",
             medicalRecord = "sample medical record",
-            date = "2021-01-01"
+            date = LocalDate.parse("2021-01-01")
         )
 
         val updatedHealthCheckup = healthCheckup.update(
             bodyTemperature = BodyTemperature(37.5),
             bloodPressure = BloodPressure("130/90"),
             medicalRecord = MedicalRecord("updated medical record"),
-            date = CheckupedDate("2021-01-02")
+            date = CheckupedDate(LocalDate.parse("2021-01-02"))
         )
 
         healthCheckupRepository.store(updatedHealthCheckup)
@@ -114,7 +115,7 @@ class HealthCheckupRepositoryTest {
         assertEquals(36.5, foundHealthCheckup.bodyTemperature.value)
         assertEquals("120/80", foundHealthCheckup.bloodPressure.value)
         assertEquals("sample medical record", foundHealthCheckup.medicalRecord.value)
-        assertEquals("2020-01-01", foundHealthCheckup.date.value)
+        assertEquals(LocalDate.parse("2020-01-01"), foundHealthCheckup.date.value)
     }
 
     @Test
@@ -138,7 +139,7 @@ class HealthCheckupRepositoryTest {
             bodyTemperature = 36.5,
             bloodPressure = "120/80",
             medicalRecord = "test",
-            date = "2021-01-01"
+            date = LocalDate.parse("2021-01-01")
         )
 
         healthCheckupRepository.store(healthCheckup)

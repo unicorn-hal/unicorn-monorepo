@@ -55,7 +55,7 @@ class HealthCheckupRepositoryImpl(
             .addValue("bodyTemperature", healthCheckup.bodyTemperature.value)
             .addValue("bloodPressure", healthCheckup.bloodPressure.value)
             .addValue("medicalRecord", healthCheckup.medicalRecord.value)
-            .addValue("date", LocalDate.parse(healthCheckup.date.value))
+            .addValue("date", healthCheckup.date.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
 
@@ -90,7 +90,7 @@ class HealthCheckupRepositoryImpl(
                 bodyTemperature = rs.getDouble("body_temperature"),
                 bloodPressure = rs.getString("blood_pressure"),
                 medicalRecord = rs.getString("medical_record"),
-                date = rs.getString("checkuped_date")
+                date = rs.getDate("checkuped_date").toLocalDate()
             )
         }.singleOrNull()
     }

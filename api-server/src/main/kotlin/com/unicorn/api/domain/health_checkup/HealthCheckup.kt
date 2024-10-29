@@ -1,6 +1,7 @@
 package com.unicorn.api.domain.health_checkup
 
 import com.unicorn.api.domain.user.UserID
+import java.time.LocalDate
 import java.util.*
 
 data class HealthCheckup private constructor(
@@ -18,7 +19,7 @@ data class HealthCheckup private constructor(
             bodyTemperature: Double,
             bloodPressure: String,
             medicalRecord: String,
-            date: String
+            date: LocalDate
         ): HealthCheckup{ 
             return HealthCheckup(
                 healthCheckupID = HealthCheckupID(healthCheckupID),
@@ -35,7 +36,7 @@ data class HealthCheckup private constructor(
             bodyTemperature: Double,
             bloodPressure: String,
             medicalRecord: String,
-            date: String
+            date: LocalDate
         ): HealthCheckup {
             return HealthCheckup(
                 healthCheckupID = HealthCheckupID(UUID.randomUUID()),
@@ -88,8 +89,4 @@ value class MedicalRecord(val value: String){
 }
 
 @JvmInline
-value class CheckupedDate(val value: String){
-    init {
-        require(value.isNotBlank()){"date should not be blank"}
-    }
-}
+value class CheckupedDate(val value: LocalDate)
