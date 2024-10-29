@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.2.1
+  version: 1.2.2
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -2076,6 +2076,27 @@ components:
           type: string
           description: ユーザーの姓
           example: 山田
+        gender:
+          type: string
+          description: ユーザーの性別
+          example: male
+          enum:
+          - male
+          - female
+          - other
+        birthDate:
+          type: string
+          description: ユーザーの生年月日
+          format: date
+          example: 1990-01-01
+        address:
+          type: string
+          description: ユーザーの住所
+          example: 東京都新宿区1-1-1
+        postalCode:
+          type: string
+          description: ユーザーの郵便番号
+          example: "1234567"
         email:
           type: string
           description: ユーザーのメールアドレス
@@ -2101,13 +2122,17 @@ components:
           description: ユーザーの職業
           example: エンジニア
       example:
-        firstName: 太郎
         lastName: 山田
-        phoneNumber: "09012345678"
+        address: 東京都新宿区1-1-1
         occupation: エンジニア
+        gender: male
         iconImageUrl: https://placehold.jp/150x150.png
+        postalCode: "1234567"
         bodyHeight: 180.5
         userID: "1234567890"
+        birthDate: 1990-01-01T00:00:00.000+00:00
+        firstName: 太郎
+        phoneNumber: "09012345678"
         bodyWeight: 75.5
         email: test@test.com
     HealthCheckup:

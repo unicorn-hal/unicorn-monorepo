@@ -40,4 +40,18 @@ class AccountTest {
         assert(account.role == Role.valueOf("user"))
         assert(account.fcmTokenId.value == "fcmTokenId")
     }
+
+    @Test
+    fun `should doctor account be doctor`() {
+        val account = Account.create("uid", "doctor", "fcmTokenId")
+
+        assert(account.isDoctor())
+    }
+
+    @Test
+    fun `should user account be user`() {
+        val account = Account.create("uid", "user", "fcmTokenId")
+
+        assert(account.isUser())
+    }
 }
