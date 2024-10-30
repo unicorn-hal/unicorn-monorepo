@@ -9,7 +9,7 @@ import java.util.*
 import org.springframework.stereotype.Service
 
 interface SaveHealthCheckupService {
-    fun save(userID: UserID ,healthCheckupPostRequest: HealthCheckupPostRequest): HealthCheckup
+    fun save(userID: UserID, healthCheckupPostRequest: HealthCheckupPostRequest): HealthCheckup
 }
 
 @Service
@@ -22,7 +22,7 @@ class SaveHealthCheckupServiceImpl(
         requireNotNull(user) { "User not found" }
 
         val healthCheckup = HealthCheckup.create(
-            userID = userID.value,
+            userID = userID,
             bodyTemperature = healthCheckupPostRequest.bodyTemperature,
             bloodPressure = healthCheckupPostRequest.bloodPressure,
             medicalRecord = healthCheckupPostRequest.medicalRecord,
