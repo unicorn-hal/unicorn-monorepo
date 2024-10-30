@@ -2463,14 +2463,14 @@ components:
           description: 最新メッセージ送信日時
           format: date-time
           nullable: true
-          example: 2020-01-01T00:00:00Z
+          example: 2020-01-01T00:00:00
       example:
         doctor:
           firstName: 太郎
           lastName: 山田
           doctorIconUrl: https://placehold.jp/150x150.png
           doctorID: "1234567890"
-        latestMessageSentAt: 2020-01-01T00:00:00Z
+        latestMessageSentAt: 2020-01-01T00:00:00
         chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         latestMessageText: "Hello, World!"
         user:
@@ -2540,7 +2540,7 @@ components:
           type: string
           description: メッセージ送信日時
           format: date-time
-          example: 2020-01-01T00:00:00Z
+          example: 2020-01-01T00:00:00
       example:
         firstName: 太郎
         lastName: 山田
@@ -2548,7 +2548,7 @@ components:
         chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         iconImageUrl: https://placehold.jp/150x150.png
         messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        sentAt: 2020-01-01T00:00:00Z
+        sentAt: 2020-01-01T00:00:00
         content: "Hello, World!"
     MessageRequest:
       type: object
@@ -2792,17 +2792,17 @@ components:
           type: string
           description: 通話開始時間
           format: date-time
-          example: 2024-10-12T15:00:00Z
+          example: 2024-10-12T15:00:00
         callEndTime:
           type: string
           description: 通話終了時間
           format: date-time
-          example: 2024-10-12T15:30:00Z
+          example: 2024-10-12T15:30:00
       example:
         callReservationID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        callEndTime: 2024-10-12T15:30:00Z
+        callEndTime: 2024-10-12T15:30:00
         doctorID: "1234567890"
-        callStartTime: 2024-10-12T15:00:00Z
+        callStartTime: 2024-10-12T15:00:00
         userID: "1234567890"
     CallReservationRequest:
       type: object
@@ -2819,12 +2819,12 @@ components:
           type: string
           description: 通話開始時間
           format: date-time
-          example: 2024-10-12T15:00:00Z
+          example: 2024-10-12T15:00:00
         callEndTime:
           type: string
           description: 通話終了時間
           format: date-time
-          example: 2024-10-12T15:30:00Z
+          example: 2024-10-12T15:30:00
     CallReservationResponse:
       type: object
       properties:
@@ -2844,17 +2844,17 @@ components:
           type: string
           description: 通話開始時間
           format: date-time
-          example: 2024-10-12T15:00:00Z
+          example: 2024-10-12T15:00:00
         callEndTime:
           type: string
           description: 通話終了時間
           format: date-time
-          example: 2024-10-12T15:30:00Z
+          example: 2024-10-12T15:30:00
       example:
         callReservationID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        callEndTime: 2024-10-12T15:30:00Z
+        callEndTime: 2024-10-12T15:30:00
         doctorID: "1234567890"
-        callStartTime: 2024-10-12T15:00:00Z
+        callStartTime: 2024-10-12T15:00:00
         userID: "1234567890"
     PrimaryDoctorsRequest:
       type: object
@@ -3060,7 +3060,7 @@ components:
             lastName: 山田
             doctorIconUrl: https://placehold.jp/150x150.png
             doctorID: "1234567890"
-          latestMessageSentAt: 2020-01-01T00:00:00Z
+          latestMessageSentAt: 2020-01-01T00:00:00
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           latestMessageText: "Hello, World!"
           user:
@@ -3073,7 +3073,7 @@ components:
             lastName: 山田
             doctorIconUrl: https://placehold.jp/150x150.png
             doctorID: "1234567890"
-          latestMessageSentAt: 2020-01-01T00:00:00Z
+          latestMessageSentAt: 2020-01-01T00:00:00
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           latestMessageText: "Hello, World!"
           user:
@@ -3096,7 +3096,7 @@ components:
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           iconImageUrl: https://placehold.jp/150x150.png
           messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          sentAt: 2020-01-01T00:00:00Z
+          sentAt: 2020-01-01T00:00:00
           content: "Hello, World!"
         - firstName: 太郎
           lastName: 山田
@@ -3104,7 +3104,7 @@ components:
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           iconImageUrl: https://placehold.jp/150x150.png
           messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          sentAt: 2020-01-01T00:00:00Z
+          sentAt: 2020-01-01T00:00:00
           content: "Hello, World!"
     inline_response_404_4:
       type: object
