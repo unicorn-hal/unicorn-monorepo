@@ -7,15 +7,21 @@ import com.unicorn.api.infrastructure.user.UserRepository
 import org.springframework.stereotype.Service
 
 interface DeleteFamilyEmailService {
-    fun delete(familyEmailID: FamilyEmailID, userID: UserID): Unit
+    fun delete(
+        familyEmailID: FamilyEmailID,
+        userID: UserID,
+    ): Unit
 }
 
 @Service
 class DeleteFamilyEmailServiceImpl(
     private val familyEmailRepository: FamilyEmailRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : DeleteFamilyEmailService {
-    override fun delete(familyEmailID: FamilyEmailID, userID: UserID) {
+    override fun delete(
+        familyEmailID: FamilyEmailID,
+        userID: UserID,
+    ) {
         val user = userRepository.getOrNullBy(userID)
         requireNotNull(user) { "User not found" }
 

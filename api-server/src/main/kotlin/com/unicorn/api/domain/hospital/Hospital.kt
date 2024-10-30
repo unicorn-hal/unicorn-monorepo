@@ -2,12 +2,12 @@ package com.unicorn.api.domain.hospital
 
 import java.util.UUID
 
-data class Hospital (
+data class Hospital(
     val hospitalID: HospitalID,
     val hospitalName: HospitalName,
     val address: Address,
     val postalCode: PostalCode,
-    val phoneNumber: PhoneNumber
+    val phoneNumber: PhoneNumber,
 ) {
     companion object {
         fun fromStore(
@@ -15,14 +15,14 @@ data class Hospital (
             hospitalName: String,
             address: String,
             postalCode: String,
-            phoneNumber: String
+            phoneNumber: String,
         ): Hospital {
             return Hospital(
                 hospitalID = HospitalID(hospitalID),
                 hospitalName = HospitalName(hospitalName),
                 address = Address(address),
                 postalCode = PostalCode(postalCode),
-                phoneNumber = PhoneNumber(phoneNumber)
+                phoneNumber = PhoneNumber(phoneNumber),
             )
         }
     }

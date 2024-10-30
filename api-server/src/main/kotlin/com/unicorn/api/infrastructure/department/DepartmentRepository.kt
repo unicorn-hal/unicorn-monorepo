@@ -9,49 +9,55 @@ import java.util.*
 
 interface DepartmentRepository {
     fun getOrNullBy(departmentID: DepartmentID): Department?
+
     fun findByDepartmentIDs(departmentIDs: List<DepartmentID>): List<Department?>
 }
 
 @Repository
 class DepartmentRepositoryImpl(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
+    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) : DepartmentRepository {
     override fun getOrNullBy(departmentID: DepartmentID): Department? {
         // language=postgresql
-        val sql  = """
+        val sql =
+            """
             SELECT department_id, department_name
             FROM departments
             WHERE department_id = :departmentID
-        """.trimIndent()
+            """.trimIndent()
 
-        val params = MapSqlParameterSource()
-            .addValue("departmentID", departmentID.value)
+        val params =
+            MapSqlParameterSource()
+                .addValue("departmentID", departmentID.value)
 
         return namedParameterJdbcTemplate.query(sql, params) { rs, _ ->
             Department.fromStore(
                 departmentID = UUID.fromString(rs.getString("department_id")),
-                departmentName = rs.getString("department_name")
+                departmentName = rs.getString("department_name"),
             )
         }.singleOrNull()
     }
 
     override fun findByDepartmentIDs(departmentIDs: List<DepartmentID>): List<Department?> {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT department_id, department_name
             FROM departments
             WHERE department_id IN (:departmentIDs)
-        """.trimIndent()
+            """.trimIndent()
 
-        val params = MapSqlParameterSource()
-            .addValue("departmentIDs", departmentIDs.map { it.value })
+        val params =
+            MapSqlParameterSource()
+                .addValue("departmentIDs", departmentIDs.map { it.value })
 
-        val result = namedParameterJdbcTemplate.query(sql, params) { rs, _ ->
-            Department.fromStore(
-                departmentID = UUID.fromString(rs.getString("department_id")),
-                departmentName = rs.getString("department_name")
-            )
-        }
+        val result =
+            namedParameterJdbcTemplate.query(sql, params) { rs, _ ->
+                Department.fromStore(
+                    departmentID = UUID.fromString(rs.getString("department_id")),
+                    departmentName = rs.getString("department_name"),
+                )
+            }
 
         return departmentIDs.map { departmentID ->
             result.find { it.departmentID == departmentID }

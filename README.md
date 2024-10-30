@@ -41,6 +41,16 @@ IntelliJ IDEAで`src/main/java/com/unicorn/api/ApiServerApplication.kt`を開き
 Hello, World!
 ```
 
+## Linterの実行
+```
+./gradlew ktlintCheck
+```
+
+## Formatterの実行
+```
+./gradlew ktlintFormat
+```
+
 ## おまけ
 Dockerを用いてSpring Bootアプリケーションを起動する方法もあります。
 プロジェクトの`./api-server`で以下のコマンドを実行してください。

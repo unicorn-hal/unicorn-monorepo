@@ -40,12 +40,15 @@ class DoctorDeleteTest {
     fun `should return 204 when doctor is deleted`() {
         val doctorID = DoctorID("doctor")
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.delete("/doctors/${doctorID.value}").headers(HttpHeaders().apply {
-                add("X-UID", doctorID.value)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.delete("/doctors/${doctorID.value}").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", doctorID.value)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON),
+            )
 
         result.andExpect(status().isNoContent)
     }
@@ -54,22 +57,25 @@ class DoctorDeleteTest {
     fun `should return 400 when doctor is not found`() {
         val doctorID = DoctorID("not_found_doctor")
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.delete("/doctors/${doctorID.value}").headers(HttpHeaders().apply {
-                add("X-UID", doctorID.value)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.delete("/doctors/${doctorID.value}").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", doctorID.value)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON),
+            )
 
         result.andExpect(status().isBadRequest)
         result.andExpect(
             content().json(
                 """
-                  {
-                    "errorType": "Doctor not found"
-                  }
-                """.trimIndent()
-            )
+                {
+                  "errorType": "Doctor not found"
+                }
+                """.trimIndent(),
+            ),
         )
     }
 }

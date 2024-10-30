@@ -8,27 +8,27 @@ data class CallSupport private constructor(
     val callSupportID: CallSupportID,
     val doctorID: DoctorID,
     val callSupportStartHour: CallSupportStartHour,
-    val callSupportEndHour: CallSupportEndHour
+    val callSupportEndHour: CallSupportEndHour,
 ) {
     companion object {
         fun fromStore(
             callSupportID: UUID,
             doctorID: String,
             callSupportStartHour: LocalTime,
-            callSupportEndHour: LocalTime
+            callSupportEndHour: LocalTime,
         ): CallSupport {
             return CallSupport(
                 CallSupportID(callSupportID),
                 DoctorID(doctorID),
                 CallSupportStartHour(callSupportStartHour),
-                CallSupportEndHour(callSupportEndHour)
+                CallSupportEndHour(callSupportEndHour),
             )
         }
 
         fun create(
             doctorID: DoctorID,
             callSupportStartHour: LocalTime,
-            callSupportEndHour: LocalTime
+            callSupportEndHour: LocalTime,
         ): CallSupport {
             require(callSupportStartHour.isBefore(callSupportEndHour)) {
                 "Start hour must be before end hour"
@@ -38,14 +38,14 @@ data class CallSupport private constructor(
                 CallSupportID(UUID.randomUUID()),
                 doctorID,
                 CallSupportStartHour(callSupportStartHour),
-                CallSupportEndHour(callSupportEndHour)
+                CallSupportEndHour(callSupportEndHour),
             )
         }
     }
 
     fun update(
         callSupportStartHour: CallSupportStartHour,
-        callSupportEndHour: CallSupportEndHour
+        callSupportEndHour: CallSupportEndHour,
     ): CallSupport {
         require(callSupportStartHour.value.isBefore(callSupportEndHour.value)) {
             "Start hour must be before end hour"
@@ -53,7 +53,7 @@ data class CallSupport private constructor(
 
         return this.copy(
             callSupportStartHour = callSupportStartHour,
-            callSupportEndHour = callSupportEndHour
+            callSupportEndHour = callSupportEndHour,
         )
     }
 }

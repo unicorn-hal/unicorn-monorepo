@@ -10,11 +10,12 @@ interface DeleteGreetingService {
 
 @Service
 class DeleteGreetingServiceImpl(
-    private val greetingRepository: GreetingRepository
+    private val greetingRepository: GreetingRepository,
 ) : DeleteGreetingService {
-    override fun delete(id: UUID): Unit {
-        val greeting = greetingRepository.getOrNullById(id)
-            ?: throw IllegalArgumentException("greeting not found")
+    override fun delete(id: UUID) {
+        val greeting =
+            greetingRepository.getOrNullById(id)
+                ?: throw IllegalArgumentException("greeting not found")
 
         greetingRepository.delete(greeting)
     }

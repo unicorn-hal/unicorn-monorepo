@@ -2,10 +2,9 @@ package com.unicorn.api.domain.doctor
 
 import com.unicorn.api.domain.department.DepartmentID
 import com.unicorn.api.domain.hospital.HospitalID
-import java.time.LocalTime
 import java.util.*
 
-data class Doctor private constructor (
+data class Doctor private constructor(
     val doctorID: DoctorID,
     val hospitalID: HospitalID,
     val firstName: FirstName,
@@ -13,7 +12,7 @@ data class Doctor private constructor (
     val email: Email,
     val phoneNumber: PhoneNumber,
     val doctorIconUrl: DoctorIconUrl?,
-    val departments: List<DepartmentID>
+    val departments: List<DepartmentID>,
 ) {
     companion object {
         fun create(
@@ -24,7 +23,7 @@ data class Doctor private constructor (
             email: String,
             phoneNumber: String,
             doctorIconUrl: String?,
-            departments: List<DepartmentID>
+            departments: List<DepartmentID>,
         ): Doctor {
             return Doctor(
                 doctorID = DoctorID(doctorID),
@@ -34,7 +33,7 @@ data class Doctor private constructor (
                 email = Email(email),
                 phoneNumber = PhoneNumber(phoneNumber),
                 doctorIconUrl = doctorIconUrl?.let { DoctorIconUrl(it) },
-                departments = departments
+                departments = departments,
             )
         }
 
@@ -46,7 +45,7 @@ data class Doctor private constructor (
             email: String,
             phoneNumber: String,
             doctorIconUrl: String?,
-            departments: List<UUID>
+            departments: List<UUID>,
         ): Doctor {
             return Doctor(
                 doctorID = DoctorID(doctorID),
@@ -56,7 +55,7 @@ data class Doctor private constructor (
                 email = Email(email),
                 phoneNumber = PhoneNumber(phoneNumber),
                 doctorIconUrl = doctorIconUrl?.let { DoctorIconUrl(it) },
-                departments = departments.map { DepartmentID(it) }
+                departments = departments.map { DepartmentID(it) },
             )
         }
     }
@@ -68,7 +67,7 @@ data class Doctor private constructor (
         email: Email,
         phoneNumber: PhoneNumber,
         doctorIconUrl: DoctorIconUrl?,
-        departments: List<DepartmentID>
+        departments: List<DepartmentID>,
     ): Doctor {
         return this.copy(
             hospitalID = hospitalID,
@@ -77,7 +76,7 @@ data class Doctor private constructor (
             email = email,
             phoneNumber = phoneNumber,
             doctorIconUrl = doctorIconUrl,
-            departments = departments
+            departments = departments,
         )
     }
 }
@@ -116,7 +115,6 @@ value class PhoneNumber(val value: String) {
         require(value.all { it.isDigit() }) { "phone number should be all digits" }
     }
 }
-
 
 @JvmInline
 value class DoctorIconUrl(val value: String)

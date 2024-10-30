@@ -8,24 +8,23 @@ import java.time.LocalTime
 import java.util.*
 
 class ChatSupportTest {
-
     @Test
     fun `create chat support`() {
         val doctorID = DoctorID("doctorID")
         val chatSupportStartHour = LocalTime.of(9, 0)
         val chatSupportEndHour = LocalTime.of(17, 0)
 
-        val chatSupport = ChatSupport.create(
-            doctorID,
-            chatSupportStartHour,
-            chatSupportEndHour
-        )
+        val chatSupport =
+            ChatSupport.create(
+                doctorID,
+                chatSupportStartHour,
+                chatSupportEndHour,
+            )
 
         assertEquals(doctorID, chatSupport.doctorID)
         assertEquals(chatSupportStartHour, chatSupport.chatSupportStartHour.value)
         assertEquals(chatSupportEndHour, chatSupport.chatSupportEndHour.value)
     }
-
 
     @Test
     fun `should create chat support from store`() {
@@ -34,12 +33,13 @@ class ChatSupportTest {
         val chatSupportStartHour = LocalTime.of(9, 0)
         val chatSupportEndHour = LocalTime.of(17, 0)
 
-        val chatSupport = ChatSupport.fromStore(
-            chatSupportID,
-            doctorID,
-            chatSupportStartHour,
-            chatSupportEndHour
-        )
+        val chatSupport =
+            ChatSupport.fromStore(
+                chatSupportID,
+                doctorID,
+                chatSupportStartHour,
+                chatSupportEndHour,
+            )
 
         assertEquals(chatSupportID, chatSupport.chatSupportID.value)
         assertEquals(doctorID, chatSupport.doctorID.value)
@@ -52,20 +52,22 @@ class ChatSupportTest {
         val doctorID = DoctorID("doctorID")
         val chatSupportStartHour = LocalTime.of(9, 0)
         val chatSupportEndHour = LocalTime.of(17, 0)
-        val chatSupport = ChatSupport.fromStore(
-            UUID.randomUUID(),
-            doctorID.value,
-            chatSupportStartHour,
-            chatSupportEndHour
-        )
+        val chatSupport =
+            ChatSupport.fromStore(
+                UUID.randomUUID(),
+                doctorID.value,
+                chatSupportStartHour,
+                chatSupportEndHour,
+            )
 
         val newChatSupportStartHour = LocalTime.of(10, 0)
         val newChatSupportEndHour = LocalTime.of(18, 0)
 
-        val updatedChatSupport = chatSupport.update(
-            ChatSupportStartHour(newChatSupportStartHour),
-            ChatSupportEndHour(newChatSupportEndHour)
-        )
+        val updatedChatSupport =
+            chatSupport.update(
+                ChatSupportStartHour(newChatSupportStartHour),
+                ChatSupportEndHour(newChatSupportEndHour),
+            )
 
         assertEquals(doctorID, updatedChatSupport.doctorID)
         assertEquals(newChatSupportStartHour, updatedChatSupport.chatSupportStartHour.value)
@@ -78,17 +80,17 @@ class ChatSupportTest {
         val chatSupportStartHour = LocalTime.of(9, 0)
         val chatSupportEndHour = LocalTime.of(17, 0)
 
-        val exception = assertThrows(IllegalArgumentException::class.java) {
-            ChatSupport.create(
-                doctorID,
-                chatSupportEndHour,
-                chatSupportStartHour
-            )
-        }
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                ChatSupport.create(
+                    doctorID,
+                    chatSupportEndHour,
+                    chatSupportStartHour,
+                )
+            }
 
         assertEquals("Start hour must be before end hour", exception.message)
     }
-
 
     @Test
     fun `should throw exception when updating chat support with start hour after end hour`() {
@@ -96,22 +98,24 @@ class ChatSupportTest {
         val chatSupportStartHour = LocalTime.of(9, 0)
         val chatSupportEndHour = LocalTime.of(17, 0)
 
-        val chatSupport = ChatSupport.fromStore(
-            UUID.randomUUID(),
-            doctorID.value,
-            chatSupportStartHour,
-            chatSupportEndHour
-        )
+        val chatSupport =
+            ChatSupport.fromStore(
+                UUID.randomUUID(),
+                doctorID.value,
+                chatSupportStartHour,
+                chatSupportEndHour,
+            )
 
         val newChatSupportStartHour = LocalTime.of(18, 0)
         val newChatSupportEndHour = LocalTime.of(17, 0)
 
-        val exception = assertThrows(IllegalArgumentException::class.java) {
-            chatSupport.update(
-                ChatSupportStartHour(newChatSupportStartHour),
-                ChatSupportEndHour(newChatSupportEndHour)
-            )
-        }
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                chatSupport.update(
+                    ChatSupportStartHour(newChatSupportStartHour),
+                    ChatSupportEndHour(newChatSupportEndHour),
+                )
+            }
 
         assertEquals("Start hour must be before end hour", exception.message)
     }
@@ -122,13 +126,14 @@ class ChatSupportTest {
         val chatSupportStartHour = LocalTime.of(9, 0)
         val chatSupportEndHour = LocalTime.of(9, 0)
 
-        val exception = assertThrows(IllegalArgumentException::class.java) {
-            ChatSupport.create(
-                doctorID,
-                chatSupportStartHour,
-                chatSupportEndHour
-            )
-        }
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                ChatSupport.create(
+                    doctorID,
+                    chatSupportStartHour,
+                    chatSupportEndHour,
+                )
+            }
 
         assertEquals("Start hour must be before end hour", exception.message)
     }
@@ -138,23 +143,24 @@ class ChatSupportTest {
         val doctorID = DoctorID("doctorID")
         val chatSupportStartHour = LocalTime.of(9, 0)
         val chatSupportEndHour = LocalTime.of(17, 0)
-        val chatSupport = ChatSupport.fromStore(
-            UUID.randomUUID(),
-            doctorID.value,
-            chatSupportStartHour,
-            chatSupportEndHour
-        )
+        val chatSupport =
+            ChatSupport.fromStore(
+                UUID.randomUUID(),
+                doctorID.value,
+                chatSupportStartHour,
+                chatSupportEndHour,
+            )
         val newChatSupportStartHour = LocalTime.of(17, 0)
         val newChatSupportEndHour = LocalTime.of(17, 0)
 
-        val exception = assertThrows(IllegalArgumentException::class.java) {
-            chatSupport.update(
-                ChatSupportStartHour(newChatSupportStartHour),
-                ChatSupportEndHour(newChatSupportEndHour)
-            )
-        }
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                chatSupport.update(
+                    ChatSupportStartHour(newChatSupportStartHour),
+                    ChatSupportEndHour(newChatSupportEndHour),
+                )
+            }
 
         assertEquals("Start hour must be before end hour", exception.message)
     }
-
 }

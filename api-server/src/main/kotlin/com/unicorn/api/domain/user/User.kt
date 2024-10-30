@@ -15,7 +15,7 @@ data class User private constructor(
     val iconImageUrl: IconImageUrl?,
     val bodyHeight: BodyHeight,
     val bodyWeight: BodyWeight,
-    val occupation: Occupation
+    val occupation: Occupation,
 ) {
     companion object {
         fun fromStore(
@@ -31,7 +31,7 @@ data class User private constructor(
             iconImageUrl: String?,
             bodyHeight: Double,
             bodyWeight: Double,
-            occupation: String
+            occupation: String,
         ): User {
             return User(
                 userID = UserID(userID),
@@ -46,7 +46,7 @@ data class User private constructor(
                 iconImageUrl = iconImageUrl?.let { IconImageUrl(it) },
                 bodyHeight = BodyHeight(bodyHeight),
                 bodyWeight = BodyWeight(bodyWeight),
-                occupation = Occupation(occupation)
+                occupation = Occupation(occupation),
             )
         }
 
@@ -63,7 +63,7 @@ data class User private constructor(
             iconImageUrl: String?,
             bodyHeight: Double,
             bodyWeight: Double,
-            occupation: String
+            occupation: String,
         ): User {
             return User(
                 userID = UserID(userID),
@@ -78,7 +78,7 @@ data class User private constructor(
                 iconImageUrl = iconImageUrl?.let { IconImageUrl(it) },
                 bodyHeight = BodyHeight(bodyHeight),
                 bodyWeight = BodyWeight(bodyWeight),
-                occupation = Occupation(occupation)
+                occupation = Occupation(occupation),
             )
         }
     }
@@ -95,7 +95,7 @@ data class User private constructor(
         iconImageUrl: IconImageUrl?,
         bodyHeight: BodyHeight,
         bodyWeight: BodyWeight,
-        occupation: Occupation
+        occupation: Occupation,
     ): User {
         return this.copy(
             firstName = firstName,
@@ -109,7 +109,7 @@ data class User private constructor(
             iconImageUrl = iconImageUrl,
             bodyHeight = bodyHeight,
             bodyWeight = bodyWeight,
-            occupation = occupation
+            occupation = occupation,
         )
     }
 }
@@ -188,5 +188,7 @@ value class BodyWeight(val value: Double) {
 value class Occupation(val value: String)
 
 enum class Gender {
-    male, female, other
+    male,
+    female,
+    other,
 }

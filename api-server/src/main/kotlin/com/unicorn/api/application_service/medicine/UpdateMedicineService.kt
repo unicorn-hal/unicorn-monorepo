@@ -11,15 +11,23 @@ import com.unicorn.api.infrastructure.user.UserRepository
 import org.springframework.stereotype.Service
 
 interface UpdateMedicineService {
-    fun update(medicineID: MedicineID, userID: UserID, medicinePutRequest: MedicinePutRequest): Medicine
+    fun update(
+        medicineID: MedicineID,
+        userID: UserID,
+        medicinePutRequest: MedicinePutRequest,
+    ): Medicine
 }
 
 @Service
 class UpdateMedicineServiceImpl(
     private val userRepository: UserRepository,
-    private val medicineRepository: MedicineRepository
+    private val medicineRepository: MedicineRepository,
 ) : UpdateMedicineService {
-    override fun update(medicineID: MedicineID, userID: UserID, medicinePutRequest: MedicinePutRequest): Medicine {
+    override fun update(
+        medicineID: MedicineID,
+        userID: UserID,
+        medicinePutRequest: MedicinePutRequest,
+    ): Medicine {
         val user = userRepository.getOrNullBy(userID)
 
         requireNotNull(user) {
@@ -32,10 +40,11 @@ class UpdateMedicineServiceImpl(
             "Medicine not found"
         }
 
-        val updateMedicine = medicine.update(
-            medicineName = MedicineName(medicinePutRequest.medicineName),
-            quantity = Quantity(medicinePutRequest.quantity)
-        )
+        val updateMedicine =
+            medicine.update(
+                medicineName = MedicineName(medicinePutRequest.medicineName),
+                quantity = Quantity(medicinePutRequest.quantity),
+            )
 
         medicineRepository.store(updateMedicine)
 

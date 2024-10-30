@@ -11,19 +11,19 @@ data class Account private constructor(
         fun fromStore(
             uid: String,
             role: String,
-            fcmTokenId: String
+            fcmTokenId: String,
         ): Account {
             return Account(
                 uid = UID(uid),
                 role = Role.valueOf(role),
-                fcmTokenId = FCMTokenId(fcmTokenId)
+                fcmTokenId = FCMTokenId(fcmTokenId),
             )
         }
 
         fun create(
             uid: String,
             role: String,
-            fcmTokenId: String
+            fcmTokenId: String,
         ): Account {
             if (role !in Role.entries.map { it.name }) {
                 throw InvalidRoleException()
@@ -32,7 +32,7 @@ data class Account private constructor(
             return Account(
                 uid = UID(uid),
                 role = Role.valueOf(role),
-                fcmTokenId = FCMTokenId(fcmTokenId)
+                fcmTokenId = FCMTokenId(fcmTokenId),
             )
         }
     }

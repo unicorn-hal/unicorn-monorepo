@@ -28,7 +28,6 @@ import java.util.*
 @Sql("/db/call_support/Insert_Parent_Doctor_Data.sql")
 @Sql("/db/call_support/Insert_Call_Support_Data.sql")
 class CallSupportRepositoryTest {
-
     @Autowired
     private lateinit var callSupportRepository: CallSupportRepository
 
@@ -37,7 +36,8 @@ class CallSupportRepositoryTest {
 
     private fun findByDoctorID(doctorID: String): CallSupport? {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 call_support_id,
                 doctor_id,
@@ -46,29 +46,31 @@ class CallSupportRepositoryTest {
             FROM call_support_hours
             WHERE doctor_id = :doctorID
                 AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("doctorID", doctorID)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctorID)
 
         return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
             CallSupport.fromStore(
                 callSupportID = UUID.fromString(rs.getString("call_support_id")),
                 doctorID = rs.getString("doctor_id"),
                 callSupportStartHour = rs.getTime("start_time").toLocalTime(),
-                callSupportEndHour = rs.getTime("end_time").toLocalTime()
+                callSupportEndHour = rs.getTime("end_time").toLocalTime(),
             )
         }.singleOrNull()
     }
 
     @Test
     fun `should get call support by doctor id`() {
-        val callSupport = CallSupport.fromStore(
-            callSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b2b"),
-            doctorID = "doctor",
-            callSupportStartHour = LocalTime.parse("09:00:00"),
-            callSupportEndHour = LocalTime.parse("18:00:00")
-        )
+        val callSupport =
+            CallSupport.fromStore(
+                callSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b2b"),
+                doctorID = "doctor",
+                callSupportStartHour = LocalTime.parse("09:00:00"),
+                callSupportEndHour = LocalTime.parse("18:00:00"),
+            )
 
         val act = callSupportRepository.getOrNullBy(callSupport.doctorID)
 
@@ -84,12 +86,13 @@ class CallSupportRepositoryTest {
 
     @Test
     fun `should update call support`() {
-        val callSupport = CallSupport.fromStore(
-            callSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b2b"),
-            doctorID = "doctor",
-            callSupportStartHour = LocalTime.parse("10:00:00"),
-            callSupportEndHour = LocalTime.parse("18:00:00")
-        )
+        val callSupport =
+            CallSupport.fromStore(
+                callSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b2b"),
+                doctorID = "doctor",
+                callSupportStartHour = LocalTime.parse("10:00:00"),
+                callSupportEndHour = LocalTime.parse("18:00:00"),
+            )
 
         callSupportRepository.store(callSupport)
 
@@ -103,11 +106,12 @@ class CallSupportRepositoryTest {
         val callSupportStartHour = LocalTime.of(9, 0)
         val callSupportEndHour = LocalTime.of(17, 0)
 
-        val callSupport = CallSupport.create(
-            doctorID,
-            callSupportStartHour,
-            callSupportEndHour
-        )
+        val callSupport =
+            CallSupport.create(
+                doctorID,
+                callSupportStartHour,
+                callSupportEndHour,
+            )
 
         callSupportRepository.store(callSupport)
 
@@ -117,12 +121,13 @@ class CallSupportRepositoryTest {
 
     @Test
     fun `should delete call support`() {
-        val callSupport = CallSupport.fromStore(
-            callSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b2b"),
-            doctorID = "doctor",
-            callSupportStartHour = LocalTime.parse("10:00:00"),
-            callSupportEndHour = LocalTime.parse("18:00:00")
-        )
+        val callSupport =
+            CallSupport.fromStore(
+                callSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b2b"),
+                doctorID = "doctor",
+                callSupportStartHour = LocalTime.parse("10:00:00"),
+                callSupportEndHour = LocalTime.parse("18:00:00"),
+            )
 
         callSupportRepository.delete(callSupport)
 

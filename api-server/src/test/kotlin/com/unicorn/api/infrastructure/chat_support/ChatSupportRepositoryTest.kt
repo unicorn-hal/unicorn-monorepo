@@ -1,7 +1,6 @@
 package com.unicorn.api.infrastructure.chat_support
 
 import com.unicorn.api.domain.chat_support.ChatSupport
-import com.unicorn.api.domain.doctor.Doctor
 import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.infrastructure.call_support.ChatSupportRepository
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -37,7 +36,8 @@ class ChatSupportRepositoryTest {
 
     private fun findByDoctorID(doctorID: String): ChatSupport? {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT 
                 chat_support_id,
                 doctor_id,
@@ -46,29 +46,31 @@ class ChatSupportRepositoryTest {
             FROM chat_support_hours
             WHERE doctor_id = :doctorID
                 AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("doctorID", doctorID)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctorID)
 
         return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
             ChatSupport.fromStore(
                 chatSupportID = UUID.fromString(rs.getString("chat_support_id")),
                 doctorID = rs.getString("doctor_id"),
                 chatSupportStartHour = LocalTime.parse(rs.getString("start_time")),
-                chatSupportEndHour = LocalTime.parse(rs.getString("end_time"))
+                chatSupportEndHour = LocalTime.parse(rs.getString("end_time")),
             )
         }.singleOrNull()
     }
 
     @Test
     fun `should get chat support by doctor id`() {
-        val chatSupport = ChatSupport.fromStore(
-            chatSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b"),
-            doctorID = "doctor",
-            chatSupportStartHour = LocalTime.parse("09:00:00"),
-            chatSupportEndHour = LocalTime.parse("18:00:00")
-        )
+        val chatSupport =
+            ChatSupport.fromStore(
+                chatSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b"),
+                doctorID = "doctor",
+                chatSupportStartHour = LocalTime.parse("09:00:00"),
+                chatSupportEndHour = LocalTime.parse("18:00:00"),
+            )
         val act = chatSupportRepository.getOrNullBy(chatSupport.doctorID)
 
         assertEquals(chatSupport, act)
@@ -83,12 +85,13 @@ class ChatSupportRepositoryTest {
 
     @Test
     fun `should update chat support`() {
-        val chatSupport = ChatSupport.fromStore(
-            chatSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b"),
-            doctorID = "doctor",
-            chatSupportStartHour = LocalTime.parse("10:00:00"),
-            chatSupportEndHour = LocalTime.parse("19:00:00")
-        )
+        val chatSupport =
+            ChatSupport.fromStore(
+                chatSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b"),
+                doctorID = "doctor",
+                chatSupportStartHour = LocalTime.parse("10:00:00"),
+                chatSupportEndHour = LocalTime.parse("19:00:00"),
+            )
 
         chatSupportRepository.store(chatSupport)
 
@@ -99,11 +102,12 @@ class ChatSupportRepositoryTest {
 
     @Test
     fun `should store chat support`() {
-        val chatSupport = ChatSupport.create(
-            doctorID = DoctorID("doctor2"),
-            chatSupportStartHour = LocalTime.parse("10:00:00"),
-            chatSupportEndHour = LocalTime.parse("19:00:00")
-        )
+        val chatSupport =
+            ChatSupport.create(
+                doctorID = DoctorID("doctor2"),
+                chatSupportStartHour = LocalTime.parse("10:00:00"),
+                chatSupportEndHour = LocalTime.parse("19:00:00"),
+            )
 
         chatSupportRepository.store(chatSupport)
 
@@ -113,12 +117,13 @@ class ChatSupportRepositoryTest {
 
     @Test
     fun `should delete chat support`() {
-        val chatSupport = ChatSupport.fromStore(
-            chatSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b"),
-            doctorID = "doctor",
-            chatSupportStartHour = LocalTime.parse("10:00:00"),
-            chatSupportEndHour = LocalTime.parse("19:00:00")
-        )
+        val chatSupport =
+            ChatSupport.fromStore(
+                chatSupportID = UUID.fromString("d1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b"),
+                doctorID = "doctor",
+                chatSupportStartHour = LocalTime.parse("10:00:00"),
+                chatSupportEndHour = LocalTime.parse("19:00:00"),
+            )
 
         chatSupportRepository.delete(chatSupport)
 

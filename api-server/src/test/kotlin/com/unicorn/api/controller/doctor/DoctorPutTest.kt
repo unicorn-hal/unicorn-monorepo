@@ -40,29 +40,33 @@ class DoctorPutTest {
 
     @Test
     fun `should return 200 when doctor is updated`() {
-        val doctorPutRequest = DoctorPutRequest(
-            hospitalID = UUID.fromString("762a7a7e-41e4-46c2-b36c-f2b302cae3e7"),
-            firstName = "sample",
-            lastName = "sample",
-            email = "test@test.com",
-            phoneNumber = "1234567890",
-            doctorIconUrl = "https://example.com",
-            departments = listOf(UUID.fromString("ed8fb319-798f-4b47-bcf3-2a8f6486e38d")),
-            chatSupportStartHour = LocalTime.of(11, 0, 0),
-            chatSupportEndHour = LocalTime.of(19, 0, 0),
-            callSupportStartHour = LocalTime.of(10, 0, 0),
-            callSupportEndHour = LocalTime.of(13, 0, 0),
-        )
+        val doctorPutRequest =
+            DoctorPutRequest(
+                hospitalID = UUID.fromString("762a7a7e-41e4-46c2-b36c-f2b302cae3e7"),
+                firstName = "sample",
+                lastName = "sample",
+                email = "test@test.com",
+                phoneNumber = "1234567890",
+                doctorIconUrl = "https://example.com",
+                departments = listOf(UUID.fromString("ed8fb319-798f-4b47-bcf3-2a8f6486e38d")),
+                chatSupportStartHour = LocalTime.of(11, 0, 0),
+                chatSupportEndHour = LocalTime.of(19, 0, 0),
+                callSupportStartHour = LocalTime.of(10, 0, 0),
+                callSupportEndHour = LocalTime.of(13, 0, 0),
+            )
 
         val doctorID = DoctorID("doctor")
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.put("/doctors/${doctorID.value}").headers(HttpHeaders().apply {
-                add("X-UID", doctorID.value)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(doctorPutRequest))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.put("/doctors/${doctorID.value}").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", doctorID.value)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(doctorPutRequest)),
+            )
 
         result.andExpect(status().isOk)
         result.andExpect(
@@ -81,36 +85,40 @@ class DoctorPutTest {
                     "callSupportStartHour": "${doctorPutRequest.callSupportStartHour}",
                     "callSupportEndHour": "${doctorPutRequest.callSupportEndHour}"
                 }
-                """.trimIndent()
-            )
+                """.trimIndent(),
+            ),
         )
     }
 
     @Test
     fun `should return 400 when doctor is not found`() {
-        val doctorPutRequest = DoctorPutRequest(
-            hospitalID = UUID.fromString("762a7a7e-41e4-46c2-b36c-f2b302cae3e7"),
-            firstName = "sample",
-            lastName = "sample",
-            email = "test@test.com",
-            phoneNumber = "1234567890",
-            doctorIconUrl = "https://example.com",
-            departments = listOf(UUID.fromString("ed8fb319-798f-4b47-bcf3-2a8f6486e38d")),
-            chatSupportStartHour = LocalTime.of(11, 0, 0),
-            chatSupportEndHour = LocalTime.of(19, 0, 0),
-            callSupportStartHour = LocalTime.of(10, 0, 0),
-            callSupportEndHour = LocalTime.of(13, 0, 0),
-        )
+        val doctorPutRequest =
+            DoctorPutRequest(
+                hospitalID = UUID.fromString("762a7a7e-41e4-46c2-b36c-f2b302cae3e7"),
+                firstName = "sample",
+                lastName = "sample",
+                email = "test@test.com",
+                phoneNumber = "1234567890",
+                doctorIconUrl = "https://example.com",
+                departments = listOf(UUID.fromString("ed8fb319-798f-4b47-bcf3-2a8f6486e38d")),
+                chatSupportStartHour = LocalTime.of(11, 0, 0),
+                chatSupportEndHour = LocalTime.of(19, 0, 0),
+                callSupportStartHour = LocalTime.of(10, 0, 0),
+                callSupportEndHour = LocalTime.of(13, 0, 0),
+            )
 
         val doctorID = DoctorID("not-found")
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.put("/doctors/${doctorID.value}").headers(HttpHeaders().apply {
-                add("X-UID", doctorID.value)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(doctorPutRequest))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.put("/doctors/${doctorID.value}").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", doctorID.value)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(doctorPutRequest)),
+            )
 
         result.andExpect(status().isBadRequest)
         result.andExpect(
@@ -119,36 +127,41 @@ class DoctorPutTest {
                 {
                     "errorType": "Doctor not found"
                 }
-                """.trimIndent(), true
-            )
+                """.trimIndent(),
+                true,
+            ),
         )
     }
 
     @Test
     fun `should return 400 when hospital is not found`() {
-        val doctorPutRequest = DoctorPutRequest(
-            hospitalID = UUID.fromString("653c078c-50c5-4e88-ae65-cff65e1e6c1c"),
-            firstName = "test",
-            lastName = "test",
-            email = "test@test.com",
-            phoneNumber = "1234567890",
-            doctorIconUrl = "https://example.com",
-            departments = listOf(UUID.fromString("cd273b1b-0c3b-4b89-b2b9-01b21832b44c")),
-            chatSupportStartHour = LocalTime.of(9, 0, 0),
-            chatSupportEndHour = LocalTime.of(17, 0, 0),
-            callSupportStartHour = LocalTime.of(9, 0, 0),
-            callSupportEndHour = LocalTime.of(17, 0, 0),
-        )
+        val doctorPutRequest =
+            DoctorPutRequest(
+                hospitalID = UUID.fromString("653c078c-50c5-4e88-ae65-cff65e1e6c1c"),
+                firstName = "test",
+                lastName = "test",
+                email = "test@test.com",
+                phoneNumber = "1234567890",
+                doctorIconUrl = "https://example.com",
+                departments = listOf(UUID.fromString("cd273b1b-0c3b-4b89-b2b9-01b21832b44c")),
+                chatSupportStartHour = LocalTime.of(9, 0, 0),
+                chatSupportEndHour = LocalTime.of(17, 0, 0),
+                callSupportStartHour = LocalTime.of(9, 0, 0),
+                callSupportEndHour = LocalTime.of(17, 0, 0),
+            )
 
         val doctorID = DoctorID("doctor")
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.put("/doctors/${doctorID.value}").headers(HttpHeaders().apply {
-                add("X-UID", doctorID.value)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(doctorPutRequest))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.put("/doctors/${doctorID.value}").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", doctorID.value)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(doctorPutRequest)),
+            )
 
         result.andExpect(status().isBadRequest)
         result.andExpect(
@@ -157,40 +170,45 @@ class DoctorPutTest {
                 {
                     "errorType": "Hospital not found"
                 }
-                """.trimIndent(), true
-            )
+                """.trimIndent(),
+                true,
+            ),
         )
-
     }
 
     @Test
     fun `should return 400 when department is not found`() {
-        val doctorPutRequest = DoctorPutRequest(
-            hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
-            firstName = "test",
-            lastName = "test",
-            email = "test@test.com",
-            phoneNumber = "1234567890",
-            doctorIconUrl = "https://example.com",
-            departments = listOf(
-                UUID.fromString("653c078c-50c5-4e88-ae65-cff65e1e6c1c"),
-                UUID.fromString("dcda6a0b-fb0f-4142-a8b5-b19264da90fc")
-            ),
-            chatSupportStartHour = LocalTime.of(9, 0, 0),
-            chatSupportEndHour = LocalTime.of(17, 0, 0),
-            callSupportStartHour = LocalTime.of(9, 0, 0),
-            callSupportEndHour = LocalTime.of(17, 0, 0),
-        )
+        val doctorPutRequest =
+            DoctorPutRequest(
+                hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
+                firstName = "test",
+                lastName = "test",
+                email = "test@test.com",
+                phoneNumber = "1234567890",
+                doctorIconUrl = "https://example.com",
+                departments =
+                    listOf(
+                        UUID.fromString("653c078c-50c5-4e88-ae65-cff65e1e6c1c"),
+                        UUID.fromString("dcda6a0b-fb0f-4142-a8b5-b19264da90fc"),
+                    ),
+                chatSupportStartHour = LocalTime.of(9, 0, 0),
+                chatSupportEndHour = LocalTime.of(17, 0, 0),
+                callSupportStartHour = LocalTime.of(9, 0, 0),
+                callSupportEndHour = LocalTime.of(17, 0, 0),
+            )
 
         val doctorID = DoctorID("doctor")
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.put("/doctors/${doctorID.value}").headers(HttpHeaders().apply {
-                add("X-UID", doctorID.value)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(doctorPutRequest))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.put("/doctors/${doctorID.value}").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", doctorID.value)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(doctorPutRequest)),
+            )
 
         result.andExpect(status().isBadRequest)
         result.andExpect(
@@ -199,10 +217,9 @@ class DoctorPutTest {
                 {
                     "errorType": "Department not found: ${doctorPutRequest.departments[0]}, ${doctorPutRequest.departments[1]}"
                 }
-                """.trimIndent(), true
-            )
+                """.trimIndent(),
+                true,
+            ),
         )
     }
-
-
 }

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository
 
 interface AccountRepository {
     fun store(account: Account): Unit
+
     fun getOrNullByUid(uid: UID): Account?
+
     fun delete(account: Account): Unit
 }
 
@@ -16,25 +18,29 @@ interface AccountRepository {
 class AccountRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) : AccountRepository {
     override fun store(account: Account) {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             INSERT INTO accounts (uid, role, fcm_token_id)
             VALUES (:uid, :role::role, :fcmTokenId)
-        """.trimIndent()
+            """.trimIndent()
 
         // language=postgresql
-        val updateSql = """
+        val updateSql =
+            """
             UPDATE accounts
             SET deleted_at = NULL
             WHERE uid = :uid
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("uid", account.uid.value)
-            .addValue("role", account.role.toString())
-            .addValue("fcmTokenId", account.fcmTokenId.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("uid", account.uid.value)
+                .addValue("role", account.role.toString())
+                .addValue("fcmTokenId", account.fcmTokenId.value)
 
-        val updateSqlParams = MapSqlParameterSource()
-            .addValue("uid", account.uid.value)
+        val updateSqlParams =
+            MapSqlParameterSource()
+                .addValue("uid", account.uid.value)
 
         val deletedAccount = getDeletedAccountOrNull(account.uid)
 
@@ -49,66 +55,72 @@ class AccountRepositoryImpl(private val namedParameterJdbcTemplate: NamedParamet
 
     override fun getOrNullByUid(uid: UID): Account? {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 uid,
                 role,
                 fcm_token_id
             FROM accounts
             WHERE uid = :uid AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("uid", uid.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("uid", uid.value)
 
         return namedParameterJdbcTemplate.query(
             sql,
-            sqlParams
+            sqlParams,
         ) { rs, _ ->
             Account.fromStore(
                 uid = rs.getString("uid"),
                 role = rs.getString("role"),
-                fcmTokenId = rs.getString("fcm_token_id")
+                fcmTokenId = rs.getString("fcm_token_id"),
             )
         }.singleOrNull()
     }
 
     override fun delete(account: Account) {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             UPDATE accounts
             SET deleted_at = NOW()
             WHERE uid = :uid
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("uid", account.uid.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("uid", account.uid.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }
 
     private fun getDeletedAccountOrNull(uid: UID): Account? {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 uid,
                 role,
                 fcm_token_id
             FROM accounts
             WHERE uid = :uid AND deleted_at IS NOT NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("uid", uid.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("uid", uid.value)
 
         return namedParameterJdbcTemplate.query(
             sql,
-            sqlParams
+            sqlParams,
         ) { rs, _ ->
             Account.fromStore(
                 uid = rs.getString("uid"),
                 role = rs.getString("role"),
-                fcmTokenId = rs.getString("fcm_token_id")
+                fcmTokenId = rs.getString("fcm_token_id"),
             )
         }.singleOrNull()
     }

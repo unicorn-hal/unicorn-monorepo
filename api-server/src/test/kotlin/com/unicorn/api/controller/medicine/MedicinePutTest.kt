@@ -1,4 +1,4 @@
-package com.unicorn.api.controller.medicine;
+package com.unicorn.api.controller.medicine
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Test
@@ -26,7 +26,6 @@ import java.util.*
 @Sql("/db/user/Insert_User_Data.sql")
 @Sql("/db/medicine/Insert_Medicine_Data.sql")
 public class MedicinePutTest {
-
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
@@ -35,114 +34,131 @@ public class MedicinePutTest {
 
     @Test
     fun `should return 200 when medicine is updated`() {
-        val medicine = MedicinePutRequest(
-            medicineName = "test-medicine",
-            quantity = 2
-        )
+        val medicine =
+            MedicinePutRequest(
+                medicineName = "test-medicine",
+                quantity = 2,
+            )
 
         val medicineID = "123e4567-e89b-12d3-a456-426614174000"
         val userID = "test"
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.put("/medicines/${medicineID}").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(medicine))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.put("/medicines/$medicineID").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(medicine)),
+            )
 
         result.andExpect(status().isOk)
         result.andExpect(
             content().json(
                 """
-                    {
-                        "medicineID": "$medicineID",
-                        "medicineName": "${medicine.medicineName}",
-                        "userID": "$userID",
-                        "count": 50,
-                        "quantity": ${medicine.quantity}
-                    }
-                """.trimIndent(), true
-            )
+                {
+                    "medicineID": "$medicineID",
+                    "medicineName": "${medicine.medicineName}",
+                    "userID": "$userID",
+                    "count": 50,
+                    "quantity": ${medicine.quantity}
+                }
+                """.trimIndent(),
+                true,
+            ),
         )
     }
 
     @Test
     fun `should return 400 when medicine ID is invalid`() {
-        val medicine = MedicinePutRequest(
-            medicineName = "test-medicine",
-            quantity = 2
-        )
+        val medicine =
+            MedicinePutRequest(
+                medicineName = "test-medicine",
+                quantity = 2,
+            )
 
         val invalidMedicineID = "invalid-id"
         val userID = "test"
 
         mockMvc.perform(
-            MockMvcRequestBuilders.put("/medicines/$invalidMedicineID").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
+            MockMvcRequestBuilders.put("/medicines/$invalidMedicineID").headers(
+                HttpHeaders().apply {
+                    add("X-UID", userID)
+                },
+            )
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(medicine))
+                .content(objectMapper.writeValueAsString(medicine)),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `should return 400 when quantity exceeds count`() {
-        val medicine = MedicinePutRequest(
-            medicineName = "test-medicine",
-            quantity = 100
-        )
+        val medicine =
+            MedicinePutRequest(
+                medicineName = "test-medicine",
+                quantity = 100,
+            )
 
         val userID = "test"
         val medicineID = "123e4567-e89b-12d3-a456-426614174000"
 
         mockMvc.perform(
-            MockMvcRequestBuilders.put("/medicines/$medicineID").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
+            MockMvcRequestBuilders.put("/medicines/$medicineID").headers(
+                HttpHeaders().apply {
+                    add("X-UID", userID)
+                },
+            )
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(medicine))
+                .content(objectMapper.writeValueAsString(medicine)),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `should return 400 when user is not found`() {
-        val medicine = MedicinePutRequest(
-            medicineName = "test-medicine",
-            quantity = 2
-        )
+        val medicine =
+            MedicinePutRequest(
+                medicineName = "test-medicine",
+                quantity = 2,
+            )
 
         val userID = "non-existent-user"
         val medicineID = "123e4567-e89b-12d3-a456-426614174000"
 
         mockMvc.perform(
-            MockMvcRequestBuilders.put("/medicines/$medicineID").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
+            MockMvcRequestBuilders.put("/medicines/$medicineID").headers(
+                HttpHeaders().apply {
+                    add("X-UID", userID)
+                },
+            )
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(medicine))
+                .content(objectMapper.writeValueAsString(medicine)),
         )
             .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `should return 400 when medicine is not found`() {
-        val medicine = MedicinePutRequest(
-            medicineName = "test-medicine",
-            quantity = 2
-        )
+        val medicine =
+            MedicinePutRequest(
+                medicineName = "test-medicine",
+                quantity = 2,
+            )
 
         val userID = "test"
         val nonExistentMedicineID = UUID.randomUUID().toString()
 
         mockMvc.perform(
-            MockMvcRequestBuilders.put("/medicines/$nonExistentMedicineID").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
+            MockMvcRequestBuilders.put("/medicines/$nonExistentMedicineID").headers(
+                HttpHeaders().apply {
+                    add("X-UID", userID)
+                },
+            )
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(medicine))
+                .content(objectMapper.writeValueAsString(medicine)),
         )
             .andExpect(status().isBadRequest)
     }
