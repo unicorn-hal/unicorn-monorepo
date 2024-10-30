@@ -13,12 +13,12 @@ exports.health_checkupsGET = function(xUID) {
     var examples = {};
     examples['application/json'] = {
   "data" : [ {
-    "date" : "2020-01-01T00:00:00+09:00",
+    "date" : "2020-01-01",
     "bloodPressure" : "120/80",
     "healthCheckupID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "bodyTemperature" : 36.5,
     "medicalRecord" : "## 2020年1月1日\n- 体温: 36.5\n- 血圧: 120/80\n- 診断: 軽度の風邪"
-  }]
+  } ]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -56,7 +56,7 @@ exports.health_checkupsHealthCheckupIDGET = function(xUID,healthCheckupID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "date" : "2020-01-01T00:00:00+09:00",
+  "date" : "2020-01-01",
   "bloodPressure" : "120/80",
   "healthCheckupID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "bodyTemperature" : 36.5,
@@ -84,7 +84,7 @@ exports.health_checkupsHealthCheckupIDPUT = function(body,healthCheckupID,xUID) 
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "date" : "2020-01-01T00:00:00+09:00",
+  "date" : "2020-01-01",
   "bloodPressure" : "120/80",
   "healthCheckupID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "bodyTemperature" : 36.5,
@@ -111,7 +111,7 @@ exports.health_checkupsPOST = function(body,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "date" : "2020-01-01T00:00:00+09:00",
+  "date" : "2020-01-01",
   "bloodPressure" : "120/80",
   "healthCheckupID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "bodyTemperature" : 36.5,

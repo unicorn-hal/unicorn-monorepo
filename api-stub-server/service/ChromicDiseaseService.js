@@ -6,10 +6,10 @@
  * 持病を削除します
  *
  * xUID String 
- * diseaseName String 
+ * chronicDiseaseID String 
  * no response value expected for this operation
  **/
-exports.chronic_diseasesDELETE = function(xUID,diseaseName) {
+exports.chronic_diseasesChronicDiseaseIDDELETE = function(xUID,chronicDiseaseID) {
   return new Promise(function(resolve, reject) {
     resolve();
   });
@@ -21,7 +21,7 @@ exports.chronic_diseasesDELETE = function(xUID,diseaseName) {
  * 登録してある持病名を取得します
  *
  * xUID String 
- * returns inline_response_200_9
+ * returns inline_response_200_10
  **/
 exports.chronic_diseasesGET = function(xUID) {
   return new Promise(function(resolve, reject) {
@@ -29,7 +29,7 @@ exports.chronic_diseasesGET = function(xUID) {
     examples['application/json'] = {
   "data" : [ {
     "diseaseName" : "高血圧",
-    "diseaseID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    "chronicDiseaseID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
   }]
 };
     if (Object.keys(examples).length > 0) {
@@ -52,8 +52,8 @@ exports.chronic_diseasesPOST = function(body) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "diseaseName" : "高血圧",
-  "diseaseID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  "chronicDiseaseID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "diseaseID" : 1
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

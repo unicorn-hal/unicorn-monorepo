@@ -13,6 +13,11 @@ exports.medicinesGET = function(xUID) {
     var examples = {};
     examples['application/json'] = {
   "data" : [ {
+    "reminders" : [ {
+      "reminderID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "reminderDayOfWeek" : [ "monday" ],
+      "reminderTime" : "09:00"
+    } ],
     "quantity" : 20,
     "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "count" : 30,
@@ -56,6 +61,11 @@ exports.medicinesMedicineIDPUT = function(body,medicineID,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
+  "reminders" : [ {
+    "reminderID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "reminderDayOfWeek" : [ "monday" ],
+    "reminderTime" : "09:00"
+  } ],
   "quantity" : 20,
   "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "count" : 30,
@@ -82,6 +92,11 @@ exports.medicinesPOST = function(body,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
+  "reminders" : [ {
+    "reminderID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "reminderDayOfWeek" : [ "monday" ],
+    "reminderTime" : "09:00"
+  }],
   "quantity" : 20,
   "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "count" : 30,
