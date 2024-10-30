@@ -1,9 +1,10 @@
 package com.unicorn.api.infrastructure.primary_doctor
 
-
-import com.unicorn.api.domain.primary_doctor.PrimaryDoctor
 import com.unicorn.api.domain.primary_doctor.PrimaryDoctorID
 import com.unicorn.api.domain.primary_doctor.PrimaryDoctors
+import com.unicorn.api.domain.doctor.DoctorID
+import com.unicorn.api.domain.primary_doctor.PrimaryDoctor
+import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,39 +44,27 @@ class PrimaryDoctorRepositoryTest {
         FROM primary_doctors
         WHERE primary_doctor_id = :primaryDoctorId
         AND deleted_at IS NULL
-        """.trimIndent()
+    """.trimIndent()
 
         val sqlParams = MapSqlParameterSource()
-            .addValue("primaryDoctorId", primaryDoctorID)
+            .addValue("primaryDoctorId", primaryDoctorID.value)
 
         return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
-
-            PrimaryDoctor.fromStore(
-                primaryDoctorID = UUID.fromString("primaryDoctorId"),
-                userID = rs.getString("user_id"),
-                doctorID = rs.getString("doctor_id")
-
+            PrimaryDoctor(
+                primaryDoctorID = PrimaryDoctorID(rs.getObject("primary_doctor_id", UUID::class.java)),
+                doctorID = DoctorID(rs.getString("doctor_id"))
             )
         }.singleOrNull()
     }
 
     @Test
     fun `should get primary doctor by primaryDoctorID`() {
-        val userID = "test"
-        val primaryDoctorID = PrimaryDoctorID(
-            UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5a0")
-        )
+        val primaryDoctorID = PrimaryDoctorID(UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5a0"))
 
-        val primaryDoctor = PrimaryDoctor.fromStore(
-            primaryDoctorID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5a0"),
-            userID = userID,
-            doctorID = "doctor"
-        )
+        val primaryDoctor = findPrimaryDoctorByPrimaryDoctorID(primaryDoctorID)
 
-        val act = primaryDoctorRepository.getOrNullBy(primaryDoctorID)
-
-        assertNotNull(act)
-        assertEquals(primaryDoctor, act)
+        assertNotNull(primaryDoctor)
+        assertEquals(primaryDoctorID, primaryDoctor?.primaryDoctorID)
     }
 
     @Test
@@ -89,67 +78,37 @@ class PrimaryDoctorRepositoryTest {
 
     @Test
     fun `should store multiple primary doctors`() {
-        val userID = "test"
+        val userID = UserID("test")
+        val doctorIDs = listOf(DoctorID("doctor"), DoctorID("doctor2"))
+        val primaryDoctors = PrimaryDoctors.create(userID, doctorIDs)
 
-        val primaryDoctor1 = PrimaryDoctor.fromStore(
-            primaryDoctorID = UUID.fromString("7b42f2f6-1fda-4e3a-b88a-8d4d72b0ae89"),
-            userID = userID,
-            doctorID = "doctor"
-        )
+        val storedDoctors = primaryDoctorRepository.store(primaryDoctors)
 
-        val primaryDoctor2 = PrimaryDoctor.fromStore(
-            primaryDoctorID = UUID.fromString("8c52d3e7-2fda-5f4a-c99b-9d4d82c1be90"),
-            userID = userID,
-            doctorID = "doctor2"
-        )
-
-        val primaryDoctors = listOf(primaryDoctor1, primaryDoctor2)
-        primaryDoctorRepository.store(primaryDoctors)
-
-        primaryDoctors.forEach { expectedDoctor ->
-            expectedDoctor.primaryDoctors.forEach { doctor: PrimaryDoctors ->
-                val actualDoctor = primaryDoctorRepository.getOrNullBy(doctor.primaryDoctorID)
-                assertNotNull(actualDoctor)
-
-                val actualPrimaryDoctor = actualDoctor?.primaryDoctors?.firstOrNull()
-
-                assertNotNull(actualPrimaryDoctor)
-
-                assertEquals(doctor, actualPrimaryDoctor)
-            }
+        assertEquals(primaryDoctors.doctors.size, storedDoctors.size)
+        primaryDoctors.doctors.forEach { expectedDoctor ->
+            val actualDoctor = findPrimaryDoctorByPrimaryDoctorID(expectedDoctor.primaryDoctorID)
+            assertNotNull(actualDoctor)
+            assertEquals(expectedDoctor, actualDoctor)
         }
     }
 
     @Test
     fun `should update existing primary doctor using store`() {
-        val userID = "test"
+        val userID = UserID("test")
+        val doctorIDs = listOf(DoctorID("doctor2"))
+        val primaryDoctors = PrimaryDoctors.create(userID, doctorIDs)
 
-        val updatedDoctor = PrimaryDoctor.fromStore(
-            primaryDoctorID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5a0"),
-            userID = userID,
-            doctorID = "doctor2"
-        )
-
-        val primaryDoctor = PrimaryDoctor.fromStore(
-            primaryDoctorID = UUID.fromString("7b42f2f6-1fda-4e3a-b88a-8d4d72b0ae89"),
-            userID = userID,
-            doctorID = "doctor"
-        )
-
-        val primaryDoctors = listOf(updatedDoctor, primaryDoctor)
         primaryDoctorRepository.store(primaryDoctors)
 
-        primaryDoctors.forEach { expectedDoctor ->
-            expectedDoctor.primaryDoctors.forEach { doctor: PrimaryDoctors ->
-                val actualDoctor = primaryDoctorRepository.getOrNullBy(doctor.primaryDoctorID)
-                assertNotNull(actualDoctor)
+        val updatedDoctorIDs = listOf(DoctorID("doctor"))
+        val updatedDoctors = PrimaryDoctors.create(userID, updatedDoctorIDs)
 
-                val actualPrimaryDoctor = actualDoctor?.primaryDoctors?.firstOrNull()
+        primaryDoctorRepository.store(updatedDoctors)
 
-                assertNotNull(actualPrimaryDoctor)
-
-                assertEquals(doctor, actualPrimaryDoctor)
-            }
+        updatedDoctors.doctors.forEach { expectedDoctor ->
+            val actualDoctor = findPrimaryDoctorByPrimaryDoctorID(expectedDoctor.primaryDoctorID)
+            assertNotNull(actualDoctor)
+            assertEquals(expectedDoctor.doctorID, actualDoctor?.doctorID)
         }
     }
 }

@@ -4,64 +4,37 @@ import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.user.UserID
 import java.util.*
 
-data class PrimaryDoctor private constructor(
-    val primaryDoctors: List<PrimaryDoctors>
+data class PrimaryDoctors private constructor(
+    val userID: UserID,
+    val doctors: List<PrimaryDoctor>
 ) {
     companion object {
-        fun create(
-            primaryDoctors: List<PrimaryDoctors>
-        ): PrimaryDoctor {
-            return PrimaryDoctor(
-                primaryDoctors = primaryDoctors
-            )
-        }
-
-        fun fromStore(
-            primaryDoctorID: UUID,
-            userID: String,
-            doctorID: String
-        ): PrimaryDoctor {
-            val primaryDoctors = PrimaryDoctors(
-                primaryDoctorID = PrimaryDoctorID(primaryDoctorID),
-                userID = UserID(userID),
-                doctorID = DoctorID(doctorID)
-            )
-            return PrimaryDoctor(
-                primaryDoctors = listOf(primaryDoctors)
-            )
+        fun create(userID: UserID, doctorIDs: List<DoctorID> = emptyList()): PrimaryDoctors {
+            val doctors = doctorIDs.map { doctorID ->
+                PrimaryDoctor(primaryDoctorID = PrimaryDoctorID.newID(), doctorID = doctorID)
+            }
+            return PrimaryDoctors(userID, doctors)
         }
     }
 
-    fun update(
-        newPrimaryDoctors: List<PrimaryDoctors>
-    ): PrimaryDoctor {
-        return this.copy(
-            primaryDoctors = newPrimaryDoctors
-        )
+    fun fromStore(doctorID: DoctorID): PrimaryDoctors {
+        val newDoctor = PrimaryDoctor(primaryDoctorID = PrimaryDoctorID.newID(), doctorID = doctorID)
+        return this.copy(doctors = this.doctors + newDoctor)
     }
 
-    fun toResponse(): PrimaryDoctorResponse {
-        return PrimaryDoctorResponse(
-            userID = primaryDoctors.first().userID,
-            doctorIDs = primaryDoctors.map { it.doctorID }
-        )
+    fun update(newDoctors: List<PrimaryDoctor>): PrimaryDoctors {
+        return this.copy(doctors = newDoctors)
     }
 }
 
-data class PrimaryDoctors(
+data class PrimaryDoctor(
     val primaryDoctorID: PrimaryDoctorID,
-    val userID: UserID,
     val doctorID: DoctorID
-)
-
-data class PrimaryDoctorResponse(
-    val userID: UserID,
-    val doctorIDs: List<DoctorID>
 )
 
 @JvmInline
 value class PrimaryDoctorID(val value: UUID) {
-    init {
-        require(value.toString().isNotEmpty()) { "PrimaryDoctorID must not be empty" }
+    companion object {
+        fun newID(): PrimaryDoctorID = PrimaryDoctorID(UUID.randomUUID())
     }
 }
