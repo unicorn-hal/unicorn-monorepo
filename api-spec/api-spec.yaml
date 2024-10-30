@@ -556,7 +556,7 @@ components:
           nullable: true
           description: "最新メッセージ送信日時"
           format: date-time
-          example: "2020-01-01T00:00:00"
+          example: "2020-01-01T00:00:00+09:00"
 
     ChatRequest:
       type: object
@@ -618,7 +618,7 @@ components:
           type: string
           description: "メッセージ送信日時"
           format: date-time
-          example: "2020-01-01T00:00:00"
+          example: "2020-01-01T00:00:00+09:00"
 
     MessageRequest:
       type: object
@@ -839,12 +839,12 @@ components:
           type: string
           format: date-time
           description: "通話開始時間"
-          example: "2024-10-12T15:00:00"
+          example: "2024-10-12T15:00:00+09:00"
         callEndTime:
           type: string
           format: date-time
           description: "通話終了時間"
-          example: "2024-10-12T15:30:00"
+          example: "2024-10-12T15:30:00+09:00"
 
     CallReservationRequest:
       type: object
@@ -861,12 +861,12 @@ components:
           type: string
           format: date-time
           description: "通話開始時間"
-          example: "2024-10-12T15:00:00"
+          example: "2024-10-12T15:00:00+09:00"
         callEndTime:
           type: string
           format: date-time
           description: "通話終了時間"
-          example: "2024-10-12T15:30:00"
+          example: "2024-10-12T15:30:00+09:00"
     CallReservationResponse:
       type: object
       properties:
@@ -887,12 +887,12 @@ components:
           type: string
           format: date-time
           description: "通話開始時間"
-          example: "2024-10-12T15:00:00"
+          example: "2024-10-12T15:00:00+09:00"
         callEndTime:
           type: string
           format: date-time
           description: "通話終了時間"
-          example: "2024-10-12T15:30:00"
+          example: "2024-10-12T15:30:00+09:00"
     PrimaryDoctorsRequest:
       type: object
       properties:
