@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -30,47 +29,62 @@ class GreetingPutTest {
 
     @Test
     fun `should return 200 when greeting is updated`() {
-        val greetingRequest = GreetingPutRequest(
-            message = "test"
-        )
+        val greetingRequest =
+            GreetingPutRequest(
+                message = "test",
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.put("/greetings/${greetingID}")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(greetingRequest)))
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.put("/greetings/$greetingID")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(greetingRequest)),
+            )
 
         result.andExpect(status().isOk)
-        result.andExpect(content().json("""
-            {
-                "message": "${greetingRequest.message}"
-            }
-        """.trimIndent()))
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "message": "${greetingRequest.message}"
+                }
+                """.trimIndent(),
+            ),
+        )
     }
 
     @Test
     fun `should return 500 when message is not provided`() {
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.put("/greetings/${greetingID}")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("""
-                {
-                    "message": ""
-                }
-            """.trimIndent()))
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.put("/greetings/$greetingID")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(
+                        """
+                        {
+                            "message": ""
+                        }
+                        """.trimIndent(),
+                    ),
+            )
 
         result.andExpect(status().isInternalServerError)
     }
 
     @Test
     fun `should return 500 when greeting is not found`() {
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.put("/greetings/${UUID.randomUUID()}")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("""
-                {
-                    "message": "test"
-                }
-            """.trimIndent()))
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.put("/greetings/${UUID.randomUUID()}")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(
+                        """
+                        {
+                            "message": "test"
+                        }
+                        """.trimIndent(),
+                    ),
+            )
 
         result.andExpect(status().isInternalServerError)
     }

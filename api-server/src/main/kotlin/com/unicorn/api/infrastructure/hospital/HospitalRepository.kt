@@ -13,11 +13,12 @@ interface HospitalRepository {
 
 @Repository
 class HospitalRepositoryImpl(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
+    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) : HospitalRepository {
     override fun getOrNullBy(hospitalID: HospitalID): Hospital? {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 hospital_id,
                 hospital_name,
@@ -29,10 +30,11 @@ class HospitalRepositoryImpl(
             WHERE
                 hospital_id = :hospitalID
                 AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParam = MapSqlParameterSource()
-            .addValue("hospitalID", hospitalID.value)
+        val sqlParam =
+            MapSqlParameterSource()
+                .addValue("hospitalID", hospitalID.value)
 
         return namedParameterJdbcTemplate.query(sql, sqlParam) { rs, _ ->
             Hospital.fromStore(
@@ -40,7 +42,7 @@ class HospitalRepositoryImpl(
                 hospitalName = rs.getString("hospital_name"),
                 address = rs.getString("address"),
                 postalCode = rs.getString("postal_code"),
-                phoneNumber = rs.getString("phone_number")
+                phoneNumber = rs.getString("phone_number"),
             )
         }.singleOrNull()
     }

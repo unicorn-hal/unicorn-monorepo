@@ -10,7 +10,7 @@ interface DeleteUserService {
 
 @Service
 class DeleteUserServiceImpl(
-    val userRepository: UserRepository
+    val userRepository: UserRepository,
 ) : DeleteUserService {
     override fun delete(userID: UserID) {
         val user = userRepository.getOrNullBy(userID)

@@ -7,15 +7,21 @@ import com.unicorn.api.infrastructure.user.UserRepository
 import org.springframework.stereotype.Service
 
 interface DeleteMedicineService {
-    fun delete(userID: UserID, medicineID: MedicineID): Unit
+    fun delete(
+        userID: UserID,
+        medicineID: MedicineID,
+    ): Unit
 }
 
 @Service
 class DeleteMedicineServiceImpl(
     private val userRepository: UserRepository,
-    private val medicineRepository: MedicineRepository
+    private val medicineRepository: MedicineRepository,
 ) : DeleteMedicineService {
-    override fun delete(userID: UserID, medicineID: MedicineID) {
+    override fun delete(
+        userID: UserID,
+        medicineID: MedicineID,
+    ) {
         val user = userRepository.getOrNullBy(userID)
 
         requireNotNull(user) {

@@ -8,7 +8,6 @@ import java.util.*
 import kotlin.test.assertEquals
 
 class DoctorTest {
-
     @Test
     fun `create doctor`() {
         val doctorID = "doctorID"
@@ -20,16 +19,17 @@ class DoctorTest {
         val doctorIconUrl = "doctorIconUrl"
         val departments = listOf(DepartmentID(UUID.randomUUID()))
 
-        val doctor = Doctor.create(
-            doctorID,
-            hospitalID,
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            doctorIconUrl,
-            departments
-        )
+        val doctor =
+            Doctor.create(
+                doctorID,
+                hospitalID,
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                doctorIconUrl,
+                departments,
+            )
 
         assertEquals(doctorID, doctor.doctorID.value)
         assertEquals(hospitalID, doctor.hospitalID)
@@ -52,16 +52,17 @@ class DoctorTest {
         val doctorIconUrl = "doctorIconUrl"
         val departments = listOf(UUID.randomUUID())
 
-        val doctor = Doctor.fromStore(
-            doctorID,
-            hospitalID,
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            doctorIconUrl,
-            departments
-        )
+        val doctor =
+            Doctor.fromStore(
+                doctorID,
+                hospitalID,
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                doctorIconUrl,
+                departments,
+            )
 
         assertEquals(doctorID, doctor.doctorID.value)
         assertEquals(hospitalID, doctor.hospitalID.value)
@@ -84,28 +85,30 @@ class DoctorTest {
         val doctorIconUrl = "doctorIconUrl"
         val departments = listOf(DepartmentID(UUID.randomUUID()))
 
-        val doctor = Doctor.create(
-            doctorID,
-            hospitalID,
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            doctorIconUrl,
-            departments
-        )
+        val doctor =
+            Doctor.create(
+                doctorID,
+                hospitalID,
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                doctorIconUrl,
+                departments,
+            )
 
         val updatedFirstName = "updatedFirstName"
 
-        val updateDoctor = doctor.update(
-            hospitalID,
-            FirstName(updatedFirstName),
-            LastName(lastName),
-            Email(email),
-            PhoneNumber(phoneNumber),
-            DoctorIconUrl(doctorIconUrl),
-            departments
-        )
+        val updateDoctor =
+            doctor.update(
+                hospitalID,
+                FirstName(updatedFirstName),
+                LastName(lastName),
+                Email(email),
+                PhoneNumber(phoneNumber),
+                DoctorIconUrl(doctorIconUrl),
+                departments,
+            )
 
         assertEquals(updatedFirstName, updateDoctor.firstName.value)
     }
@@ -121,18 +124,19 @@ class DoctorTest {
         val doctorIconUrl = "doctorIconUrl"
         val departments = listOf(DepartmentID(UUID.randomUUID()))
 
-        val exception = assertThrows(IllegalArgumentException::class.java) {
-            Doctor.create(
-                doctorID,
-                hospitalID,
-                firstName,
-                lastName,
-                email,
-                phoneNumber,
-                doctorIconUrl,
-                departments
-            )
-        }
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                Doctor.create(
+                    doctorID,
+                    hospitalID,
+                    firstName,
+                    lastName,
+                    email,
+                    phoneNumber,
+                    doctorIconUrl,
+                    departments,
+                )
+            }
 
         assertEquals("email should be valid", exception.message)
     }

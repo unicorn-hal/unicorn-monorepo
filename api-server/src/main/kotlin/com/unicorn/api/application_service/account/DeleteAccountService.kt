@@ -10,11 +10,12 @@ interface DeleteAccountService {
 
 @Service
 class DeleteAccountServiceImpl(
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
 ) : DeleteAccountService {
-    override fun delete(uid: UID): Unit {
-        val account = accountRepository.getOrNullByUid(uid)
-            ?: throw IllegalArgumentException("account not found")
+    override fun delete(uid: UID) {
+        val account =
+            accountRepository.getOrNullByUid(uid)
+                ?: throw IllegalArgumentException("account not found")
 
         accountRepository.delete(account)
     }

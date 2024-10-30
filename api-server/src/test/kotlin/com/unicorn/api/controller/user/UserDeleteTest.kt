@@ -1,6 +1,5 @@
 package com.unicorn.api.controller.user
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -15,7 +14,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
 @SpringBootTest
@@ -26,7 +24,6 @@ import java.time.LocalDate
 @Sql("/db/user/Insert_User_Data.sql")
 @Sql("/db/user/Insert_Deleted_User_Data.sql")
 class UserDeleteTest {
-
     @Autowired
     private lateinit var mockMvc: MockMvc
 
@@ -34,12 +31,15 @@ class UserDeleteTest {
     fun `should return 204 when user is deleted`() {
         val userID = "test"
 
-       val result = mockMvc.perform(
-            MockMvcRequestBuilders.delete("/users/${userID}").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.delete("/users/$userID").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON),
+            )
 
         result.andExpect(status().isNoContent)
     }
@@ -48,18 +48,26 @@ class UserDeleteTest {
     fun `should return 400 when user is not found`() {
         val userID = "notFound"
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.delete("/users/${userID}").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.delete("/users/$userID").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON),
+            )
 
         result.andExpect(status().isBadRequest)
-        result.andExpect(content().json("""
-            {
-                "errorType": "User not found"
-            }
-        """.trimIndent(), true))
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "errorType": "User not found"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
     }
 }

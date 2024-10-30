@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional
 @AutoConfigureMockMvc
 @Transactional
 class AppConfigGetTest {
-
     @Autowired private lateinit var mockMvc: MockMvc
 
     @Test

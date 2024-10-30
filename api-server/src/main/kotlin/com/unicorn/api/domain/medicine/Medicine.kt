@@ -3,56 +3,55 @@ package com.unicorn.api.domain.medicine
 import com.unicorn.api.domain.user.*
 import java.util.*
 
-
 data class Medicine private constructor(
     val medicineID: MedicineID,
     val medicineName: MedicineName,
     val userID: UserID,
     val count: Count,
-    val quantity: Quantity
+    val quantity: Quantity,
 ) {
     companion object {
         fun fromStore(
-           medicineID: UUID,
-           medicineName: String,
-           userID: String,
-           count: Int,
-           quantity: Int
+            medicineID: UUID,
+            medicineName: String,
+            userID: String,
+            count: Int,
+            quantity: Int,
         ): Medicine {
             return Medicine(
                 medicineID = MedicineID(medicineID),
                 medicineName = MedicineName(medicineName),
                 userID = UserID(userID),
                 count = Count(count),
-                quantity = Quantity(quantity)
+                quantity = Quantity(quantity),
             )
         }
 
         fun create(
-           medicineName: String,
-           userID: UserID,
-           count: Int
+            medicineName: String,
+            userID: UserID,
+            count: Int,
         ): Medicine {
             return Medicine(
                 medicineID = MedicineID(UUID.randomUUID()),
                 medicineName = MedicineName(medicineName),
                 userID = userID,
                 count = Count(count),
-                quantity = Quantity(count)
+                quantity = Quantity(count),
             )
         }
     }
 
     fun update(
         medicineName: MedicineName,
-        quantity: Quantity
+        quantity: Quantity,
     ): Medicine {
         require(quantity.value <= count.value) {
             "quantity should be smaller than count."
         }
         return this.copy(
             medicineName = medicineName,
-            quantity = quantity
+            quantity = quantity,
         )
     }
 }
@@ -64,15 +63,16 @@ value class MedicineID(val value: UUID) {
     init {
         require(value.toString().isNotBlank()) { "medicineID should not be blank" }
     }
-     companion object {
-         fun fromString(id: String): MedicineID {
-             return try {
-                 MedicineID(UUID.fromString(id))
-             } catch (e: IllegalArgumentException) {
-                 throw InvalidMedicineIDException("Invalid medicine ID: $id")
-             }
-         }
-     }
+
+    companion object {
+        fun fromString(id: String): MedicineID {
+            return try {
+                MedicineID(UUID.fromString(id))
+            } catch (e: IllegalArgumentException) {
+                throw InvalidMedicineIDException("Invalid medicine ID: $id")
+            }
+        }
+    }
 }
 
 @JvmInline

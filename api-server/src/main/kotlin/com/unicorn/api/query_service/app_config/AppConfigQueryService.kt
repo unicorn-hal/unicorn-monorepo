@@ -9,14 +9,14 @@ interface AppConfigQueryService {
 
 @Service
 class AppConfigQueryServiceImpl(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
+    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) : AppConfigQueryService {
-
     override fun get(): Boolean? {
-        val sql = """
+        val sql =
+            """
             SELECT available
             FROM app_config
-        """.trimIndent()
+            """.trimIndent()
 
         return namedParameterJdbcTemplate.query(sql) { rs, _ ->
             rs.getBoolean("available")

@@ -17,13 +17,17 @@ class UserController(
     private val userQueryService: UserQueryService,
     private val saveUserService: SaveUserService,
     private val updateUserService: UpdateUserService,
-    private val deleteUserService: DeleteUserService
+    private val deleteUserService: DeleteUserService,
 ) {
     @GetMapping("/users/{userID}")
-    fun get(@RequestHeader("X-UID") uid: String, @PathVariable userID: String): ResponseEntity<*> {
+    fun get(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<*> {
         try {
-            val result = userQueryService.getOrNullBy(userID)
-                ?: return ResponseEntity.status(404).body(ResponseError("User not found"))
+            val result =
+                userQueryService.getOrNullBy(userID)
+                    ?: return ResponseEntity.status(404).body(ResponseError("User not found"))
 
             return ResponseEntity.ok(result)
         } catch (e: Exception) {
@@ -32,7 +36,10 @@ class UserController(
     }
 
     @PostMapping("/users")
-    fun save(@RequestHeader("X-UID") uid: String, @RequestBody userPostRequest: UserPostRequest): ResponseEntity<*> {
+    fun save(
+        @RequestHeader("X-UID") uid: String,
+        @RequestBody userPostRequest: UserPostRequest,
+    ): ResponseEntity<*> {
         try {
             val result = saveUserService.save(UID(uid), userPostRequest)
             return ResponseEntity.ok(result)
@@ -47,7 +54,7 @@ class UserController(
     fun update(
         @RequestHeader("X-UID") uid: String,
         @RequestBody userPutRequest: UserPutRequest,
-        @PathVariable userID: String
+        @PathVariable userID: String,
     ): ResponseEntity<*> {
         try {
             val result = updateUserService.update(UserID(userID), userPutRequest)
@@ -60,7 +67,10 @@ class UserController(
     }
 
     @DeleteMapping("/users/{userID}")
-    fun delete(@RequestHeader("X-UID") uid: String, @PathVariable userID: String): ResponseEntity<Any> {
+    fun delete(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<Any> {
         try {
             deleteUserService.delete(UserID(userID))
             return ResponseEntity.noContent().build()
@@ -84,7 +94,7 @@ data class UserPostRequest(
     val iconImageUrl: String?,
     val bodyHeight: Double,
     val bodyWeight: Double,
-    val occupation: String
+    val occupation: String,
 )
 
 data class UserPutRequest(
@@ -99,5 +109,5 @@ data class UserPutRequest(
     val iconImageUrl: String?,
     val bodyHeight: Double,
     val bodyWeight: Double,
-    val occupation: String
+    val occupation: String,
 )
