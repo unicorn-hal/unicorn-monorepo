@@ -22,7 +22,7 @@ class SaveHealthCheckupServiceImpl(
         requireNotNull(user) { "User not found" }
 
         val healthCheckup = HealthCheckup.create(
-            userID = userID,
+            userID = userID.value,
             bodyTemperature = healthCheckupPostRequest.bodyTemperature,
             bloodPressure = healthCheckupPostRequest.bloodPressure,
             medicalRecord = healthCheckupPostRequest.medicalRecord,
