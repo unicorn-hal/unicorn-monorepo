@@ -7,6 +7,5 @@ indent_size = 4
 [*.{kt, kts}]
 ktlint_standard_package-name = disabled
 ktlint_standard_no-wildcard-imports = disabled
-ktlint_Standard_emum-entry-name-case = disabled
 ktlint_standard_filename = disabled
 ktlint_standard_enum-entry-name-case = disabled
