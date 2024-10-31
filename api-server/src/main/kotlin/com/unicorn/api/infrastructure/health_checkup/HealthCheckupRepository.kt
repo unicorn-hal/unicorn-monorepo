@@ -1,27 +1,27 @@
 package com.unicorn.api.infrastructure.health_checkup
 
-import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.domain.health_checkup.*
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
-import java.time.LocalDate
 import java.util.*
 
 interface HealthCheckupRepository {
     fun store(healthCheckup: HealthCheckup): HealthCheckup
+
     fun getOrNullBy(healthCheckupID: HealthCheckupID): HealthCheckup?
+
     fun delete(healthCheckup: HealthCheckup)
 }
 
 @Repository
 class HealthCheckupRepositoryImpl(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
+    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) : HealthCheckupRepository {
-
     override fun store(healthCheckup: HealthCheckup): HealthCheckup {
         // laguage=postgresql
-        val sql = """
+        val sql =
+            """
             INSERT INTO health_checkups(
                 health_checkup_id,
                 checkuped_user_id,
@@ -47,15 +47,16 @@ class HealthCheckupRepositoryImpl(
                 checkuped_date = EXCLUDED.checkuped_date,
                 deleted_at = NULL
             WHERE health_checkups.created_at IS NOT NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("healthCheckupID", healthCheckup.healthCheckupID.value)
-            .addValue("userID", healthCheckup.userID.value)
-            .addValue("bodyTemperature", healthCheckup.bodyTemperature.value)
-            .addValue("bloodPressure", healthCheckup.bloodPressure.value)
-            .addValue("medicalRecord", healthCheckup.medicalRecord.value)
-            .addValue("date", healthCheckup.date.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("healthCheckupID", healthCheckup.healthCheckupID.value)
+                .addValue("userID", healthCheckup.userID.value)
+                .addValue("bodyTemperature", healthCheckup.bodyTemperature.value)
+                .addValue("bloodPressure", healthCheckup.bloodPressure.value)
+                .addValue("medicalRecord", healthCheckup.medicalRecord.value)
+                .addValue("date", healthCheckup.date.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
 
@@ -64,7 +65,8 @@ class HealthCheckupRepositoryImpl(
 
     override fun getOrNullBy(healthCheckupID: HealthCheckupID): HealthCheckup? {
         //language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 health_checkup_id,
                 checkuped_user_id,
@@ -75,14 +77,15 @@ class HealthCheckupRepositoryImpl(
             FROM health_checkups
             WHERE health_checkup_id = :healthCheckupID
             AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("healthCheckupID", healthCheckupID.value)
-        
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("healthCheckupID", healthCheckupID.value)
+
         return namedParameterJdbcTemplate.query(
             sql,
-            sqlParams
+            sqlParams,
         ) { rs, _ ->
             HealthCheckup.fromStore(
                 healthCheckupID = UUID.fromString(rs.getString("health_checkup_id")),
@@ -90,22 +93,24 @@ class HealthCheckupRepositoryImpl(
                 bodyTemperature = rs.getDouble("body_temperature"),
                 bloodPressure = rs.getString("blood_pressure"),
                 medicalRecord = rs.getString("medical_record"),
-                date = rs.getDate("checkuped_date").toLocalDate()
+                date = rs.getDate("checkuped_date").toLocalDate(),
             )
         }.singleOrNull()
     }
 
     override fun delete(healthCheckup: HealthCheckup) {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             UPDATE health_checkups
             SET deleted_at = NOW()
             WHERE health_checkup_id = :healthCheckupID
             AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("healthCheckupID", healthCheckup.healthCheckupID.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("healthCheckupID", healthCheckup.healthCheckupID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }

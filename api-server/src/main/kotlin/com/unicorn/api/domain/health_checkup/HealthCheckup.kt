@@ -10,7 +10,7 @@ data class HealthCheckup private constructor(
     val bodyTemperature: BodyTemperature,
     val bloodPressure: BloodPressure,
     val medicalRecord: MedicalRecord,
-    val date: CheckupedDate
+    val date: CheckupedDate,
 ) {
     companion object {
         fun fromStore(
@@ -19,15 +19,15 @@ data class HealthCheckup private constructor(
             bodyTemperature: Double,
             bloodPressure: String,
             medicalRecord: String,
-            date: LocalDate
-        ): HealthCheckup{ 
+            date: LocalDate,
+        ): HealthCheckup  {
             return HealthCheckup(
                 healthCheckupID = HealthCheckupID(healthCheckupID),
                 userID = UserID(userID),
                 bodyTemperature = BodyTemperature(bodyTemperature),
                 bloodPressure = BloodPressure(bloodPressure),
                 medicalRecord = MedicalRecord(medicalRecord),
-                date = CheckupedDate(date)
+                date = CheckupedDate(date),
             )
         }
 
@@ -36,7 +36,7 @@ data class HealthCheckup private constructor(
             bodyTemperature: Double,
             bloodPressure: String,
             medicalRecord: String,
-            date: LocalDate
+            date: LocalDate,
         ): HealthCheckup {
             return HealthCheckup(
                 healthCheckupID = HealthCheckupID(UUID.randomUUID()),
@@ -44,7 +44,7 @@ data class HealthCheckup private constructor(
                 bodyTemperature = BodyTemperature(bodyTemperature),
                 bloodPressure = BloodPressure(bloodPressure),
                 medicalRecord = MedicalRecord(medicalRecord),
-                date = CheckupedDate(date)
+                date = CheckupedDate(date),
             )
         }
     }
@@ -53,13 +53,13 @@ data class HealthCheckup private constructor(
         bodyTemperature: BodyTemperature,
         bloodPressure: BloodPressure,
         medicalRecord: MedicalRecord,
-        date: CheckupedDate
+        date: CheckupedDate,
     ): HealthCheckup {
         return this.copy(
             bodyTemperature = bodyTemperature,
             bloodPressure = bloodPressure,
             medicalRecord = medicalRecord,
-            date = date
+            date = date,
         )
     }
 }
@@ -68,23 +68,23 @@ data class HealthCheckup private constructor(
 value class HealthCheckupID(val value: UUID)
 
 @JvmInline
-value class BodyTemperature(val value: Double){
+value class BodyTemperature(val value: Double) {
     init {
-        require(value > 0){"body temperature should be greater than 0"}
+        require(value > 0) { "body temperature should be greater than 0" }
     }
 }
 
 @JvmInline
-value class BloodPressure(val value: String){
+value class BloodPressure(val value: String) {
     init {
-        require(value.isNotBlank()){"blood pressure should not be blank"}
+        require(value.isNotBlank()) { "blood pressure should not be blank" }
     }
 }
 
 @JvmInline
-value class MedicalRecord(val value: String){
+value class MedicalRecord(val value: String) {
     init {
-        require(value.isNotBlank()){"medical record should not be blank"}
+        require(value.isNotBlank()) { "medical record should not be blank" }
     }
 }
 
