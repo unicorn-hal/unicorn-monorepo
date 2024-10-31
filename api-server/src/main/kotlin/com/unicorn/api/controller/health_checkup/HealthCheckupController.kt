@@ -18,11 +18,7 @@ class HealthCheckupController(
     fun post(
         @RequestHeader("X-UID") uid: String,
         @RequestBody healthCheckupPostRequest: HealthCheckupPostRequest,
-<<<<<<< Updated upstream
-    ): ResponseEntity<*>  {
-=======
     ): ResponseEntity<*> {
->>>>>>> Stashed changes
         try {
             val result = saveHealthCheckupService.save(UserID(uid), healthCheckupPostRequest)
             return ResponseEntity.ok(result)
