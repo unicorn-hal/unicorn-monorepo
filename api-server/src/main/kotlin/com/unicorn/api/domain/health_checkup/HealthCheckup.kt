@@ -20,7 +20,11 @@ data class HealthCheckup private constructor(
             bloodPressure: String,
             medicalRecord: String,
             date: LocalDate,
+<<<<<<< Updated upstream
         ): HealthCheckup  {
+=======
+        ): HealthCheckup {
+>>>>>>> Stashed changes
             return HealthCheckup(
                 healthCheckupID = HealthCheckupID(healthCheckupID),
                 userID = UserID(userID),
