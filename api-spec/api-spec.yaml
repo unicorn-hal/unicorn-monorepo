@@ -755,7 +755,7 @@ components:
                 example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
               reminderTime:
                 type: string
-                format: time
+
                 description: "リマインダー時間"
                 example: "09:00"
               reminderDayOfWeek:
@@ -787,7 +787,7 @@ components:
             properties:
               reminderTime:
                 type: string
-                format: time
+
                 description: "リマインダー時間"
                 example: "09:00"
               reminderDayOfWeek:
@@ -823,7 +823,7 @@ components:
                 example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
               reminderTime:
                 type: string
-                format: time
+
                 description: "リマインダー時間"
                 example: "09:00"
               reminderDayOfWeek:
@@ -863,7 +863,7 @@ components:
                 example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
               reminderTime:
                 type: string
-                format: time
+
                 description: "リマインダー時間"
                 example: "09:00"
               reminderDayOfWeek:

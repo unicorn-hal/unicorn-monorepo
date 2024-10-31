@@ -3450,7 +3450,7 @@ components:
         reminderTime:
           type: string
           description: リマインダー時間
-          format: time
+          
           example: 09:00
         reminderDayOfWeek:
           type: array
@@ -3470,7 +3470,7 @@ components:
         reminderTime:
           type: string
           description: リマインダー時間
-          format: time
+          
           example: 09:00
         reminderDayOfWeek:
           type: array
