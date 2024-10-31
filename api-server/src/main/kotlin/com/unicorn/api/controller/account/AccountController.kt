@@ -18,16 +18,20 @@ import org.springframework.web.bind.annotation.RequestHeader
 class AccountController(
     private val saveAccountService: SaveAccountService,
     private val accountQueryService: AccountQueryService,
-    private val deleteAccountService: DeleteAccountService
+    private val deleteAccountService: DeleteAccountService,
 ) {
     @PostMapping("/accounts")
-    fun save(@RequestHeader("X-UID") uid: String, @RequestBody accountPostRequest: AccountPostRequest): ResponseEntity<Account> {
+    fun save(
+        @RequestHeader("X-UID") uid: String,
+        @RequestBody accountPostRequest: AccountPostRequest,
+    ): ResponseEntity<Account> {
         try {
-            val result = saveAccountService.save(
-                uid = accountPostRequest.uid,
-                role = accountPostRequest.role,
-                fcmTokenId = accountPostRequest.fcmTokenId
-            )
+            val result =
+                saveAccountService.save(
+                    uid = accountPostRequest.uid,
+                    role = accountPostRequest.role,
+                    fcmTokenId = accountPostRequest.fcmTokenId,
+                )
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().build()
@@ -37,10 +41,13 @@ class AccountController(
     }
 
     @GetMapping("/accounts")
-    fun get(@RequestHeader("X-UID") uid: String): ResponseEntity<AccountDto> {
+    fun get(
+        @RequestHeader("X-UID") uid: String,
+    ): ResponseEntity<AccountDto> {
         try {
-            val result = accountQueryService.getOrNullBy(uid)
-                ?: return ResponseEntity.notFound().build()
+            val result =
+                accountQueryService.getOrNullBy(uid)
+                    ?: return ResponseEntity.notFound().build()
 
             return ResponseEntity.ok(result)
         } catch (e: Exception) {
@@ -49,7 +56,9 @@ class AccountController(
     }
 
     @DeleteMapping("/accounts")
-    fun delete(@RequestHeader("X-UID") uid: String): ResponseEntity<Unit> {
+    fun delete(
+        @RequestHeader("X-UID") uid: String,
+    ): ResponseEntity<Unit> {
         try {
             deleteAccountService.delete(UID(uid))
             return ResponseEntity.noContent().build()
@@ -64,5 +73,5 @@ class AccountController(
 data class AccountPostRequest(
     val uid: String,
     val role: String,
-    val fcmTokenId: String
+    val fcmTokenId: String,
 )

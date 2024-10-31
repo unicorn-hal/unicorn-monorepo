@@ -8,18 +8,18 @@ import java.time.LocalTime
 import java.util.*
 
 class CallSupportTest {
-
     @Test
     fun `create call support`() {
         val doctorID = DoctorID("doctorID")
         val callSupportStartHour = LocalTime.of(9, 0)
         val callSupportEndHour = LocalTime.of(17, 0)
 
-        val callSupport = CallSupport.create(
-            doctorID,
-            callSupportStartHour,
-            callSupportEndHour
-        )
+        val callSupport =
+            CallSupport.create(
+                doctorID,
+                callSupportStartHour,
+                callSupportEndHour,
+            )
 
         assertEquals(doctorID, callSupport.doctorID)
         assertEquals(callSupportStartHour, callSupport.callSupportStartHour.value)
@@ -33,12 +33,13 @@ class CallSupportTest {
         val callSupportStartHour = LocalTime.of(9, 0)
         val callSupportEndHour = LocalTime.of(17, 0)
 
-        val callSupport = CallSupport.fromStore(
-            callSupportID,
-            doctorID,
-            callSupportStartHour,
-            callSupportEndHour
-        )
+        val callSupport =
+            CallSupport.fromStore(
+                callSupportID,
+                doctorID,
+                callSupportStartHour,
+                callSupportEndHour,
+            )
 
         assertEquals(callSupportID, callSupport.callSupportID.value)
         assertEquals(doctorID, callSupport.doctorID.value)
@@ -51,19 +52,21 @@ class CallSupportTest {
         val doctorID = DoctorID("doctorID")
         val callSupportStartHour = LocalTime.of(9, 0)
         val callSupportEndHour = LocalTime.of(17, 0)
-        val callSupport = CallSupport.fromStore(
-            UUID.randomUUID(),
-            doctorID.value,
-            callSupportStartHour,
-            callSupportEndHour
-        )
+        val callSupport =
+            CallSupport.fromStore(
+                UUID.randomUUID(),
+                doctorID.value,
+                callSupportStartHour,
+                callSupportEndHour,
+            )
         val newCallSupportStartHour = LocalTime.of(10, 0)
         val newCallSupportEndHour = LocalTime.of(18, 0)
 
-        val updatedCallSupport = callSupport.update(
-            CallSupportStartHour(newCallSupportStartHour),
-            CallSupportEndHour(newCallSupportEndHour)
-        )
+        val updatedCallSupport =
+            callSupport.update(
+                CallSupportStartHour(newCallSupportStartHour),
+                CallSupportEndHour(newCallSupportEndHour),
+            )
 
         assertEquals(doctorID, updatedCallSupport.doctorID)
         assertEquals(newCallSupportStartHour, updatedCallSupport.callSupportStartHour.value)
@@ -80,7 +83,7 @@ class CallSupportTest {
             CallSupport.create(
                 doctorID,
                 callSupportEndHour,
-                callSupportStartHour
+                callSupportStartHour,
             )
         }
     }
@@ -91,11 +94,12 @@ class CallSupportTest {
         val callSupportStartHour = LocalTime.of(9, 0)
         val callSupportEndHour = LocalTime.of(17, 0)
 
-        val callSupport = CallSupport.create(
-            doctorID,
-            callSupportStartHour,
-            callSupportEndHour
-        )
+        val callSupport =
+            CallSupport.create(
+                doctorID,
+                callSupportStartHour,
+                callSupportEndHour,
+            )
 
         val newCallSupportStartHour = LocalTime.of(18, 0)
         val newCallSupportEndHour = LocalTime.of(17, 0)
@@ -103,7 +107,7 @@ class CallSupportTest {
         assertThrows(IllegalArgumentException::class.java) {
             callSupport.update(
                 CallSupportStartHour(newCallSupportStartHour),
-                CallSupportEndHour(newCallSupportEndHour)
+                CallSupportEndHour(newCallSupportEndHour),
             )
         }
     }
@@ -118,7 +122,7 @@ class CallSupportTest {
             CallSupport.create(
                 doctorID,
                 callSupportStartHour,
-                callSupportEndHour
+                callSupportEndHour,
             )
         }
     }
@@ -129,11 +133,12 @@ class CallSupportTest {
         val callSupportStartHour = LocalTime.of(9, 0)
         val callSupportEndHour = LocalTime.of(17, 0)
 
-        val callSupport = CallSupport.create(
-            doctorID,
-            callSupportStartHour,
-            callSupportEndHour
-        )
+        val callSupport =
+            CallSupport.create(
+                doctorID,
+                callSupportStartHour,
+                callSupportEndHour,
+            )
 
         val newCallSupportStartHour = LocalTime.of(17, 0)
         val newCallSupportEndHour = LocalTime.of(17, 0)
@@ -141,7 +146,7 @@ class CallSupportTest {
         assertThrows(IllegalArgumentException::class.java) {
             callSupport.update(
                 CallSupportStartHour(newCallSupportStartHour),
-                CallSupportEndHour(newCallSupportEndHour)
+                CallSupportEndHour(newCallSupportEndHour),
             )
         }
     }

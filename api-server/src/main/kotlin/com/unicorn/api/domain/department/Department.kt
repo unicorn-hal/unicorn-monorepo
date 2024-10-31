@@ -4,16 +4,16 @@ import java.util.*
 
 data class Department(
     val departmentID: DepartmentID,
-    val departmentName: DepartmentName
+    val departmentName: DepartmentName,
 ) {
     companion object {
         fun fromStore(
             departmentID: UUID,
-            departmentName: String
+            departmentName: String,
         ): Department {
             return Department(
                 departmentID = DepartmentID(departmentID),
-                departmentName = DepartmentName(departmentName)
+                departmentName = DepartmentName(departmentName),
             )
         }
     }

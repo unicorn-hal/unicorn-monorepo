@@ -8,27 +8,27 @@ data class ChatSupport private constructor(
     val chatSupportID: ChatSupportID,
     val doctorID: DoctorID,
     val chatSupportStartHour: ChatSupportStartHour,
-    val chatSupportEndHour: ChatSupportEndHour
+    val chatSupportEndHour: ChatSupportEndHour,
 ) {
     companion object {
         fun fromStore(
             chatSupportID: UUID,
             doctorID: String,
             chatSupportStartHour: LocalTime,
-            chatSupportEndHour: LocalTime
+            chatSupportEndHour: LocalTime,
         ): ChatSupport {
             return ChatSupport(
                 ChatSupportID(chatSupportID),
                 DoctorID(doctorID),
                 ChatSupportStartHour(chatSupportStartHour),
-                ChatSupportEndHour(chatSupportEndHour)
+                ChatSupportEndHour(chatSupportEndHour),
             )
         }
 
         fun create(
             doctorID: DoctorID,
             chatSupportStartHour: LocalTime,
-            chatSupportEndHour: LocalTime
+            chatSupportEndHour: LocalTime,
         ): ChatSupport {
             require(chatSupportStartHour.isBefore(chatSupportEndHour)) {
                 "Start hour must be before end hour"
@@ -38,14 +38,14 @@ data class ChatSupport private constructor(
                 ChatSupportID(UUID.randomUUID()),
                 doctorID,
                 ChatSupportStartHour(chatSupportStartHour),
-                ChatSupportEndHour(chatSupportEndHour)
+                ChatSupportEndHour(chatSupportEndHour),
             )
         }
     }
 
     fun update(
         chatSupportStartHour: ChatSupportStartHour,
-        chatSupportEndHour: ChatSupportEndHour
+        chatSupportEndHour: ChatSupportEndHour,
     ): ChatSupport {
         require(chatSupportStartHour.value.isBefore(chatSupportEndHour.value)) {
             "Start hour must be before end hour"
@@ -53,7 +53,7 @@ data class ChatSupport private constructor(
 
         return this.copy(
             chatSupportStartHour = chatSupportStartHour,
-            chatSupportEndHour = chatSupportEndHour
+            chatSupportEndHour = chatSupportEndHour,
         )
     }
 }

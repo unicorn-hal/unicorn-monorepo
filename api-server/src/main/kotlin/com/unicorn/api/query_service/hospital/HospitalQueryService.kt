@@ -1,22 +1,23 @@
 package com.unicorn.api.application.hospital
 
-import org.springframework.stereotype.Service
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.stereotype.Service
 import java.util.UUID
 
 interface HospitalQueryService {
     fun getHospitals(): HospitalResult
+
     fun getBy(hospitalID: UUID): HospitalDto?
 }
 
 @Service
 class HospitalQueryServiceImpl(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
+    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) : HospitalQueryService {
-
     override fun getHospitals(): HospitalResult {
-        val sql = """
+        val sql =
+            """
             SELECT
                 hospital_id,
                 hospital_name,
@@ -25,27 +26,28 @@ class HospitalQueryServiceImpl(
                 phone_number
             FROM hospitals
             WHERE deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val hospitals = namedParameterJdbcTemplate.query(
-            sql,
-            { rs, _ ->
-                HospitalDto(
-                    hospitalID = UUID.fromString(rs.getString("hospital_id")),
-                    hospitalName = rs.getString("hospital_name"),
-                    address = rs.getString("address"),
-                    postalCode = rs.getString("postal_code"),
-                    phoneNumber = rs.getString("phone_number")
-                )
-            }
-        )
+        val hospitals =
+            namedParameterJdbcTemplate.query(
+                sql,
+                { rs, _ ->
+                    HospitalDto(
+                        hospitalID = UUID.fromString(rs.getString("hospital_id")),
+                        hospitalName = rs.getString("hospital_name"),
+                        address = rs.getString("address"),
+                        postalCode = rs.getString("postal_code"),
+                        phoneNumber = rs.getString("phone_number"),
+                    )
+                },
+            )
 
         return HospitalResult(hospitals)
     }
 
     override fun getBy(hospitalID: UUID): HospitalDto? {
-
-        val sql = """
+        val sql =
+            """
             SELECT
                 hospital_id,
                 hospital_name,
@@ -55,28 +57,29 @@ class HospitalQueryServiceImpl(
             FROM hospitals
             WHERE hospital_id = :hospitalID
             AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("hospitalID", hospitalID)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("hospitalID", hospitalID)
 
         return namedParameterJdbcTemplate.query(
             sql,
-            sqlParams
+            sqlParams,
         ) { rs, _ ->
             HospitalDto(
                 hospitalID = UUID.fromString(rs.getString("hospital_id")),
                 hospitalName = rs.getString("hospital_name"),
                 address = rs.getString("address"),
                 postalCode = rs.getString("postal_code"),
-                phoneNumber = rs.getString("phone_number")
+                phoneNumber = rs.getString("phone_number"),
             )
         }.singleOrNull()
     }
 }
 
 data class HospitalResult(
-    val data: List<HospitalDto>
+    val data: List<HospitalDto>,
 )
 
 data class HospitalDto(
@@ -84,5 +87,5 @@ data class HospitalDto(
     val hospitalName: String,
     val address: String,
     val postalCode: String,
-    val phoneNumber: String
+    val phoneNumber: String,
 )

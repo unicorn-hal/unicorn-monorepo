@@ -4,16 +4,12 @@ import com.unicorn.api.domain.account.Account
 import com.unicorn.api.domain.account.UID
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
-import java.sql.ResultSet
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
 @SpringBootTest
@@ -29,18 +25,20 @@ class AccountRepositoryTest {
 
     private fun findAccountByUid(uid: String): Account? {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT uid, role, fcm_token_id FROM accounts WHERE uid = :uid AND deleted_at IS NULL
             """.trimIndent()
         val sqlParams = MapSqlParameterSource().addValue("uid", uid)
-        val result = namedParameterJdbcTemplate.query(
+        val result =
+            namedParameterJdbcTemplate.query(
                 sql,
-                sqlParams
+                sqlParams,
             ) { rs, _ ->
                 Account.fromStore(
                     uid = rs.getString("uid"),
                     role = rs.getString("role"),
-                    fcmTokenId = rs.getString("fcm_token_id")
+                    fcmTokenId = rs.getString("fcm_token_id"),
                 )
             }.firstOrNull()
         return result
@@ -48,11 +46,12 @@ class AccountRepositoryTest {
 
     @Test
     fun `should store account`() {
-        val account = Account.create(
-            uid = "uid",
-            role = "user",
-            fcmTokenId = "fcmTokenId"
-        )
+        val account =
+            Account.create(
+                uid = "uid",
+                role = "user",
+                fcmTokenId = "fcmTokenId",
+            )
 
         accountRepository.store(account)
 
@@ -65,11 +64,12 @@ class AccountRepositoryTest {
 
     @Test
     fun `should store account with already deleted uid`() {
-        val account = Account.create(
-            uid = "test2",
-            role = "user",
-            fcmTokenId = "fcm_token_id"
-        )
+        val account =
+            Account.create(
+                uid = "test2",
+                role = "user",
+                fcmTokenId = "fcm_token_id",
+            )
 
         accountRepository.store(account)
 
@@ -82,11 +82,12 @@ class AccountRepositoryTest {
 
     @Test
     fun `should find account by uid`() {
-        val account = Account.create(
-            uid = "test",
-            role = "user",
-            fcmTokenId = "fcm_token_id"
-        )
+        val account =
+            Account.create(
+                uid = "test",
+                role = "user",
+                fcmTokenId = "fcm_token_id",
+            )
 
         val foundAccount = accountRepository.getOrNullByUid(account.uid)
 
@@ -104,11 +105,12 @@ class AccountRepositoryTest {
 
     @Test
     fun `should delete account`() {
-        val account = Account.create(
-            uid = "test",
-            role = "user",
-            fcmTokenId = "fcm_token_id"
-        )
+        val account =
+            Account.create(
+                uid = "test",
+                role = "user",
+                fcmTokenId = "fcm_token_id",
+            )
 
         accountRepository.delete(account)
 

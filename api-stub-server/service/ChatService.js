@@ -20,7 +20,7 @@ exports.chatsChatIDMessagesGET = function(xUID,chatID) {
     "chatID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "iconImageUrl" : "https://placehold.jp/150x150.png",
     "messageID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "sentAt" : "2020-01-01T00:00:00Z",
+    "sentAt" : "2020-01-01T00:00:00+09:00",
     "content" : "Hello, World!"
   }]
 };
@@ -93,7 +93,7 @@ exports.chatsGET = function(xUID) {
       "doctorIconUrl" : "https://placehold.jp/150x150.png",
       "doctorID" : "1234567890"
     },
-    "latestMessageSentAt" : "2020-01-01T00:00:00Z",
+    "latestMessageSentAt" : "2020-01-01T00:00:00+09:00",
     "chatID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "latestMessageText" : "Hello, World!",
     "user" : {

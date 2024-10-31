@@ -23,11 +23,12 @@ class GreetingController(
     private val greetingQueryService: GreetingQueryService,
     private val saveGreetingService: SaveGreetingService,
     private val updateGreetingService: UpdateGreetingService,
-    private val deleteGreetingService: DeleteGreetingService
+    private val deleteGreetingService: DeleteGreetingService,
 ) {
-
     @GetMapping("/greetings")
-    fun getGreetings(@RequestHeader("X-UID") uid: String): ResponseEntity<GreetingResult> {
+    fun getGreetings(
+        @RequestHeader("X-UID") uid: String,
+    ): ResponseEntity<GreetingResult> {
         try {
             print(uid)
             val result = greetingQueryService.get()
@@ -38,7 +39,9 @@ class GreetingController(
     }
 
     @GetMapping("/greetings/{id}")
-    fun getGreetingById(@PathVariable id: UUID): ResponseEntity<GreetingDto> {
+    fun getGreetingById(
+        @PathVariable id: UUID,
+    ): ResponseEntity<GreetingDto> {
         try {
             val result = greetingQueryService.getBy(id)
             return if (result != null) {
@@ -52,7 +55,9 @@ class GreetingController(
     }
 
     @PostMapping("/greetings")
-    fun postGreeting(@RequestBody greetingRequest: GreetingPostRequest): ResponseEntity<Greeting> {
+    fun postGreeting(
+        @RequestBody greetingRequest: GreetingPostRequest,
+    ): ResponseEntity<Greeting> {
         try {
             val result = saveGreetingService.save(greetingRequest.message)
             return ResponseEntity.ok(result)
@@ -62,7 +67,10 @@ class GreetingController(
     }
 
     @PutMapping("/greetings/{id}")
-    fun putGreeting(@PathVariable id: UUID, @RequestBody greetingRequest: GreetingPutRequest): ResponseEntity<Greeting> {
+    fun putGreeting(
+        @PathVariable id: UUID,
+        @RequestBody greetingRequest: GreetingPutRequest,
+    ): ResponseEntity<Greeting> {
         try {
             val result = updateGreetingService.update(id, greetingRequest.message)
             return ResponseEntity.ok(result)
@@ -72,7 +80,9 @@ class GreetingController(
     }
 
     @DeleteMapping("/greetings/{id}")
-    fun deleteGreeting(@PathVariable id: UUID): ResponseEntity<Unit> {
+    fun deleteGreeting(
+        @PathVariable id: UUID,
+    ): ResponseEntity<Unit> {
         try {
             deleteGreetingService.delete(id)
             return ResponseEntity.ok().build()
@@ -83,4 +93,5 @@ class GreetingController(
 }
 
 data class GreetingPostRequest(val message: String)
+
 data class GreetingPutRequest(val message: String)

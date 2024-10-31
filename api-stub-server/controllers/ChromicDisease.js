@@ -3,8 +3,8 @@
 var utils = require('../utils/writer.js');
 var ChromicDisease = require('../service/ChromicDiseaseService');
 
-module.exports.chronic_diseasesDELETE = function chronic_diseasesDELETE (req, res, next, xUID, diseaseName) {
-  ChromicDisease.chronic_diseasesDELETE(xUID, diseaseName)
+module.exports.chronic_diseasesChronicDiseaseIDDELETE = function chronic_diseasesChronicDiseaseIDDELETE (req, res, next, xUID, chronicDiseaseID) {
+  ChromicDisease.chronic_diseasesChronicDiseaseIDDELETE(xUID, chronicDiseaseID)
     .then(function (response) {
       utils.writeJson(res, response);
     })

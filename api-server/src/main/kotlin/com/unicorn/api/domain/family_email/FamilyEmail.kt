@@ -10,7 +10,7 @@ data class FamilyEmail private constructor(
     val firstName: FirstName,
     val lastName: LastName,
     val phoneNumber: PhoneNumber,
-    val iconImageUrl: IconImageUrl?
+    val iconImageUrl: IconImageUrl?,
 ) {
     companion object {
         fun fromStore(
@@ -20,7 +20,7 @@ data class FamilyEmail private constructor(
             firstName: String,
             lastName: String,
             phoneNumber: String,
-            iconImageUrl: String?
+            iconImageUrl: String?,
         ): FamilyEmail {
             return FamilyEmail(
                 familyEmailID = FamilyEmailID(familyEmailID),
@@ -29,7 +29,7 @@ data class FamilyEmail private constructor(
                 firstName = FirstName(firstName),
                 lastName = LastName(lastName),
                 phoneNumber = PhoneNumber(phoneNumber),
-                iconImageUrl = iconImageUrl?.let { IconImageUrl(it) }
+                iconImageUrl = iconImageUrl?.let { IconImageUrl(it) },
             )
         }
 
@@ -39,7 +39,7 @@ data class FamilyEmail private constructor(
             firstName: String,
             lastName: String,
             phoneNumber: String,
-            iconImageUrl: String?
+            iconImageUrl: String?,
         ): FamilyEmail {
             return FamilyEmail(
                 familyEmailID = FamilyEmailID(UUID.randomUUID()),
@@ -48,7 +48,7 @@ data class FamilyEmail private constructor(
                 firstName = FirstName(firstName),
                 lastName = LastName(lastName),
                 phoneNumber = PhoneNumber(phoneNumber),
-                iconImageUrl = iconImageUrl?.let { IconImageUrl(it) }
+                iconImageUrl = iconImageUrl?.let { IconImageUrl(it) },
             )
         }
     }
@@ -58,50 +58,50 @@ data class FamilyEmail private constructor(
         firstName: FirstName,
         lastName: LastName,
         phoneNumber: PhoneNumber,
-        iconImageUrl: IconImageUrl?
+        iconImageUrl: IconImageUrl?,
     ): FamilyEmail {
         return this.copy(
             email = email,
             firstName = firstName,
             lastName = lastName,
             phoneNumber = phoneNumber,
-            iconImageUrl = iconImageUrl
+            iconImageUrl = iconImageUrl,
         )
     }
 }
 
 @JvmInline
-value class FamilyEmailID(val value: UUID){
-    init{
-        require(value != UUID(0L,0L)){"familyEmailID should not be null UUID"}
+value class FamilyEmailID(val value: UUID) {
+    init {
+        require(value != UUID(0L, 0L)) { "familyEmailID should not be null UUID" }
     }
 }
 
 @JvmInline
-value class Email(val value: String){
-    init{
-        require(value.isNotBlank()){"email should not be blank"}
+value class Email(val value: String) {
+    init {
+        require(value.isNotBlank()) { "email should not be blank" }
     }
 }
 
 @JvmInline
-value class FirstName(val value: String){
-    init{
-        require(value.isNotBlank()){"first name should not be blank"}
+value class FirstName(val value: String) {
+    init {
+        require(value.isNotBlank()) { "first name should not be blank" }
     }
 }
 
 @JvmInline
-value class LastName(val value: String){
-    init{
-        require(value.isNotBlank()){"last name should not be blank"}
+value class LastName(val value: String) {
+    init {
+        require(value.isNotBlank()) { "last name should not be blank" }
     }
 }
 
 @JvmInline
-value class PhoneNumber(val value: String){
-    init{
-        require(value.all{ it.isDigit() }){"phoneNumber should be all digits"}
+value class PhoneNumber(val value: String) {
+    init {
+        require(value.all { it.isDigit() }) { "phoneNumber should be all digits" }
     }
 }
 

@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.2.2
+  version: 1.2.3
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -29,6 +29,8 @@ tags:
   description: 家族メール情報
 - name: medicine
   description: 薬情報
+- name: disease
+  description: 病気情報
 - name: chromic_disease
   description: 持病情報
 - name: call
@@ -1584,6 +1586,80 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Medicine
+  /diseases:
+    get:
+      tags:
+      - disease
+      summary: 病気検索
+      description: 病気名で病気を検索します(部分一致検索&ひらがな漢字検索)。QueryParamsに何も指定しない場合は、空配列が返却される
+      operationId: diseasesGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: diseaseName
+        in: query
+        description: 病気名の部分一致検索
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: 検索結果のリスト
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_9'
+        "400":
+          description: 不正なクエリパラメータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_1'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Disease
+  /diseases/famous:
+    get:
+      tags:
+      - disease
+      summary: 有名な病気一覧取得
+      description: 有名な病気一覧を取得します
+      operationId: diseasesFamousGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      responses:
+        "200":
+          description: 有名な病気一覧取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_9'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Disease
   /chronic_diseases:
     get:
       tags:
@@ -1606,7 +1682,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_9'
+                $ref: '#/components/schemas/inline_response_200_10'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1646,12 +1722,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: ChromicDisease
+  /chronic_diseases/{chronicDiseaseID}:
     delete:
       tags:
       - chromic_disease
       summary: 持病削除
       description: 持病を削除します
-      operationId: chronic_diseasesDELETE
+      operationId: chronic_diseasesChronicDiseaseIDDELETE
       parameters:
       - name: X-UID
         in: header
@@ -1661,14 +1738,14 @@ paths:
         schema:
           type: string
           description: UID
-      - name: diseaseName
-        in: query
+      - name: chronicDiseaseID
+        in: path
         required: true
-        style: form
-        explode: true
+        style: simple
+        explode: false
         schema:
           type: string
-          description: 削除する持病名
+          description: 持病ID
       responses:
         "204":
           description: 持病削除成功
@@ -2463,14 +2540,14 @@ components:
           description: 最新メッセージ送信日時
           format: date-time
           nullable: true
-          example: 2020-01-01T00:00:00Z
+          example: 2020-01-01T00:00:00+09:00
       example:
         doctor:
           firstName: 太郎
           lastName: 山田
           doctorIconUrl: https://placehold.jp/150x150.png
           doctorID: "1234567890"
-        latestMessageSentAt: 2020-01-01T00:00:00Z
+        latestMessageSentAt: 2020-01-01T00:00:00+09:00
         chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         latestMessageText: "Hello, World!"
         user:
@@ -2540,7 +2617,7 @@ components:
           type: string
           description: メッセージ送信日時
           format: date-time
-          example: 2020-01-01T00:00:00Z
+          example: 2020-01-01T00:00:00+09:00
       example:
         firstName: 太郎
         lastName: 山田
@@ -2548,7 +2625,7 @@ components:
         chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         iconImageUrl: https://placehold.jp/150x150.png
         messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        sentAt: 2020-01-01T00:00:00Z
+        sentAt: 2020-01-01T00:00:00+09:00
         content: "Hello, World!"
     MessageRequest:
       type: object
@@ -2687,7 +2764,22 @@ components:
           type: integer
           description: 薬の残量
           example: 20
+        reminders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Medicine_reminders'
       example:
+        reminders:
+        - reminderID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          reminderDayOfWeek:
+          - monday
+          - monday
+          reminderTime: 09:00
+        - reminderID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          reminderDayOfWeek:
+          - monday
+          - monday
+          reminderTime: 09:00
         quantity: 20
         medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         count: 30
@@ -2703,6 +2795,14 @@ components:
           type: integer
           description: 薬の初期残量
           example: 30
+        quantity:
+          type: integer
+          description: 薬の残量
+          example: 20
+        reminders:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicinePostRequest_reminders'
     MedicineRequest:
       type: object
       properties:
@@ -2714,6 +2814,14 @@ components:
           type: integer
           description: 薬の残量
           example: 20
+        count:
+          type: integer
+          description: 薬の初期残量
+          example: 30
+        reminders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Medicine_reminders'
     MedicineResponse:
       type: object
       properties:
@@ -2733,15 +2841,44 @@ components:
           type: integer
           description: 薬の残量
           example: 20
+        reminders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Medicine_reminders'
       example:
+        reminders:
+        - reminderID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          reminderDayOfWeek:
+          - monday
+          - monday
+          reminderTime: 09:00
+        - reminderID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          reminderDayOfWeek:
+          - monday
+          - monday
+          reminderTime: 09:00
         quantity: 20
         medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         count: 30
         medicineName: パラセタモール
+    Disease:
+      type: object
+      properties:
+        diseaseID:
+          type: integer
+          description: 病気ID
+          example: 1
+        diseaseName:
+          type: string
+          description: 病気名
+          example: 高血圧
+      example:
+        diseaseName: 高血圧
+        diseaseID: 1
     ChronicDisease:
       type: object
       properties:
-        diseaseID:
+        chronicDiseaseID:
           type: string
           description: 持病のUUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
@@ -2751,28 +2888,28 @@ components:
           example: 高血圧
       example:
         diseaseName: 高血圧
-        diseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        chronicDiseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
     ChronicDiseaseRequest:
       type: object
       properties:
-        diseaseName:
-          type: string
-          description: 持病名
-          example: 糖尿病
+        diseaseID:
+          type: integer
+          description: 病気ID
+          example: 1
     ChronicDiseaseResponse:
       type: object
       properties:
-        diseaseID:
+        chronicDiseaseID:
           type: string
           description: 持病のUUID
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        diseaseName:
-          type: string
-          description: 持病名
-          example: 高血圧
+        diseaseID:
+          type: integer
+          description: 病気ID
+          example: 1
       example:
-        diseaseName: 高血圧
-        diseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        chronicDiseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        diseaseID: 1
     CallReservation:
       type: object
       properties:
@@ -2792,17 +2929,17 @@ components:
           type: string
           description: 通話開始時間
           format: date-time
-          example: 2024-10-12T15:00:00Z
+          example: 2024-10-12T15:00:00+09:00
         callEndTime:
           type: string
           description: 通話終了時間
           format: date-time
-          example: 2024-10-12T15:30:00Z
+          example: 2024-10-12T15:30:00+09:00
       example:
         callReservationID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        callEndTime: 2024-10-12T15:30:00Z
+        callEndTime: 2024-10-12T15:30:00+09:00
         doctorID: "1234567890"
-        callStartTime: 2024-10-12T15:00:00Z
+        callStartTime: 2024-10-12T15:00:00+09:00
         userID: "1234567890"
     CallReservationRequest:
       type: object
@@ -2819,12 +2956,12 @@ components:
           type: string
           description: 通話開始時間
           format: date-time
-          example: 2024-10-12T15:00:00Z
+          example: 2024-10-12T15:00:00+09:00
         callEndTime:
           type: string
           description: 通話終了時間
           format: date-time
-          example: 2024-10-12T15:30:00Z
+          example: 2024-10-12T15:30:00+09:00
     CallReservationResponse:
       type: object
       properties:
@@ -2844,17 +2981,17 @@ components:
           type: string
           description: 通話開始時間
           format: date-time
-          example: 2024-10-12T15:00:00Z
+          example: 2024-10-12T15:00:00+09:00
         callEndTime:
           type: string
           description: 通話終了時間
           format: date-time
-          example: 2024-10-12T15:30:00Z
+          example: 2024-10-12T15:30:00+09:00
       example:
         callReservationID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        callEndTime: 2024-10-12T15:30:00Z
+        callEndTime: 2024-10-12T15:30:00+09:00
         doctorID: "1234567890"
-        callStartTime: 2024-10-12T15:00:00Z
+        callStartTime: 2024-10-12T15:00:00+09:00
         userID: "1234567890"
     PrimaryDoctorsRequest:
       type: object
@@ -3060,7 +3197,7 @@ components:
             lastName: 山田
             doctorIconUrl: https://placehold.jp/150x150.png
             doctorID: "1234567890"
-          latestMessageSentAt: 2020-01-01T00:00:00Z
+          latestMessageSentAt: 2020-01-01T00:00:00+09:00
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           latestMessageText: "Hello, World!"
           user:
@@ -3073,7 +3210,7 @@ components:
             lastName: 山田
             doctorIconUrl: https://placehold.jp/150x150.png
             doctorID: "1234567890"
-          latestMessageSentAt: 2020-01-01T00:00:00Z
+          latestMessageSentAt: 2020-01-01T00:00:00+09:00
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           latestMessageText: "Hello, World!"
           user:
@@ -3096,7 +3233,7 @@ components:
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           iconImageUrl: https://placehold.jp/150x150.png
           messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          sentAt: 2020-01-01T00:00:00Z
+          sentAt: 2020-01-01T00:00:00+09:00
           content: "Hello, World!"
         - firstName: 太郎
           lastName: 山田
@@ -3104,7 +3241,7 @@ components:
           chatID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           iconImageUrl: https://placehold.jp/150x150.png
           messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          sentAt: 2020-01-01T00:00:00Z
+          sentAt: 2020-01-01T00:00:00+09:00
           content: "Hello, World!"
     inline_response_404_4:
       type: object
@@ -3150,11 +3287,33 @@ components:
             $ref: '#/components/schemas/Medicine'
       example:
         data:
-        - quantity: 20
+        - reminders:
+          - reminderID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            reminderDayOfWeek:
+            - monday
+            - monday
+            reminderTime: 09:00
+          - reminderID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            reminderDayOfWeek:
+            - monday
+            - monday
+            reminderTime: 09:00
+          quantity: 20
           medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           count: 30
           medicineName: パラセタモール
-        - quantity: 20
+        - reminders:
+          - reminderID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            reminderDayOfWeek:
+            - monday
+            - monday
+            reminderTime: 09:00
+          - reminderID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            reminderDayOfWeek:
+            - monday
+            - monday
+            reminderTime: 09:00
+          quantity: 20
           medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           count: 30
           medicineName: パラセタモール
@@ -3171,13 +3330,26 @@ components:
         data:
           type: array
           items:
+            $ref: '#/components/schemas/Disease'
+      example:
+        data:
+        - diseaseName: 高血圧
+          diseaseID: 1
+        - diseaseName: 高血圧
+          diseaseID: 1
+    inline_response_200_10:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
             $ref: '#/components/schemas/ChronicDisease'
       example:
         data:
         - diseaseName: 高血圧
-          diseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          chronicDiseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         - diseaseName: 高血圧
-          diseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          chronicDiseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
     inline_response_404_7:
       type: object
       properties:
@@ -3268,3 +3440,41 @@ components:
         lastName: 山田
         userIconUrl: https://placehold.jp/150x150.png
         userID: "1234567890"
+    Medicine_reminders:
+      type: object
+      properties:
+        reminderID:
+          type: string
+          description: リマインダーUUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        reminderTime:
+          type: string
+          description: リマインダー時間
+          format: time
+          example: 09:00
+        reminderDayOfWeek:
+          type: array
+          items:
+            type: string
+            description: リマインダー曜日
+            example: monday
+      example:
+        reminderID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        reminderDayOfWeek:
+        - monday
+        - monday
+        reminderTime: 09:00
+    MedicinePostRequest_reminders:
+      type: object
+      properties:
+        reminderTime:
+          type: string
+          description: リマインダー時間
+          format: time
+          example: 09:00
+        reminderDayOfWeek:
+          type: array
+          items:
+            type: string
+            description: リマインダー曜日
+            example: monday

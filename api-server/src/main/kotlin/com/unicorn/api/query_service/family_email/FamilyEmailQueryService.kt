@@ -12,11 +12,12 @@ interface FamilyEmailQueryService {
 
 @Service
 class FamilyEmailQueryServiceImpl(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
+    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) : FamilyEmailQueryService {
     override fun get(userID: UserID): FamilyEmailResult {
         //language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 family_email_id,
                 email,
@@ -27,20 +28,21 @@ class FamilyEmailQueryServiceImpl(
             FROM family_emails
             WHERE user_id = :userID 
             AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
         val sqlParams = MapSqlParameterSource().addValue("userID", userID.value)
-        val familyEmails = namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
-            FamilyEmailDto(
-                familyEmailID = UUID.fromString(rs.getString("family_email_id")),
-                email = rs.getString("email"),
-                firstName = rs.getString("family_first_name"),
-                lastName = rs.getString("family_last_name"),
-                phoneNumber = rs.getString("phone_number"),
-                iconImageUrl = rs.getString("icon_image_url")
-            )
-        }
+        val familyEmails =
+            namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+                FamilyEmailDto(
+                    familyEmailID = UUID.fromString(rs.getString("family_email_id")),
+                    email = rs.getString("email"),
+                    firstName = rs.getString("family_first_name"),
+                    lastName = rs.getString("family_last_name"),
+                    phoneNumber = rs.getString("phone_number"),
+                    iconImageUrl = rs.getString("icon_image_url"),
+                )
+            }
         return FamilyEmailResult(familyEmails)
-    }   
+    }
 }
 
 data class FamilyEmailDto(
@@ -49,8 +51,9 @@ data class FamilyEmailDto(
     val firstName: String,
     val lastName: String,
     val phoneNumber: String,
-    val iconImageUrl: String?
+    val iconImageUrl: String?,
 )
+
 data class FamilyEmailResult(
-    val data: List<FamilyEmailDto>
+    val data: List<FamilyEmailDto>,
 )

@@ -1,27 +1,27 @@
 package com.unicorn.api.infrastructure.family_email
 
-import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.domain.family_email.*
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
-import java.time.LocalDate
 import java.util.*
 
 interface FamilyEmailRepository {
     fun store(familyEmail: FamilyEmail): FamilyEmail
+
     fun getOrNullBy(familyEmailID: FamilyEmailID): FamilyEmail?
+
     fun delete(familyEmail: FamilyEmail): Unit
 }
 
 @Repository
 class FamilyEmailRepositoryImpl(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
+    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) : FamilyEmailRepository {
-
     override fun store(familyEmail: FamilyEmail): FamilyEmail {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             INSERT INTO family_emails (
                 family_email_id,
                 user_id,
@@ -50,16 +50,17 @@ class FamilyEmailRepositoryImpl(
                 icon_image_url = EXCLUDED.icon_image_url,
                 deleted_at = NULL
             WHERE family_emails.created_at IS NOT NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("familyEmailID", familyEmail.familyEmailID.value)
-            .addValue("userID", familyEmail.userID.value)
-            .addValue("email", familyEmail.email.value)
-            .addValue("firstName", familyEmail.firstName.value)
-            .addValue("lastName", familyEmail.lastName.value)
-            .addValue("phoneNumber", familyEmail.phoneNumber.value)
-            .addValue("iconImageUrl", familyEmail.iconImageUrl?.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("familyEmailID", familyEmail.familyEmailID.value)
+                .addValue("userID", familyEmail.userID.value)
+                .addValue("email", familyEmail.email.value)
+                .addValue("firstName", familyEmail.firstName.value)
+                .addValue("lastName", familyEmail.lastName.value)
+                .addValue("phoneNumber", familyEmail.phoneNumber.value)
+                .addValue("iconImageUrl", familyEmail.iconImageUrl?.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
 
@@ -68,7 +69,8 @@ class FamilyEmailRepositoryImpl(
 
     override fun getOrNullBy(familyEmailID: FamilyEmailID): FamilyEmail? {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 family_email_id,
                 user_id,
@@ -80,12 +82,13 @@ class FamilyEmailRepositoryImpl(
             FROM family_emails
             WHERE family_email_id = :familyEmailID
             AND deleted_at IS NULL
-        """.trimIndent()
-        val sqlParams = MapSqlParameterSource()
-            .addValue("familyEmailID", familyEmailID.value)
+            """.trimIndent()
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("familyEmailID", familyEmailID.value)
         return namedParameterJdbcTemplate.query(
             sql,
-            sqlParams
+            sqlParams,
         ) { rs, _ ->
             FamilyEmail.fromStore(
                 familyEmailID = UUID.fromString(rs.getString("family_email_id")),
@@ -94,20 +97,22 @@ class FamilyEmailRepositoryImpl(
                 firstName = rs.getString("family_first_name"),
                 lastName = rs.getString("family_last_name"),
                 phoneNumber = rs.getString("phone_number"),
-                iconImageUrl = rs.getString("icon_image_url")
+                iconImageUrl = rs.getString("icon_image_url"),
             )
         }.singleOrNull()
     }
 
     override fun delete(familyEmail: FamilyEmail) {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             UPDATE family_emails
             SET deleted_at = NOW()
             WHERE family_email_id = :familyEmailID
-        """.trimIndent()
-        val sqlParams = MapSqlParameterSource()
-            .addValue("familyEmailID", familyEmail.familyEmailID.value)
+            """.trimIndent()
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("familyEmailID", familyEmail.familyEmailID.value)
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }
 }

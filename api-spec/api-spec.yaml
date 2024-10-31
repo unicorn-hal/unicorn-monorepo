@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.2.2"
+  version: "1.2.3"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -200,7 +200,7 @@ components:
         gender:
           type: string
           description: "ユーザーの性別"
-          enum: [ "male", "female", "other" ]
+          enum: ["male", "female", "other"]
           example: "male"
         birthDate:
           type: string
@@ -556,7 +556,7 @@ components:
           nullable: true
           description: "最新メッセージ送信日時"
           format: date-time
-          example: "2020-01-01T00:00:00Z"
+          example: "2020-01-01T00:00:00+09:00"
 
     ChatRequest:
       type: object
@@ -618,7 +618,7 @@ components:
           type: string
           description: "メッセージ送信日時"
           format: date-time
-          example: "2020-01-01T00:00:00Z"
+          example: "2020-01-01T00:00:00+09:00"
 
     MessageRequest:
       type: object
@@ -744,6 +744,26 @@ components:
           type: integer
           description: "薬の残量"
           example: 20
+        reminders:
+          type: array
+          items:
+            type: object
+            properties:
+              reminderID:
+                type: string
+                description: "リマインダーUUID"
+                example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+              reminderTime:
+                type: string
+                format: time
+                description: "リマインダー時間"
+                example: "09:00"
+              reminderDayOfWeek:
+                type: array
+                items:
+                  type: string
+                  description: "リマインダー曜日"
+                  example: "monday"
 
     MedicinePostRequest:
       type: object
@@ -756,6 +776,26 @@ components:
           type: integer
           description: "薬の初期残量"
           example: 30
+        quantity:
+          type: integer
+          description: "薬の残量"
+          example: 20
+        reminders:
+          type: array
+          items:
+            type: object
+            properties:
+              reminderTime:
+                type: string
+                format: time
+                description: "リマインダー時間"
+                example: "09:00"
+              reminderDayOfWeek:
+                type: array
+                items:
+                  type: string
+                  description: "リマインダー曜日"
+                  example: "monday"
 
     MedicineRequest:
       type: object
@@ -768,6 +808,30 @@ components:
           type: integer
           description: "薬の残量"
           example: 20
+        count:
+          type: integer
+          description: "薬の初期残量"
+          example: 30
+        reminders:
+          type: array
+          items:
+            type: object
+            properties:
+              reminderID:
+                type: string
+                description: "リマインダーUUID"
+                example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+              reminderTime:
+                type: string
+                format: time
+                description: "リマインダー時間"
+                example: "09:00"
+              reminderDayOfWeek:
+                type: array
+                items:
+                  type: string
+                  description: "リマインダー曜日"
+                  example: "monday"
 
     MedicineResponse:
       type: object
@@ -788,11 +852,43 @@ components:
           type: integer
           description: "薬の残量"
           example: 20
+        reminders:
+          type: array
+          items:
+            type: object
+            properties:
+              reminderID:
+                type: string
+                description: "リマインダーUUID"
+                example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+              reminderTime:
+                type: string
+                format: time
+                description: "リマインダー時間"
+                example: "09:00"
+              reminderDayOfWeek:
+                type: array
+                items:
+                  type: string
+                  description: "リマインダー曜日"
+                  example: "monday"
+
+    Disease:
+      type: object
+      properties:
+        diseaseID:
+          type: integer
+          description: "病気ID"
+          example: 1
+        diseaseName:
+          type: string
+          description: "病気名"
+          example: "高血圧"
 
     ChronicDisease:
       type: object
       properties:
-        diseaseID:
+        chronicDiseaseID:
           type: string
           description: "持病のUUID"
           example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
@@ -804,21 +900,22 @@ components:
     ChronicDiseaseRequest:
       type: object
       properties:
-        diseaseName:
-          type: string
-          description: "持病名"
-          example: "糖尿病"
+        diseaseID:
+          type: integer
+          description: "病気ID"
+          example: 1
+
     ChronicDiseaseResponse:
       type: object
       properties:
-        diseaseID:
+        chronicDiseaseID:
           type: string
           description: "持病のUUID"
           example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-        diseaseName:
-          type: string
-          description: "持病名"
-          example: "高血圧"
+        diseaseID:
+          type: integer
+          description: "病気ID"
+          example: 1
 
     CallReservation:
       type: object
@@ -839,12 +936,12 @@ components:
           type: string
           format: date-time
           description: "通話開始時間"
-          example: "2024-10-12T15:00:00Z"
+          example: "2024-10-12T15:00:00+09:00"
         callEndTime:
           type: string
           format: date-time
           description: "通話終了時間"
-          example: "2024-10-12T15:30:00Z"
+          example: "2024-10-12T15:30:00+09:00"
 
     CallReservationRequest:
       type: object
@@ -861,12 +958,12 @@ components:
           type: string
           format: date-time
           description: "通話開始時間"
-          example: "2024-10-12T15:00:00Z"
+          example: "2024-10-12T15:00:00+09:00"
         callEndTime:
           type: string
           format: date-time
           description: "通話終了時間"
-          example: "2024-10-12T15:30:00Z"
+          example: "2024-10-12T15:30:00+09:00"
     CallReservationResponse:
       type: object
       properties:
@@ -887,12 +984,12 @@ components:
           type: string
           format: date-time
           description: "通話開始時間"
-          example: "2024-10-12T15:00:00Z"
+          example: "2024-10-12T15:00:00+09:00"
         callEndTime:
           type: string
           format: date-time
           description: "通話終了時間"
-          example: "2024-10-12T15:30:00Z"
+          example: "2024-10-12T15:30:00+09:00"
     PrimaryDoctorsRequest:
       type: object
       properties:
@@ -938,6 +1035,8 @@ tags:
     description: "家族メール情報"
   - name: medicine
     description: "薬情報"
+  - name: disease
+    description: "病気情報"
   - name: chromic_disease
     description: "持病情報"
   - name: call
@@ -2718,6 +2817,96 @@ paths:
                     description: "エラータイプ"
                     example: "ServerError"
 
+  /diseases:
+    get:
+      tags:
+        - disease
+      summary: "病気検索"
+      description: "病気名で病気を検索します(部分一致検索&ひらがな漢字検索)。QueryParamsに何も指定しない場合は、空配列が返却される"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: query
+          name: diseaseName
+          schema:
+            type: string
+          required: false
+          description: "病気名の部分一致検索"
+      responses:
+        "200":
+          description: "検索結果のリスト"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Disease"
+        "400":
+          description: "不正なクエリパラメータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidQuery"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+  /diseases/famous:
+    get:
+      tags:
+        - disease
+      summary: "有名な病気一覧取得"
+      description: "有名な病気一覧を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      responses:
+        "200":
+          description: "有名な病気一覧取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Disease"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
   /chronic_diseases:
     get:
       tags:
@@ -2796,6 +2985,7 @@ paths:
                     description: "エラータイプ"
                     example: "ServerError"
 
+  /chronic_diseases/{chronicDiseaseID}:
     delete:
       tags:
         - chromic_disease
@@ -2808,12 +2998,12 @@ paths:
           schema:
             type: string
             description: "UID"
-        - in: query
-          name: diseaseName
+        - in: path
+          name: chronicDiseaseID
           required: true
           schema:
             type: string
-            description: "削除する持病名"
+            description: "持病ID"
       responses:
         "204":
           description: "持病削除成功"

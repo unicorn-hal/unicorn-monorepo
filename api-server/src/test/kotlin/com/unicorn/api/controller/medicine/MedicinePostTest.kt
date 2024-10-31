@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional
 @Sql("/db/user/Insert_User_Data.sql")
 @Sql("/db/medicine/Insert_Medicine_Data.sql")
 class MedicinePostTest {
-
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
@@ -34,20 +33,24 @@ class MedicinePostTest {
 
     @Test
     fun `should return 200 when medicine is created`() {
-        val medicineRequest = MedicinePostRequest(
-            medicineName = "medicineName",
-            count = 10
-        )
+        val medicineRequest =
+            MedicinePostRequest(
+                medicineName = "medicineName",
+                count = 10,
+            )
 
         val userID = "test"
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/medicines").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(medicineRequest))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/medicines").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(medicineRequest)),
+            )
 
         result.andExpect(status().isOk)
 
@@ -59,40 +62,48 @@ class MedicinePostTest {
 
     @Test
     fun `should return 400 when medicineName is missing`() {
-        val medicineRequest = MedicinePostRequest(
-            medicineName = "",
-            count = 10
-        )
+        val medicineRequest =
+            MedicinePostRequest(
+                medicineName = "",
+                count = 10,
+            )
 
         val userID = "test"
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/medicines").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(medicineRequest))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/medicines").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(medicineRequest)),
+            )
 
         result.andExpect(status().isBadRequest)
     }
 
     @Test
     fun `should return 400 when count is negative`() {
-        val medicineRequest = MedicinePostRequest(
-            medicineName = "medicineName",
-            count = -5
-        )
+        val medicineRequest =
+            MedicinePostRequest(
+                medicineName = "medicineName",
+                count = -5,
+            )
 
         val userID = "test"
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/medicines").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(medicineRequest))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/medicines").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(medicineRequest)),
+            )
 
         result.andExpect(status().isBadRequest)
     }

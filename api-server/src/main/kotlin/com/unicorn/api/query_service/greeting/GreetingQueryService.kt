@@ -7,70 +7,71 @@ import java.util.*
 
 interface GreetingQueryService {
     fun get(): GreetingResult
+
     fun getBy(id: UUID): GreetingDto?
 }
 
 @Service
-class GreetingQueryServiceImpl(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate):
+class GreetingQueryServiceImpl(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) :
     GreetingQueryService {
     override fun get(): GreetingResult {
         // language=SQL
-        val sql = """
+        val sql =
+            """
             SELECT
                 id,
                 message
             FROM greeting
             WHERE deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val greetings = namedParameterJdbcTemplate.query(
-            sql,
-            { rs, _ ->
-                GreetingDto(
-                    id = UUID.fromString(rs.getString("id")),
-                    message = rs.getString("message")
-                )
-            }
-        )
+        val greetings =
+            namedParameterJdbcTemplate.query(
+                sql,
+                { rs, _ ->
+                    GreetingDto(
+                        id = UUID.fromString(rs.getString("id")),
+                        message = rs.getString("message"),
+                    )
+                },
+            )
 
         return GreetingResult(greetings)
     }
 
     override fun getBy(id: UUID): GreetingDto? {
         // language=SQL
-        val sql = """
+        val sql =
+            """
             SELECT
                 id,
                 message
             FROM greeting
             WHERE id = :id
             AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("id", id)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("id", id)
 
         return namedParameterJdbcTemplate.query(
             sql,
-            sqlParams
+            sqlParams,
         ) { rs, _ ->
             GreetingDto(
                 id = UUID.fromString(rs.getString("id")),
-                message = rs.getString("message")
+                message = rs.getString("message"),
             )
         }.firstOrNull()
     }
 }
 
-
 data class GreetingDto(
     val id: UUID,
-    val message: String
+    val message: String,
 )
 
 data class GreetingResult(
-    val greetings: List<GreetingDto>
+    val greetings: List<GreetingDto>,
 )
-
-
-

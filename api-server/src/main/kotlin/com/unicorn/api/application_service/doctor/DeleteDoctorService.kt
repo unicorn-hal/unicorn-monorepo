@@ -12,11 +12,11 @@ interface DeleteDoctorService {
 }
 
 @Service
-class DeleteDoctorServiceImpl (
+class DeleteDoctorServiceImpl(
     private val doctorRepository: DoctorRepository,
     private val callSupportRepository: CallSupportRepository,
-    private val chatSupportRepository: ChatSupportRepository
-): DeleteDoctorService {
+    private val chatSupportRepository: ChatSupportRepository,
+) : DeleteDoctorService {
     @Transactional
     override fun delete(doctorID: DoctorID) {
         val doctor = doctorRepository.getOrNullBy(doctorID)

@@ -3,7 +3,6 @@ package com.unicorn.api.domain.greeting
 import org.junit.jupiter.api.Test
 
 class GreetingTest {
-
     @Test
     fun `should create greeting`() {
         val greeting = Greeting.create("Hello, World!")

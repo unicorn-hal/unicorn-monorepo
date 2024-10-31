@@ -26,49 +26,63 @@ class MedicinesGetTest {
 
     @Test
     fun `should return 200 with correct medicine data`() {
-        val result = mockMvc.perform(MockMvcRequestBuilders.get("/medicines").headers(HttpHeaders().apply {
-            add("X-UID", "test")
-        }))
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.get("/medicines").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", "test")
+                    },
+                ),
+            )
 
         result.andExpect(status().isOk)
         result.andExpect(
-            content().json("""
-            {
-                "data": [
-                    {
-                        "medicineID": "123e4567-e89b-12d3-a456-426614174000",
-                        "medicineName": "Paracetamol",
-                        "count": 50,
-                        "quantity": 10
-                    },
-                    {
-                        "medicineID": "123e4567-e89b-12d3-a456-426614174001",
-                        "medicineName": "Ibuprofen",
-                        "count": 30,
-                        "quantity": 15
-                    },
-                    {
-                        "medicineID": "123e4567-e89b-12d3-a456-426614174002",
-                        "medicineName": "Aspirin",
-                        "count": 80,
-                        "quantity": 20
-                    },
-                    {
-                        "medicineID": "123e4567-e89b-12d3-a456-426614174003",
-                        "medicineName": "Amoxicillin",
-                        "count": 20,
-                        "quantity": 5
-                    }
-                ]
-            }
-        """.trimIndent(), true))
+            content().json(
+                """
+                {
+                    "data": [
+                        {
+                            "medicineID": "123e4567-e89b-12d3-a456-426614174000",
+                            "medicineName": "Paracetamol",
+                            "count": 50,
+                            "quantity": 10
+                        },
+                        {
+                            "medicineID": "123e4567-e89b-12d3-a456-426614174001",
+                            "medicineName": "Ibuprofen",
+                            "count": 30,
+                            "quantity": 15
+                        },
+                        {
+                            "medicineID": "123e4567-e89b-12d3-a456-426614174002",
+                            "medicineName": "Aspirin",
+                            "count": 80,
+                            "quantity": 20
+                        },
+                        {
+                            "medicineID": "123e4567-e89b-12d3-a456-426614174003",
+                            "medicineName": "Amoxicillin",
+                            "count": 20,
+                            "quantity": 5
+                        }
+                    ]
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
     }
 
     @Test
     fun `should return 400 when uid is invalid`() {
-        val result = mockMvc.perform(MockMvcRequestBuilders.get("/medicines").headers(HttpHeaders().apply {
-            add("X-UID", "invalid-uid")
-        }))
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.get("/medicines").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", "invalid-uid")
+                    },
+                ),
+            )
 
         result.andExpect(status().isBadRequest)
         result.andExpect(content().string("User not found"))

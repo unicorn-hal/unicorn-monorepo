@@ -11,11 +11,12 @@ interface UserQueryService {
 
 @Service
 class UserQueryServiceImpl(
-    val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
-): UserQueryService {
+    val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
+) : UserQueryService {
     override fun getOrNullBy(userID: String): UserDto? {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 user_id, 
                 first_name, 
@@ -33,14 +34,15 @@ class UserQueryServiceImpl(
             FROM users
             WHERE user_id = :userID
                 AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("userID", userID)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", userID)
 
         return namedParameterJdbcTemplate.query(
             sql,
-            sqlParams
+            sqlParams,
         ) { rs, _ ->
             UserDto(
                 userID = rs.getString("user_id"),
@@ -55,7 +57,7 @@ class UserQueryServiceImpl(
                 iconImageUrl = rs.getString("icon_image_url"),
                 bodyHeight = rs.getDouble("body_height"),
                 bodyWeight = rs.getDouble("body_weight"),
-                occupation = rs.getString("occupation")
+                occupation = rs.getString("occupation"),
             )
         }.singleOrNull()
     }
@@ -74,5 +76,5 @@ data class UserDto(
     val iconImageUrl: String?,
     val bodyHeight: Double,
     val bodyWeight: Double,
-    val occupation: String
+    val occupation: String,
 )

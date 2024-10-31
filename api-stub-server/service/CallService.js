@@ -30,9 +30,9 @@ exports.callsCallReservationIDPUT = function(body,callReservationID,xUID) {
     var examples = {};
     examples['application/json'] = {
   "callReservationID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "callEndTime" : "2024-10-12T15:30:00Z",
+  "callEndTime" : "2024-10-12T15:30:00+09:00",
   "doctorID" : "1234567890",
-  "callStartTime" : "2024-10-12T15:00:00Z",
+  "callStartTime" : "2024-10-12T15:00:00+09:00",
   "userID" : "1234567890"
 };
     if (Object.keys(examples).length > 0) {
@@ -58,9 +58,9 @@ exports.callsGET = function(xUID,doctorID,userID) {
     var examples = {};
     examples['application/json'] = {
   "callReservationID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "callEndTime" : "2024-10-12T15:30:00Z",
+  "callEndTime" : "2024-10-12T15:30:00+09:00",
   "doctorID" : "1234567890",
-  "callStartTime" : "2024-10-12T15:00:00Z",
+  "callStartTime" : "2024-10-12T15:00:00+09:00",
   "userID" : "1234567890"
 };
     if (Object.keys(examples).length > 0) {
@@ -85,9 +85,9 @@ exports.callsPOST = function(body,xUID) {
     var examples = {};
     examples['application/json'] = {
   "callReservationID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "callEndTime" : "2024-10-12T15:30:00Z",
+  "callEndTime" : "2024-10-12T15:30:00+09:00",
   "doctorID" : "1234567890",
-  "callStartTime" : "2024-10-12T15:00:00Z",
+  "callStartTime" : "2024-10-12T15:00:00+09:00",
   "userID" : "1234567890"
 };
     if (Object.keys(examples).length > 0) {

@@ -8,24 +8,25 @@ interface SaveAccountService {
     fun save(
         uid: String,
         role: String,
-        fcmTokenId: String
+        fcmTokenId: String,
     ): Account
 }
 
 @Service
 class SaveAccountServiceImpl(
-    private val accountRepository: AccountRepository
-): SaveAccountService {
+    private val accountRepository: AccountRepository,
+) : SaveAccountService {
     override fun save(
         uid: String,
         role: String,
-        fcmTokenId: String
+        fcmTokenId: String,
     ): Account {
-        val account = Account.create(
-            uid = uid,
-            role = role,
-            fcmTokenId = fcmTokenId
-        )
+        val account =
+            Account.create(
+                uid = uid,
+                role = role,
+                fcmTokenId = fcmTokenId,
+            )
 
         val existingAccount = accountRepository.getOrNullByUid(account.uid)
 

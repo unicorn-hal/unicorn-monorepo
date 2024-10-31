@@ -30,104 +30,137 @@ class AccountPostTest {
 
     @Test
     fun `should return 200 when account is created`() {
-        val account = AccountPostRequest(
-            uid = "uid",
-            role = "user",
-            fcmTokenId = "fcmTokenId"
-        )
+        val account =
+            AccountPostRequest(
+                uid = "uid",
+                role = "user",
+                fcmTokenId = "fcmTokenId",
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/accounts").headers(HttpHeaders().apply {
-                add("X-UID", account.uid)
-            })
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(account)))
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/accounts").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", account.uid)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(account)),
+            )
 
         result.andExpect(status().isOk)
-        result.andExpect(content().json("""
-            {
-                "uid": "${account.uid}",
-                "role": "${account.role}",
-                "fcmTokenId": "${account.fcmTokenId}"
-            }
-        """.trimIndent()))
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "uid": "${account.uid}",
+                    "role": "${account.role}",
+                    "fcmTokenId": "${account.fcmTokenId}"
+                }
+                """.trimIndent(),
+            ),
+        )
     }
 
     @Test
     fun `should return 200 when deleted account is restored`() {
-        val account = AccountPostRequest(
-            uid = "test2",
-            role = "user",
-            fcmTokenId = "fcm_token_id"
-        )
+        val account =
+            AccountPostRequest(
+                uid = "test2",
+                role = "user",
+                fcmTokenId = "fcm_token_id",
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/accounts").headers(HttpHeaders().apply {
-                add("X-UID", account.uid)
-            })
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(account)))
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/accounts").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", account.uid)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(account)),
+            )
 
         result.andExpect(status().isOk)
-        result.andExpect(content().json("""
-            {
-                "uid": "${account.uid}",
-                "role": "${account.role}",
-                "fcmTokenId": "${account.fcmTokenId}"
-            }
-        """.trimIndent()))
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "uid": "${account.uid}",
+                    "role": "${account.role}",
+                    "fcmTokenId": "${account.fcmTokenId}"
+                }
+                """.trimIndent(),
+            ),
+        )
     }
 
     @Test
     fun `should return 400 when uid is already exists`() {
-        val account = AccountPostRequest(
-            uid = "test",
-            role = "user",
-            fcmTokenId = "fcmTokenId"
-        )
+        val account =
+            AccountPostRequest(
+                uid = "test",
+                role = "user",
+                fcmTokenId = "fcmTokenId",
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/accounts").headers(HttpHeaders().apply {
-                add("X-UID", account.uid)
-            })
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(account)))
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/accounts").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", account.uid)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(account)),
+            )
 
         result.andExpect(status().isBadRequest)
     }
 
     @Test
     fun `should return 400 when role is invalid`() {
-        val account = AccountPostRequest(
-            uid = "uid",
-            role = "invalid",
-            fcmTokenId = "fcmTokenId"
-        )
+        val account =
+            AccountPostRequest(
+                uid = "uid",
+                role = "invalid",
+                fcmTokenId = "fcmTokenId",
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/accounts").headers(HttpHeaders().apply {
-                add("X-UID", account.uid)
-            })
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(account)))
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/accounts").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", account.uid)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(account)),
+            )
 
         result.andExpect(status().isBadRequest)
     }
 
     @Test
     fun `should return 400 when uid is not provided`() {
-        val account = AccountPostRequest(
-            uid = "",
-            role = "user",
-            fcmTokenId = "fcmTokenId"
-        )
+        val account =
+            AccountPostRequest(
+                uid = "",
+                role = "user",
+                fcmTokenId = "fcmTokenId",
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/accounts").headers(HttpHeaders().apply {
-                add("X-UID", account.uid)
-            })
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(account)))
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/accounts").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", account.uid)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(account)),
+            )
 
         result.andExpect(status().isBadRequest)
     }

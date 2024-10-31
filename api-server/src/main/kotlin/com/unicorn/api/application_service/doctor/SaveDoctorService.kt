@@ -18,7 +18,10 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface SaveDoctorService {
-    fun save(uid: UID, doctorPostRequest: DoctorPostRequest): DoctorPostRequest
+    fun save(
+        uid: UID,
+        doctorPostRequest: DoctorPostRequest,
+    ): DoctorPostRequest
 }
 
 @Service
@@ -28,10 +31,13 @@ class SaveDoctorServiceImpl(
     private val hospitalRepository: HospitalRepository,
     private val departmentRepository: DepartmentRepository,
     private val callSupportRepository: CallSupportRepository,
-    private val chatSupportRepository: ChatSupportRepository
+    private val chatSupportRepository: ChatSupportRepository,
 ) : SaveDoctorService {
     @Transactional
-    override fun save(uid: UID, doctorPostRequest: DoctorPostRequest): DoctorPostRequest {
+    override fun save(
+        uid: UID,
+        doctorPostRequest: DoctorPostRequest,
+    ): DoctorPostRequest {
         val account = accountRepository.getOrNullByUid(uid)
         requireNotNull(account) { "Account not found" }
         require(account.isDoctor()) { "Account is not doctor" }
@@ -53,33 +59,37 @@ class SaveDoctorServiceImpl(
         val missingDepartmentIDs = departmentIDs - departments.map { it?.departmentID }.toSet()
         // 存在しないdepartmentIDがある場合はエラー
         require(missingDepartmentIDs.isEmpty()) {
-            val response = missingDepartmentIDs.joinToString(
-                separator = ", ",
-                transform = { it?.value.toString() }
-            )
+            val response =
+                missingDepartmentIDs.joinToString(
+                    separator = ", ",
+                    transform = { it?.value.toString() },
+                )
             "Department not found: $response"
         }
 
-        val doctor = Doctor.create(
-            doctorID = uid.value,
-            hospitalID = hospital.hospitalID,
-            firstName = doctorPostRequest.firstName,
-            lastName = doctorPostRequest.lastName,
-            email = doctorPostRequest.email,
-            phoneNumber = doctorPostRequest.phoneNumber,
-            doctorIconUrl = doctorPostRequest.doctorIconUrl,
-            departments = departmentIDs,
-        )
-        val callSupport = CallSupport.create(
-            doctorID = doctor.doctorID,
-            callSupportStartHour = doctorPostRequest.callSupportStartHour,
-            callSupportEndHour = doctorPostRequest.callSupportEndHour,
-        )
-        val chatSupport = ChatSupport.create(
-            doctorID = doctor.doctorID,
-            chatSupportStartHour = doctorPostRequest.chatSupportStartHour,
-            chatSupportEndHour = doctorPostRequest.chatSupportEndHour,
-        )
+        val doctor =
+            Doctor.create(
+                doctorID = uid.value,
+                hospitalID = hospital.hospitalID,
+                firstName = doctorPostRequest.firstName,
+                lastName = doctorPostRequest.lastName,
+                email = doctorPostRequest.email,
+                phoneNumber = doctorPostRequest.phoneNumber,
+                doctorIconUrl = doctorPostRequest.doctorIconUrl,
+                departments = departmentIDs,
+            )
+        val callSupport =
+            CallSupport.create(
+                doctorID = doctor.doctorID,
+                callSupportStartHour = doctorPostRequest.callSupportStartHour,
+                callSupportEndHour = doctorPostRequest.callSupportEndHour,
+            )
+        val chatSupport =
+            ChatSupport.create(
+                doctorID = doctor.doctorID,
+                chatSupportStartHour = doctorPostRequest.chatSupportStartHour,
+                chatSupportEndHour = doctorPostRequest.chatSupportEndHour,
+            )
 
         doctorRepository.store(doctor)
         callSupportRepository.store(callSupport)

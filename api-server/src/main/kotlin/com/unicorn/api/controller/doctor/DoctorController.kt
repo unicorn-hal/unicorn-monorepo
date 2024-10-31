@@ -19,12 +19,12 @@ class DoctorController(
     private val saveDoctorService: SaveDoctorService,
     private val updateDoctorService: UpdateDoctorService,
     private val deleteDoctorService: DeleteDoctorService,
-    private val doctorQueryService: DoctorQueryService
+    private val doctorQueryService: DoctorQueryService,
 ) {
     @PostMapping("/doctors")
     fun post(
         @RequestHeader("X-UID") uid: String,
-        @RequestBody doctorPostRequest: DoctorPostRequest
+        @RequestBody doctorPostRequest: DoctorPostRequest,
     ): ResponseEntity<*> {
         try {
             val result = saveDoctorService.save(UID(uid), doctorPostRequest)
@@ -40,7 +40,7 @@ class DoctorController(
     fun put(
         @RequestHeader("X-UID") uid: String,
         @PathVariable doctorID: String,
-        @RequestBody doctorPutRequest: DoctorPutRequest
+        @RequestBody doctorPutRequest: DoctorPutRequest,
     ): ResponseEntity<*> {
         try {
             val result = updateDoctorService.update(DoctorID(doctorID), doctorPutRequest)
@@ -55,7 +55,7 @@ class DoctorController(
     @DeleteMapping("/doctors/{doctorID}")
     fun delete(
         @RequestHeader("X-UID") uid: String,
-        @PathVariable doctorID: String
+        @PathVariable doctorID: String,
     ): ResponseEntity<Any> {
         try {
             deleteDoctorService.delete(DoctorID(doctorID))
@@ -70,11 +70,12 @@ class DoctorController(
     @GetMapping("/doctors/{doctorID}")
     fun get(
         @RequestHeader("X-UID") uid: String,
-        @PathVariable doctorID: String
+        @PathVariable doctorID: String,
     ): ResponseEntity<Any> {
         try {
-            val result = doctorQueryService.getOrNullBy(DoctorID(doctorID))
-                ?: return ResponseEntity.notFound().build()
+            val result =
+                doctorQueryService.getOrNullBy(DoctorID(doctorID))
+                    ?: return ResponseEntity.notFound().build()
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
@@ -86,7 +87,7 @@ class DoctorController(
     @GetMapping("/hospitals/{hospitalID}/doctors")
     fun getDoctorsByHospital(
         @RequestHeader("X-UID") uid: String,
-        @PathVariable hospitalID: UUID
+        @PathVariable hospitalID: UUID,
     ): ResponseEntity<Any> {
         try {
             val result = doctorQueryService.getBy(HospitalID(hospitalID))
@@ -103,7 +104,7 @@ class DoctorController(
         @RequestHeader("X-UID") uid: String,
         @RequestParam departmentID: UUID?,
         @RequestParam doctorName: String?,
-        @RequestParam hospitalName: String?
+        @RequestParam hospitalName: String?,
     ): ResponseEntity<Any> {
         try {
             val result = doctorQueryService.searchDoctors(departmentID?.let { DepartmentID(it) }, doctorName, hospitalName)

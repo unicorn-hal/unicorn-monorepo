@@ -1,13 +1,13 @@
 package com.unicorn.api.controller.family_email
 
-import com.unicorn.api.controller.api_response.ResponseError
-import com.unicorn.api.domain.user.UserID
-import com.unicorn.api.domain.family_email.FamilyEmailID
-import com.unicorn.api.query_service.user.UserQueryService
-import com.unicorn.api.query_service.family_email.FamilyEmailQueryService
+import com.unicorn.api.application_service.family_email.DeleteFamilyEmailService
 import com.unicorn.api.application_service.family_email.SaveFamilyEmailService
 import com.unicorn.api.application_service.family_email.UpdateFamilyEmailService
-import com.unicorn.api.application_service.family_email.DeleteFamilyEmailService
+import com.unicorn.api.controller.api_response.ResponseError
+import com.unicorn.api.domain.family_email.FamilyEmailID
+import com.unicorn.api.domain.user.UserID
+import com.unicorn.api.query_service.family_email.FamilyEmailQueryService
+import com.unicorn.api.query_service.user.UserQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -19,11 +19,13 @@ class FamilyEmailController(
     private val familyEmailQueryService: FamilyEmailQueryService,
     private val saveFamilyEmailService: SaveFamilyEmailService,
     private val updateFamilyEmailService: UpdateFamilyEmailService,
-    private val deleteFamilyEmailService: DeleteFamilyEmailService
+    private val deleteFamilyEmailService: DeleteFamilyEmailService,
 ) {
     @GetMapping("/family_emails")
-    fun get(@RequestHeader("X-UID") uid: String): ResponseEntity<*> {
-        try{
+    fun get(
+        @RequestHeader("X-UID") uid: String,
+    ): ResponseEntity<*> {
+        try {
             userQueryService.getOrNullBy(uid)
                 ?: return ResponseEntity.status(400).body(ResponseError("User not found"))
 
@@ -35,7 +37,10 @@ class FamilyEmailController(
     }
 
     @PostMapping("/family_emails")
-    fun post(@RequestHeader("X-UID") uid: String, @RequestBody familyEmailPostRequest: FamilyEmailPostRequest): ResponseEntity<*> {
+    fun post(
+        @RequestHeader("X-UID") uid: String,
+        @RequestBody familyEmailPostRequest: FamilyEmailPostRequest,
+    ): ResponseEntity<*> {
         try {
             val result = saveFamilyEmailService.save(UserID(uid), familyEmailPostRequest)
             return ResponseEntity.ok(result)
@@ -47,7 +52,11 @@ class FamilyEmailController(
     }
 
     @PutMapping("/family_emails/{familyEmailID}")
-    fun put(@RequestHeader("X-UID") uid: String, @RequestBody familyEmailPutRequest: FamilyEmailPutRequest, @PathVariable familyEmailID: UUID): ResponseEntity<*> {
+    fun put(
+        @RequestHeader("X-UID") uid: String,
+        @RequestBody familyEmailPutRequest: FamilyEmailPutRequest,
+        @PathVariable familyEmailID: UUID,
+    ): ResponseEntity<*> {
         try {
             val result = updateFamilyEmailService.update(FamilyEmailID(familyEmailID), UserID(uid), familyEmailPutRequest)
             return ResponseEntity.ok(result)
@@ -59,7 +68,10 @@ class FamilyEmailController(
     }
 
     @DeleteMapping("/family_emails/{familyEmailID}")
-    fun delete(@RequestHeader("X-UID") uid: String, @PathVariable familyEmailID: UUID): ResponseEntity<Any> {
+    fun delete(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable familyEmailID: UUID,
+    ): ResponseEntity<Any> {
         try {
             deleteFamilyEmailService.delete(FamilyEmailID(familyEmailID), UserID(uid))
             return ResponseEntity.noContent().build()
@@ -69,14 +81,14 @@ class FamilyEmailController(
             return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
         }
     }
-}       
+}
 
 data class FamilyEmailPostRequest(
     val email: String,
     val firstName: String,
     val lastName: String,
     val phoneNumber: String,
-    val iconImageUrl: String?
+    val iconImageUrl: String?,
 )
 
 data class FamilyEmailPutRequest(
@@ -84,5 +96,5 @@ data class FamilyEmailPutRequest(
     val firstName: String,
     val lastName: String,
     val phoneNumber: String,
-    val iconImageUrl: String?
+    val iconImageUrl: String?,
 )

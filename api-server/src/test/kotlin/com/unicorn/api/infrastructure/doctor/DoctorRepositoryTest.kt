@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import kotlin.test.assertEquals
 
-
 @TestPropertySource(locations = ["classpath:application-test.properties"])
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -28,7 +27,6 @@ import kotlin.test.assertEquals
 @Sql("/db/doctor/Insert_Doctor_Data.sql")
 @Sql("/db/doctor_department/Insert_Doctor_Department_Data.sql")
 class DoctorRepositoryTest {
-
     @Autowired
     private lateinit var doctorRepository: DoctorRepository
 
@@ -37,7 +35,8 @@ class DoctorRepositoryTest {
 
     private fun findUserByDoctorID(doctorID: String): Doctor? {
         // language=postgresql
-        val selectSql = """
+        val selectSql =
+            """
             SELECT
                 doctors.doctor_id,
                 hospital_id,
@@ -53,10 +52,11 @@ class DoctorRepositoryTest {
                 AND doctors.deleted_at IS NULL
                 AND dd.deleted_at IS NULL
             GROUP BY doctors.doctor_id
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("doctorID", doctorID)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctorID)
 
         return namedParameterJdbcTemplate.query(selectSql, sqlParams) { rs, _ ->
 
@@ -68,7 +68,7 @@ class DoctorRepositoryTest {
                 lastName = rs.getString("last_name"),
                 phoneNumber = rs.getString("phone_number"),
                 doctorIconUrl = rs.getString("doctor_icon_url"),
-                departments =  jacksonObjectMapper().readValue<List<UUID>>(rs.getString("departments"))
+                departments = jacksonObjectMapper().readValue<List<UUID>>(rs.getString("departments")),
             )
         }.singleOrNull()
     }
@@ -76,16 +76,17 @@ class DoctorRepositoryTest {
     @Test
     fun `should get doctor by doctorID`() {
         val doctorID = DoctorID("doctor")
-        val doctor = Doctor.fromStore(
-            doctorID = "doctor",
-            hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
-            firstName = "test",
-            lastName = "test",
-            email = "test@test.com",
-            phoneNumber = "1234567890",
-            doctorIconUrl = "https://example.com",
-            departments = listOf(UUID.fromString("b68a87a3-b7f1-4b85-b0ab-6c620d68d791"))
-        )
+        val doctor =
+            Doctor.fromStore(
+                doctorID = "doctor",
+                hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
+                firstName = "test",
+                lastName = "test",
+                email = "test@test.com",
+                phoneNumber = "1234567890",
+                doctorIconUrl = "https://example.com",
+                departments = listOf(UUID.fromString("b68a87a3-b7f1-4b85-b0ab-6c620d68d791")),
+            )
 
         val act = doctorRepository.getOrNullBy(doctorID)
 
@@ -104,16 +105,17 @@ class DoctorRepositoryTest {
 
     @Test
     fun `should store doctor`() {
-        val doctor = Doctor.fromStore(
-            doctorID = "doctor3",
-            hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
-            firstName = "test",
-            lastName = "test",
-            email = "test@test.com",
-            phoneNumber = "1234567890",
-            doctorIconUrl = "https://example.com",
-            departments = listOf(UUID.fromString("b68a87a3-b7f1-4b85-b0ab-6c620d68d791")),
-        )
+        val doctor =
+            Doctor.fromStore(
+                doctorID = "doctor3",
+                hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
+                firstName = "test",
+                lastName = "test",
+                email = "test@test.com",
+                phoneNumber = "1234567890",
+                doctorIconUrl = "https://example.com",
+                departments = listOf(UUID.fromString("b68a87a3-b7f1-4b85-b0ab-6c620d68d791")),
+            )
 
         doctorRepository.store(doctor)
 
@@ -124,16 +126,17 @@ class DoctorRepositoryTest {
 
     @Test
     fun `should delete doctor`() {
-        val doctor = Doctor.fromStore(
-            doctorID = "doctor",
-            hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
-            firstName = "test",
-            lastName = "test",
-            email = "test@test.com",
-            phoneNumber = "1234567890",
-            doctorIconUrl = "https://example.com",
-            departments = listOf(UUID.fromString("b68a87a3-b7f1-4b85-b0ab-6c620d68d791")),
-        )
+        val doctor =
+            Doctor.fromStore(
+                doctorID = "doctor",
+                hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
+                firstName = "test",
+                lastName = "test",
+                email = "test@test.com",
+                phoneNumber = "1234567890",
+                doctorIconUrl = "https://example.com",
+                departments = listOf(UUID.fromString("b68a87a3-b7f1-4b85-b0ab-6c620d68d791")),
+            )
 
         doctorRepository.delete(doctor)
 
@@ -144,16 +147,17 @@ class DoctorRepositoryTest {
     @Test
     fun `should update doctor`() {
         val doctorID = DoctorID("doctor")
-        val doctor = Doctor.fromStore(
-            doctorID = "doctor",
-            hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
-            firstName = "testtest",
-            lastName = "testtest",
-            email = "test@test.com",
-            phoneNumber = "1234567890",
-            doctorIconUrl = "https://example.com",
-            departments = listOf(UUID.fromString("cd273b1b-0c3b-4b89-b2b9-01b21832b44c"))
-        )
+        val doctor =
+            Doctor.fromStore(
+                doctorID = "doctor",
+                hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
+                firstName = "testtest",
+                lastName = "testtest",
+                email = "test@test.com",
+                phoneNumber = "1234567890",
+                doctorIconUrl = "https://example.com",
+                departments = listOf(UUID.fromString("cd273b1b-0c3b-4b89-b2b9-01b21832b44c")),
+            )
 
         doctorRepository.store(doctor)
 

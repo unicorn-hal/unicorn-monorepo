@@ -10,16 +10,19 @@ import java.util.*
 
 interface DoctorRepository {
     fun store(doctor: Doctor): Doctor
+
     fun getOrNullBy(doctorID: DoctorID): Doctor?
+
     fun delete(doctorID: Doctor): Unit
 }
 
 @Repository
 class DoctorRepositoryImpl(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
+    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) : DoctorRepository {
     // language=postgresql
-    private val insertSql = """
+    private val insertSql =
+        """
         INSERT INTO doctors (
             doctor_id,
             hospital_id,
@@ -49,18 +52,20 @@ class DoctorRepositoryImpl(
             doctor_icon_url = EXCLUDED.doctor_icon_url,
             deleted_at = NULL
         WHERE doctors.created_at IS NOT NULL
-    """.trimIndent()
+        """.trimIndent()
 
     // language=postgresql
-    private val deleteRelationSql = """
+    private val deleteRelationSql =
+        """
         UPDATE doctor_departments
         SET deleted_at = NOW()
         WHERE doctor_id = :doctorID
         AND deleted_at IS NULL
-    """.trimIndent()
+        """.trimIndent()
 
     // language=postgresql
-    private val insertRelationSql = """
+    private val insertRelationSql =
+        """
         INSERT INTO doctor_departments (
             doctor_department_id,
             doctor_id,
@@ -76,10 +81,11 @@ class DoctorRepositoryImpl(
         SET
             deleted_at = NULL
         WHERE doctor_departments.created_at IS NOT NULL
-    """.trimIndent()
+        """.trimIndent()
 
     // language=postgresql
-    private val selectSql = """
+    private val selectSql =
+        """
         SELECT
             doctors.doctor_id,
             hospital_id,
@@ -95,40 +101,44 @@ class DoctorRepositoryImpl(
             AND doctors.deleted_at IS NULL
             AND dd.deleted_at IS NULL
         GROUP BY doctors.doctor_id
-    """.trimIndent()
+        """.trimIndent()
 
     // language=postgresql
-    private val deleteSql = """
+    private val deleteSql =
+        """
         UPDATE doctors
         SET deleted_at = NOW()
         WHERE doctor_id = :doctorID
         AND deleted_at IS NULL
-    """.trimIndent()
+        """.trimIndent()
 
     override fun store(doctor: Doctor): Doctor {
-        val doctorSqlParams = MapSqlParameterSource()
-            .addValue("doctorID", doctor.doctorID.value)
-            .addValue("hospitalID", doctor.hospitalID.value)
-            .addValue("email", doctor.email.value)
-            .addValue("firstName", doctor.firstName.value)
-            .addValue("phoneNumber", doctor.phoneNumber.value)
-            .addValue("lastName", doctor.lastName.value)
-            .addValue("doctorIconUrl", doctor.doctorIconUrl?.value)
+        val doctorSqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctor.doctorID.value)
+                .addValue("hospitalID", doctor.hospitalID.value)
+                .addValue("email", doctor.email.value)
+                .addValue("firstName", doctor.firstName.value)
+                .addValue("phoneNumber", doctor.phoneNumber.value)
+                .addValue("lastName", doctor.lastName.value)
+                .addValue("doctorIconUrl", doctor.doctorIconUrl?.value)
 
         namedParameterJdbcTemplate.update(insertSql, doctorSqlParams)
 
         // 既存の診療科との関係を削除
-        val deleteRelationParams = MapSqlParameterSource()
-            .addValue("doctorID", doctor.doctorID.value)
+        val deleteRelationParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctor.doctorID.value)
 
         namedParameterJdbcTemplate.update(deleteRelationSql, deleteRelationParams)
 
         // 新しい診療科との関係を追加
         doctor.departments.forEach { departmentID ->
-            val insertRelationParams = MapSqlParameterSource()
-                .addValue("id", UUID.randomUUID())
-                .addValue("doctorID", doctor.doctorID.value)
-                .addValue("departmentID", departmentID.value)
+            val insertRelationParams =
+                MapSqlParameterSource()
+                    .addValue("id", UUID.randomUUID())
+                    .addValue("doctorID", doctor.doctorID.value)
+                    .addValue("departmentID", departmentID.value)
 
             namedParameterJdbcTemplate.update(insertRelationSql, insertRelationParams)
         }
@@ -137,8 +147,9 @@ class DoctorRepositoryImpl(
     }
 
     override fun getOrNullBy(doctorID: DoctorID): Doctor? {
-        val sqlParams = MapSqlParameterSource()
-            .addValue("doctorID", doctorID.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctorID.value)
 
         return namedParameterJdbcTemplate.query(selectSql, sqlParams) { rs, _ ->
 
@@ -150,20 +161,22 @@ class DoctorRepositoryImpl(
                 lastName = rs.getString("last_name"),
                 phoneNumber = rs.getString("phone_number"),
                 doctorIconUrl = rs.getString("doctor_icon_url"),
-                departments =  jacksonObjectMapper().readValue<List<UUID>>(rs.getString("departments"))
+                departments = jacksonObjectMapper().readValue<List<UUID>>(rs.getString("departments")),
             )
         }.singleOrNull()
     }
 
     override fun delete(doctor: Doctor) {
-        val sqlParams = MapSqlParameterSource()
-            .addValue("doctorID", doctor.doctorID.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctor.doctorID.value)
 
         namedParameterJdbcTemplate.update(deleteSql, sqlParams)
 
         // 関連する診療科との関係を削除
-        val deleteRelationParams = MapSqlParameterSource()
-            .addValue("doctorID", doctor.doctorID.value)
+        val deleteRelationParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctor.doctorID.value)
 
         namedParameterJdbcTemplate.update(deleteRelationSql, deleteRelationParams)
     }

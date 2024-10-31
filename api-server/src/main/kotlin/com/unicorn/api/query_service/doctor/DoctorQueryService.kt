@@ -11,22 +11,26 @@ import org.springframework.stereotype.Service
 
 interface DoctorQueryService {
     fun getOrNullBy(doctorID: DoctorID): DoctorDto?
+
     fun getBy(hospitalID: HospitalID): DoctorResult
+
     fun searchDoctors(
         departmentID: DepartmentID?,
         doctorName: String?,
-        hospitalName: String?): DoctorResult
+        hospitalName: String?,
+    ): DoctorResult
 }
 
 @Service
 class DoctorQueryServiceImpl(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
-): DoctorQueryService {
+    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
+) : DoctorQueryService {
     fun String.toHHMM() = this.split(":").take(2).joinToString(":")
 
     override fun getOrNullBy(doctorID: DoctorID): DoctorDto? {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 doctors.doctor_id,
                 hospitals.hospital_id,
@@ -69,18 +73,20 @@ class DoctorQueryServiceImpl(
                 chat_support_hours.end_time, 
                 call_support_hours.start_time, 
                 call_support_hours.end_time
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("doctorID", doctorID.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctorID.value)
 
         return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
             DoctorDto(
                 doctorID = rs.getString("doctor_id"),
-                hospital = HospitalDto(
-                    hospitalID = rs.getString("hospital_id"),
-                    hospitalName = rs.getString("hospital_name")
-                ),
+                hospital =
+                    HospitalDto(
+                        hospitalID = rs.getString("hospital_id"),
+                        hospitalName = rs.getString("hospital_name"),
+                    ),
                 email = rs.getString("email"),
                 phoneNumber = rs.getString("phone_number"),
                 firstName = rs.getString("first_name"),
@@ -88,14 +94,15 @@ class DoctorQueryServiceImpl(
                 doctorIconUrl = rs.getString("doctor_icon_url"),
                 departments = jacksonObjectMapper().readValue<List<DepartmentDto>>(rs.getString("departments")),
                 chatSupportHours = "${rs.getString("chat_support_start_time").toHHMM()}-${rs.getString("chat_support_end_time").toHHMM()}",
-                callSupportHours = "${rs.getString("call_support_start_time").toHHMM()}-${rs.getString("call_support_end_time").toHHMM()}"
+                callSupportHours = "${rs.getString("call_support_start_time").toHHMM()}-${rs.getString("call_support_end_time").toHHMM()}",
             )
         }.singleOrNull()
     }
 
     override fun getBy(hospitalID: HospitalID): DoctorResult {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 doctors.doctor_id,
                 hospitals.hospital_id,
@@ -138,35 +145,47 @@ class DoctorQueryServiceImpl(
                 chat_support_hours.end_time, 
                 call_support_hours.start_time, 
                 call_support_hours.end_time
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("hospitalID", hospitalID.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("hospitalID", hospitalID.value)
 
-        val result = namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
-            DoctorDto(
-                doctorID = rs.getString("doctor_id"),
-                hospital = HospitalDto(
-                    hospitalID = rs.getString("hospital_id"),
-                    hospitalName = rs.getString("hospital_name")
-                ),
-                email = rs.getString("email"),
-                phoneNumber = rs.getString("phone_number"),
-                firstName = rs.getString("first_name"),
-                lastName = rs.getString("last_name"),
-                doctorIconUrl = rs.getString("doctor_icon_url"),
-                departments = jacksonObjectMapper().readValue<List<DepartmentDto>>(rs.getString("departments")),
-                chatSupportHours = "${rs.getString("chat_support_start_time").toHHMM()}-${rs.getString("chat_support_end_time").toHHMM()}",
-                callSupportHours = "${rs.getString("call_support_start_time").toHHMM()}-${rs.getString("call_support_end_time").toHHMM()}"
-            )
-        }
+        val result =
+            namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+                DoctorDto(
+                    doctorID = rs.getString("doctor_id"),
+                    hospital =
+                        HospitalDto(
+                            hospitalID = rs.getString("hospital_id"),
+                            hospitalName = rs.getString("hospital_name"),
+                        ),
+                    email = rs.getString("email"),
+                    phoneNumber = rs.getString("phone_number"),
+                    firstName = rs.getString("first_name"),
+                    lastName = rs.getString("last_name"),
+                    doctorIconUrl = rs.getString("doctor_icon_url"),
+                    departments = jacksonObjectMapper().readValue<List<DepartmentDto>>(rs.getString("departments")),
+                    chatSupportHours = "${rs.getString(
+                        "chat_support_start_time",
+                    ).toHHMM()}-${rs.getString("chat_support_end_time").toHHMM()}",
+                    callSupportHours = "${rs.getString(
+                        "call_support_start_time",
+                    ).toHHMM()}-${rs.getString("call_support_end_time").toHHMM()}",
+                )
+            }
 
         return DoctorResult(result)
     }
 
-    override fun searchDoctors(departmentID: DepartmentID?, doctorName: String?, hospitalName: String?): DoctorResult {
+    override fun searchDoctors(
+        departmentID: DepartmentID?,
+        doctorName: String?,
+        hospitalName: String?,
+    ): DoctorResult {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 doctors.doctor_id,
                 hospitals.hospital_id,
@@ -215,43 +234,49 @@ class DoctorQueryServiceImpl(
                 chat_support_hours.end_time, 
                 call_support_hours.start_time, 
                 call_support_hours.end_time
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("departmentID", departmentID?.value)
-            .addValue("doctorName", doctorName)
-            .addValue("hospitalName", hospitalName)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("departmentID", departmentID?.value)
+                .addValue("doctorName", doctorName)
+                .addValue("hospitalName", hospitalName)
 
-        val result = namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
-            DoctorDto(
-                doctorID = rs.getString("doctor_id"),
-                hospital = HospitalDto(
-                    hospitalID = rs.getString("hospital_id"),
-                    hospitalName = rs.getString("hospital_name")
-                ),
-                email = rs.getString("email"),
-                phoneNumber = rs.getString("phone_number"),
-                firstName = rs.getString("first_name"),
-                lastName = rs.getString("last_name"),
-                doctorIconUrl = rs.getString("doctor_icon_url"),
-                departments = jacksonObjectMapper().readValue<List<DepartmentDto>>(rs.getString("departments")),
-                chatSupportHours = "${rs.getString("chat_support_start_time").toHHMM()}-${rs.getString("chat_support_end_time").toHHMM()}",
-                callSupportHours = "${rs.getString("call_support_start_time").toHHMM()}-${rs.getString("call_support_end_time").toHHMM()}"
-            )
-        }
+        val result =
+            namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+                DoctorDto(
+                    doctorID = rs.getString("doctor_id"),
+                    hospital =
+                        HospitalDto(
+                            hospitalID = rs.getString("hospital_id"),
+                            hospitalName = rs.getString("hospital_name"),
+                        ),
+                    email = rs.getString("email"),
+                    phoneNumber = rs.getString("phone_number"),
+                    firstName = rs.getString("first_name"),
+                    lastName = rs.getString("last_name"),
+                    doctorIconUrl = rs.getString("doctor_icon_url"),
+                    departments = jacksonObjectMapper().readValue<List<DepartmentDto>>(rs.getString("departments")),
+                    chatSupportHours = "${rs.getString(
+                        "chat_support_start_time",
+                    ).toHHMM()}-${rs.getString("chat_support_end_time").toHHMM()}",
+                    callSupportHours = "${rs.getString(
+                        "call_support_start_time",
+                    ).toHHMM()}-${rs.getString("call_support_end_time").toHHMM()}",
+                )
+            }
         return DoctorResult(result)
     }
 }
 
-
 data class HospitalDto(
     val hospitalID: String,
-    val hospitalName: String
+    val hospitalName: String,
 )
 
 data class DepartmentDto(
     val departmentID: String,
-    val departmentName: String
+    val departmentName: String,
 )
 
 data class DoctorDto(
@@ -264,9 +289,9 @@ data class DoctorDto(
     val email: String,
     val phoneNumber: String,
     val chatSupportHours: String,
-    val callSupportHours: String
+    val callSupportHours: String,
 )
 
 data class DoctorResult(
-    val data: List<DoctorDto>
+    val data: List<DoctorDto>,
 )

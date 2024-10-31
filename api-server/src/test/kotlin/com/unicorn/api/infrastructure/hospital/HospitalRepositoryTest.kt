@@ -17,7 +17,6 @@ import java.util.*
 @Sql("/db/hospital/Insert_Hospital_Data.sql")
 @Sql("/db/hospital/Insert_Deleted_Hospital_Data.sql")
 class HospitalRepositoryTest {
-
     @Autowired
     private lateinit var hospitalRepository: HospitalRepository
 

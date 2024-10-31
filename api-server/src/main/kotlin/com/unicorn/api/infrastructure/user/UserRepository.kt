@@ -9,7 +9,9 @@ import java.time.LocalDate
 
 interface UserRepository {
     fun store(user: User): User
+
     fun getOrNullBy(userID: UserID): User?
+
     fun delete(user: User): Unit
 }
 
@@ -17,7 +19,8 @@ interface UserRepository {
 class UserRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) : UserRepository {
     override fun store(user: User): User {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             INSERT INTO users (
                 user_id, 
                 first_name, 
@@ -65,22 +68,23 @@ class UserRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJ
                 occupation = EXCLUDED.occupation,
                 deleted_at = NULL
             WHERE users.created_at IS NOT NULL;
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("userID", user.userID.value)
-            .addValue("firstName", user.firstName.value)
-            .addValue("lastName", user.lastName.value)
-            .addValue("phoneNumber", user.phoneNumber.value)
-            .addValue("email", user.email.value)
-            .addValue("gender", user.gender.toString())
-            .addValue("birthDate", user.birthDate.value)
-            .addValue("address", user.address.value)
-            .addValue("postalCode", user.postalCode.value)
-            .addValue("iconImageUrl", user.iconImageUrl?.value)
-            .addValue("bodyHeight", user.bodyHeight.value)
-            .addValue("bodyWeight", user.bodyWeight.value)
-            .addValue("occupation", user.occupation.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
+                .addValue("firstName", user.firstName.value)
+                .addValue("lastName", user.lastName.value)
+                .addValue("phoneNumber", user.phoneNumber.value)
+                .addValue("email", user.email.value)
+                .addValue("gender", user.gender.toString())
+                .addValue("birthDate", user.birthDate.value)
+                .addValue("address", user.address.value)
+                .addValue("postalCode", user.postalCode.value)
+                .addValue("iconImageUrl", user.iconImageUrl?.value)
+                .addValue("bodyHeight", user.bodyHeight.value)
+                .addValue("bodyWeight", user.bodyWeight.value)
+                .addValue("occupation", user.occupation.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
         return user
@@ -88,7 +92,8 @@ class UserRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJ
 
     override fun getOrNullBy(userID: UserID): User? {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             SELECT
                 user_id, 
                 first_name, 
@@ -107,12 +112,13 @@ class UserRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJ
             WHERE user_id = :userID
                 AND deleted_at IS NULL
             """.trimIndent()
-        val sqlParams = MapSqlParameterSource()
-            .addValue("userID", userID.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", userID.value)
 
         return namedParameterJdbcTemplate.query(
             sql,
-            sqlParams
+            sqlParams,
         ) { rs, _ ->
             User.fromStore(
                 userID = rs.getString("user_id"),
@@ -127,23 +133,24 @@ class UserRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJ
                 iconImageUrl = rs.getString("icon_image_url"),
                 bodyHeight = rs.getDouble("body_height"),
                 bodyWeight = rs.getDouble("body_weight"),
-                occupation = rs.getString("occupation")
+                occupation = rs.getString("occupation"),
             )
         }.singleOrNull()
     }
 
     override fun delete(user: User) {
         // language=postgresql
-        val sql = """
+        val sql =
+            """
             UPDATE users
             SET deleted_at = NOW()
             WHERE user_id = :userID
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("userID", user.userID.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }
-
 }

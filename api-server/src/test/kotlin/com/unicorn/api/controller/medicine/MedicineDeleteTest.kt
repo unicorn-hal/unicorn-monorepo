@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional
 @Sql("/db/user/Insert_User_Data.sql")
 @Sql("/db/medicine/Insert_Medicine_Data.sql")
 class MedicineDeleteTest {
-
     @Autowired
     private lateinit var mockMvc: MockMvc
 
@@ -32,12 +31,15 @@ class MedicineDeleteTest {
         val userID = "test"
         val medicineID = "123e4567-e89b-12d3-a456-426614174000"
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.delete("/medicines/$medicineID").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.delete("/medicines/$medicineID").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON),
+            )
 
         result.andExpect(status().isNoContent)
     }
@@ -48,10 +50,12 @@ class MedicineDeleteTest {
         val invalidUserID = "invalid-id"
 
         mockMvc.perform(
-            MockMvcRequestBuilders.delete("/medicines/$medicineID").headers(HttpHeaders().apply {
-                add("X-UID", invalidUserID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
+            MockMvcRequestBuilders.delete("/medicines/$medicineID").headers(
+                HttpHeaders().apply {
+                    add("X-UID", invalidUserID)
+                },
+            )
+                .contentType(MediaType.APPLICATION_JSON),
         )
             .andExpect(status().isBadRequest)
     }
@@ -62,10 +66,12 @@ class MedicineDeleteTest {
         val userID = "test"
 
         mockMvc.perform(
-            MockMvcRequestBuilders.delete("/medicines/$invalidMedicineID").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
+            MockMvcRequestBuilders.delete("/medicines/$invalidMedicineID").headers(
+                HttpHeaders().apply {
+                    add("X-UID", userID)
+                },
+            )
+                .contentType(MediaType.APPLICATION_JSON),
         )
             .andExpect(status().isBadRequest)
     }

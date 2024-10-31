@@ -4,26 +4,24 @@ import java.util.*
 
 data class Greeting(
     val id: UUID,
-    val message: String
+    val message: String,
 ) {
     companion object {
         fun fromStore(
             id: UUID,
-            message: String
+            message: String,
         ): Greeting {
             return Greeting(
                 id,
-                message
+                message,
             )
         }
 
-        fun create(
-            message: String
-        ): Greeting {
+        fun create(message: String): Greeting {
             check(message.isNotEmpty()) { "message is empty" }
             return Greeting(
                 UUID.randomUUID(),
-                message
+                message,
             )
         }
     }
@@ -32,7 +30,7 @@ data class Greeting(
         check(message.isNotEmpty()) { "message is empty" }
         return Greeting(
             this.id,
-            message
+            message,
         )
     }
 }

@@ -8,22 +8,27 @@ import java.util.*
 
 interface GreetingRepository {
     fun store(greeting: Greeting): Greeting
+
     fun getOrNullById(id: UUID): Greeting?
+
     fun update(greeting: Greeting): Greeting
+
     fun delete(greeting: Greeting): Greeting
 }
 
 @Repository
 class GreetingRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate) : GreetingRepository {
     override fun store(greeting: Greeting): Greeting {
-        val sql = """
+        val sql =
+            """
             INSERT INTO greeting (id, message)
             VALUES (:id, :message)
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("id", greeting.id)
-            .addValue("message", greeting.message)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("id", greeting.id)
+                .addValue("message", greeting.message)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
 
@@ -31,39 +36,43 @@ class GreetingRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
     }
 
     override fun getOrNullById(id: UUID): Greeting? {
-        val sql = """
+        val sql =
+            """
             SELECT
                 id,
                 message
             FROM greeting
             WHERE id = :id
             AND deleted_at IS NULL
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("id", id)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("id", id)
 
         return namedParameterJdbcTemplate.query(
             sql,
-            sqlParams
+            sqlParams,
         ) { rs, _ ->
-           Greeting.fromStore(
+            Greeting.fromStore(
                 id = rs.getObject("id", UUID::class.java),
-                message = rs.getString("message")
-           )
+                message = rs.getString("message"),
+            )
         }.firstOrNull()
     }
 
     override fun update(greeting: Greeting): Greeting {
-        val sql = """
+        val sql =
+            """
             UPDATE greeting
             SET message = :message
             WHERE id = :id
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("id", greeting.id)
-            .addValue("message", greeting.message)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("id", greeting.id)
+                .addValue("message", greeting.message)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
 
@@ -71,14 +80,16 @@ class GreetingRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
     }
 
     override fun delete(greeting: Greeting): Greeting {
-        val sql = """
+        val sql =
+            """
             UPDATE greeting
             SET deleted_at = NOW()
             WHERE id = :id
-        """.trimIndent()
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("id", greeting.id)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("id", greeting.id)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
 

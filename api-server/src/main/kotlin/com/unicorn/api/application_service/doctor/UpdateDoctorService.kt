@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface UpdateDoctorService {
-    fun update(doctorID: DoctorID, doctorPutRequest: DoctorPutRequest): DoctorPutRequest
+    fun update(
+        doctorID: DoctorID,
+        doctorPutRequest: DoctorPutRequest,
+    ): DoctorPutRequest
 }
 
 @Service
@@ -26,10 +29,13 @@ class UpdateDoctorServiceImpl(
     private val hospitalRepository: HospitalRepository,
     private val departmentRepository: DepartmentRepository,
     private val callSupportRepository: CallSupportRepository,
-    private val chatSupportRepository: ChatSupportRepository
+    private val chatSupportRepository: ChatSupportRepository,
 ) : UpdateDoctorService {
     @Transactional
-    override fun update(doctorID: DoctorID, doctorPutRequest: DoctorPutRequest): DoctorPutRequest {
+    override fun update(
+        doctorID: DoctorID,
+        doctorPutRequest: DoctorPutRequest,
+    ): DoctorPutRequest {
         val doctor = doctorRepository.getOrNullBy(doctorID)
         requireNotNull(doctor) { "Doctor not found" }
 
@@ -45,32 +51,36 @@ class UpdateDoctorServiceImpl(
         val departmentIDs = doctorPutRequest.departments.map { DepartmentID(it) }
         val departments = departmentRepository.findByDepartmentIDs(departmentIDs)
         val missingDepartmentIDs = departmentIDs - departments.map { it?.departmentID }.toSet()
-        //　存在しないdepartmentIDがある場合はエラー
+        // 　存在しないdepartmentIDがある場合はエラー
         require(missingDepartmentIDs.isEmpty()) {
-            val response = missingDepartmentIDs.joinToString(
-                separator = ", ",
-                transform = { it?.value.toString() }
-            )
+            val response =
+                missingDepartmentIDs.joinToString(
+                    separator = ", ",
+                    transform = { it?.value.toString() },
+                )
             "Department not found: $response"
         }
 
-        val updatedDoctor = doctor.update(
-            hospitalID = hospital.hospitalID,
-            email = Email(doctorPutRequest.email),
-            phoneNumber = PhoneNumber(doctorPutRequest.phoneNumber),
-            firstName = FirstName(doctorPutRequest.firstName),
-            lastName = LastName(doctorPutRequest.lastName),
-            doctorIconUrl = doctorPutRequest.doctorIconUrl?.let { DoctorIconUrl(it) },
-            departments = departmentIDs,
-        )
-        val updatedChatSupport = chatSupport.update(
-            chatSupportStartHour = ChatSupportStartHour(doctorPutRequest.chatSupportStartHour),
-            chatSupportEndHour = ChatSupportEndHour(doctorPutRequest.chatSupportEndHour)
-        )
-        val updatedCallSupport = callSupport.update(
-            callSupportStartHour = CallSupportStartHour(doctorPutRequest.callSupportStartHour),
-            callSupportEndHour = CallSupportEndHour(doctorPutRequest.callSupportEndHour)
-        )
+        val updatedDoctor =
+            doctor.update(
+                hospitalID = hospital.hospitalID,
+                email = Email(doctorPutRequest.email),
+                phoneNumber = PhoneNumber(doctorPutRequest.phoneNumber),
+                firstName = FirstName(doctorPutRequest.firstName),
+                lastName = LastName(doctorPutRequest.lastName),
+                doctorIconUrl = doctorPutRequest.doctorIconUrl?.let { DoctorIconUrl(it) },
+                departments = departmentIDs,
+            )
+        val updatedChatSupport =
+            chatSupport.update(
+                chatSupportStartHour = ChatSupportStartHour(doctorPutRequest.chatSupportStartHour),
+                chatSupportEndHour = ChatSupportEndHour(doctorPutRequest.chatSupportEndHour),
+            )
+        val updatedCallSupport =
+            callSupport.update(
+                callSupportStartHour = CallSupportStartHour(doctorPutRequest.callSupportStartHour),
+                callSupportEndHour = CallSupportEndHour(doctorPutRequest.callSupportEndHour),
+            )
 
         doctorRepository.store(updatedDoctor)
         chatSupportRepository.store(updatedChatSupport)
