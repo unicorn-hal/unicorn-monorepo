@@ -11,26 +11,59 @@ data class PrimaryDoctors private constructor(
     companion object {
         fun create(userID: UserID, doctorIDs: List<DoctorID> = emptyList()): PrimaryDoctors {
             val doctors = doctorIDs.map { doctorID ->
-                PrimaryDoctor(primaryDoctorID = PrimaryDoctorID.newID(), doctorID = doctorID)
+                PrimaryDoctor.create(doctorID)
             }
             return PrimaryDoctors(userID, doctors)
         }
+
+        fun fromStore(userID: UserID, existingDoctors: List<PrimaryDoctor>, doctorID: DoctorID): PrimaryDoctors {
+            val newDoctor = PrimaryDoctor.create(doctorID)
+            val updatedDoctors = existingDoctors + newDoctor
+            return PrimaryDoctors(userID, updatedDoctors)
+        }
+
+        fun fromExistingDoctor(userID: UserID, existingDoctors: List<PrimaryDoctor>): PrimaryDoctors {
+            return PrimaryDoctors(userID, existingDoctors)
+        }
     }
 
-    fun fromStore(doctorID: DoctorID): PrimaryDoctors {
-        val newDoctor = PrimaryDoctor(primaryDoctorID = PrimaryDoctorID.newID(), doctorID = doctorID)
-        return this.copy(doctors = this.doctors + newDoctor)
-    }
+    fun updateDoctors(newDoctorIDs: List<DoctorID>): Triple<List<PrimaryDoctor>, List<PrimaryDoctor>, List<PrimaryDoctor>> {
+        val newDoctors = newDoctorIDs.map { doctorID ->
+            doctors.find { it.doctorID == doctorID } ?: PrimaryDoctor.create(doctorID)
+        }
+        // 1. 共通する PrimaryDoctor
+        val commonDoctors = doctors.filter { existingDoctor ->
+            newDoctors.any { newDoctor -> newDoctor.doctorID == existingDoctor.doctorID }
+        }
 
-    fun update(newDoctors: List<PrimaryDoctor>): PrimaryDoctors {
-        return this.copy(doctors = newDoctors)
+        // 2. 新たに追加する PrimaryDoctor
+        val doctorsToAdd = newDoctors.filter { newDoctor ->
+            doctors.none { existingDoctor -> existingDoctor.doctorID == newDoctor.doctorID }
+        }
+
+        // 3. 論理削除する PrimaryDoctor
+        val doctorsToDelete = doctors.filter { existingDoctor ->
+            newDoctors.none { newDoctor -> newDoctor.doctorID == existingDoctor.doctorID }
+        }
+
+        return Triple(commonDoctors, doctorsToAdd, doctorsToDelete)
     }
 }
 
-data class PrimaryDoctor(
+data class PrimaryDoctor private constructor(
     val primaryDoctorID: PrimaryDoctorID,
     val doctorID: DoctorID
-)
+) {
+    companion object {
+        fun create(doctorID: DoctorID): PrimaryDoctor {
+            return PrimaryDoctor(primaryDoctorID = PrimaryDoctorID.newID(), doctorID = doctorID)
+        }
+
+        fun fromStore(primaryDoctorID: PrimaryDoctorID, doctorID: DoctorID): PrimaryDoctor {
+            return PrimaryDoctor(primaryDoctorID = primaryDoctorID, doctorID = doctorID)
+        }
+    }
+}
 
 @JvmInline
 value class PrimaryDoctorID(val value: UUID) {
