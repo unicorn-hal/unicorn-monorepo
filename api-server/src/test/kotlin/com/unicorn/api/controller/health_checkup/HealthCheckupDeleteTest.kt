@@ -11,6 +11,7 @@ import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -62,6 +63,17 @@ class HealthCheckupDeleteTest {
                     .contentType(MediaType.APPLICATION_JSON),
             )
         result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                // language=json
+                """
+                {
+                    "errorType": "Health checkup not found"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
     }
 
     @Test
@@ -80,6 +92,17 @@ class HealthCheckupDeleteTest {
                     .contentType(MediaType.APPLICATION_JSON),
             )
         result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                // language=json
+                """
+                {
+                    "errorType": "User not found"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
     }
 
     @Test
@@ -98,5 +121,16 @@ class HealthCheckupDeleteTest {
                     .contentType(MediaType.APPLICATION_JSON),
             )
         result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                // language=json
+                """
+                {
+                    "errorType": "Health checkup not found"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
     }
 }
