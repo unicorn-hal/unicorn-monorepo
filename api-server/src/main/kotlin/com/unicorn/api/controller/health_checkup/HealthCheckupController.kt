@@ -15,6 +15,7 @@ import java.util.*
 class HealthCheckupController(
     private val saveHealthCheckupService: SaveHealthCheckupService,
     private val updateHealthCheckupService: UpdateHealthCheckupService,
+    private val deleteHealthCheckupService: DeleteHealthCheckupService,
 ) {
     @PostMapping("/health_checkups")
     fun post(
@@ -40,6 +41,21 @@ class HealthCheckupController(
         try {
             val result = updateHealthCheckupService.update(UserID(uid), HealthCheckupID(healthCheckupID), healthCheckupPutRequest)
             return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @DeleteMapping("/health_checkups/{healthCheckupID}")
+    fun delete(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable healthCheckupID: UUID,
+    ): ResponseEntity<Any> {
+        try {
+            deleteHealthCheckupService.delete(UserID(uid), HealthCheckupID(healthCheckupID))
+            return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
         } catch (e: Exception) {
