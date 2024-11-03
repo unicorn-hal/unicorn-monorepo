@@ -49,10 +49,10 @@ class HealthCheckupPutTest {
         val result =
             mockMvc.perform(
                 MockMvcRequestBuilders
-                    .put("/health_checkups/$healthCheckupID")
+                    .put("/users/$userID/health_checkups/$healthCheckupID")
                     .headers(
                         HttpHeaders().apply {
-                            add("X-UID", userID)
+                            add("X-UID", "uid")
                         },
                     )
                     .contentType(MediaType.APPLICATION_JSON)
@@ -91,10 +91,10 @@ class HealthCheckupPutTest {
         val result =
             mockMvc.perform(
                 MockMvcRequestBuilders
-                    .put("/health_checkups/$healthCheckupID")
+                    .put("/users/$userID/health_checkups/$healthCheckupID")
                     .headers(
                         HttpHeaders().apply {
-                            add("X-UID", userID)
+                            add("X-UID", "uid")
                         },
                     )
                     .contentType(MediaType.APPLICATION_JSON)
@@ -129,10 +129,10 @@ class HealthCheckupPutTest {
         val result =
             mockMvc.perform(
                 MockMvcRequestBuilders
-                    .put("/health_checkups/$healthCheckupID")
+                    .put("/users/$userID/health_checkups/$healthCheckupID")
                     .headers(
                         HttpHeaders().apply {
-                            add("X-UID", userID)
+                            add("X-UID", "uid")
                         },
                     )
                     .contentType(MediaType.APPLICATION_JSON)
@@ -167,10 +167,10 @@ class HealthCheckupPutTest {
         val result =
             mockMvc.perform(
                 MockMvcRequestBuilders
-                    .put("/health_checkups/$healthCheckupID")
+                    .put("/users/$userID/health_checkups/$healthCheckupID")
                     .headers(
                         HttpHeaders().apply {
-                            add("X-UID", userID)
+                            add("X-UID", "uid")
                         },
                     )
                     .contentType(MediaType.APPLICATION_JSON)

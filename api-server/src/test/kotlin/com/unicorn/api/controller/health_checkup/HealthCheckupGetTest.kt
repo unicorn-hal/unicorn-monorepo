@@ -31,8 +31,8 @@ class HealthCheckupGetTest {
         val userID = "test"
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.get("/health_checkups/$healthCheckupID")
-                    .headers(HttpHeaders().apply { add("X-UID", userID) }),
+                MockMvcRequestBuilders.get("/users/$userID/health_checkups/$healthCheckupID")
+                    .headers(HttpHeaders().apply { add("X-UID", "uid") }),
             )
 
         result.andExpect(status().isOk)
@@ -59,10 +59,10 @@ class HealthCheckupGetTest {
         val userID = "test"
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.get("/health_checkups/$healthCheckupID")
-                    .headers(HttpHeaders().apply { add("X-UID", userID) }),
+                MockMvcRequestBuilders.get("/users/$userID/health_checkups/$healthCheckupID")
+                    .headers(HttpHeaders().apply { add("X-UID", "uid") }),
             )
-        result.andExpect(status().isBadRequest)
+        result.andExpect(status().isNotFound)
         result.andExpect(
             content().json(
                 """
@@ -81,10 +81,10 @@ class HealthCheckupGetTest {
         val userID = "test"
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.get("/health_checkups/$healthCheckupID")
-                    .headers(HttpHeaders().apply { add("X-UID", userID) }),
+                MockMvcRequestBuilders.get("/users/$userID/health_checkups/$healthCheckupID")
+                    .headers(HttpHeaders().apply { add("X-UID", "uid") }),
             )
-        result.andExpect(status().isBadRequest)
+        result.andExpect(status().isNotFound)
         result.andExpect(
             content().json(
                 """
@@ -103,8 +103,8 @@ class HealthCheckupGetTest {
         val userID = "notfound"
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.get("/health_checkups/$healthCheckupID")
-                    .headers(HttpHeaders().apply { add("X-UID", userID) }),
+                MockMvcRequestBuilders.get("/users/$userID/health_checkups/$healthCheckupID")
+                    .headers(HttpHeaders().apply { add("X-UID", "uid") }),
             )
         result.andExpect(status().isBadRequest)
         result.andExpect(

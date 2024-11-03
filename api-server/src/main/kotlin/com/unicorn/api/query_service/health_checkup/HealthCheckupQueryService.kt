@@ -19,6 +19,7 @@ class HealthCheckupQueryServiceImpl(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) : HealthCheckupQueryService {
     override fun getBy(userID: UserID): HealthCheckupResult {
+        // language=postgresql
         val sql =
             """
             SELECT
@@ -54,6 +55,7 @@ class HealthCheckupQueryServiceImpl(
     }
 
     override fun getOrNullBy(healthcheckupID: HealthCheckupID): HealthCheckupDto? {
+        // language=postgresql
         val sql =
             """
             SELECT

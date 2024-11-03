@@ -36,32 +36,34 @@ class HealthCheckupController(
         }
     }
 
-    @GetMapping("/health_checkups/{healthCheckupID}")
+    @GetMapping("/users/{userID}/health_checkups/{healthCheckupID}")
     fun get(
         @RequestHeader("X-UID") uid: String,
         @PathVariable healthCheckupID: UUID,
+        @PathVariable userID: String,
     ): ResponseEntity<*> {
         try {
-            userQueryService.getOrNullBy(uid)
+            userQueryService.getOrNullBy(userID)
                 ?: return ResponseEntity.badRequest().body(ResponseError("User not found"))
 
             val result =
                 healthCheckupQueryService.getOrNullBy(HealthCheckupID(healthCheckupID))
-                    ?: return ResponseEntity.badRequest().body(ResponseError("Health checkup not found"))
+                    ?: return ResponseEntity.status(404).body(ResponseError("Health checkup not found"))
             return ResponseEntity.ok(result)
         } catch (e: Exception) {
             return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
         }
     }
 
-    @PutMapping("/health_checkups/{healthCheckupID}")
+    @PutMapping("users/{userID}/health_checkups/{healthCheckupID}")
     fun put(
         @RequestHeader("X-UID") uid: String,
         @PathVariable healthCheckupID: UUID,
+        @PathVariable userID: String,
         @RequestBody healthCheckupPutRequest: HealthCheckupPutRequest,
     ): ResponseEntity<*> {
         try {
-            val result = updateHealthCheckupService.update(UserID(uid), HealthCheckupID(healthCheckupID), healthCheckupPutRequest)
+            val result = updateHealthCheckupService.update(UserID(userID), HealthCheckupID(healthCheckupID), healthCheckupPutRequest)
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
