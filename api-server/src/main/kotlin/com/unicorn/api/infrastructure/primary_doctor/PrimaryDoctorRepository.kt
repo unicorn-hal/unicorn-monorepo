@@ -21,24 +21,17 @@ class PrimaryDoctorRepositoryImpl(
 ) : PrimaryDoctorRepository {
 
     override fun store(primaryDoctors: PrimaryDoctors): PrimaryDoctors {
-        val currentDoctorIDs = primaryDoctors.doctors.map { it.doctorID }
-        val (commonDoctors, doctorsToAdd, doctorsToDelete) = primaryDoctors.updateDoctors(currentDoctorIDs)
-
-        doctorsToDelete.forEach { primaryDoctor ->
-            // language=postgresql
             val deleteSql = """
         UPDATE primary_doctors
         SET deleted_at = CURRENT_TIMESTAMP
-        WHERE user_id = :userId AND doctor_id = :doctorId AND deleted_at IS NULL
+        WHERE user_id = :userId  AND deleted_at IS NULL
     """.trimIndent()
 
             val deleteParams = MapSqlParameterSource()
                 .addValue("userId", primaryDoctors.userID.value)
-                .addValue("doctorId", primaryDoctor.doctorID.value)
             namedParameterJdbcTemplate.update(deleteSql, deleteParams)
-        }
 
-        doctorsToAdd.forEach { primaryDoctor ->
+       primaryDoctors.doctors.forEach { primaryDoctor ->
             // language=postgresql
             val insertSql = """
         INSERT INTO primary_doctors (
@@ -53,7 +46,12 @@ class PrimaryDoctorRepositoryImpl(
             :userId,
             CURRENT_TIMESTAMP,
             NULL
-        )
+        ) ON CONFLICT (primary_doctor_id) DO UPDATE
+        SET
+            doctor_id = EXCLUDED.doctor_id,
+            user_id = EXCLUDED.user_id,
+            created_at = CURRENT_TIMESTAMP,
+            deleted_at = NULL
         """.trimIndent()
 
             val insertParams = MapSqlParameterSource()
@@ -63,9 +61,7 @@ class PrimaryDoctorRepositoryImpl(
             namedParameterJdbcTemplate.update(insertSql, insertParams)
         }
 
-        // 更新された PrimaryDoctors インスタンスを作成して返す
-        val updatedDoctors = commonDoctors + doctorsToAdd
-        return PrimaryDoctors.fromExistingDoctor(primaryDoctors.userID, updatedDoctors)
+        return primaryDoctors
     }
 
     override fun getOrNullBy(userID: UserID, primaryDoctorID: PrimaryDoctorID): PrimaryDoctors? {

@@ -27,7 +27,7 @@ data class PrimaryDoctors private constructor(
         }
     }
 
-    fun updateDoctors(newDoctorIDs: List<DoctorID>): Triple<List<PrimaryDoctor>, List<PrimaryDoctor>, List<PrimaryDoctor>> {
+    fun updateDoctors(newDoctorIDs: List<DoctorID>): PrimaryDoctors {
         val newDoctors = newDoctorIDs.map { doctorID ->
             doctors.find { it.doctorID == doctorID } ?: PrimaryDoctor.create(doctorID)
         }
@@ -41,12 +41,9 @@ data class PrimaryDoctors private constructor(
             doctors.none { existingDoctor -> existingDoctor.doctorID == newDoctor.doctorID }
         }
 
-        // 3. 論理削除する PrimaryDoctor
-        val doctorsToDelete = doctors.filter { existingDoctor ->
-            newDoctors.none { newDoctor -> newDoctor.doctorID == existingDoctor.doctorID }
-        }
-
-        return Triple(commonDoctors, doctorsToAdd, doctorsToDelete)
+        return this.copy(
+            doctors = commonDoctors + doctorsToAdd
+        )
     }
 }
 

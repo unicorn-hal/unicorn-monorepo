@@ -86,7 +86,7 @@ class PrimaryDoctorRepositoryTest {
     @Test
     fun `should store multiple primary doctors`() {
         val userID = UserID("test")
-        val doctorIDs = listOf(DoctorID("doctor3"), DoctorID("doctor4"))
+        val doctorIDs = listOf(DoctorID("doctor3"), DoctorID("doctor5"))
         val primaryDoctors = PrimaryDoctors.create(userID, doctorIDs)
 
         val storedDoctors = primaryDoctorRepository.store(primaryDoctors)
@@ -105,17 +105,17 @@ class PrimaryDoctorRepositoryTest {
         val existingDoctor = findPrimaryDoctorByPrimaryDoctorID(existingPrimaryDoctorID)
         assertNotNull(existingDoctor)
 
-        // 新しい医者の情報で更新する
+        // 新しい医者の情報に更新する
         val userID = UserID("test")
-        val updatedDoctorIDs = listOf(DoctorID("doctor"))
-        val updatedDoctors = PrimaryDoctors.create(userID, updatedDoctorIDs)
+        val updatedDoctorIDs = listOf(DoctorID("doctor2"))
+        val toUpdateDoctors = PrimaryDoctors.create(userID, updatedDoctorIDs)
 
-        primaryDoctorRepository.store(updatedDoctors)
+        val updatedDoctors = primaryDoctorRepository.store(toUpdateDoctors)
 
-        updatedDoctors.doctors.forEach { expectedDoctor ->
-            val actualDoctor = findPrimaryDoctorByPrimaryDoctorID(existingPrimaryDoctorID)
-            assertNotNull(actualDoctor)
-            assertEquals(expectedDoctor.doctorID, actualDoctor?.doctorID)
+        assertTrue(updatedDoctors.doctors.size == 1)
+        assertTrue(updatedDoctors.doctors[0].primaryDoctorID != existingPrimaryDoctorID)
+        if (existingDoctor != null) {
+            assertTrue(updatedDoctors.doctors[0].doctorID != existingDoctor.doctorID)
         }
     }
 
