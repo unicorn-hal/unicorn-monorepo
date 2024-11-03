@@ -67,13 +67,14 @@ class MessageRepositoryTest {
 
     @Test
     fun `should store message`() {
-        val chatID = UUID.fromString("00000000-0000-0000-0000-000000000001")
-        val senderID = "sender"
+        val chatID = UUID.fromString("e38fd3d0-99bc-11ef-8e52-cfa170f7b603")
+        val messageID = UUID.randomUUID()
+        val senderID = "test"
         val sentAt = LocalDateTime.of(2021, 1, 1, 9, 0, 0)
         val content = "content"
         val message =
             Message.fromStore(
-                messageID = UUID.fromString("00000000-0000-0000-0000-000000000001"),
+                messageID = messageID,
                 chatID = chatID,
                 senderID = senderID,
                 sentAt = sentAt,
