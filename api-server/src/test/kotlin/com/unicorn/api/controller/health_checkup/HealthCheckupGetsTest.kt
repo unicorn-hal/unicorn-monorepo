@@ -31,8 +31,8 @@ class HealthCheckupGetsTest {
         val result =
             mockMvc.perform(
                 MockMvcRequestBuilders
-                    .get("/health_checkups")
-                    .headers(HttpHeaders().apply { add("X-UID", userID) }),
+                    .get("/users/$userID/health_checkups")
+                    .headers(HttpHeaders().apply { add("X-UID", "uid") }),
             )
         result.andExpect(status().isOk)
         result.andExpect(
@@ -63,8 +63,8 @@ class HealthCheckupGetsTest {
         val result =
             mockMvc.perform(
                 MockMvcRequestBuilders
-                    .get("/health_checkups")
-                    .headers(HttpHeaders().apply { add("X-UID", userID) }),
+                    .get("/users/$userID/health_checkups")
+                    .headers(HttpHeaders().apply { add("X-UID", "uid") }),
             )
         result.andExpect(status().isBadRequest)
         result.andExpect(
