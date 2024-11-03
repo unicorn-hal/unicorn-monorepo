@@ -27,6 +27,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.flywaydb:flyway-core:10.12.0")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.flywaydb:flyway-database-postgresql:10.12.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
