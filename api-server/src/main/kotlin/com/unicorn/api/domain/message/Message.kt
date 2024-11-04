@@ -44,6 +44,10 @@ data class Message private constructor(
         }
     }
 
+    fun isSender(senderID: UID): Boolean {
+        return this.senderID == senderID
+    }
+
     // TODO(メッセージ内容の更新処理は、仕様未定義につき未実装)
 }
 

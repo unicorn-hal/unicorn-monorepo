@@ -52,4 +52,18 @@ class MessageTest {
 
         assertEquals("Content must not be blank", exception.message)
     }
+
+    @Test
+    fun `should check if the sender is the same`() {
+        val senderID = UID("sender")
+        val message =
+            Message.create(
+                chatID = ChatID(UUID.randomUUID()),
+                senderID = senderID,
+                content = Content("content"),
+            )
+
+        assertEquals(true, message.isSender(senderID))
+        assertEquals(false, message.isSender(UID("another")))
+    }
 }
