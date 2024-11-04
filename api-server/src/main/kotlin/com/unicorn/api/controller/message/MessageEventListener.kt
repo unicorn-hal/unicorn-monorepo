@@ -18,6 +18,6 @@ class MessageEventListenerImpl(
     @EventListener
     override fun onMessageSaved(messageSavedEvent: MessageSavedEvent) {
         val message = messageQueryService.getOrNullBy(messageSavedEvent.message.messageID) ?: return
-        simpMessagingTemplate.convertAndSend("/topic/chats/messages", message)
+        simpMessagingTemplate.convertAndSend("/topic/chats/${message.chatID}/messages", message)
     }
 }

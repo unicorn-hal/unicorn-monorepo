@@ -2,7 +2,8 @@ package com.unicorn.api.domain.message
 
 import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.chat.ChatID
-import java.time.LocalDateTime
+import com.unicorn.api.util.toUTC
+import java.time.OffsetDateTime
 import java.util.UUID
 
 data class Message private constructor(
@@ -22,7 +23,7 @@ data class Message private constructor(
                 messageID = MessageID(UUID.randomUUID()),
                 senderID = senderID,
                 chatID = chatID,
-                sentAt = SentAt(LocalDateTime.now()),
+                sentAt = SentAt(OffsetDateTime.now().toUTC()),
                 content = content,
             )
         }
@@ -31,7 +32,7 @@ data class Message private constructor(
             messageID: UUID,
             chatID: UUID,
             senderID: String,
-            sentAt: LocalDateTime,
+            sentAt: OffsetDateTime,
             content: String,
         ): Message {
             return Message(
@@ -63,4 +64,4 @@ value class Content(val value: String) {
 
 // データ取得を行う際は、JSTに変換して返す
 @JvmInline
-value class SentAt(val value: LocalDateTime)
+value class SentAt(val value: OffsetDateTime)
