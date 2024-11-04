@@ -97,5 +97,5 @@ data class HealthCheckupDto(
 )
 
 data class HealthCheckupResult(
-    val healthCheckups: List<HealthCheckupDto>,
+    val data: List<HealthCheckupDto>,
 )

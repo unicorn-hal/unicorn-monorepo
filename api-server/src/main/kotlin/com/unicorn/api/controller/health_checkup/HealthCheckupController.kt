@@ -21,6 +21,22 @@ class HealthCheckupController(
     private val deleteHealthCheckupService: DeleteHealthCheckupService,
     private val healthCheckupQueryService: HealthCheckupQueryService,
 ) {
+    @GetMapping("users/{userID}/health_checkups")
+    fun get(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<*> {
+        try {
+            userQueryService.getOrNullBy(userID)
+                ?: return ResponseEntity.badRequest().body(ResponseError("User not found"))
+
+            val result = healthCheckupQueryService.getBy(UserID(userID))
+            return ResponseEntity.ok(result)
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
+
     @PostMapping("/health_checkups")
     fun post(
         @RequestHeader("X-UID") uid: String,
