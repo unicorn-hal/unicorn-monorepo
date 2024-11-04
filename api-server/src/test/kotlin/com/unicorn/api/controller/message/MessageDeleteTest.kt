@@ -63,7 +63,7 @@ class MessageDeleteTest {
                     "errorType": "Chat not found"
                 }
                 """.trimIndent(),
-                true
+                true,
             ),
         )
     }
@@ -87,7 +87,7 @@ class MessageDeleteTest {
                     "errorType": "Message not found"
                 }
                 """.trimIndent(),
-                true
+                true,
             ),
         )
     }
@@ -111,7 +111,7 @@ class MessageDeleteTest {
                     "errorType": "Account not found"
                 }
                 """.trimIndent(),
-                true
+                true,
             ),
         )
     }
@@ -135,7 +135,7 @@ class MessageDeleteTest {
                     "errorType": "You are not the sender of this message"
                 }
                 """.trimIndent(),
-                true
+                true,
             ),
         )
     }
