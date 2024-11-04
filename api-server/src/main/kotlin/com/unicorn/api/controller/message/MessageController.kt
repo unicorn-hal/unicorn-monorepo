@@ -6,9 +6,11 @@ import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.chat.ChatID
 import com.unicorn.api.domain.message.MessageID
+import com.unicorn.api.query_service.message.MessageQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,6 +21,7 @@ import java.util.UUID
 class MessageController(
     private val saveMessageService: SaveMessageService,
     private val deleteMessageService: DeleteMessageService,
+    private val messageQueryService: MessageQueryService,
 ) {
     @PostMapping("/chats/{chatID}/messages")
     fun postMessage(
@@ -45,6 +48,21 @@ class MessageController(
         try {
             deleteMessageService.delete(UID(uid), ChatID(chatID), MessageID(messageID))
             return ResponseEntity.noContent().build()
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @GetMapping("/chats/{chatID}/messages")
+    fun getMessages(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable chatID: UUID,
+    ): ResponseEntity<*> {
+        try {
+            val result = messageQueryService.getBy(ChatID(chatID))
+            return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
         } catch (e: Exception) {
