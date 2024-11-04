@@ -5,6 +5,7 @@ import com.unicorn.api.domain.message.MessageID
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
+import java.time.OffsetDateTime
 import java.util.*
 
 interface MessageRepository {
@@ -82,7 +83,7 @@ class MessageRepositoryImpl(
                 messageID = UUID.fromString(rs.getString("message_id")),
                 chatID = UUID.fromString(rs.getString("chat_id")),
                 senderID = rs.getString("sender_id"),
-                sentAt = rs.getTimestamp("sent_at").toLocalDateTime(),
+                sentAt = rs.getObject("sent_at", OffsetDateTime::class.java),
                 content = rs.getString("content"),
             )
         }.singleOrNull()

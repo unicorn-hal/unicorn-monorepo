@@ -13,6 +13,8 @@ import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.*
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
@@ -59,7 +61,7 @@ class MessageRepositoryTest {
                 messageID = UUID.fromString(rs.getString("message_id")),
                 chatID = UUID.fromString(rs.getString("chat_id")),
                 senderID = rs.getString("sender_id"),
-                sentAt = rs.getTimestamp("sent_at").toLocalDateTime(),
+                sentAt = rs.getObject("sent_at", OffsetDateTime::class.java),
                 content = rs.getString("content"),
             )
         }.singleOrNull()
@@ -70,7 +72,7 @@ class MessageRepositoryTest {
         val chatID = UUID.fromString("e38fd3d0-99bc-11ef-8e52-cfa170f7b603")
         val messageID = UUID.randomUUID()
         val senderID = "test"
-        val sentAt = LocalDateTime.of(2021, 1, 1, 9, 0, 0)
+        val sentAt = OffsetDateTime.of(LocalDateTime.of(2021, 1, 10, 9, 0, 0), ZoneOffset.of("+00:00"))
         val content = "content"
         val message =
             Message.fromStore(
@@ -92,7 +94,7 @@ class MessageRepositoryTest {
         val messageID = UUID.fromString("66197db0-99bd-11ef-8e52-cfa170f7b603")
         val chatID = UUID.fromString("e38fd3d0-99bc-11ef-8e52-cfa170f7b603")
         val senderID = "test"
-        val sentAt = LocalDateTime.of(2021, 4, 1, 10, 0, 0)
+        val sentAt = OffsetDateTime.of(LocalDateTime.of(2021, 4, 1, 10, 0, 0), ZoneOffset.of("+00:00"))
         val content = "Hello"
         val message =
             Message.fromStore(
@@ -113,7 +115,7 @@ class MessageRepositoryTest {
         val messageID = UUID.fromString("66197db0-99bd-11ef-8e52-cfa170f7b603")
         val chatID = UUID.fromString("e38fd3d0-99bc-11ef-8e52-cfa170f7b603")
         val senderID = "test"
-        val sentAt = LocalDateTime.of(2021, 4, 1, 10, 0, 0)
+        val sentAt = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 0, 0), ZoneOffset.of("+00:00"))
         val content = "Hello"
         val message =
             Message.fromStore(

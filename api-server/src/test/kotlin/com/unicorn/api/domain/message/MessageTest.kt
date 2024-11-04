@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.*
 
 class MessageTest {
@@ -27,7 +29,7 @@ class MessageTest {
         val messageID = UUID.randomUUID()
         val chatID = UUID.randomUUID()
         val senderID = "sender"
-        val sentAt = LocalDateTime.of(2021, 1, 1, 9, 0, 0)
+        val sentAt = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 0, 0), ZoneOffset.of("+00:00"))
         val content = "content"
 
         val message = Message.fromStore(messageID, chatID, senderID, sentAt, content)
