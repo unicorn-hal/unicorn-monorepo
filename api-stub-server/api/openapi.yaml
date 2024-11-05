@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.2.3
+  version: 1.2.4
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -31,7 +31,7 @@ tags:
   description: 薬情報
 - name: disease
   description: 病気情報
-- name: chromic_disease
+- name: chronic_disease
   description: 持病情報
 - name: call
   description: 通話情報
@@ -95,6 +95,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_404'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Account
+    put:
+      tags:
+      - account
+      summary: アカウント更新
+      description: アカウント情報を更新します
+      operationId: accountsPUT
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/accounts_body'
+        required: true
+      responses:
+        "200":
+          description: アカウント更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accounts_body'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -473,35 +514,6 @@ paths:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: PrimaryDoctors
   /health_checkups:
-    get:
-      tags:
-      - health_checkup
-      summary: 検査結果一覧取得
-      description: 一週間分の検査結果を取得します
-      operationId: health_checkupsGET
-      parameters:
-      - name: X-UID
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          description: UID
-      responses:
-        "200":
-          description: 検査結果一覧取得成功
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_2'
-        "500":
-          description: サーバーエラーが発生しました
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_500'
-      x-swagger-router-controller: HealthCheckup
     post:
       tags:
       - health_checkup
@@ -543,13 +555,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: HealthCheckup
-  /health_checkups/{healthCheckupID}:
+  /users/{userID}/health_checkups:
+    get:
+      tags:
+      - health_checkup
+      summary: 検査結果一覧取得
+      description: 一週間分の検査結果を取得します
+      operationId: usersUserIDHealth_checkupsGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: userID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ユーザーID
+      responses:
+        "200":
+          description: 検査結果一覧取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: HealthCheckup
+  /users/{userID}/health_checkups/{healthCheckupID}:
     get:
       tags:
       - health_checkup
       summary: 検査結果取得
       description: ユーザーの健康診断結果を取得します
-      operationId: health_checkupsHealthCheckupIDGET
+      operationId: usersUserIDHealth_checkupsHealthCheckupIDGET
       parameters:
       - name: X-UID
         in: header
@@ -567,6 +617,14 @@ paths:
         schema:
           type: string
           description: 検査結果UUID
+      - name: userID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ユーザーID
       responses:
         "200":
           description: 検査結果取得成功
@@ -592,7 +650,7 @@ paths:
       - health_checkup
       summary: 検査結果更新
       description: ユーザーの健康診断結果を更新します
-      operationId: health_checkupsHealthCheckupIDPUT
+      operationId: usersUserIDHealth_checkupsHealthCheckupIDPUT
       parameters:
       - name: X-UID
         in: header
@@ -610,6 +668,14 @@ paths:
         schema:
           type: string
           description: 検査結果UUID
+      - name: userID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ユーザーID
       requestBody:
         content:
           application/json:
@@ -642,6 +708,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: HealthCheckup
+  /health_checkups/{healthCheckupID}:
     delete:
       tags:
       - health_checkup
@@ -1663,7 +1730,7 @@ paths:
   /chronic_diseases:
     get:
       tags:
-      - chromic_disease
+      - chronic_disease
       summary: 持病一覧取得
       description: 登録してある持病名を取得します
       operationId: chronic_diseasesGET
@@ -1692,7 +1759,7 @@ paths:
       x-swagger-router-controller: ChromicDisease
     post:
       tags:
-      - chromic_disease
+      - chronic_disease
       summary: 持病追加
       description: 検索した持病を追加します
       operationId: chronic_diseasesPOST
@@ -1725,7 +1792,7 @@ paths:
   /chronic_diseases/{chronicDiseaseID}:
     delete:
       tags:
-      - chromic_disease
+      - chronic_disease
       summary: 持病削除
       description: 持病を削除します
       operationId: chronic_diseasesChronicDiseaseIDDELETE
@@ -3042,6 +3109,15 @@ components:
           type: string
           description: エラータイプ
           example: UserNotFound
+    accounts_body:
+      type: object
+      properties:
+        fcmTokenId:
+          type: string
+          description: FCMトークンID
+          example: fcm_token_id
+      example:
+        fcmTokenId: fcm_token_id
     inline_response_400:
       type: object
       properties:
@@ -3450,7 +3526,6 @@ components:
         reminderTime:
           type: string
           description: リマインダー時間
-          
           example: 09:00
         reminderDayOfWeek:
           type: array
@@ -3470,7 +3545,6 @@ components:
         reminderTime:
           type: string
           description: リマインダー時間
-          
           example: 09:00
         reminderDayOfWeek:
           type: array

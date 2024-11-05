@@ -63,3 +63,26 @@ exports.accountsPOST = function(body,xUID) {
   });
 }
 
+
+/**
+ * アカウント更新
+ * アカウント情報を更新します
+ *
+ * body Accounts_body 
+ * xUID String 
+ * returns accounts_body
+ **/
+exports.accountsPUT = function(body,xUID) {
+  return new Promise(function(resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+  "fcmTokenId" : "fcm_token_id"
+};
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+

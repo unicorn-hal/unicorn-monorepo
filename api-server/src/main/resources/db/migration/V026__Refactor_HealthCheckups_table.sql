@@ -1,0 +1,1 @@
+ALTER TABLE health_checkups ADD COLUMN checkuped_date DATE NOT NULL

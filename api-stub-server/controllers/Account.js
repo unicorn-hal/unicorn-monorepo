@@ -32,3 +32,13 @@ module.exports.accountsPOST = function accountsPOST (req, res, next, body, xUID)
       utils.writeJson(res, response);
     });
 };
+
+module.exports.accountsPUT = function accountsPUT (req, res, next, body, xUID) {
+  Account.accountsPUT(body, xUID)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
