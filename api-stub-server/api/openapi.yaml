@@ -1756,7 +1756,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
-      x-swagger-router-controller: ChromicDisease
+      x-swagger-router-controller: ChronicDisease
     post:
       tags:
       - chronic_disease
@@ -1788,7 +1788,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
-      x-swagger-router-controller: ChromicDisease
+      x-swagger-router-controller: ChronicDisease
   /chronic_diseases/{chronicDiseaseID}:
     delete:
       tags:
@@ -1828,7 +1828,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
-      x-swagger-router-controller: ChromicDisease
+      x-swagger-router-controller: ChronicDisease
   /calls:
     get:
       tags:
