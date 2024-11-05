@@ -1037,7 +1037,7 @@ tags:
     description: "薬情報"
   - name: disease
     description: "病気情報"
-  - name: chromic_disease
+  - name: chronic_disease
     description: "持病情報"
   - name: call
     description: "通話情報"
@@ -2987,7 +2987,7 @@ paths:
   /chronic_diseases:
     get:
       tags:
-        - chromic_disease
+        - chronic_disease
       summary: "持病一覧取得"
       description: "登録してある持病名を取得します"
       parameters:
@@ -3023,7 +3023,7 @@ paths:
 
     post:
       tags:
-        - chromic_disease
+        - chronic_disease
       summary: "持病追加"
       description: "検索した持病を追加します"
       requestBody:
@@ -3065,7 +3065,7 @@ paths:
   /chronic_diseases/{chronicDiseaseID}:
     delete:
       tags:
-        - chromic_disease
+        - chronic_disease
       summary: "持病削除"
       description: "持病を削除します"
       parameters:
