@@ -4,8 +4,6 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - 'api-server/src/main/resources/db/migration/*'
 
 jobs:
   check_migration_order:
