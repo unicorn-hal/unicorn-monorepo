@@ -64,7 +64,7 @@ exports.chatsChatIDMessagesPOST = function(body,chatID,xUID) {
     examples['application/json'] = {
   "senderID" : "1234567890",
   "messageID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "content" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  "content" : "こんにちは"
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

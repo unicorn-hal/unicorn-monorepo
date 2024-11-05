@@ -630,7 +630,7 @@ components:
         content:
           type: string
           description: "メッセージ内容"
-          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+          example: "こんにちは"
 
     MessageResponse:
       type: object
@@ -645,7 +645,7 @@ components:
         content:
           type: string
           description: "メッセージ内容"
-          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+          example: "こんにちは"
 
     FamilyEmail:
       type: object

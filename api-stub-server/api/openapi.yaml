@@ -2704,7 +2704,7 @@ components:
         content:
           type: string
           description: メッセージ内容
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          example: "こんにちは"
     MessageResponse:
       type: object
       properties:
@@ -2718,11 +2718,11 @@ components:
         content:
           type: string
           description: メッセージ内容
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          example: こんにちは
       example:
         senderID: "1234567890"
         messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        content: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        content: こんにちは
     FamilyEmail:
       type: object
       properties:
