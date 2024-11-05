@@ -29,12 +29,12 @@ jobs:
           previous_version=0
 
           for file in $migration_files; do
-            # バージョン番号を抽出 (例: V001__Initial.sql -> 1)
+            # バージョン番号を抽出 (例: V028__Initial.sql -> 28)
             version=$(echo $file | sed -E 's/V([0-9]+)__.*\.sql/\1/')
           
             # 連番チェック
-            if [ $version -ne $((previous_version + 1)) ]; then
-              echo "エラー: $file のバージョン番号が連番ではありません。"
+            if [ "$version" -ne "$((previous_version + 1))" ]; then
+              echo "エラー: $file のバージョン番号が正しい連番になっていません。$previous_version の次は $((previous_version + 1)) である必要がありますが、$version です。"
               exit 1
             fi
           
