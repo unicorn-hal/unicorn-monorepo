@@ -27,10 +27,15 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.flywaydb:flyway-core:10.12.0")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.flywaydb:flyway-database-postgresql:10.12.0")
+    testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.springframework:spring-websocket")
+    testImplementation("org.springframework:spring-messaging")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
