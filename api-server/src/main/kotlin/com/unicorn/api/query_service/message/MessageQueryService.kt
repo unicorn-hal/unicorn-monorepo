@@ -144,7 +144,7 @@ data class MessageDTO(
     val senderID: String,
     val firstName: String,
     val lastName: String,
-    val iconImageUrl: String,
+    val iconImageUrl: String?,
     val content: String,
     val sentAt: OffsetDateTime,
 )
