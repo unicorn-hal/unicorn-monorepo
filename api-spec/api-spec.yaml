@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.2.3"
+  version: "1.2.4"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -1167,6 +1167,63 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
+    put:
+      tags:
+        - account
+      summary: "アカウント更新"
+      description: "アカウント情報を更新します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fcmTokenId:
+                  type: string
+                  description: "FCMトークンID"
+                  example: "fcm_token_id"
+      responses:
+        "200":
+          description: "アカウント更新成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fcmTokenId:
+                    type: string
+                    description: "FCMトークンID"
+                    example: "fcm_token_id"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
     delete:
       tags:
         - account
@@ -1549,41 +1606,6 @@ paths:
                     description: "エラータイプ"
                     example: "ServerError"
   /health_checkups:
-    get:
-      tags:
-        - health_checkup
-      summary: "検査結果一覧取得"
-      description: "一週間分の検査結果を取得します"
-      parameters:
-        - in: header
-          name: X-UID
-          required: true
-          schema:
-            type: string
-            description: "UID"
-      responses:
-        "200":
-          description: "検査結果一覧取得成功"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/HealthCheckup"
-        "500":
-          description: "サーバーエラーが発生しました"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "ServerError"
     post:
       tags:
         - health_checkup
@@ -1631,8 +1653,50 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
+  /users/{userID}/health_checkups:
+    get:
+      tags:
+        - health_checkup
+      summary: "検査結果一覧取得"
+      description: "一週間分の検査結果を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: userID
+          required: true
+          schema:
+            type: string
+            description: "ユーザーID"
+      responses:
+        "200":
+          description: "検査結果一覧取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/HealthCheckup"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
 
-  /health_checkups/{healthCheckupID}:
+  /users/{userID}/health_checkups/{healthCheckupID}:
     get:
       tags:
         - health_checkup
@@ -1651,6 +1715,12 @@ paths:
           schema:
             type: string
             description: "検査結果UUID"
+        - in: path
+          name: userID
+          required: true
+          schema:
+            type: string
+            description: "ユーザーID"
       responses:
         "200":
           description: "検査結果取得成功"
@@ -1698,6 +1768,12 @@ paths:
           schema:
             type: string
             description: "検査結果UUID"
+        - in: path
+          name: userID
+          required: true
+          schema:
+            type: string
+            description: "ユーザーID"
       requestBody:
         required: true
         content:
@@ -1744,6 +1820,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
+  /health_checkups/{healthCheckupID}:
     delete:
       tags:
         - health_checkup
