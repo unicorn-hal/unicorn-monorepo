@@ -54,4 +54,12 @@ class AccountTest {
 
         assert(account.isUser())
     }
+
+    @Test
+    fun `should update account`() {
+        val account = Account.create("uid", "user", "fcmTokenId")
+        val updatedAccount = account.update(FCMTokenId("newFcmTokenId"))
+
+        assert(updatedAccount.fcmTokenId.value == "newFcmTokenId")
+    }
 }

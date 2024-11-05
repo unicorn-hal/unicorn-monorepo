@@ -2,6 +2,8 @@ package com.unicorn.api.controller.account
 
 import com.unicorn.api.application_service.account.DeleteAccountService
 import com.unicorn.api.application_service.account.SaveAccountService
+import com.unicorn.api.application_service.account.UpdateAccountService
+import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.account.Account
 import com.unicorn.api.domain.account.UID
 import com.unicorn.api.query_service.account.AccountDto
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 
@@ -19,6 +22,7 @@ class AccountController(
     private val saveAccountService: SaveAccountService,
     private val accountQueryService: AccountQueryService,
     private val deleteAccountService: DeleteAccountService,
+    private val updateAccountService: UpdateAccountService,
 ) {
     @PostMapping("/accounts")
     fun save(
@@ -68,10 +72,30 @@ class AccountController(
             return ResponseEntity.internalServerError().build()
         }
     }
+
+    @PutMapping("/accounts")
+    fun update(
+        @RequestHeader("X-UID") uid: String,
+        @RequestBody accountPutRequest: AccountPutRequest,
+    ): ResponseEntity<*> {
+        try {
+            val result = updateAccountService.update(UID(uid), accountPutRequest)
+
+            return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(errorType = e.message ?: "invalid request"))
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError(errorType = "internal server error"))
+        }
+    }
 }
 
 data class AccountPostRequest(
     val uid: String,
     val role: String,
+    val fcmTokenId: String,
+)
+
+data class AccountPutRequest(
     val fcmTokenId: String,
 )
