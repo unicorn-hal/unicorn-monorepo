@@ -1,0 +1,45 @@
+name: Check Flyway Migration Order
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check_migration_order:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: マイグレーションファイルの連番チェック
+        run: |
+          # マイグレーションファイルのディレクトリへ移動
+          cd api-server/src/main/resources/db/migration
+
+          # ファイル名をバージョン順で抽出し、連番チェック
+          migration_files=$(ls V*.sql | sort -V)
+          previous_version="000"
+
+          for file in $migration_files; do
+            # ゼロパディングを維持してバージョン番号を抽出 (例: V001__Initial.sql -> 001)
+            version=$(echo $file | sed -E 's/V([0-9]+)__.*\.sql/\1/')
+          
+            # 連番チェック
+            expected_version=$(printf "%03d" $((10#$previous_version + 1)))
+            if [ "$version" != "$expected_version" ]; then
+              echo "エラー: $file のバージョン番号が正しい連番になっていません。$previous_version の次は $expected_version である必要がありますが、$version です。"
+              exit 1
+            fi
+          
+            previous_version=$version
+          done
+
+          echo "すべてのマイグレーションファイルが正しい連番で配置されています。"
