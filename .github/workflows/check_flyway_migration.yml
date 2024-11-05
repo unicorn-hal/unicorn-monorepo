@@ -24,17 +24,18 @@ jobs:
           # マイグレーションファイルのディレクトリへ移動
           cd api-server/src/main/resources/db/migration
 
-          # ファイル名を抽出し、連番チェック
-          migration_files=$(ls V*.sql | sort)
-          previous_version=0
+          # ファイル名をバージョン順で抽出し、連番チェック
+          migration_files=$(ls V*.sql | sort -V)
+          previous_version="000"
 
           for file in $migration_files; do
-            # バージョン番号を抽出 (例: V028__Initial.sql -> 28)
+            # ゼロパディングを維持してバージョン番号を抽出 (例: V001__Initial.sql -> 001)
             version=$(echo $file | sed -E 's/V([0-9]+)__.*\.sql/\1/')
           
             # 連番チェック
-            if [ "$version" -ne "$((previous_version + 1))" ]; then
-              echo "エラー: $file のバージョン番号が正しい連番になっていません。$previous_version の次は $((previous_version + 1)) である必要がありますが、$version です。"
+            expected_version=$(printf "%03d" $((10#$previous_version + 1)))
+            if [ "$version" != "$expected_version" ]; then
+              echo "エラー: $file のバージョン番号が正しい連番になっていません。$previous_version の次は $expected_version である必要がありますが、$version です。"
               exit 1
             fi
           
