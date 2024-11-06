@@ -18,7 +18,7 @@ class ChronicDiseaseController(
     private val saveChronicDiseaseService: SaveChronicDiseaseService,
     private val deleteChronicDiseaseService: DeleteChronicDiseaseService,
 ) {
-    @GetMapping("/chronic_disease")
+    @GetMapping("/chronic_diseases")
     fun get(
         @RequestHeader("X-UID") uid: String,
     ): ResponseEntity<*> {
@@ -32,7 +32,7 @@ class ChronicDiseaseController(
         }
     }
 
-    @PostMapping("/chronic_disease")
+    @PostMapping("/chronic_diseases")
     fun post(
         @RequestHeader("X-UID") uid: String,
         @RequestBody chronicDiseasePostRequest: ChronicDiseasePostRequest,
@@ -47,7 +47,7 @@ class ChronicDiseaseController(
         }
     }
 
-    @DeleteMapping("/chronic_disease/{chronicDiseaseID}")
+    @DeleteMapping("/chronic_diseases/{chronicDiseaseID}")
     fun delete(
         @RequestHeader("X-UID") uid: String,
         @PathVariable chronicDiseaseID: UUID,

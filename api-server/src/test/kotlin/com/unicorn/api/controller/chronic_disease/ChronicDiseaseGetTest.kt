@@ -31,7 +31,7 @@ class ChronicDiseaseGetTest {
         val userID = "test"
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.get("/chronic_disease")
+                MockMvcRequestBuilders.get("/chronic_diseases")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)
@@ -62,7 +62,7 @@ class ChronicDiseaseGetTest {
         val userID = "notfound"
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.get("/chronic_disease")
+                MockMvcRequestBuilders.get("/chronic_diseases")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)

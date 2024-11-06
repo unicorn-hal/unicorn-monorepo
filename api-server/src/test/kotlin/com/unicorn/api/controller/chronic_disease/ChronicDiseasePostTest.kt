@@ -44,7 +44,7 @@ class ChronicDiseasePostTest {
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.post("/chronic_disease")
+                MockMvcRequestBuilders.post("/chronic_diseases")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)
@@ -77,7 +77,7 @@ class ChronicDiseasePostTest {
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.post("/chronic_disease")
+                MockMvcRequestBuilders.post("/chronic_diseases")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)

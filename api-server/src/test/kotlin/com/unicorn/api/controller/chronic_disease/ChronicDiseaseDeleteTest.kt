@@ -36,7 +36,7 @@ class ChronicDiseaseDeleteTest {
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.delete("/chronic_disease/$chronicDiseaseID")
+                MockMvcRequestBuilders.delete("/chronic_diseases/$chronicDiseaseID")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)
@@ -54,7 +54,7 @@ class ChronicDiseaseDeleteTest {
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.delete("/chronic_disease/$chronicDiseaseID")
+                MockMvcRequestBuilders.delete("/chronic_diseases/$chronicDiseaseID")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)
@@ -83,7 +83,7 @@ class ChronicDiseaseDeleteTest {
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.delete("/chronic_disease/$chronicDiseaseID")
+                MockMvcRequestBuilders.delete("/chronic_diseases/$chronicDiseaseID")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)
@@ -112,7 +112,7 @@ class ChronicDiseaseDeleteTest {
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.delete("/chronic_disease/$chronicDiseaseID")
+                MockMvcRequestBuilders.delete("/chronic_diseases/$chronicDiseaseID")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)
