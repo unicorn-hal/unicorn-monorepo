@@ -27,15 +27,11 @@ class SavePrimaryDoctorServiceImpl(
         requireNotNull(account) { "Account not found" }
         require(account.isUser()) { "Account is not user" }
 
-
-        // ここ、doctorID を使用して
-        // Doctor の存在確認をしようとしましたが上手くいかないです...
-//        val doctorIDList = primaryDoctorPostRequest.doctorIDs.map { doctorID ->
-//            doctorRepository.getOrNullBy(DoctorID(doctorID))
-//                ?: throw IllegalArgumentException("Doctor not found for ID: $doctorID")
-//            DoctorID(doctorID)
-//        }
-        val doctorIDList = primaryDoctorPostRequest.doctorIDs.map { DoctorID(it) }
+        val doctorIDList = primaryDoctorPostRequest.doctorIDs.map { doctorID ->
+            doctorRepository.getOrNullBy(DoctorID(doctorID))
+                ?: throw IllegalArgumentException("Doctor not found for ID: $doctorID")
+            DoctorID(doctorID)
+        }
 
         val primaryDoctors = PrimaryDoctors.create(
             userID = UserID(uid),

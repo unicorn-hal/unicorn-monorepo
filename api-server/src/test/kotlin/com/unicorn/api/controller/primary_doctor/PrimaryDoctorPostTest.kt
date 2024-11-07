@@ -1,7 +1,6 @@
 package com.unicorn.api.controller.primary_doctor
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.unicorn.api.controller.medicine.MedicinePostRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -40,7 +39,7 @@ class PrimaryDoctorPostTest {
     @Test
     fun `should return 200 when primary doctor is created`() {
         val userID = "12345"
-        val doctorIDs = listOf("doctor5")
+        val doctorIDs = listOf("doctor6")
         val primaryDoctorIDs = PrimaryDoctorPostRequest(
             doctorIDs = doctorIDs
         )
@@ -60,7 +59,7 @@ class PrimaryDoctorPostTest {
                     {
                         "userID": "12345",
                         "doctorIDs": [
-                            "doctor5"
+                            "doctor6"
                         ]
                     }
                 """.trimIndent()
@@ -101,6 +100,25 @@ class PrimaryDoctorPostTest {
     }
 
     @Test
+    fun `should return 400 when account is a doctor`() {
+        val userID = "doctor"
+        val doctorIDs = listOf("doctor6")
+        val primaryDoctorPostRequest = PrimaryDoctorPostRequest(
+            doctorIDs = doctorIDs
+        )
+
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
+                add("X-UID", userID)
+            })
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(primaryDoctorPostRequest))
+        )
+
+        result.andExpect(status().isBadRequest)
+    }
+
+    @Test
     fun `should return 400 when doctorID is missing`() {
         val userID = "12345"
         val doctorIDs = listOf("")
@@ -120,9 +138,9 @@ class PrimaryDoctorPostTest {
     }
 
     @Test
-    fun `should return 400 when account is a doctor`() {
-        val userID = "doctor"
-        val doctorIDs = listOf("doctor6")
+    fun `should return 400 when doctorID does not exist`() {
+        val userID = "12345"
+        val doctorIDs = listOf("doctor000")
         val primaryDoctorPostRequest = PrimaryDoctorPostRequest(
             doctorIDs = doctorIDs
         )
