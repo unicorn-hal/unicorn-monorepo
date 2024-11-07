@@ -744,6 +744,10 @@ components:
           type: integer
           description: "薬の残量"
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -780,6 +784,10 @@ components:
           type: integer
           description: "薬の残量"
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -815,6 +823,10 @@ components:
           type: integer
           description: "薬の初期残量"
           example: 30
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -854,6 +866,10 @@ components:
           type: integer
           description: "薬の残量"
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:

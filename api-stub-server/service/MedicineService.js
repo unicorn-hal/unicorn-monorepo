@@ -17,12 +17,13 @@ exports.medicinesGET = function(xUID) {
       "reminderID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
       "reminderDayOfWeek" : [ "monday" ],
       "reminderTime" : "09:00"
-    } ],
+    }],
+    "dosage" : 3,
     "quantity" : 20,
     "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "count" : 30,
     "medicineName" : "パラセタモール"
-  }]
+  } ]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -65,10 +66,11 @@ exports.medicinesMedicineIDPUT = function(body,medicineID,xUID) {
     "reminderID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     "reminderDayOfWeek" : [ "monday" ],
     "reminderTime" : "09:00"
-  } ],
+  }],
   "quantity" : 20,
   "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "count" : 30,
+  "dosage" : 3,
   "medicineName" : "パラセタモール"
 };
     if (Object.keys(examples).length > 0) {
@@ -100,6 +102,7 @@ exports.medicinesPOST = function(body,xUID) {
   "quantity" : 20,
   "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "count" : 30,
+  "dosage" : 3,
   "medicineName" : "パラセタモール"
 };
     if (Object.keys(examples).length > 0) {

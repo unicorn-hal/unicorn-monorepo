@@ -2831,6 +2831,10 @@ components:
           type: integer
           description: 薬の残量
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -2847,6 +2851,7 @@ components:
           - monday
           - monday
           reminderTime: 09:00
+        dosage: 3
         quantity: 20
         medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         count: 30
@@ -2866,6 +2871,10 @@ components:
           type: integer
           description: 薬の残量
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -2885,6 +2894,10 @@ components:
           type: integer
           description: 薬の初期残量
           example: 30
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -2908,6 +2921,10 @@ components:
           type: integer
           description: 薬の残量
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -2925,6 +2942,7 @@ components:
           - monday
           reminderTime: 09:00
         quantity: 20
+        dosage: 3
         medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         count: 30
         medicineName: パラセタモール
@@ -3374,6 +3392,7 @@ components:
             - monday
             - monday
             reminderTime: 09:00
+          dosage: 3
           quantity: 20
           medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           count: 30
@@ -3389,6 +3408,7 @@ components:
             - monday
             - monday
             reminderTime: 09:00
+          dosage: 3
           quantity: 20
           medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           count: 30
