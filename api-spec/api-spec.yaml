@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.2.4"
+  version: "1.2.5"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -785,9 +785,12 @@ components:
           items:
             type: object
             properties:
+              reminderID:
+                type: string
+                description: "リマインダーUUID"
+                example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
               reminderTime:
                 type: string
-
                 description: "リマインダー時間"
                 example: "09:00"
               reminderDayOfWeek:
@@ -823,7 +826,6 @@ components:
                 example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
               reminderTime:
                 type: string
-
                 description: "リマインダー時間"
                 example: "09:00"
               reminderDayOfWeek:
@@ -863,7 +865,6 @@ components:
                 example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
               reminderTime:
                 type: string
-
                 description: "リマインダー時間"
                 example: "09:00"
               reminderDayOfWeek:
@@ -2751,7 +2752,7 @@ paths:
       tags:
         - medicine
       summary: "おくすり追加"
-      description: "新しい薬を追加します"
+      description: "新しい薬を追加します。reminderIDに用いられるUUIDv4はアプリ側で生成しておく必要があります"
       parameters:
         - in: header
           name: X-UID

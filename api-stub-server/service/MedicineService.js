@@ -82,7 +82,7 @@ exports.medicinesMedicineIDPUT = function(body,medicineID,xUID) {
 
 /**
  * おくすり追加
- * 新しい薬を追加します
+ * 新しい薬を追加します。reminderIDに用いられるUUIDv4はアプリ側で生成しておく必要があります
  *
  * body MedicinePostRequest 
  * xUID String 

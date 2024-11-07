@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.2.4
+  version: 1.2.5
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -1527,7 +1527,7 @@ paths:
       tags:
       - medicine
       summary: おくすり追加
-      description: 新しい薬を追加します
+      description: 新しい薬を追加します。reminderIDに用いられるUUIDv4はアプリ側で生成しておく必要があります
       operationId: medicinesPOST
       parameters:
       - name: X-UID
@@ -2704,7 +2704,7 @@ components:
         content:
           type: string
           description: メッセージ内容
-          example: "こんにちは"
+          example: こんにちは
     MessageResponse:
       type: object
       properties:
@@ -2869,7 +2869,7 @@ components:
         reminders:
           type: array
           items:
-            $ref: '#/components/schemas/MedicinePostRequest_reminders'
+            $ref: '#/components/schemas/Medicine_reminders'
     MedicineRequest:
       type: object
       properties:
@@ -3539,16 +3539,3 @@ components:
         - monday
         - monday
         reminderTime: 09:00
-    MedicinePostRequest_reminders:
-      type: object
-      properties:
-        reminderTime:
-          type: string
-          description: リマインダー時間
-          example: 09:00
-        reminderDayOfWeek:
-          type: array
-          items:
-            type: string
-            description: リマインダー曜日
-            example: monday
