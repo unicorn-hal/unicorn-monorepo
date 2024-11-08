@@ -13,6 +13,7 @@ import java.util.*
 interface PrimaryDoctorRepository {
     fun store(primaryDoctors: PrimaryDoctors): PrimaryDoctors
     fun getOrNullBy(userID: UserID, primaryDoctorID: PrimaryDoctorID): PrimaryDoctors?
+    fun getOrNullByUserID(userID: UserID): PrimaryDoctors?
 }
 
 @Repository
@@ -76,6 +77,33 @@ class PrimaryDoctorRepositoryImpl(
 
         val sqlParams = MapSqlParameterSource()
             .addValue("primaryDoctorId", primaryDoctorID.value)
+            .addValue("userId", userID.value)
+
+        val doctors = namedParameterJdbcTemplate.query(
+            sql,
+            sqlParams
+        ) { rs, _ ->
+            PrimaryDoctor.fromStore(
+                primaryDoctorID = PrimaryDoctorID(UUID.fromString(rs.getString("primary_doctor_id"))),
+                doctorID = DoctorID(rs.getString("doctor_id"))
+            )
+        }
+
+        return if (doctors.isNotEmpty()) {
+            PrimaryDoctors.fromExistingDoctor(userID, doctors)
+        } else null
+    }
+
+    override fun getOrNullByUserID(userID: UserID): PrimaryDoctors? {
+        // language=postgresql
+        val sql = """
+        SELECT primary_doctor_id, doctor_id, user_id
+        FROM primary_doctors
+        WHERE user_id = :userId
+        AND deleted_at IS NULL
+    """.trimIndent()
+
+        val sqlParams = MapSqlParameterSource()
             .addValue("userId", userID.value)
 
         val doctors = namedParameterJdbcTemplate.query(

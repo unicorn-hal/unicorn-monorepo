@@ -27,7 +27,7 @@ import kotlin.test.Test
 @Sql("/db/primary_doctor/Insert_Doctor_Data.sql")
 @Sql("/db/primary_doctor/Insert_Doctor_Department_Data.sql")
 @Sql("/db/primary_doctor/Insert_PrimaryDoctor_Data.sql")
-class PrimaryDoctorPostTest {
+class PrimaryDoctorPutTest {
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -74,7 +74,7 @@ class PrimaryDoctorPostTest {
     @Test
     fun `should return 200 with multiple values fields in response`() {
         val userID = "test"
-        val doctorIDs = listOf("doctor5","doctor6")
+        val doctorIDs = listOf("doctor","doctor6")
         val primaryDoctorIDs = PrimaryDoctorRequest(
             doctorIDs = doctorIDs
         )
@@ -95,7 +95,7 @@ class PrimaryDoctorPostTest {
                 "userID": "$userID",
                 "doctors": [
                     {
-                        "doctorID": "doctor5"
+                        "doctorID": "doctor"
                     },
                     {
                         "doctorID": "doctor6"
@@ -110,7 +110,6 @@ class PrimaryDoctorPostTest {
         result.andExpect(jsonPath("$.doctors[0].primaryDoctorID").exists())
         result.andExpect(jsonPath("$.doctors[1].primaryDoctorID").exists())
     }
-
 
     @Test
     fun `should return 400 when account is a doctor`() {
