@@ -116,8 +116,6 @@ class PrimaryDoctorRepositoryImpl(
             )
         }
 
-        return if (doctors.isNotEmpty()) {
-            PrimaryDoctors.fromExistingDoctor(userID, doctors)
-        } else null
+        return doctors.takeIf { it.isNotEmpty() }?.let { PrimaryDoctors.fromExistingDoctor(userID, it) }
     }
 }
