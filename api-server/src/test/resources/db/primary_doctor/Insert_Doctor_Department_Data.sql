@@ -15,10 +15,34 @@ INSERT INTO doctor_departments (
     'doctor',
     'a1dcb69e-472f-4a57-90a2-f2c63b62ec90',
     NOW(),
-    NOW()
+    NULL
 ),(
     gen_random_uuid(),
     'doctor2',
+    'cd273b1b-0c3b-4b89-b2b9-01b21832b44c',
+    NOW(),
+    NULL
+),(
+    gen_random_uuid(),
+    'doctor3',
+    'cd273b1b-0c3b-4b89-b2b9-01b21832b44c',
+    NOW(),
+    NULL
+),(
+    gen_random_uuid(),
+    'doctor5',
+    'cd273b1b-0c3b-4b89-b2b9-01b21832b44c',
+    NOW(),
+    NULL
+),(
+    gen_random_uuid(),
+    'doctor6',
+    'cd273b1b-0c3b-4b89-b2b9-01b21832b44c',
+    NOW(),
+    NULL
+),(
+    gen_random_uuid(),
+    'doctor7',
     'cd273b1b-0c3b-4b89-b2b9-01b21832b44c',
     NOW(),
     NULL
