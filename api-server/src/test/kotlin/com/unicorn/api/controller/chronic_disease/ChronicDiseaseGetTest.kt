@@ -48,6 +48,14 @@ class ChronicDiseaseGetTest {
                         {
                             "chronicDiseaseID": "f47ac10b-58cc-4372-a567-0e02b2c3d470",
                             "diseaseName": "風邪"
+                        },
+                        {
+                            "chronicDiseaseID": "f47ac10b-58cc-4372-a567-0e02b2c3d469",
+                            "diseaseName": "インフルエンザ"
+                        },
+                        {
+                            "chronicDiseaseID": "f47ac10b-58cc-4372-a567-0e02b2c3d468",
+                            "diseaseName": "花粉症"
                         }
                     ]
                 }

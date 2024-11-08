@@ -19,18 +19,18 @@ class ChronicDiseaseQueryServiceImpl(
         val sql =
             """
             SELECT
-                table1.chronic_disease_id,
-                table2.disease_name
+                cd.chronic_disease_id,
+                d.disease_name
             FROM
-                chronic_diseases AS table1
+                chronic_diseases AS cd
             INNER JOIN
-                diseases AS table2
+                diseases AS d
             ON
-                table1.disease_id = table2.disease_id
+                cd.disease_id = d.disease_id
             WHERE
-                table1.user_id = :userID
+                cd.user_id = :userID
             AND
-                table1.deleted_at IS NULL
+                cd.deleted_at IS NULL
             """.trimIndent()
         val params = MapSqlParameterSource().addValue("userID", userID.value)
         val chronicDiseases =

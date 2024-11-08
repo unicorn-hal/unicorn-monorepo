@@ -11,6 +11,18 @@ INSERT INTO chronic_diseases (
     NOW(),
     null
 ), (
+    'f47ac10b-58cc-4372-a567-0e02b2c3d469',
+    'test',
+    2,
+    NOW(),
+    null
+), (
+    'f47ac10b-58cc-4372-a567-0e02b2c3d468',
+    'test',
+    3,
+    NOW(),
+    null
+), (
     'f47ac10b-58cc-4372-a567-0e02b2c3d471',
     'test',
     2,
