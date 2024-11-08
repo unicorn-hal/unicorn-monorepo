@@ -4,6 +4,8 @@ import com.unicorn.api.application_service.chronic_disease.*
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.chronic_disease.ChronicDiseaseID
 import com.unicorn.api.domain.user.UserID
+import com.unicorn.api.query_service.chronic_disease.ChronicDiseaseQueryService
+import com.unicorn.api.query_service.user.UserQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -11,10 +13,26 @@ import java.util.*
 
 @Controller
 class ChronicDiseaseController(
+    private val chronicDiseaseQueryService: ChronicDiseaseQueryService,
+    private val userQueryService: UserQueryService,
     private val saveChronicDiseaseService: SaveChronicDiseaseService,
     private val deleteChronicDiseaseService: DeleteChronicDiseaseService,
 ) {
-    @PostMapping("/chronic_disease")
+    @GetMapping("/chronic_diseases")
+    fun get(
+        @RequestHeader("X-UID") uid: String,
+    ): ResponseEntity<*> {
+        try {
+            userQueryService.getOrNullBy(uid)
+                ?: return ResponseEntity.status(400).body(ResponseError("User not found"))
+            val result = chronicDiseaseQueryService.get(UserID(uid))
+            return ResponseEntity.ok(result)
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @PostMapping("/chronic_diseases")
     fun post(
         @RequestHeader("X-UID") uid: String,
         @RequestBody chronicDiseasePostRequest: ChronicDiseasePostRequest,
@@ -29,7 +47,7 @@ class ChronicDiseaseController(
         }
     }
 
-    @DeleteMapping("/chronic_disease/{chronicDiseaseID}")
+    @DeleteMapping("/chronic_diseases/{chronicDiseaseID}")
     fun delete(
         @RequestHeader("X-UID") uid: String,
         @PathVariable chronicDiseaseID: UUID,
