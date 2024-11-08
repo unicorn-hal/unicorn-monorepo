@@ -127,4 +127,25 @@ class PrimaryDoctorRepositoryTest {
 
         assertTrue(storedDoctors.doctors.isEmpty()) // 追加される医者がいないことを確認
     }
+
+    @Test
+    fun `should get primary doctors by userID`() {
+        val userID = UserID("test")
+
+        // userIDに関連するすべてのPrimaryDoctorを取得
+        val primaryDoctors = primaryDoctorRepository.getOrNullByUserID(userID)
+
+        assertNotNull(primaryDoctors) // PrimaryDoctorsオブジェクトがnullでないことを確認
+        assertTrue(primaryDoctors?.doctors?.isNotEmpty() == true) // doctorsが空でないことを確認
+    }
+
+    @Test
+    fun `should return null when no primary doctors found for userID`() {
+        val userID = UserID("nonexistent_user") // 存在しないユーザーIDを指定
+
+        // userIDに関連するPrimaryDoctorが存在しない場合
+        val primaryDoctors = primaryDoctorRepository.getOrNullByUserID(userID)
+
+        assertEquals(null, primaryDoctors) // nullが返されることを確認
+    }
 }

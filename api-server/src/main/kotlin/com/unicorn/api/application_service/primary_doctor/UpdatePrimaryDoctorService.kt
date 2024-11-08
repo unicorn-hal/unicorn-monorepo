@@ -11,32 +11,32 @@ import com.unicorn.api.infrastructure.primary_doctor.PrimaryDoctorRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-interface SavePrimaryDoctorService {
-    fun save(uid: String, primaryDoctorPostRequest: PrimaryDoctorRequest): PrimaryDoctors
+interface UpdatePrimaryDoctorService {
+    fun update(uid: String, primaryDoctorPutRequest: PrimaryDoctorRequest) : PrimaryDoctors
 }
 
 @Service
-class SavePrimaryDoctorServiceImpl(
+class UpdatePrimaryDoctorServiceImpl(
     private val accountRepository: AccountRepository,
     private val doctorRepository: DoctorRepository,
     private val primaryDoctorRepository: PrimaryDoctorRepository
-) : SavePrimaryDoctorService {
+): UpdatePrimaryDoctorService {
     @Transactional
-    override fun save(uid: String, primaryDoctorPostRequest: PrimaryDoctorRequest): PrimaryDoctors {
+    override fun update(uid: String, primaryDoctorPutRequest: PrimaryDoctorRequest) : PrimaryDoctors {
         val account = accountRepository.getOrNullByUid(UID(uid))
         requireNotNull(account) { "Account not found" }
         require(account.isUser()) { "Account is not user" }
 
-        val doctorIDList = primaryDoctorPostRequest.doctorIDs.map { doctorID ->
+        val doctorIDList = primaryDoctorPutRequest.doctorIDs.map { doctorID ->
             doctorRepository.getOrNullBy(DoctorID(doctorID))
                 ?: throw IllegalArgumentException("Doctor not found for ID: $doctorID")
             DoctorID(doctorID)
         }
 
-        val primaryDoctors = PrimaryDoctors.create(
-            userID = UserID(uid),
-            doctorIDs = doctorIDList
-        )
+        val existingPrimaryDoctors = primaryDoctorRepository.getOrNullByUserID(UserID(uid))
+
+        val primaryDoctors = existingPrimaryDoctors?.updateDoctors(doctorIDList)
+            ?: PrimaryDoctors.create(UserID(uid), doctorIDList)
 
         primaryDoctorRepository.store(primaryDoctors)
 
