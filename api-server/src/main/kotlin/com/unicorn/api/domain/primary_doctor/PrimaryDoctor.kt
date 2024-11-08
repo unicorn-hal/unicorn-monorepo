@@ -27,14 +27,6 @@ data class PrimaryDoctors private constructor(
         }
     }
 
-    // doctorIDsのみを返すメソッドを追加
-    fun toResponse(): Map<String, Any> {
-        return mapOf(
-            "userID" to userID.value,
-            "doctorIDs" to doctors.map { it.doctorID.value }
-        )
-    }
-
     fun updateDoctors(newDoctorIDs: List<DoctorID>): PrimaryDoctors {
         val newDoctors = newDoctorIDs.map { doctorID ->
             doctors.find { it.doctorID == doctorID } ?: PrimaryDoctor.create(doctorID)

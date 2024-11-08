@@ -19,7 +19,7 @@ class PrimaryDoctorController(
     ): ResponseEntity<*> {
         try {
             val result = savePrimaryDoctorService.save(uid, primaryDoctorPostRequest)
-            return ResponseEntity.ok(result.toResponse())
+            return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
         } catch (e: Exception) {

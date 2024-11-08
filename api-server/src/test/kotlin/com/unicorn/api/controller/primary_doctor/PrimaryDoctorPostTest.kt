@@ -11,8 +11,7 @@ import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.transaction.annotation.Transactional
 import kotlin.test.Test
 
@@ -37,8 +36,8 @@ class PrimaryDoctorPostTest {
     private lateinit var mockMvc: MockMvc
 
     @Test
-    fun `should return 200 when primary doctor is created`() {
-        val userID = "12345"
+    fun `should return 200 with value fields in response`() {
+        val userID = "test"
         val doctorIDs = listOf("doctor6")
         val primaryDoctorIDs = PrimaryDoctorPostRequest(
             doctorIDs = doctorIDs
@@ -56,21 +55,26 @@ class PrimaryDoctorPostTest {
         result.andExpect(
             content().json(
                 """
+            {
+                "userID": "$userID",
+                "doctors": [
                     {
-                        "userID": "12345",
-                        "doctorIDs": [
-                            "doctor6"
-                        ]
+                        "doctorID": "doctor6"
                     }
-                """.trimIndent()
+                ]
+            }
+            """.trimIndent(),
+                false
             )
         )
+        // UUIDフィールドが存在することのみを確認
+        result.andExpect(jsonPath("$.doctors[0].primaryDoctorID").exists())
     }
 
     @Test
-    fun `should return 200 when multiple primary doctors are created`() {
-        val userID = "12345"
-        val doctorIDs = listOf("doctor5", "doctor6")
+    fun `should return 200 with multiple values fields in response`() {
+        val userID = "test"
+        val doctorIDs = listOf("doctor5","doctor6")
         val primaryDoctorIDs = PrimaryDoctorPostRequest(
             doctorIDs = doctorIDs
         )
@@ -87,17 +91,26 @@ class PrimaryDoctorPostTest {
         result.andExpect(
             content().json(
                 """
+            {
+                "userID": "$userID",
+                "doctors": [
                     {
-                        "userID": "12345",
-                        "doctorIDs": [
-                            "doctor5",
-                            "doctor6"
-                        ]
+                        "doctorID": "doctor5"
+                    },
+                    {
+                        "doctorID": "doctor6"
                     }
-                """.trimIndent()
+                ]
+            }
+            """.trimIndent(),
+                false
             )
         )
+        // UUIDフィールドが存在することのみを確認
+        result.andExpect(jsonPath("$.doctors[0].primaryDoctorID").exists())
+        result.andExpect(jsonPath("$.doctors[1].primaryDoctorID").exists())
     }
+
 
     @Test
     fun `should return 400 when account is a doctor`() {
