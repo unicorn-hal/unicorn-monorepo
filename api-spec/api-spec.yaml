@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.2.4"
+  version: "1.2.5"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -630,7 +630,7 @@ components:
         content:
           type: string
           description: "メッセージ内容"
-          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+          example: "こんにちは"
 
     MessageResponse:
       type: object
@@ -645,7 +645,7 @@ components:
         content:
           type: string
           description: "メッセージ内容"
-          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+          example: "こんにちは"
 
     FamilyEmail:
       type: object
@@ -744,6 +744,10 @@ components:
           type: integer
           description: "薬の残量"
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -780,14 +784,21 @@ components:
           type: integer
           description: "薬の残量"
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
             type: object
             properties:
+              reminderID:
+                type: string
+                description: "リマインダーUUID"
+                example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
               reminderTime:
                 type: string
-
                 description: "リマインダー時間"
                 example: "09:00"
               reminderDayOfWeek:
@@ -812,6 +823,10 @@ components:
           type: integer
           description: "薬の初期残量"
           example: 30
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -823,7 +838,6 @@ components:
                 example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
               reminderTime:
                 type: string
-
                 description: "リマインダー時間"
                 example: "09:00"
               reminderDayOfWeek:
@@ -852,6 +866,10 @@ components:
           type: integer
           description: "薬の残量"
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -863,7 +881,6 @@ components:
                 example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
               reminderTime:
                 type: string
-
                 description: "リマインダー時間"
                 example: "09:00"
               reminderDayOfWeek:
@@ -1037,7 +1054,7 @@ tags:
     description: "薬情報"
   - name: disease
     description: "病気情報"
-  - name: chromic_disease
+  - name: chronic_disease
     description: "持病情報"
   - name: call
     description: "通話情報"
@@ -2751,7 +2768,7 @@ paths:
       tags:
         - medicine
       summary: "おくすり追加"
-      description: "新しい薬を追加します"
+      description: "新しい薬を追加します。reminderIDに用いられるUUIDv4はアプリ側で生成しておく必要があります"
       parameters:
         - in: header
           name: X-UID
@@ -2987,7 +3004,7 @@ paths:
   /chronic_diseases:
     get:
       tags:
-        - chromic_disease
+        - chronic_disease
       summary: "持病一覧取得"
       description: "登録してある持病名を取得します"
       parameters:
@@ -3023,7 +3040,7 @@ paths:
 
     post:
       tags:
-        - chromic_disease
+        - chronic_disease
       summary: "持病追加"
       description: "検索した持病を追加します"
       requestBody:
@@ -3065,7 +3082,7 @@ paths:
   /chronic_diseases/{chronicDiseaseID}:
     delete:
       tags:
-        - chromic_disease
+        - chronic_disease
       summary: "持病削除"
       description: "持病を削除します"
       parameters:

@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.2.4
+  version: 1.2.5
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -31,7 +31,7 @@ tags:
   description: 薬情報
 - name: disease
   description: 病気情報
-- name: chromic_disease
+- name: chronic_disease
   description: 持病情報
 - name: call
   description: 通話情報
@@ -1527,7 +1527,7 @@ paths:
       tags:
       - medicine
       summary: おくすり追加
-      description: 新しい薬を追加します
+      description: 新しい薬を追加します。reminderIDに用いられるUUIDv4はアプリ側で生成しておく必要があります
       operationId: medicinesPOST
       parameters:
       - name: X-UID
@@ -1730,7 +1730,7 @@ paths:
   /chronic_diseases:
     get:
       tags:
-      - chromic_disease
+      - chronic_disease
       summary: 持病一覧取得
       description: 登録してある持病名を取得します
       operationId: chronic_diseasesGET
@@ -1756,10 +1756,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
-      x-swagger-router-controller: ChromicDisease
+      x-swagger-router-controller: ChronicDisease
     post:
       tags:
-      - chromic_disease
+      - chronic_disease
       summary: 持病追加
       description: 検索した持病を追加します
       operationId: chronic_diseasesPOST
@@ -1788,11 +1788,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
-      x-swagger-router-controller: ChromicDisease
+      x-swagger-router-controller: ChronicDisease
   /chronic_diseases/{chronicDiseaseID}:
     delete:
       tags:
-      - chromic_disease
+      - chronic_disease
       summary: 持病削除
       description: 持病を削除します
       operationId: chronic_diseasesChronicDiseaseIDDELETE
@@ -1828,7 +1828,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
-      x-swagger-router-controller: ChromicDisease
+      x-swagger-router-controller: ChronicDisease
   /calls:
     get:
       tags:
@@ -2704,7 +2704,7 @@ components:
         content:
           type: string
           description: メッセージ内容
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          example: こんにちは
     MessageResponse:
       type: object
       properties:
@@ -2718,11 +2718,11 @@ components:
         content:
           type: string
           description: メッセージ内容
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          example: こんにちは
       example:
         senderID: "1234567890"
         messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        content: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        content: こんにちは
     FamilyEmail:
       type: object
       properties:
@@ -2831,6 +2831,10 @@ components:
           type: integer
           description: 薬の残量
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -2847,6 +2851,7 @@ components:
           - monday
           - monday
           reminderTime: 09:00
+        dosage: 3
         quantity: 20
         medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         count: 30
@@ -2866,10 +2871,14 @@ components:
           type: integer
           description: 薬の残量
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
-            $ref: '#/components/schemas/MedicinePostRequest_reminders'
+            $ref: '#/components/schemas/Medicine_reminders'
     MedicineRequest:
       type: object
       properties:
@@ -2885,6 +2894,10 @@ components:
           type: integer
           description: 薬の初期残量
           example: 30
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -2908,6 +2921,10 @@ components:
           type: integer
           description: 薬の残量
           example: 20
+        dosage:
+          type: integer
+          description: 一回の服用量
+          example: 3
         reminders:
           type: array
           items:
@@ -2925,6 +2942,7 @@ components:
           - monday
           reminderTime: 09:00
         quantity: 20
+        dosage: 3
         medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         count: 30
         medicineName: パラセタモール
@@ -3374,6 +3392,7 @@ components:
             - monday
             - monday
             reminderTime: 09:00
+          dosage: 3
           quantity: 20
           medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           count: 30
@@ -3389,6 +3408,7 @@ components:
             - monday
             - monday
             reminderTime: 09:00
+          dosage: 3
           quantity: 20
           medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           count: 30
@@ -3539,16 +3559,3 @@ components:
         - monday
         - monday
         reminderTime: 09:00
-    MedicinePostRequest_reminders:
-      type: object
-      properties:
-        reminderTime:
-          type: string
-          description: リマインダー時間
-          example: 09:00
-        reminderDayOfWeek:
-          type: array
-          items:
-            type: string
-            description: リマインダー曜日
-            example: monday

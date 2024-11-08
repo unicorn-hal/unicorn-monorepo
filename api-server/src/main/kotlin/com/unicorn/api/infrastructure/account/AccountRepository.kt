@@ -22,6 +22,9 @@ class AccountRepositoryImpl(private val namedParameterJdbcTemplate: NamedParamet
             """
             INSERT INTO accounts (uid, role, fcm_token_id)
             VALUES (:uid, :role::role, :fcmTokenId)
+            ON CONFLICT (uid) DO UPDATE
+            SET
+            fcm_token_id = EXCLUDED.fcm_token_id
             """.trimIndent()
 
         // language=postgresql

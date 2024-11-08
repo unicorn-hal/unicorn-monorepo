@@ -37,6 +37,12 @@ data class Account private constructor(
         }
     }
 
+    fun update(fcmTokenId: FCMTokenId): Account {
+        return this.copy(
+            fcmTokenId = fcmTokenId,
+        )
+    }
+
     fun isUser(): Boolean {
         return role == Role.user
     }

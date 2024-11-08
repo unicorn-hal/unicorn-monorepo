@@ -118,4 +118,21 @@ class AccountRepositoryTest {
 
         assert(storedAccount == null)
     }
+
+    @Test
+    fun `should update account`() {
+        val account =
+            Account.create(
+                uid = "test",
+                role = "user",
+                fcmTokenId = "new_fcm_token_id",
+            )
+
+        accountRepository.store(account)
+
+        val storedAccount = findAccountByUid(account.uid.value)
+        assert(storedAccount?.uid == account.uid)
+        assert(storedAccount?.role == account.role)
+        assert(storedAccount?.fcmTokenId == account.fcmTokenId)
+    }
 }
