@@ -44,7 +44,7 @@ class PrimaryDoctorPutTest {
         )
 
         val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
+            MockMvcRequestBuilders.put("/primary_doctors").headers(HttpHeaders().apply {
                 add("X-UID", userID)
             })
                 .contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +80,7 @@ class PrimaryDoctorPutTest {
         )
 
         val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
+            MockMvcRequestBuilders.put("/primary_doctors").headers(HttpHeaders().apply {
                 add("X-UID", userID)
             })
                 .contentType(MediaType.APPLICATION_JSON)
@@ -120,7 +120,7 @@ class PrimaryDoctorPutTest {
         )
 
         val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
+            MockMvcRequestBuilders.put("/primary_doctors").headers(HttpHeaders().apply {
                 add("X-UID", userID)
             })
                 .contentType(MediaType.APPLICATION_JSON)
@@ -139,7 +139,7 @@ class PrimaryDoctorPutTest {
         )
 
         val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
+            MockMvcRequestBuilders.put("/primary_doctors").headers(HttpHeaders().apply {
                 add("X-UID", userID)
             })
                 .contentType(MediaType.APPLICATION_JSON)
@@ -158,7 +158,7 @@ class PrimaryDoctorPutTest {
         )
 
         val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
+            MockMvcRequestBuilders.put("/primary_doctors").headers(HttpHeaders().apply {
                 add("X-UID", userID)
             })
                 .contentType(MediaType.APPLICATION_JSON)
