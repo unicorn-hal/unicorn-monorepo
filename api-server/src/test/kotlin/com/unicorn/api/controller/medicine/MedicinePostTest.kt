@@ -1,7 +1,6 @@
 package com.unicorn.api.controller.medicine
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -13,8 +12,11 @@ import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalTime
+import java.util.*
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
 @SpringBootTest
@@ -37,6 +39,16 @@ class MedicinePostTest {
             MedicinePostRequest(
                 medicineName = "medicineName",
                 count = 10,
+                quantity = 5,
+                dosage = 3,
+                reminders =
+                    listOf(
+                        ReminderRequest(
+                            reminderID = UUID.fromString("123e4567-e89b-12d3-a456-426614174010"),
+                            reminderTime = LocalTime.of(8, 0, 0),
+                            dayOfWeek = listOf("monday", "tuesday"),
+                        ),
+                    ),
             )
 
         val userID = "test"
@@ -53,11 +65,18 @@ class MedicinePostTest {
             )
 
         result.andExpect(status().isOk)
-
-        val responseContent = result.andReturn().response.contentAsString
-
-        assertTrue(responseContent.contains(medicineRequest.medicineName))
-        assertTrue(responseContent.contains(medicineRequest.count.toString()))
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "medicineName": "${medicineRequest.medicineName}",
+                    "count": ${medicineRequest.count},
+                    "quantity": ${medicineRequest.quantity},
+                    "dosage": ${medicineRequest.dosage}
+                }
+                """.trimIndent(),
+            ),
+        )
     }
 
     @Test
@@ -66,6 +85,9 @@ class MedicinePostTest {
             MedicinePostRequest(
                 medicineName = "",
                 count = 10,
+                quantity = 5,
+                dosage = 3,
+                reminders = emptyList(),
             )
 
         val userID = "test"
@@ -90,6 +112,9 @@ class MedicinePostTest {
             MedicinePostRequest(
                 medicineName = "medicineName",
                 count = -5,
+                quantity = 5,
+                dosage = 3,
+                reminders = emptyList(),
             )
 
         val userID = "test"

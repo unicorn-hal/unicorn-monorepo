@@ -14,6 +14,8 @@ class MedicineTest {
                 medicineName = "Paracetamol",
                 userID = userID,
                 count = 10,
+                quantity = 10,
+                dosage = 5,
             )
 
         assertEquals(medicine.medicineID.value.toString(), medicine.medicineID.value.toString())
@@ -23,13 +25,15 @@ class MedicineTest {
 
     @Test
     fun `should create medicine from store`() {
+        val medicineID = UUID.randomUUID()
         val medicine =
             Medicine.fromStore(
-                medicineID = UUID.randomUUID(),
+                medicineID = medicineID,
                 medicineName = "Ibuprofen",
                 userID = "test",
                 count = 15,
                 quantity = 30,
+                dosage = 5,
             )
 
         assertEquals(medicine.medicineID.value.toString(), medicine.medicineID.value.toString())
@@ -56,6 +60,8 @@ class MedicineTest {
                     medicineName = "",
                     userID = userID,
                     count = 5,
+                    quantity = 5,
+                    dosage = 5,
                 )
             }
         assertEquals("medicine name should not be blank", exception.message)
@@ -70,6 +76,8 @@ class MedicineTest {
                     medicineName = "Aspirin",
                     userID = userID,
                     count = -1,
+                    quantity = 5,
+                    dosage = 5,
                 )
             }
         assertEquals("count should be 0 or greater", exception.message)
@@ -84,6 +92,8 @@ class MedicineTest {
                     medicineName = "Aspirin",
                     userID = userID,
                     count = -5,
+                    quantity = 0,
+                    dosage = 5,
                 )
             }
         assertEquals("count should be 0 or greater", exception.message)
@@ -99,11 +109,15 @@ class MedicineTest {
                         medicineName = "Aspirin",
                         userID = userID,
                         count = 20,
+                        quantity = 10,
+                        dosage = 5,
                     )
 
                 medicine.update(
                     medicineName = MedicineName("Amoxicillin Extended"),
                     quantity = Quantity(50),
+                    count = Count(20),
+                    dosage = Dosage(5),
                 )
             }
         assertEquals("quantity should be smaller than count.", exception.message)
@@ -117,12 +131,16 @@ class MedicineTest {
                 medicineName = "Amoxicillin",
                 userID = userID,
                 count = 20,
+                quantity = 20,
+                dosage = 5,
             )
 
         val updatedMedicine =
             medicine.update(
                 medicineName = MedicineName("Amoxicillin Extended"),
                 quantity = Quantity(18),
+                count = Count(20),
+                dosage = Dosage(5),
             )
 
         assertEquals("Amoxicillin Extended", updatedMedicine.medicineName.value)

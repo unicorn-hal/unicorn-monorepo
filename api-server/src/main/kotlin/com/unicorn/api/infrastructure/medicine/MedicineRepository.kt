@@ -27,6 +27,7 @@ class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
                 medicine_name,
                 count,
                 quantity,
+                dosage,
                 created_at
             ) VALUES (
                 :medicineID,
@@ -34,6 +35,7 @@ class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
                 :medicineName,
                 :count,
                 :quantity,
+                :dosage,
                 NOW()
             ) 
             ON CONFLICT (medicine_id) 
@@ -41,6 +43,7 @@ class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
                 medicine_name = EXCLUDED.medicine_name,
                 count = EXCLUDED.count,
                 quantity = EXCLUDED.quantity,
+                dosage = EXCLUDED.dosage,
                 deleted_at = NULL
             WHERE medicines.created_at IS NOT NULL;
             """.trimIndent()
@@ -52,6 +55,7 @@ class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
                 .addValue("medicineName", medicine.medicineName.value)
                 .addValue("count", medicine.count.value)
                 .addValue("quantity", medicine.quantity.value)
+                .addValue("dosage", medicine.dosage.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
         return medicine
@@ -66,7 +70,8 @@ class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
                 user_id,
                 medicine_name,
                 count,
-                quantity
+                quantity,
+                dosage
             FROM medicines
             WHERE medicine_id = :medicineID
                 AND deleted_at IS NULL
@@ -86,6 +91,7 @@ class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
                 userID = rs.getString("user_id"),
                 count = rs.getInt("count"),
                 quantity = rs.getInt("quantity"),
+                dosage = rs.getInt("dosage"),
             )
         }.singleOrNull()
     }
