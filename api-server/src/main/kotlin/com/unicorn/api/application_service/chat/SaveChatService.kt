@@ -10,7 +10,7 @@ import com.unicorn.api.infrastructure.user.UserRepository
 import org.springframework.stereotype.Service
 
 interface SaveChatService {
-    fun save(chatPostRequest: ChatPostRequest): ChatPostRequest
+    fun save(chatPostRequest: ChatPostRequest): Chat
 }
 
 @Service
@@ -19,7 +19,7 @@ class SaveChatServiceImpl(
     private val userRepository: UserRepository,
     private val chatRepository: ChatRepository,
 ) : SaveChatService {
-    override fun save(chatPostRequest: ChatPostRequest): ChatPostRequest {
+    override fun save(chatPostRequest: ChatPostRequest): Chat {
         val doctorID = DoctorID(chatPostRequest.doctorID)
         val doctor = doctorRepository.getOrNullBy(doctorID)
         requireNotNull(doctor) { "Doctor not found" }
@@ -32,6 +32,6 @@ class SaveChatServiceImpl(
 
         chatRepository.store(chat)
 
-        return chatPostRequest
+        return chat
     }
 }

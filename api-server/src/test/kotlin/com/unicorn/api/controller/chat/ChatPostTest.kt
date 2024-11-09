@@ -59,7 +59,6 @@ class ChatPostTest {
                     "userID": "test"
                 }
                 """.trimIndent(),
-                true,
             ),
         )
     }
