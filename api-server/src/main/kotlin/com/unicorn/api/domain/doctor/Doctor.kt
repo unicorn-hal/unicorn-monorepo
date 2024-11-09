@@ -25,6 +25,8 @@ data class Doctor private constructor(
             doctorIconUrl: String?,
             departments: List<DepartmentID>,
         ): Doctor {
+            require(departments.toSet().size == departments.size) { "departmentID must be unique" }
+
             return Doctor(
                 doctorID = DoctorID(doctorID),
                 hospitalID = hospitalID,

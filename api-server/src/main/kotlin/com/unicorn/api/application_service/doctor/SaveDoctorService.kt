@@ -67,9 +67,6 @@ class SaveDoctorServiceImpl(
             "Department not found: $response"
         }
 
-        val duplicateDepartmentIDs = departmentIDs.groupingBy { it }.eachCount().filter { it.value > 1 }.keys
-        require(duplicateDepartmentIDs.isEmpty()) { "Duplicate departmentID: ${duplicateDepartmentIDs.first().value}" }
-
         val doctor =
             Doctor.create(
                 doctorID = uid.value,
