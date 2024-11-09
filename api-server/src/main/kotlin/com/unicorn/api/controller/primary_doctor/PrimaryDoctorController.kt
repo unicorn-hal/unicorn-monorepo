@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController
 class PrimaryDoctorController(
     private val primaryDoctorQueryService: PrimaryDoctorQueryService,
     private val savePrimaryDoctorService: SavePrimaryDoctorService,
-    private val updatePrimaryDoctorService: UpdatePrimaryDoctorService
+    private val updatePrimaryDoctorService: UpdatePrimaryDoctorService,
 ) {
     @GetMapping("/primary_doctors")
     fun get(
-        @RequestHeader("X-UID") uid: String
+        @RequestHeader("X-UID") uid: String,
     ): ResponseEntity<*> {
         return try {
             val result = primaryDoctorQueryService.getBy(uid)
@@ -35,7 +35,7 @@ class PrimaryDoctorController(
     @PostMapping("/primary_doctors")
     fun post(
         @RequestHeader("X-UID") uid: String,
-        @RequestBody primaryDoctorPostRequest: PrimaryDoctorRequest
+        @RequestBody primaryDoctorPostRequest: PrimaryDoctorRequest,
     ): ResponseEntity<*> {
         try {
             val result = savePrimaryDoctorService.save(uid, primaryDoctorPostRequest)
@@ -50,7 +50,7 @@ class PrimaryDoctorController(
     @PutMapping("/primary_doctors")
     fun put(
         @RequestHeader("X-UID") uid: String,
-        @RequestBody primaryDoctorPutRequest: PrimaryDoctorRequest
+        @RequestBody primaryDoctorPutRequest: PrimaryDoctorRequest,
     ): ResponseEntity<*> {
         try {
             val result = updatePrimaryDoctorService.update(uid, primaryDoctorPutRequest)
@@ -64,5 +64,5 @@ class PrimaryDoctorController(
 }
 
 data class PrimaryDoctorRequest(
-    val doctorIDs: List<String>
+    val doctorIDs: List<String>,
 )

@@ -1,9 +1,9 @@
 package com.unicorn.api.infrastructure.primary_doctor
 
-import com.unicorn.api.domain.primary_doctor.PrimaryDoctorID
-import com.unicorn.api.domain.primary_doctor.PrimaryDoctors
 import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.primary_doctor.PrimaryDoctor
+import com.unicorn.api.domain.primary_doctor.PrimaryDoctorID
+import com.unicorn.api.domain.primary_doctor.PrimaryDoctors
 import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -31,7 +31,6 @@ import kotlin.test.assertEquals
 @Sql("/db/primary_doctor/Insert_Doctor_Department_Data.sql")
 @Sql("/db/primary_doctor/Insert_PrimaryDoctor_Data.sql")
 class PrimaryDoctorRepositoryTest {
-
     @Autowired
     private lateinit var primaryDoctorRepository: PrimaryDoctorRepository
 
@@ -40,20 +39,22 @@ class PrimaryDoctorRepositoryTest {
 
     private fun findPrimaryDoctorByPrimaryDoctorID(primaryDoctorID: PrimaryDoctorID): PrimaryDoctor? {
         // language=postgresql
-        val sql = """
-        SELECT primary_doctor_id, doctor_id, user_id
-        FROM primary_doctors
-        WHERE primary_doctor_id = :primaryDoctorId
-        AND deleted_at IS NULL
-    """.trimIndent()
+        val sql =
+            """
+            SELECT primary_doctor_id, doctor_id, user_id
+            FROM primary_doctors
+            WHERE primary_doctor_id = :primaryDoctorId
+            AND deleted_at IS NULL
+            """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource()
-            .addValue("primaryDoctorId", primaryDoctorID.value)
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("primaryDoctorId", primaryDoctorID.value)
 
         return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
             PrimaryDoctor.fromStore(
                 primaryDoctorID = PrimaryDoctorID(UUID.fromString(rs.getString("primary_doctor_id"))),
-                doctorID = DoctorID(rs.getString("doctor_id"))
+                doctorID = DoctorID(rs.getString("doctor_id")),
             )
         }.singleOrNull()
     }
@@ -69,7 +70,7 @@ class PrimaryDoctorRepositoryTest {
 
         // primaryDoctorがnullでないことが保証された後に、doctorsにアクセスする
         if (primaryDoctor != null) {
-            assertTrue(primaryDoctor.doctors.any { it.primaryDoctorID == primaryDoctorID } )
+            assertTrue(primaryDoctor.doctors.any { it.primaryDoctorID == primaryDoctorID })
         }
     }
 

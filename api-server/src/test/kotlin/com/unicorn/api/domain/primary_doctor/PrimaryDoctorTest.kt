@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class PrimaryDoctorsTest {
-
     @Test
     fun `create PrimaryDoctors with initial doctors`() {
         val userID = UserID("test")

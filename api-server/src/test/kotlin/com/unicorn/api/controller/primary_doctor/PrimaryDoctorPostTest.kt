@@ -28,7 +28,6 @@ import kotlin.test.Test
 @Sql("/db/primary_doctor/Insert_Doctor_Department_Data.sql")
 @Sql("/db/primary_doctor/Insert_PrimaryDoctor_Data.sql")
 class PrimaryDoctorPostTest {
-
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
@@ -39,33 +38,37 @@ class PrimaryDoctorPostTest {
     fun `should return 200 with value fields in response`() {
         val userID = "test"
         val doctorIDs = listOf("doctor6")
-        val primaryDoctorIDs = PrimaryDoctorRequest(
-            doctorIDs = doctorIDs
-        )
+        val primaryDoctorIDs =
+            PrimaryDoctorRequest(
+                doctorIDs = doctorIDs,
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(primaryDoctorIDs))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/primary_doctors").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(primaryDoctorIDs)),
+            )
 
         result.andExpect(status().isOk)
         result.andExpect(
             content().json(
                 """
-            {
-                "userID": "$userID",
-                "doctors": [
-                    {
-                        "doctorID": "doctor6"
-                    }
-                ]
-            }
-            """.trimIndent(),
-                false
-            )
+                {
+                    "userID": "$userID",
+                    "doctors": [
+                        {
+                            "doctorID": "doctor6"
+                        }
+                    ]
+                }
+                """.trimIndent(),
+                false,
+            ),
         )
         // UUIDフィールドが存在することのみを確認
         result.andExpect(jsonPath("$.doctors[0].primaryDoctorID").exists())
@@ -74,59 +77,66 @@ class PrimaryDoctorPostTest {
     @Test
     fun `should return 200 with multiple values fields in response`() {
         val userID = "test"
-        val doctorIDs = listOf("doctor5","doctor6")
-        val primaryDoctorIDs = PrimaryDoctorRequest(
-            doctorIDs = doctorIDs
-        )
+        val doctorIDs = listOf("doctor5", "doctor6")
+        val primaryDoctorIDs =
+            PrimaryDoctorRequest(
+                doctorIDs = doctorIDs,
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(primaryDoctorIDs))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/primary_doctors").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(primaryDoctorIDs)),
+            )
 
         result.andExpect(status().isOk)
         result.andExpect(
             content().json(
                 """
-            {
-                "userID": "$userID",
-                "doctors": [
-                    {
-                        "doctorID": "doctor5"
-                    },
-                    {
-                        "doctorID": "doctor6"
-                    }
-                ]
-            }
-            """.trimIndent(),
-                false
-            )
+                {
+                    "userID": "$userID",
+                    "doctors": [
+                        {
+                            "doctorID": "doctor5"
+                        },
+                        {
+                            "doctorID": "doctor6"
+                        }
+                    ]
+                }
+                """.trimIndent(),
+                false,
+            ),
         )
         // UUIDフィールドが存在することのみを確認
         result.andExpect(jsonPath("$.doctors[0].primaryDoctorID").exists())
         result.andExpect(jsonPath("$.doctors[1].primaryDoctorID").exists())
     }
 
-
     @Test
     fun `should return 400 when account is a doctor`() {
         val userID = "doctor"
         val doctorIDs = listOf("doctor6")
-        val primaryDoctorPostRequest = PrimaryDoctorRequest(
-            doctorIDs = doctorIDs
-        )
+        val primaryDoctorPostRequest =
+            PrimaryDoctorRequest(
+                doctorIDs = doctorIDs,
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(primaryDoctorPostRequest))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/primary_doctors").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(primaryDoctorPostRequest)),
+            )
 
         result.andExpect(status().isBadRequest)
     }
@@ -135,17 +145,21 @@ class PrimaryDoctorPostTest {
     fun `should return 400 when doctorID is missing`() {
         val userID = "12345"
         val doctorIDs = listOf("")
-        val primaryDoctorPostRequest = PrimaryDoctorRequest(
-            doctorIDs = doctorIDs
-        )
+        val primaryDoctorPostRequest =
+            PrimaryDoctorRequest(
+                doctorIDs = doctorIDs,
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(primaryDoctorPostRequest))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/primary_doctors").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(primaryDoctorPostRequest)),
+            )
 
         result.andExpect(status().isBadRequest)
     }
@@ -154,17 +168,21 @@ class PrimaryDoctorPostTest {
     fun `should return 400 when doctorID does not exist`() {
         val userID = "12345"
         val doctorIDs = listOf("doctor000")
-        val primaryDoctorPostRequest = PrimaryDoctorRequest(
-            doctorIDs = doctorIDs
-        )
+        val primaryDoctorPostRequest =
+            PrimaryDoctorRequest(
+                doctorIDs = doctorIDs,
+            )
 
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.post("/primary_doctors").headers(HttpHeaders().apply {
-                add("X-UID", userID)
-            })
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(primaryDoctorPostRequest))
-        )
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/primary_doctors").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(primaryDoctorPostRequest)),
+            )
 
         result.andExpect(status().isBadRequest)
     }

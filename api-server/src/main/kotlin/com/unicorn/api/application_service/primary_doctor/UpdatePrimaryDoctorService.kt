@@ -12,31 +12,39 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface UpdatePrimaryDoctorService {
-    fun update(uid: String, primaryDoctorPutRequest: PrimaryDoctorRequest) : PrimaryDoctors
+    fun update(
+        uid: String,
+        primaryDoctorPutRequest: PrimaryDoctorRequest,
+    ): PrimaryDoctors
 }
 
 @Service
 class UpdatePrimaryDoctorServiceImpl(
     private val accountRepository: AccountRepository,
     private val doctorRepository: DoctorRepository,
-    private val primaryDoctorRepository: PrimaryDoctorRepository
-): UpdatePrimaryDoctorService {
+    private val primaryDoctorRepository: PrimaryDoctorRepository,
+) : UpdatePrimaryDoctorService {
     @Transactional
-    override fun update(uid: String, primaryDoctorPutRequest: PrimaryDoctorRequest) : PrimaryDoctors {
+    override fun update(
+        uid: String,
+        primaryDoctorPutRequest: PrimaryDoctorRequest,
+    ): PrimaryDoctors {
         val account = accountRepository.getOrNullByUid(UID(uid))
         requireNotNull(account) { "Account not found" }
         require(account.isUser()) { "Account is not user" }
 
-        val doctorIDList = primaryDoctorPutRequest.doctorIDs.map { doctorID ->
-            doctorRepository.getOrNullBy(DoctorID(doctorID))
-                ?: throw IllegalArgumentException("Doctor not found for ID: $doctorID")
-            DoctorID(doctorID)
-        }
+        val doctorIDList =
+            primaryDoctorPutRequest.doctorIDs.map { doctorID ->
+                doctorRepository.getOrNullBy(DoctorID(doctorID))
+                    ?: throw IllegalArgumentException("Doctor not found for ID: $doctorID")
+                DoctorID(doctorID)
+            }
 
         val existingPrimaryDoctors = primaryDoctorRepository.getOrNullByUserID(UserID(uid))
 
-        val primaryDoctors = existingPrimaryDoctors?.updateDoctors(doctorIDList)
-            ?: PrimaryDoctors.create(UserID(uid), doctorIDList)
+        val primaryDoctors =
+            existingPrimaryDoctors?.updateDoctors(doctorIDList)
+                ?: PrimaryDoctors.create(UserID(uid), doctorIDList)
 
         primaryDoctorRepository.store(primaryDoctors)
 
