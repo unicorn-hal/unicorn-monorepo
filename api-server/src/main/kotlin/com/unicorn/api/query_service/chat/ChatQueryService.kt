@@ -53,8 +53,8 @@ class ChatQueryServiceImpl(
                 latest_messages.latest_message_sent_at
             FROM
                 chats
-            LEFT JOIN users ON chats.user_id = users.user_id
-            LEFT JOIN doctors ON chats.doctor_id = doctors.doctor_id
+            INNER JOIN users ON chats.user_id = users.user_id AND users.deleted_at IS NULL
+            INNER JOIN doctors ON chats.doctor_id = doctors.doctor_id AND doctors.deleted_at IS NULL
             LEFT JOIN latest_messages ON chats.chat_id = latest_messages.chat_id
             WHERE
                 chats.user_id = :uid

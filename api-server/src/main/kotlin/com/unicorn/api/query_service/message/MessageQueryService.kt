@@ -41,6 +41,7 @@ class MessageQueryServiceImpl(
             LEFT JOIN doctors d on a.uid = d.doctor_id
             LEFT JOIN users u on a.uid = u.user_id
             WHERE chat_id = :chatID
+                AND messages.deleted_at IS NULL
             ORDER BY sent_at
             """.trimIndent()
 
@@ -102,6 +103,7 @@ class MessageQueryServiceImpl(
             LEFT JOIN doctors d on a.uid = d.doctor_id
             LEFT JOIN users u on a.uid = u.user_id
             WHERE message_id = :messageID
+                AND messages.deleted_at IS NULL
             """.trimIndent()
 
         val sqlParams =

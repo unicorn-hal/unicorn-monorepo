@@ -58,6 +58,7 @@ class PrimaryDoctorQueryServiceImpl(
             LEFT JOIN chat_support_hours ON doctors.doctor_id = chat_support_hours.doctor_id
             LEFT JOIN primary_doctors ON doctors.doctor_id = primary_doctors.doctor_id
             WHERE primary_doctors.user_id = :userID
+                AND doctors.deleted_at IS NULL
             GROUP BY 
                 doctors.doctor_id, 
                 hospitals.hospital_id, 

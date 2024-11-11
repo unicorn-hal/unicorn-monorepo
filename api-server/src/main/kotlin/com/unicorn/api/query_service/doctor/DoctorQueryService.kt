@@ -60,6 +60,7 @@ class DoctorQueryServiceImpl(
             LEFT JOIN call_support_hours ON doctors.doctor_id = call_support_hours.doctor_id
             LEFT JOIN chat_support_hours ON doctors.doctor_id = chat_support_hours.doctor_id
             WHERE doctors.doctor_id = :doctorID
+                AND doctors.deleted_at IS NULL
             GROUP BY 
                 doctors.doctor_id, 
                 hospitals.hospital_id, 
@@ -132,6 +133,7 @@ class DoctorQueryServiceImpl(
             LEFT JOIN call_support_hours ON doctors.doctor_id = call_support_hours.doctor_id
             LEFT JOIN chat_support_hours ON doctors.doctor_id = chat_support_hours.doctor_id
             WHERE hospitals.hospital_id = :hospitalID
+                AND doctors.deleted_at IS NULL
             GROUP BY 
                 doctors.doctor_id, 
                 hospitals.hospital_id, 
@@ -214,7 +216,9 @@ class DoctorQueryServiceImpl(
             LEFT JOIN departments ON doctor_departments.department_id = departments.department_id
             LEFT JOIN call_support_hours ON doctors.doctor_id = call_support_hours.doctor_id
             LEFT JOIN chat_support_hours ON doctors.doctor_id = chat_support_hours.doctor_id
-            WHERE (:doctorName::VARCHAR IS NULL OR (doctors.first_name || ' ' || doctors.last_name) ILIKE '%' || :doctorName::VARCHAR || '%')
+            WHERE
+                doctors.deleted_at IS NULL AND
+                (:doctorName::VARCHAR IS NULL OR (doctors.first_name || ' ' || doctors.last_name) ILIKE '%' || :doctorName::VARCHAR || '%')
                 AND (:hospitalName::VARCHAR IS NULL OR hospitals.hospital_name ILIKE '%' || :hospitalName::VARCHAR || '%')
                 AND (:departmentID::UUID IS NULL OR doctors.doctor_id IN (
                     SELECT dd.doctor_id
