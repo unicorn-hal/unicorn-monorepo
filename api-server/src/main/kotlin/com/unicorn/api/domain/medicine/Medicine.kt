@@ -9,6 +9,7 @@ data class Medicine private constructor(
     val userID: UserID,
     val count: Count,
     val quantity: Quantity,
+    val dosage: Dosage,
 ) {
     companion object {
         fun fromStore(
@@ -17,6 +18,7 @@ data class Medicine private constructor(
             userID: String,
             count: Int,
             quantity: Int,
+            dosage: Int,
         ): Medicine {
             return Medicine(
                 medicineID = MedicineID(medicineID),
@@ -24,20 +26,24 @@ data class Medicine private constructor(
                 userID = UserID(userID),
                 count = Count(count),
                 quantity = Quantity(quantity),
+                dosage = Dosage(dosage),
             )
         }
 
         fun create(
             medicineName: String,
             userID: UserID,
+            quantity: Int,
             count: Int,
+            dosage: Int,
         ): Medicine {
             return Medicine(
                 medicineID = MedicineID(UUID.randomUUID()),
                 medicineName = MedicineName(medicineName),
                 userID = userID,
                 count = Count(count),
-                quantity = Quantity(count),
+                quantity = Quantity(quantity),
+                dosage = Dosage(dosage),
             )
         }
     }
@@ -45,6 +51,8 @@ data class Medicine private constructor(
     fun update(
         medicineName: MedicineName,
         quantity: Quantity,
+        count: Count,
+        dosage: Dosage,
     ): Medicine {
         require(quantity.value <= count.value) {
             "quantity should be smaller than count."
@@ -52,6 +60,8 @@ data class Medicine private constructor(
         return this.copy(
             medicineName = medicineName,
             quantity = quantity,
+            count = count,
+            dosage = dosage,
         )
     }
 }
@@ -93,5 +103,12 @@ value class Count(val value: Int) {
 value class Quantity(val value: Int) {
     init {
         require(value > 0) { "quantity should be greater than 0" }
+    }
+}
+
+@JvmInline
+value class Dosage(val value: Int) {
+    init {
+        require(value > 0) { "dosage should be greater than 0" }
     }
 }

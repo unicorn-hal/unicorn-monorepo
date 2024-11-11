@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 @Sql("/db/user/Insert_Parent_Account_Data.sql")
 @Sql("/db/user/Insert_User_Data.sql")
 @Sql("/db/medicine/Insert_Medicine_Data.sql")
+@Sql("/db/medicine_reminder/Insert_Medicine_Reminder_Data.sql")
 class MedicinesGetTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -45,25 +46,66 @@ class MedicinesGetTest {
                             "medicineID": "123e4567-e89b-12d3-a456-426614174000",
                             "medicineName": "Paracetamol",
                             "count": 50,
-                            "quantity": 10
+                            "quantity": 10,
+                            "double": 1,
+                            "reminders": [
+                                {
+                                    "reminderID": "123e4567-e89b-12d3-a456-426614174010",
+                                    "reminderTime": "08:00",
+                                    "dayOfWeek": [
+                                        "monday",
+                                        "tuesday"
+                                    ]
+                                },
+                                {
+                                    "reminderID": "123e4567-e89b-12d3-a456-426614174011",
+                                    "reminderTime": "12:00",
+                                    "dayOfWeek": [
+                                        "wednesday",
+                                        "thursday"
+                                    ]
+                                }
+                            ]
                         },
                         {
                             "medicineID": "123e4567-e89b-12d3-a456-426614174001",
                             "medicineName": "Ibuprofen",
                             "count": 30,
-                            "quantity": 15
+                            "quantity": 15,
+                            "double": 1,
+                            "reminders": [
+                                {
+                                    "reminderID": "123e4567-e89b-12d3-a456-426614174012",
+                                    "reminderTime": "16:00",
+                                    "dayOfWeek": [
+                                        "friday",
+                                        "saturday"
+                                    ]
+                                },
+                                {
+                                    "reminderID": "123e4567-e89b-12d3-a456-426614174013",
+                                    "reminderTime": "20:00",
+                                    "dayOfWeek": [
+                                        "sunday"
+                                    ]
+                                }
+                            ]
                         },
                         {
                             "medicineID": "123e4567-e89b-12d3-a456-426614174002",
                             "medicineName": "Aspirin",
                             "count": 80,
-                            "quantity": 20
+                            "quantity": 20,
+                            "double": 1,
+                            "reminders": []
                         },
                         {
                             "medicineID": "123e4567-e89b-12d3-a456-426614174003",
                             "medicineName": "Amoxicillin",
                             "count": 20,
-                            "quantity": 5
+                            "quantity": 5,
+                            "double": 3,
+                            "reminders": []
                         }
                     ]
                 }

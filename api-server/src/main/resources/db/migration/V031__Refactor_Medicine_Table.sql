@@ -1,0 +1,1 @@
+ALTER TABLE medicines ADD COLUMN dosage INTEGER NOT NULL;

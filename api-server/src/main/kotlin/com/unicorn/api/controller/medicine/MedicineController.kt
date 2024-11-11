@@ -11,6 +11,7 @@ import com.unicorn.api.query_service.medicine.MedicineQueryService
 import com.unicorn.api.query_service.user.UserQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.LocalTime
 import java.util.*
 
 @RestController
@@ -89,9 +90,21 @@ class MedicineController(
 data class MedicinePostRequest(
     val medicineName: String,
     val count: Int,
+    val quantity: Int,
+    val dosage: Int,
+    val reminders: List<ReminderRequest>,
 )
 
 data class MedicinePutRequest(
     val medicineName: String,
+    val count: Int,
     val quantity: Int,
+    val dosage: Int,
+    val reminders: List<ReminderRequest>,
+)
+
+data class ReminderRequest(
+    val reminderID: UUID,
+    val reminderTime: LocalTime,
+    val dayOfWeek: List<String>,
 )
