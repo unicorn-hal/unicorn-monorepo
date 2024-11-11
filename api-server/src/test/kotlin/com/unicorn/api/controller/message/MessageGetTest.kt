@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional
 @Sql("/db/user/Insert_User_Data.sql")
 @Sql("/db/chat/Insert_Chat_Data.sql")
 @Sql("/db/message/Insert_Message_Data.sql")
+@Sql("/db/message/Insert_Deleted_Message_Data.sql")
 class MessageGetTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
