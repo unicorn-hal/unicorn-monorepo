@@ -4,6 +4,7 @@ import com.unicorn.api.query_service.health_checkup.HealthCheckupDto
 import com.unicorn.api.query_service.primary_doctor.PrimaryDoctorQueryService
 import com.unicorn.api.query_service.user.UserQueryService
 import com.unicorn.api.util.MailTransport
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
 interface SendMailHealthCheckupService {
@@ -16,6 +17,7 @@ class SendMailHealthCheckupServiceImpl(
     private val userQueryService: UserQueryService,
     private val primaryDoctorQueryService: PrimaryDoctorQueryService,
 ) : SendMailHealthCheckupService {
+    @Async
     override fun convertAndSend(healthCheckup: HealthCheckupDto) {
         val user =
             userQueryService.getOrNullBy(healthCheckup.userID)
