@@ -57,7 +57,7 @@ class UpdateMedicineServiceImpl(
                         MedicineReminder.of(
                             reminderID = reminder.reminderID,
                             reminderTime = reminder.reminderTime,
-                            dayOfWeek = reminder.dayOfWeek,
+                            dayOfWeek = reminder.reminderDayOfWeek,
                         )
                     },
             )

@@ -47,7 +47,7 @@ class MedicinePutTest {
                         ReminderRequest(
                             reminderID = UUID.fromString("123e4567-e89b-12d3-a456-426614174010"),
                             reminderTime = LocalTime.of(8, 0, 0),
-                            dayOfWeek = listOf("monday", "tuesday"),
+                            reminderDayOfWeek = listOf("monday", "tuesday"),
                         ),
                     ),
             )
@@ -79,9 +79,9 @@ class MedicinePutTest {
                         {
                             "reminderID": "${medicine.reminders[0].reminderID}",
                             "reminderTime": "${medicine.reminders[0].reminderTime}:00",
-                            "dayOfWeek": [
-                                "${medicine.reminders[0].dayOfWeek[0]}",
-                                "${medicine.reminders[0].dayOfWeek[1]}"
+                            "reminderDayOfWeek": [
+                                "${medicine.reminders[0].reminderDayOfWeek[0]}",
+                                "${medicine.reminders[0].reminderDayOfWeek[1]}"
                             ]
                         }
                     ]

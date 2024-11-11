@@ -106,5 +106,5 @@ data class MedicinePutRequest(
 data class ReminderRequest(
     val reminderID: UUID,
     val reminderTime: LocalTime,
-    val dayOfWeek: List<String>,
+    val reminderDayOfWeek: List<String>,
 )

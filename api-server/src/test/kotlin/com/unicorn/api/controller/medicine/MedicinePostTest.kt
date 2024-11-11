@@ -46,7 +46,7 @@ class MedicinePostTest {
                         ReminderRequest(
                             reminderID = UUID.fromString("123e4567-e89b-12d3-a456-426614174010"),
                             reminderTime = LocalTime.of(8, 0, 0),
-                            dayOfWeek = listOf("monday", "tuesday"),
+                            reminderDayOfWeek = listOf("monday", "tuesday"),
                         ),
                     ),
             )
