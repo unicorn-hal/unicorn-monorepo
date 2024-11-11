@@ -140,4 +140,69 @@ class DoctorTest {
 
         assertEquals("email should be valid", exception.message)
     }
+
+    @Test
+    fun `should unique departments`() {
+        val doctorID = "doctorID"
+        val hospitalID = HospitalID(UUID.randomUUID())
+        val firstName = "firstName"
+        val lastName = "lastName"
+        val email = "email@test.com"
+        val phoneNumber = "1234567890"
+        val doctorIconUrl = "doctorIconUrl"
+        val departments =
+            listOf(
+                DepartmentID(UUID.randomUUID()),
+                DepartmentID(UUID.randomUUID()),
+            )
+
+        val doctor =
+            Doctor.create(
+                doctorID,
+                hospitalID,
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                doctorIconUrl,
+                departments,
+            )
+
+        assertEquals(departments, doctor.departments)
+    }
+
+    @Test
+    fun `should not unique departments`() {
+        @Test
+        fun `create doctor`() {
+            val doctorID = "doctorID"
+            val hospitalID = HospitalID(UUID.randomUUID())
+            val firstName = "firstName"
+            val lastName = "lastName"
+            val email = "email@test.com"
+            val phoneNumber = "1234567890"
+            val doctorIconUrl = "doctorIconUrl"
+            val departments =
+                listOf(
+                    DepartmentID(UUID.fromString("a1dcb69e-472f-4a57-90a2-f2c63b62ec90")),
+                    DepartmentID(UUID.fromString("a1dcb69e-472f-4a57-90a2-f2c63b62ec90")),
+                )
+
+            val exception =
+                assertThrows(IllegalArgumentException::class.java) {
+                    Doctor.create(
+                        doctorID,
+                        hospitalID,
+                        firstName,
+                        lastName,
+                        email,
+                        phoneNumber,
+                        doctorIconUrl,
+                        departments,
+                    )
+                }
+
+            assertEquals("departmentID must be unique", exception.message)
+        }
+    }
 }
