@@ -28,11 +28,10 @@ class SendMailHealthCheckupServiceImpl(
                 //language=html
                 """
                 <html>
+                <head>
+                </head>
                 <body>
-                <h1>${user.firstName} ${user.lastName}の検査結果</h1>
-                <p>患者様の検査結果をお知らせします。</p>
-                <p>${healthCheckup.medicalRecord}</p>
-                <botton><a href="#">検査結果を確認する</a></button>
+                <a href="#">検査結果を確認する</a>
                 </body>
                 </html>
                 """

@@ -2,7 +2,7 @@ package com.unicorn.api.application_service.health_checkup
 
 import com.unicorn.api.controller.health_checkup.HealthCheckupPostRequest
 import com.unicorn.api.domain.health_checkup.HealthCheckup
-import com.unicorn.api.domain.health_checkup.HealthCheckupMailEvent
+import com.unicorn.api.domain.health_checkup.HealthCheckupSavedEvent
 import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.infrastructure.health_checkup.HealthCheckupRepository
 import com.unicorn.api.infrastructure.user.UserRepository
@@ -40,7 +40,7 @@ class SaveHealthCheckupServiceImpl(
             )
 
         healthCheckupRepository.store(healthCheckup)
-        eventPublisher.publishEvent(HealthCheckupMailEvent(healthCheckup))
+        eventPublisher.publishEvent(HealthCheckupSavedEvent(healthCheckup))
         return healthCheckup
     }
 }
