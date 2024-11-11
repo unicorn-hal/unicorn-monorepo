@@ -32,7 +32,7 @@ class MedicineQueryServiceImpl(
                         json_build_object(
                             'reminderID', medicine_reminders.reminder_id,
                             'reminderTime', medicine_reminders.reminder_time,
-                            'dayOfWeek', medicine_reminders.day_of_week
+                            'reminderDayOfWeek', medicine_reminders.day_of_week
                         )
                     ) FILTER (WHERE medicine_reminders.reminder_id IS NOT NULL),
                     '[]'
@@ -95,5 +95,5 @@ data class MedicineDto(
 data class MedicineReminderDto(
     val reminderID: UUID,
     val reminderTime: String,
-    val dayOfWeek: List<String>,
+    val reminderDayOfWeek: List<String>,
 )

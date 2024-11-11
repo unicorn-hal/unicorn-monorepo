@@ -52,7 +52,7 @@ class MedicinesGetTest {
                                 {
                                     "reminderID": "123e4567-e89b-12d3-a456-426614174010",
                                     "reminderTime": "08:00",
-                                    "dayOfWeek": [
+                                    "reminderDayOfWeek": [
                                         "monday",
                                         "tuesday"
                                     ]
@@ -60,7 +60,7 @@ class MedicinesGetTest {
                                 {
                                     "reminderID": "123e4567-e89b-12d3-a456-426614174011",
                                     "reminderTime": "12:00",
-                                    "dayOfWeek": [
+                                    "reminderDayOfWeek": [
                                         "wednesday",
                                         "thursday"
                                     ]
@@ -77,7 +77,7 @@ class MedicinesGetTest {
                                 {
                                     "reminderID": "123e4567-e89b-12d3-a456-426614174012",
                                     "reminderTime": "16:00",
-                                    "dayOfWeek": [
+                                    "reminderDayOfWeek": [
                                         "friday",
                                         "saturday"
                                     ]
@@ -85,7 +85,7 @@ class MedicinesGetTest {
                                 {
                                     "reminderID": "123e4567-e89b-12d3-a456-426614174013",
                                     "reminderTime": "20:00",
-                                    "dayOfWeek": [
+                                    "reminderDayOfWeek": [
                                         "sunday"
                                     ]
                                 }
