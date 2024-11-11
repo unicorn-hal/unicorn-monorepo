@@ -47,7 +47,7 @@ class MedicinesGetTest {
                             "medicineName": "Paracetamol",
                             "count": 50,
                             "quantity": 10,
-                            "double": 1,
+                            "dosage": 1,
                             "reminders": [
                                 {
                                     "reminderID": "123e4567-e89b-12d3-a456-426614174010",
@@ -72,7 +72,7 @@ class MedicinesGetTest {
                             "medicineName": "Ibuprofen",
                             "count": 30,
                             "quantity": 15,
-                            "double": 1,
+                            "dosage": 1,
                             "reminders": [
                                 {
                                     "reminderID": "123e4567-e89b-12d3-a456-426614174012",
@@ -96,7 +96,7 @@ class MedicinesGetTest {
                             "medicineName": "Aspirin",
                             "count": 80,
                             "quantity": 20,
-                            "double": 1,
+                            "dosage": 1,
                             "reminders": []
                         },
                         {
@@ -104,7 +104,7 @@ class MedicinesGetTest {
                             "medicineName": "Amoxicillin",
                             "count": 20,
                             "quantity": 5,
-                            "double": 3,
+                            "dosage": 3,
                             "reminders": []
                         }
                     ]

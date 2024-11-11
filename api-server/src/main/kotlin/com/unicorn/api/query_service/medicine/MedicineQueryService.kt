@@ -69,7 +69,7 @@ class MedicineQueryServiceImpl(
                         medicineName = rs.getString("medicine_name"),
                         count = rs.getInt("count"),
                         quantity = rs.getInt("quantity"),
-                        double = rs.getInt("dosage"),
+                        dosage = rs.getInt("dosage"),
                         reminders = formatedReminders,
                     )
                 },
@@ -88,7 +88,7 @@ data class MedicineDto(
     val medicineName: String,
     val count: Int,
     val quantity: Int,
-    val double: Int,
+    val dosage: Int,
     val reminders: List<MedicineReminderDto>,
 )
 
