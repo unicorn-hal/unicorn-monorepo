@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalTime
 import java.util.*
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
@@ -25,7 +26,8 @@ import java.util.*
 @Sql("/db/user/Insert_Parent_Account_Data.sql")
 @Sql("/db/user/Insert_User_Data.sql")
 @Sql("/db/medicine/Insert_Medicine_Data.sql")
-public class MedicinePutTest {
+@Sql("/db/medicine_reminder/Insert_Medicine_Reminder_Data.sql")
+class MedicinePutTest {
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
@@ -38,6 +40,16 @@ public class MedicinePutTest {
             MedicinePutRequest(
                 medicineName = "test-medicine",
                 quantity = 2,
+                count = 50,
+                dosage = 3,
+                reminders =
+                    listOf(
+                        ReminderRequest(
+                            reminderID = UUID.fromString("123e4567-e89b-12d3-a456-426614174010"),
+                            reminderTime = LocalTime.of(8, 0, 0),
+                            dayOfWeek = listOf("monday", "tuesday"),
+                        ),
+                    ),
             )
 
         val medicineID = "123e4567-e89b-12d3-a456-426614174000"
@@ -59,11 +71,20 @@ public class MedicinePutTest {
             content().json(
                 """
                 {
-                    "medicineID": "$medicineID",
                     "medicineName": "${medicine.medicineName}",
-                    "userID": "$userID",
-                    "count": 50,
-                    "quantity": ${medicine.quantity}
+                    "count": ${medicine.count},
+                    "quantity": ${medicine.quantity},
+                    "dosage": ${medicine.dosage},
+                    "reminders": [
+                        {
+                            "reminderID": "${medicine.reminders[0].reminderID}",
+                            "reminderTime": "${medicine.reminders[0].reminderTime}:00",
+                            "dayOfWeek": [
+                                "${medicine.reminders[0].dayOfWeek[0]}",
+                                "${medicine.reminders[0].dayOfWeek[1]}"
+                            ]
+                        }
+                    ]
                 }
                 """.trimIndent(),
                 true,
@@ -77,6 +98,9 @@ public class MedicinePutTest {
             MedicinePutRequest(
                 medicineName = "test-medicine",
                 quantity = 2,
+                count = 50,
+                dosage = 3,
+                reminders = emptyList(),
             )
 
         val invalidMedicineID = "invalid-id"
@@ -100,6 +124,9 @@ public class MedicinePutTest {
             MedicinePutRequest(
                 medicineName = "test-medicine",
                 quantity = 100,
+                count = 50,
+                dosage = 3,
+                reminders = emptyList(),
             )
 
         val userID = "test"
@@ -123,6 +150,9 @@ public class MedicinePutTest {
             MedicinePutRequest(
                 medicineName = "test-medicine",
                 quantity = 2,
+                count = 50,
+                dosage = 3,
+                reminders = emptyList(),
             )
 
         val userID = "non-existent-user"
@@ -146,6 +176,9 @@ public class MedicinePutTest {
             MedicinePutRequest(
                 medicineName = "test-medicine",
                 quantity = 2,
+                count = 50,
+                dosage = 3,
+                reminders = emptyList(),
             )
 
         val userID = "test"
