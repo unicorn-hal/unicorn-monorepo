@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 @Sql("/db/user/Insert_User_Data.sql")
 @Sql("/db/medicine/Insert_Medicine_Data.sql")
 @Sql("/db/medicine_reminder/Insert_Medicine_Reminder_Data.sql")
+@Sql("/db/medicine_reminder/Insert_Deleted_Medicine_Reminder_Data.sql")
 class MedicinesGetTest {
     @Autowired
     private lateinit var mockMvc: MockMvc

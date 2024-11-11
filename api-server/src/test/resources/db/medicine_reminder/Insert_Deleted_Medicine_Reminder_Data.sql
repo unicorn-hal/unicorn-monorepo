@@ -1,0 +1,2 @@
+INSERT INTO medicine_reminders (reminder_id, medicine_id, reminder_time, day_of_week, created_at, deleted_at) VALUES
+    ('123e4567-e89b-12d3-a456-426614174030', '123e4567-e89b-12d3-a456-426614174000', '08:00', '{monday, tuesday}', NOW(), NOW());

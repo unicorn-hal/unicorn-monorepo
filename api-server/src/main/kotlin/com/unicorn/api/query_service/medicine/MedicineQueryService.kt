@@ -39,10 +39,10 @@ class MedicineQueryServiceImpl(
                 ) AS reminders
             FROM medicines
             LEFT JOIN medicine_reminders ON medicines.medicine_id  = medicine_reminders.medicine_id
+                AND medicine_reminders.deleted_at IS NULL
             WHERE 
                 user_id = :userID
                 AND medicines.deleted_at IS NULL
-                AND medicine_reminders.deleted_at IS NULL
             GROUP BY medicines.medicine_id
             """.trimIndent()
 
