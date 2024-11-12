@@ -1,4 +1,4 @@
-package com.unicorn.api.infrastructure.chat_support
+package com.unicorn.api.infrastructure.call_support
 
 import com.unicorn.api.domain.call_support.CallSupport
 import com.unicorn.api.domain.doctor.DoctorID

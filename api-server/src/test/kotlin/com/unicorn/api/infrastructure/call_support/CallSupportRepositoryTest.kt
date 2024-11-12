@@ -2,7 +2,6 @@ package com.unicorn.api.infrastructure.call_support
 
 import com.unicorn.api.domain.call_support.CallSupport
 import com.unicorn.api.domain.doctor.DoctorID
-import com.unicorn.api.infrastructure.chat_support.CallSupportRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

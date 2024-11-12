@@ -1,8 +1,8 @@
 package com.unicorn.api.application_service.doctor
 
 import com.unicorn.api.domain.doctor.DoctorID
-import com.unicorn.api.infrastructure.call_support.ChatSupportRepository
-import com.unicorn.api.infrastructure.chat_support.CallSupportRepository
+import com.unicorn.api.infrastructure.call_support.CallSupportRepository
+import com.unicorn.api.infrastructure.chat_support.ChatSupportRepository
 import com.unicorn.api.infrastructure.doctor.DoctorRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
