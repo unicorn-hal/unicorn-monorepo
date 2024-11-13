@@ -51,7 +51,8 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      - test-java
+      - test-java:
+          context: MAIL_ENV
     # - deploy:
     #     requires:
     #       - test-java

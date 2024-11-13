@@ -22,6 +22,10 @@ SPRING_DATASOURCE_USERNAME=postgres
 SPRING_DATASOURCE_PASSWORD=password
 SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
 SPRING_TEST_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:5433/unicorn-test
+MAIL_HOST= #メールのホスト名
+MAIL_USERNAME= #メールのユーザー名
+MAIL_PASSWORD= #メールのパスワード
+MAIL_PORT= #メールのポート番号
 ```
 
 ### 方法1

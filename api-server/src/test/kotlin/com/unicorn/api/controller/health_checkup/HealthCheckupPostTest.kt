@@ -1,12 +1,15 @@
 package com.unicorn.api.controller.health_checkup
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.unicorn.api.util.MailTransport
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.test.context.TestPropertySource
@@ -24,9 +27,15 @@ import java.util.*
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @AutoConfigureMockMvc
 @Transactional
-@Sql("/db/user/Insert_Parent_Account_Data.sql")
-@Sql("/db/user/Insert_User_Data.sql")
-@Sql("/db/user/Insert_Deleted_User_Data.sql")
+@Sql("/db/primary_doctor/Insert_Parent_Account_Data.sql")
+@Sql("/db/primary_doctor/Insert_User_Data.sql")
+@Sql("/db/primary_doctor/Insert_Hospital_Data.sql")
+@Sql("/db/primary_doctor/Insert_Department_Data.sql")
+@Sql("/db/primary_doctor/Insert_Doctor_Data.sql")
+@Sql("/db/primary_doctor/Insert_Doctor_Department_Data.sql")
+@Sql("/db/primary_doctor/Insert_PrimaryDoctor_Data.sql")
+@Sql("/db/primary_doctor/Insert_Call_Support_Data.sql")
+@Sql("/db/primary_doctor/Insert_Chat_Support_Data.sql")
 @Sql("/db/health_checkup/Insert_HealthCheckup_Data.sql")
 class HealthCheckupPostTest {
     @Autowired
@@ -35,8 +44,12 @@ class HealthCheckupPostTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
+    @MockBean
+    private lateinit var mailTransport: MailTransport
+
     @Test
-    fun `should return 200 when create health checkup`() {
+    fun `should return 200 when create health checkup and send mail`() {
+        doNothing().`when`(mailTransport).send(anyString(), anyString(), anyString())
         val healthCheckup =
             HealthCheckupPostRequest(
                 bodyTemperature = 36.5,
