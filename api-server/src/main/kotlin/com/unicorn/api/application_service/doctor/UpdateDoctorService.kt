@@ -8,8 +8,8 @@ import com.unicorn.api.domain.chat_support.ChatSupportStartHour
 import com.unicorn.api.domain.department.DepartmentID
 import com.unicorn.api.domain.doctor.*
 import com.unicorn.api.domain.hospital.HospitalID
-import com.unicorn.api.infrastructure.call_support.ChatSupportRepository
-import com.unicorn.api.infrastructure.chat_support.CallSupportRepository
+import com.unicorn.api.infrastructure.call_support.CallSupportRepository
+import com.unicorn.api.infrastructure.chat_support.ChatSupportRepository
 import com.unicorn.api.infrastructure.department.DepartmentRepository
 import com.unicorn.api.infrastructure.doctor.DoctorRepository
 import com.unicorn.api.infrastructure.hospital.HospitalRepository

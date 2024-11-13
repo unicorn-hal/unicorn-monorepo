@@ -12,6 +12,7 @@ import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
+import kotlin.test.assertEquals
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
 @SpringBootTest
@@ -35,7 +36,8 @@ class MedicineRepositoryTest {
                 user_id,
                 medicine_name,
                 count,
-                quantity
+                quantity,
+                dosage
             FROM medicines WHERE medicine_id = :medicineID AND deleted_at IS NULL
             """.trimIndent()
 
@@ -51,6 +53,7 @@ class MedicineRepositoryTest {
                 userID = rs.getString("user_id"),
                 count = rs.getInt("count"),
                 quantity = rs.getInt("quantity"),
+                dosage = rs.getInt("dosage"),
             )
         }.singleOrNull()
     }
@@ -63,15 +66,18 @@ class MedicineRepositoryTest {
                 medicineName = "Aspirin",
                 userID = userID,
                 count = 10,
+                quantity = 10,
+                dosage = 5,
             )
 
         medicineRepository.store(medicine)
 
         val storedMedicine = findMedicineByID(medicine.medicineID)
-        assert(storedMedicine?.medicineID == medicine.medicineID)
-        assert(storedMedicine?.medicineName == medicine.medicineName)
-        assert(storedMedicine?.count == medicine.count)
-        assert(storedMedicine?.quantity == medicine.quantity)
+        assertEquals(medicine.medicineID, storedMedicine?.medicineID)
+        assertEquals(medicine.medicineName, storedMedicine?.medicineName)
+        assertEquals(medicine.count, storedMedicine?.count)
+        assertEquals(medicine.quantity, storedMedicine?.quantity)
+        assertEquals(medicine.dosage, storedMedicine?.dosage)
     }
 
     @Test
@@ -84,20 +90,24 @@ class MedicineRepositoryTest {
                 userID = userID.value,
                 count = 30,
                 quantity = 15,
+                dosage = 5,
             )
         val updatedMedicine =
             medicine.update(
                 medicineName = medicine.medicineName,
                 quantity = Quantity(10),
+                count = Count(30),
+                dosage = Dosage(10),
             )
 
         medicineRepository.store(updatedMedicine)
 
         val result = findMedicineByID(medicine.medicineID)
-        assert(result?.medicineID == medicine.medicineID)
-        assert(result?.medicineName == updatedMedicine.medicineName)
-        assert(result?.count == medicine.count)
-        assert(result?.quantity == updatedMedicine.quantity)
+        assertEquals(updatedMedicine.medicineID, result?.medicineID)
+        assertEquals(updatedMedicine.medicineName, result?.medicineName)
+        assertEquals(updatedMedicine.count, result?.count)
+        assertEquals(updatedMedicine.quantity, result?.quantity)
+        assertEquals(updatedMedicine.dosage, result?.dosage)
     }
 
     @Test
@@ -106,10 +116,11 @@ class MedicineRepositoryTest {
 
         val foundMedicine = medicineRepository.getOrNullBy(medicineID)
 
-        assert(foundMedicine?.medicineID == medicineID)
-        assert(foundMedicine?.medicineName?.value == "Aspirin")
-        assert(foundMedicine?.count?.value == 80)
-        assert(foundMedicine?.quantity?.value == 20)
+        assertEquals(medicineID, foundMedicine?.medicineID)
+        assertEquals("Aspirin", foundMedicine?.medicineName?.value)
+        assertEquals(80, foundMedicine?.count?.value)
+        assertEquals(20, foundMedicine?.quantity?.value)
+        assertEquals(1, foundMedicine?.dosage?.value)
     }
 
     @Test
@@ -122,6 +133,8 @@ class MedicineRepositoryTest {
                 medicineName = "Test Medicine",
                 userID = userID,
                 count = 1,
+                quantity = 1,
+                dosage = 1,
             )
 
         medicineRepository.store(medicine)
@@ -130,6 +143,6 @@ class MedicineRepositoryTest {
         medicineRepository.delete(medicine)
 
         val deletedMedicine = findMedicineByID(medicineID)
-        assert(deletedMedicine == null)
+        assertEquals(null, deletedMedicine)
     }
 }

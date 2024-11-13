@@ -97,9 +97,9 @@ class DoctorRepositoryImpl(
             JSONB_AGG(dd.department_id) as departments
         FROM doctors
         LEFT JOIN doctor_departments dd on doctors.doctor_id = dd.doctor_id
+            AND dd.deleted_at IS NULL
         WHERE doctors.doctor_id = :doctorID
             AND doctors.deleted_at IS NULL
-            AND dd.deleted_at IS NULL
         GROUP BY doctors.doctor_id
         """.trimIndent()
 
