@@ -17,7 +17,6 @@ class HealthCheckupEventListenerImpl(
 ) : HealthCheckupEventListener {
     @EventListener
     override fun onSendMail(healthCheckupSavedEvent: HealthCheckupSavedEvent) {
-        val healthCheckup = healthCheckupQueryService.getOrNullBy(healthCheckupSavedEvent.HealthCheckup.healthCheckupID) ?: return
-        sendMailHealthCheckupService.convertAndSend(healthCheckup)
+        sendMailHealthCheckupService.convertAndSend(healthCheckupSavedEvent)
     }
 }
