@@ -70,7 +70,7 @@ class CallRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJ
                 user_id,
                 call_start_time,
                 call_end_time
-            FROM call_reservation
+            FROM call_reservations
             WHERE call_reservation_id = :callReservationID
                 AND deleted_at IS NULL
             """.trimIndent()

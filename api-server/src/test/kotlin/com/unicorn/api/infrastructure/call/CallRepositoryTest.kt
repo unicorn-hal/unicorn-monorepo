@@ -62,7 +62,7 @@ class CallRepositoryTest {
     }
 
     @Test
-    fun `should store call`() {
+    fun `should store call reservation`() {
         val call =
             Call.create(
                 callReservationID = UUID.fromString("211177ed-92f8-a956-825f-c31b2cad8b15"),
@@ -83,7 +83,26 @@ class CallRepositoryTest {
     }
 
     @Test
-    fun `should update call`() {
+    fun `should get call reservation by callReservationID`() {
+        val callReservationID = UUID.fromString("211177ed-92f8-a956-825f-c31b2cad8b15")
+        val call =
+            Call.fromStore(
+                callReservationID = callReservationID,
+                doctorID = "12345",
+                userID = "12345",
+                callStartTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 0, 0), ZoneOffset.of("+09:00")),
+                callEndTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 30, 0), ZoneOffset.of("+09:00")),
+            )
+
+        callRepository.store(call)
+
+        val getCall = callRepository.getOrNullBy(call.callReservationID)
+
+        assertEquals(call, getCall)
+    }
+
+    @Test
+    fun `should update call reservation`() {
         val call =
             Call.create(
                 callReservationID = UUID.fromString("20bc77ed-92f8-a956-825f-c31b2cad8b15"),
@@ -103,22 +122,17 @@ class CallRepositoryTest {
     }
 
     @Test
-    fun `should delete call`() {
-        val callReservationID = UUID.fromString("20bc77ed-92f8-a956-825f-c31b2cad8b15")
-        val doctorID = "12345"
-        val userID = "12345"
-        val callStartTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 0, 0), ZoneOffset.of("+09:00"))
-        val callEndTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 30, 0), ZoneOffset.of("+09:00"))
-
+    fun `should delete call reservation`() {
         val call =
             Call.create(
-                callReservationID = callReservationID,
-                doctorID = doctorID,
-                userID = userID,
-                callStartTime = callStartTime,
-                callEndTime = callEndTime,
+                callReservationID = UUID.fromString("20bc77ed-92f8-a956-825f-c31b2cad8b15"),
+                doctorID = "12345",
+                userID = "12345",
+                callStartTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 0, 0), ZoneOffset.of("+09:00")),
+                callEndTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 30, 0), ZoneOffset.of("+09:00")),
             )
 
+        callRepository.store(call)
         callRepository.delete(call)
 
         val deletedCall = findBy(call.callReservationID.value)
