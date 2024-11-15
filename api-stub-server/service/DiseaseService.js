@@ -6,20 +6,17 @@
  * 有名な病気一覧を取得します
  *
  * xUID String 
- * returns inline_response_200_9
+ * returns inline_response_200_10
  **/
-exports.diseasesFamousGET = function(xUID) {
-  return new Promise(function(resolve, reject) {
+exports.diseasesFamousGET = function (xUID) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "data" : [ {
-    "diseaseName" : "高血圧",
-    "diseaseID" : 1
-  }, {
-    "diseaseName" : "高血圧",
-    "diseaseID" : 1
-  } ]
-};
+      "data": [{
+        "diseaseName": "高血圧",
+        "diseaseID": 1
+      }]
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -35,20 +32,17 @@ exports.diseasesFamousGET = function(xUID) {
  *
  * xUID String 
  * diseaseName String 病気名の部分一致検索 (optional)
- * returns inline_response_200_9
+ * returns inline_response_200_10
  **/
-exports.diseasesGET = function(xUID,diseaseName) {
-  return new Promise(function(resolve, reject) {
+exports.diseasesGET = function (xUID, diseaseName) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "data" : [ {
-    "diseaseName" : "高血圧",
-    "diseaseID" : 1
-  }, {
-    "diseaseName" : "高血圧",
-    "diseaseID" : 1
-  } ]
-};
+      "data": [{
+        "diseaseName": "高血圧",
+        "diseaseID": 1
+      }]
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
