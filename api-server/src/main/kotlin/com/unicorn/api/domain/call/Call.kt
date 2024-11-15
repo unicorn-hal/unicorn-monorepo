@@ -31,7 +31,6 @@ data class Call
             }
 
             fun create(
-                callReservationID: UUID,
                 doctorID: String,
                 userID: String,
                 callStartTime: OffsetDateTime,

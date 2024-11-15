@@ -13,7 +13,6 @@ class CallTest {
     fun `should create callReservation`() {
         val call =
             Call.create(
-                callReservationID = UUID.fromString("211177ed-92f8-a956-825f-c31b2cad8b15"),
                 doctorID = "12345",
                 userID = "12345",
                 callStartTime = callStartTime,
@@ -33,7 +32,6 @@ class CallTest {
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
                 Call.create(
-                    callReservationID = UUID.fromString("211177ed-92f8-a956-825f-c31b2cad8b15"),
                     doctorID = "12345",
                     userID = "12345",
                     callStartTime = callStartTime,

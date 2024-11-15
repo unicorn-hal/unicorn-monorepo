@@ -65,7 +65,6 @@ class CallRepositoryTest {
     fun `should store call reservation`() {
         val call =
             Call.create(
-                callReservationID = UUID.fromString("211177ed-92f8-a956-825f-c31b2cad8b15"),
                 doctorID = "12345",
                 userID = "12345",
                 callStartTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 0, 0), ZoneOffset.of("+09:00")),
@@ -103,7 +102,6 @@ class CallRepositoryTest {
     fun `should update call reservation`() {
         val call =
             Call.create(
-                callReservationID = UUID.fromString("20bc77ed-92f8-a956-825f-c31b2cad8b15"),
                 doctorID = "12345",
                 userID = "12345",
                 callStartTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 0, 0), ZoneOffset.of("+09:00")),
@@ -123,7 +121,6 @@ class CallRepositoryTest {
     fun `should delete call reservation`() {
         val call =
             Call.create(
-                callReservationID = UUID.fromString("20bc77ed-92f8-a956-825f-c31b2cad8b15"),
                 doctorID = "12345",
                 userID = "12345",
                 callStartTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 0, 0), ZoneOffset.of("+09:00")),
