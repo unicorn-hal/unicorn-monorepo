@@ -42,3 +42,13 @@ module.exports.callsPOST = function callsPOST (req, res, next, body, xUID) {
       utils.writeJson(res, response);
     });
 };
+
+module.exports.doctorsDoctorIDCallsGET = function doctorsDoctorIDCallsGET (req, res, next, xUID, doctorID) {
+  Call.doctorsDoctorIDCallsGET(xUID, doctorID)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
