@@ -94,8 +94,6 @@ class CallRepositoryTest {
                 callEndTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 30, 0), ZoneOffset.of("+09:00")),
             )
 
-        callRepository.store(call)
-
         val getCall = callRepository.getOrNullBy(call.callReservationID)
 
         assertEquals(call, getCall)
@@ -132,7 +130,6 @@ class CallRepositoryTest {
                 callEndTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 30, 0), ZoneOffset.of("+09:00")),
             )
 
-        callRepository.store(call)
         callRepository.delete(call)
 
         val deletedCall = findBy(call.callReservationID.value)

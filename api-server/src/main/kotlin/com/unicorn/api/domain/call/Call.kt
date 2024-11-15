@@ -1,5 +1,7 @@
 package com.unicorn.api.domain.call
 
+import com.unicorn.api.domain.doctor.DoctorID
+import com.unicorn.api.domain.user.UserID
 import java.time.OffsetDateTime
 import java.util.UUID
 
@@ -53,38 +55,30 @@ data class Call
         }
 
         fun update(
-            callReservationID: CallReservationID,
             doctorID: DoctorID,
             userID: UserID,
-            callStartTime: CallStartTime,
-            callEndTime: CallEndTime,
+            callStartTime: OffsetDateTime,
+            callEndTime: OffsetDateTime,
         ): Call {
+            val startTime = CallStartTime(callStartTime)
+            val endTime = CallEndTime(callEndTime)
+
+            require(startTime.value.isBefore(endTime.value)) {
+                "The call start time must be before the end time."
+            }
+
             return this.copy(
                 callReservationID = callReservationID,
                 doctorID = doctorID,
                 userID = userID,
-                callStartTime = callStartTime,
-                callEndTime = callEndTime,
+                callStartTime = startTime,
+                callEndTime = endTime,
             )
         }
     }
 
 @JvmInline
 value class CallReservationID(val value: UUID)
-
-@JvmInline
-value class DoctorID(val value: String) {
-    init {
-        require(value.isNotBlank()) { "doctorID should not be blank" }
-    }
-}
-
-@JvmInline
-value class UserID(val value: String) {
-    init {
-        require(value.isNotBlank()) { "userID should not be blank" }
-    }
-}
 
 @JvmInline
 value class CallStartTime(val value: OffsetDateTime)
