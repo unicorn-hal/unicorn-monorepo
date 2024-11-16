@@ -1,5 +1,7 @@
 package com.unicorn.api.domain.call
 
+import com.unicorn.api.domain.doctor.DoctorID
+import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.OffsetDateTime

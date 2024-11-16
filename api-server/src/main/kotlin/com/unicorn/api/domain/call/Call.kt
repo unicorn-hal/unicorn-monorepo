@@ -1,5 +1,7 @@
 package com.unicorn.api.domain.call
 
+import com.unicorn.api.domain.doctor.DoctorID
+import com.unicorn.api.domain.user.UserID
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -75,12 +77,6 @@ data class Call private constructor(
 
 @JvmInline
 value class CallReservationID(val value: UUID)
-
-@JvmInline
-value class DoctorID(val value: String)
-
-@JvmInline
-value class UserID(val value: String)
 
 @JvmInline
 value class CallStartTime(val value: OffsetDateTime)

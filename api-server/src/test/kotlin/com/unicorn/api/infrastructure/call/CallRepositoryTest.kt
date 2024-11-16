@@ -101,7 +101,8 @@ class CallRepositoryTest {
     @Test
     fun `should update call reservation`() {
         val call =
-            Call.create(
+            Call.fromStore(
+                callReservationID = UUID.fromString("211177ed-92f8-a956-825f-c31b2cad8b15"),
                 doctorID = "12345",
                 userID = "12345",
                 callStartTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 0, 0), ZoneOffset.of("+09:00")),
