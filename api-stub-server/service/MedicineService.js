@@ -8,23 +8,23 @@
  * xUID String 
  * returns inline_response_200_8
  **/
-exports.medicinesGET = function (xUID) {
-  return new Promise(function (resolve, reject) {
+exports.medicinesGET = function(xUID) {
+  return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-      "data": [{
-        "reminders": [{
-          "reminderID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-          "reminderDayOfWeek": ["monday"],
-          "reminderTime": "09:00"
-        }],
-        "dosage": 3,
-        "quantity": 20,
-        "medicineID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        "count": 30,
-        "medicineName": "パラセタモール"
-      }]
-    };
+  "data" : [ {
+    "reminders" : [ {
+      "reminderID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "reminderDayOfWeek" : [ "monday"],
+      "reminderTime" : "09:00"
+    }],
+    "dosage" : 3,
+    "quantity" : 20,
+    "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "count" : 30,
+    "medicineName" : "パラセタモール"
+  } ]
+};
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -42,8 +42,8 @@ exports.medicinesGET = function (xUID) {
  * medicineID String 
  * no response value expected for this operation
  **/
-exports.medicinesMedicineIDDELETE = function (xUID, medicineID) {
-  return new Promise(function (resolve, reject) {
+exports.medicinesMedicineIDDELETE = function(xUID,medicineID) {
+  return new Promise(function(resolve, reject) {
     resolve();
   });
 }
@@ -58,21 +58,21 @@ exports.medicinesMedicineIDDELETE = function (xUID, medicineID) {
  * xUID String 
  * returns MedicineResponse
  **/
-exports.medicinesMedicineIDPUT = function (body, medicineID, xUID) {
-  return new Promise(function (resolve, reject) {
+exports.medicinesMedicineIDPUT = function(body,medicineID,xUID) {
+  return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-      "reminders": [{
-        "reminderID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        "reminderDayOfWeek": ["monday"],
-        "reminderTime": "09:00"
-      }],
-      "dosage": 3,
-      "quantity": 20,
-      "medicineID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-      "count": 30,
-      "medicineName": "パラセタモール"
-    };
+  "reminders" : [ {
+    "reminderID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "reminderDayOfWeek" : [ "monday" ],
+    "reminderTime" : "09:00"
+  }],
+  "dosage" : 3,
+  "quantity" : 20,
+  "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "count" : 30,
+  "medicineName" : "パラセタモール"
+};
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -90,21 +90,21 @@ exports.medicinesMedicineIDPUT = function (body, medicineID, xUID) {
  * xUID String 
  * returns MedicineResponse
  **/
-exports.medicinesPOST = function (body, xUID) {
-  return new Promise(function (resolve, reject) {
+exports.medicinesPOST = function(body,xUID) {
+  return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-      "reminders": [{
-        "reminderID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        "reminderDayOfWeek": ["monday"],
-        "reminderTime": "09:00"
-      }],
-      "dosage": 3,
-      "quantity": 20,
-      "medicineID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-      "count": 30,
-      "medicineName": "パラセタモール"
-    };
+  "reminders" : [ {
+    "reminderID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "reminderDayOfWeek" : [ "monday" ],
+    "reminderTime" : "09:00"
+  } ],
+  "dosage" : 3,
+  "quantity" : 20,
+  "medicineID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "count" : 30,
+  "medicineName" : "パラセタモール"
+};
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -117,17 +117,18 @@ exports.medicinesPOST = function (body, xUID) {
 /**
  * リマインダー一覧取得
  *
- * xUID String 
+ * reminderTime String リマインダーの時間
+ * reminderDayOfWeek String リマインダーの曜日
  * returns inline_response_200_9
  **/
-exports.medicinesRemindersGET = function (xUID) {
-  return new Promise(function (resolve, reject) {
+exports.medicinesRemindersGET = function(reminderTime,reminderDayOfWeek) {
+  return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-      "data": [{
-        "fcmTokenId": "fcm_token_id"
-      }]
-    };
+  "data" : [ {
+    "fcmTokenId" : "fcm_token_id"
+  } ]
+};
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {

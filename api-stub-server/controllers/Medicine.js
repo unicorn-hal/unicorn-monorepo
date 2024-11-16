@@ -43,8 +43,8 @@ module.exports.medicinesPOST = function medicinesPOST (req, res, next, body, xUI
     });
 };
 
-module.exports.medicinesRemindersGET = function medicinesRemindersGET (req, res, next, xUID) {
-  Medicine.medicinesRemindersGET(xUID)
+module.exports.medicinesRemindersGET = function medicinesRemindersGET (req, res, next, reminderTime, reminderDayOfWeek) {
+  Medicine.medicinesRemindersGET(reminderTime, reminderDayOfWeek)
     .then(function (response) {
       utils.writeJson(res, response);
     })
