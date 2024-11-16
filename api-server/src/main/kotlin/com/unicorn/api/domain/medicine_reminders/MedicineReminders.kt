@@ -1,4 +1,4 @@
-package com.unicorn.api.domain.medicine_reminder
+package com.unicorn.api.domain.medicine_reminders
 
 import com.unicorn.api.domain.medicine.MedicineID
 import java.time.LocalTime
