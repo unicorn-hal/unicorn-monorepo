@@ -9,8 +9,8 @@
  * familyEmailID String 
  * no response value expected for this operation
  **/
-exports.family_emailsFamilyEmailIDDELETE = function (xUID, familyEmailID) {
-  return new Promise(function (resolve, reject) {
+exports.family_emailsFamilyEmailIDDELETE = function(xUID,familyEmailID) {
+  return new Promise(function(resolve, reject) {
     resolve();
   });
 }
@@ -25,17 +25,16 @@ exports.family_emailsFamilyEmailIDDELETE = function (xUID, familyEmailID) {
  * xUID String 
  * returns FamilyEmailResponse
  **/
-exports.family_emailsFamilyEmailIDPUT = function (body, familyEmailID, xUID) {
-  return new Promise(function (resolve, reject) {
+exports.family_emailsFamilyEmailIDPUT = function(body,familyEmailID,xUID) {
+  return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-      "firstName": "太郎",
-      "lastName": "山田",
-      "phoneNumber": "09012345678",
-      "familyEmailID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-      "iconImageUrl": "https://placehold.jp/150x150.png",
-      "email": "sample@sample.com"
-    };
+  "firstName" : "太郎",
+  "lastName" : "山田",
+  "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "iconImageUrl" : "https://placehold.jp/150x150.png",
+  "email" : "sample@sample.com"
+};
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -52,19 +51,18 @@ exports.family_emailsFamilyEmailIDPUT = function (body, familyEmailID, xUID) {
  * xUID String 
  * returns inline_response_200_7
  **/
-exports.family_emailsGET = function (xUID) {
-  return new Promise(function (resolve, reject) {
+exports.family_emailsGET = function(xUID) {
+  return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-      "data": [{
-        "firstName": "太郎",
-        "lastName": "山田",
-        "phoneNumber": "09012345678",
-        "familyEmailID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-        "iconImageUrl": "https://placehold.jp/150x150.png",
-        "email": "sample@sample.com"
-      }]
-    };
+  "data" : [ {
+    "firstName" : "太郎",
+    "lastName" : "山田",
+    "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "iconImageUrl" : "https://placehold.jp/150x150.png",
+    "email" : "sample@sample.com"
+  } ]
+};
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -82,17 +80,16 @@ exports.family_emailsGET = function (xUID) {
  * xUID String 
  * returns FamilyEmailResponse
  **/
-exports.family_emailsPOST = function (body, xUID) {
-  return new Promise(function (resolve, reject) {
+exports.family_emailsPOST = function(body,xUID) {
+  return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-      "firstName": "太郎",
-      "lastName": "山田",
-      "phoneNumber": "09012345678",
-      "familyEmailID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-      "iconImageUrl": "https://placehold.jp/150x150.png",
-      "email": "sample@sample.com"
-    };
+  "firstName" : "太郎",
+  "lastName" : "山田",
+  "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "iconImageUrl" : "https://placehold.jp/150x150.png",
+  "email" : "sample@sample.com"
+};
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {

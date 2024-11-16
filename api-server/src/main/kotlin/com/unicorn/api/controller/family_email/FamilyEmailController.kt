@@ -87,7 +87,6 @@ data class FamilyEmailPostRequest(
     val email: String,
     val firstName: String,
     val lastName: String,
-    val phoneNumber: String,
     val iconImageUrl: String?,
 )
 
@@ -95,6 +94,5 @@ data class FamilyEmailPutRequest(
     val email: String,
     val firstName: String,
     val lastName: String,
-    val phoneNumber: String,
     val iconImageUrl: String?,
 )

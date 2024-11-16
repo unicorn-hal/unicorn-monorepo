@@ -36,7 +36,6 @@ class UpdateFamilyEmailServiceImpl(
                 email = Email(familyEmailPutRequest.email),
                 firstName = FirstName(familyEmailPutRequest.firstName),
                 lastName = LastName(familyEmailPutRequest.lastName),
-                phoneNumber = PhoneNumber(familyEmailPutRequest.phoneNumber),
                 iconImageUrl = familyEmailPutRequest.iconImageUrl?.let { IconImageUrl(it) },
             )
         familyEmailRepository.store(updateFamilyEmail)

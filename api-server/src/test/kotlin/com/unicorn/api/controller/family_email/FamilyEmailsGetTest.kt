@@ -46,7 +46,6 @@ class FamilyEmailsGetTest {
                             "email": "sample@sample.com",
                             "firstName": "太郎",
                             "lastName": "山田",
-                            "phoneNumber": "09012345678",
                             "iconImageUrl": "https://example.com"
                         }
                     ]
