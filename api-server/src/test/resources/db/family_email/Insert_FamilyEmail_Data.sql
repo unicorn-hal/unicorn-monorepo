@@ -4,7 +4,6 @@ INSERT INTO family_emails (
     "email",
     "family_first_name",
     "family_last_name",
-    "phone_number",
     "icon_image_url",
     "created_at",
     "deleted_at"
@@ -14,7 +13,6 @@ INSERT INTO family_emails (
     'sample@sample.com',
     '太郎',
     '山田',
-    '09012345678',
     'https://example.com',
     NOW(),
     null
@@ -24,7 +22,6 @@ INSERT INTO family_emails (
     'sample@sample.com',
     'john',
     'doe',
-    '09012345678',
     'https://example.com',
     NOW(),
     NOW()

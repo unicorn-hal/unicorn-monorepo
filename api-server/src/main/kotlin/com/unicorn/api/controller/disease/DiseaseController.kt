@@ -1,7 +1,7 @@
 package com.unicorn.api.controller.disease
 
 import com.unicorn.api.controller.api_response.ResponseError
-import com.unicorn.api.query_service.DiseaseQueryService
+import com.unicorn.api.query_service.disease.DiseaseQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping

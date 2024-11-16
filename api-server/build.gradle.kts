@@ -50,3 +50,9 @@ tasks.withType<Test> {
     dependsOn("ktlintCheck")
     useJUnitPlatform()
 }
+
+flyway {
+    url = "jdbc:postgresql://localhost:5433/unicorn-test"
+    user = "postgres"
+    password = "password"
+}

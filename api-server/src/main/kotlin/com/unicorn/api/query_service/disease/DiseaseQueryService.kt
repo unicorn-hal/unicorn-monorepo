@@ -1,4 +1,4 @@
-package com.unicorn.api.query_service
+package com.unicorn.api.query_service.disease
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate

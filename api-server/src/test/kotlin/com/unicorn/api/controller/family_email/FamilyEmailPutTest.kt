@@ -40,7 +40,6 @@ class FamilyEmailPutTest {
                 email = "test@example.com",
                 firstName = "John",
                 lastName = "Doe",
-                phoneNumber = "09012345678",
                 iconImageUrl = "http://example.com/newicon.png",
             )
 
@@ -70,7 +69,6 @@ class FamilyEmailPutTest {
                     "email": "${familyEmail.email}",
                     "firstName": "${familyEmail.firstName}",
                     "lastName": "${familyEmail.lastName}",
-                    "phoneNumber": "${familyEmail.phoneNumber}",
                     "iconImageUrl": "${familyEmail.iconImageUrl}"
                 }
                 """.trimIndent(),
@@ -86,7 +84,6 @@ class FamilyEmailPutTest {
                 email = "test@example.com",
                 firstName = "John",
                 lastName = "Doe",
-                phoneNumber = "09012345678",
                 iconImageUrl = "http://example.com/newicon.png",
             )
 
@@ -125,7 +122,6 @@ class FamilyEmailPutTest {
                 email = "test@example.com",
                 firstName = "John",
                 lastName = "Doe",
-                phoneNumber = "09012345678",
                 iconImageUrl = "http://example.com/newicon.png",
             )
 

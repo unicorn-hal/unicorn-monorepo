@@ -40,7 +40,6 @@ class FamilyEmailPostTest {
                 email = "sample@sample.com",
                 firstName = "山田",
                 lastName = "太郎",
-                phoneNumber = "09012345678",
                 iconImageUrl = "http://example.com/icon.png",
             )
 
@@ -65,7 +64,6 @@ class FamilyEmailPostTest {
                     "email": "${familyEmail.email}",
                     "firstName": "${familyEmail.firstName}",
                     "lastName": "${familyEmail.lastName}",
-                    "phoneNumber": "${familyEmail.phoneNumber}",
                     "iconImageUrl": "${familyEmail.iconImageUrl}"
                 }
                 """.trimIndent(),
@@ -80,7 +78,6 @@ class FamilyEmailPostTest {
                 email = "sample@sample.com",
                 firstName = "山田",
                 lastName = "太郎",
-                phoneNumber = "09012345678",
                 iconImageUrl = "http://example.com/icon.png",
             )
         val userID = "notfound"

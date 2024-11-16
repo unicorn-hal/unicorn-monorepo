@@ -33,7 +33,6 @@ class SaveFamilyEmailServiceImpl(
                 email = familyEmailPostRequest.email,
                 firstName = familyEmailPostRequest.firstName,
                 lastName = familyEmailPostRequest.lastName,
-                phoneNumber = familyEmailPostRequest.phoneNumber,
                 iconImageUrl = familyEmailPostRequest.iconImageUrl,
             )
 
