@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.3.1
+  version: 1.3.2
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -1713,14 +1713,24 @@ paths:
       summary: リマインダー一覧取得
       operationId: medicinesRemindersGET
       parameters:
-      - name: X-UID
-        in: header
+      - name: reminderTime
+        in: query
+        description: リマインダーの時間
         required: true
-        style: simple
-        explode: false
+        style: form
+        explode: true
         schema:
           type: string
-          description: UID
+          example: 08:00
+      - name: reminderDayOfWeek
+        in: query
+        description: リマインダーの曜日
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: monday
       responses:
         "200":
           description: リマインダー取得成功
@@ -1728,6 +1738,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_200_9'
+        "400":
+          description: 不正なクエリパラメータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_2'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -3654,6 +3670,13 @@ components:
         data:
         - fcmTokenId: fcm_token_id
         - fcmTokenId: fcm_token_id
+    inline_response_400_2:
+      type: object
+      properties:
+        errorType:
+          type: string
+          description: エラータイプ
+          example: Bad Request
     inline_response_404_6:
       type: object
       properties:

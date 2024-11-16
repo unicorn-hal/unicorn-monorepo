@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.3.1"
+  version: "1.3.2"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -44,7 +44,7 @@ components:
         role:
           type: string
           description: "User Role"
-          enum: ["user", "doctor"]
+          enum: [ "user", "doctor" ]
           example: "user"
         fcmTokenId:
           type: string
@@ -61,7 +61,7 @@ components:
         role:
           type: string
           description: "User Role"
-          enum: ["user", "doctor"]
+          enum: [ "user", "doctor" ]
           example: "user"
         fcmTokenId:
           type: string
@@ -78,7 +78,7 @@ components:
         role:
           type: string
           description: "User Role"
-          enum: ["user", "doctor"]
+          enum: [ "user", "doctor" ]
           example: "user"
         fcmTokenId:
           type: string
@@ -103,7 +103,7 @@ components:
         gender:
           type: string
           description: "ユーザーの性別"
-          enum: ["male", "female", "other"]
+          enum: [ "male", "female", "other" ]
           example: "male"
         birthDate:
           type: string
@@ -161,7 +161,7 @@ components:
         gender:
           type: string
           description: "ユーザーの性別"
-          enum: ["male", "female", "other"]
+          enum: [ "male", "female", "other" ]
           example: "male"
         birthDate:
           type: string
@@ -215,7 +215,7 @@ components:
         gender:
           type: string
           description: "ユーザーの性別"
-          enum: ["male", "female", "other"]
+          enum: [ "male", "female", "other" ]
           example: "male"
         birthDate:
           type: string
@@ -1098,7 +1098,7 @@ paths:
                   stunServerType:
                     type: string
                     description: "Server Type"
-                    enum: ["AKS", "GKE", "ISS"]
+                    enum: [ "AKS", "GKE", "ISS" ]
                     example: "AKS"
         "500":
           description: "サーバーエラーが発生しました"
@@ -2988,12 +2988,20 @@ paths:
         - medicine
       summary: "リマインダー一覧取得"
       parameters:
-        - in: header
-          name: X-UID
-          required: true
+        - in: query
+          name: reminderTime
+          description: "リマインダーの時間"
           schema:
             type: string
-            description: "UID"
+            example: "08:00"
+          required: true
+        - in: query
+          name: reminderDayOfWeek
+          description: "リマインダーの曜日"
+          schema:
+            type: string
+            example: "monday"
+          required: true
       responses:
         "200":
           description: "リマインダー取得成功"
@@ -3006,6 +3014,18 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/MedicineReminder"
+        "400":
+          description: "不正なクエリパラメータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "Bad Request"
+
         "500":
           description: "サーバーエラーが発生しました"
           content:

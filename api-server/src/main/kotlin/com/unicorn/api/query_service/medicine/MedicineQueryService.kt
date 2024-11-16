@@ -2,13 +2,20 @@ package com.unicorn.api.query_service.medicine
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.unicorn.api.domain.medicine_reminders.DayOfWeek
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Service
+import java.time.LocalTime
 import java.util.*
 
 interface MedicineQueryService {
     fun getMedicines(uid: String): MedicineResult
+
+    fun getMedicineReminders(
+        reminderTime: LocalTime,
+        reminderDayOfWeek: DayOfWeek,
+    ): MedicineRemindersResult
 }
 
 @Service
@@ -77,6 +84,46 @@ class MedicineQueryServiceImpl(
 
         return MedicineResult(medicines)
     }
+
+    override fun getMedicineReminders(
+        reminderTime: LocalTime,
+        reminderDayOfWeek: DayOfWeek,
+    ): MedicineRemindersResult {
+        // language=postgresql
+        val sql =
+            """
+            SELECT
+                accounts.fcm_token_id
+            FROM accounts
+            INNER JOIN users u ON accounts.uid = u.user_id
+            INNER JOIN medicines m ON u.user_id = m.user_id
+            INNER JOIN medicine_reminders mr ON m.medicine_id = mr.medicine_id
+            WHERE
+                mr.reminder_time = :reminderTime
+                AND :reminderDayOfWeek = ANY(mr.day_of_week)
+                AND accounts.deleted_at IS NULL
+                AND u.deleted_at IS NULL
+                AND m.deleted_at IS NULL
+                AND mr.deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("reminderTime", reminderTime)
+                .addValue("reminderDayOfWeek", reminderDayOfWeek.toString())
+
+        val reminders =
+            namedParameterJdbcTemplate.query(
+                sql,
+                sqlParams,
+            ) { rs, _ ->
+                MedicineReminder(
+                    fcmTokenId = rs.getString("fcm_token_id"),
+                )
+            }
+
+        return MedicineRemindersResult(reminders)
+    }
 }
 
 data class MedicineResult(
@@ -96,4 +143,12 @@ data class MedicineReminderDto(
     val reminderID: UUID,
     val reminderTime: String,
     val reminderDayOfWeek: List<String>,
+)
+
+data class MedicineReminder(
+    val fcmTokenId: String,
+)
+
+data class MedicineRemindersResult(
+    val data: List<MedicineReminder>,
 )
