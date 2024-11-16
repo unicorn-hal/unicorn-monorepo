@@ -2,10 +2,10 @@ package com.unicorn.api.application_service.medicine
 
 import com.unicorn.api.controller.medicine.MedicinePutRequest
 import com.unicorn.api.domain.medicine.*
-import com.unicorn.api.domain.medicine_reminder.MedicineReminder
+import com.unicorn.api.domain.medicine_reminders.MedicineReminder
 import com.unicorn.api.domain.user.*
 import com.unicorn.api.infrastructure.medicine.MedicineRepository
-import com.unicorn.api.infrastructure.medicine_reminder.MedicineRemindersRepository
+import com.unicorn.api.infrastructure.medicine_reminders.MedicineRemindersRepository
 import com.unicorn.api.infrastructure.user.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

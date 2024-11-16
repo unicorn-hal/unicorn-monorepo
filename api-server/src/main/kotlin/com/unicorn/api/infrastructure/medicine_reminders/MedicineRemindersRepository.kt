@@ -1,8 +1,8 @@
-package com.unicorn.api.infrastructure.medicine_reminder
+package com.unicorn.api.infrastructure.medicine_reminders
 
 import com.unicorn.api.domain.medicine.MedicineID
-import com.unicorn.api.domain.medicine_reminder.MedicineReminder
-import com.unicorn.api.domain.medicine_reminder.MedicineReminders
+import com.unicorn.api.domain.medicine_reminders.MedicineReminder
+import com.unicorn.api.domain.medicine_reminders.MedicineReminders
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
