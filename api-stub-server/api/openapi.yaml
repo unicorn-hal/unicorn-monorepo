@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.2.5
+  version: 1.3.2
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -388,6 +388,148 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_404'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: User
+  /users/{userID}/notification:
+    get:
+      tags:
+      - user
+      summary: 通知設定取得
+      description: ユーザーの通知設定を取得します
+      operationId: usersUserIDNotificationGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: userID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ユーザーID
+      responses:
+        "200":
+          description: 通知設定取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotification'
+        "404":
+          description: 指定されたユーザーが存在しません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: User
+    put:
+      tags:
+      - user
+      summary: 通知設定更新
+      description: ユーザーの通知設定を更新します
+      operationId: usersUserIDNotificationPUT
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: userID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ユーザーID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserNotification'
+        required: true
+      responses:
+        "200":
+          description: 通知設定更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotification'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: User
+    post:
+      tags:
+      - user
+      summary: 通知設定更新
+      description: ユーザーの通知設定を更新します
+      operationId: usersUserIDNotificationPOST
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: userID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ユーザーID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserNotification'
+        required: true
+      responses:
+        "200":
+          description: 通知設定更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotification'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1564,6 +1706,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Medicine
+  /medicines/reminders:
+    get:
+      tags:
+      - medicine
+      summary: リマインダー一覧取得
+      operationId: medicinesRemindersGET
+      parameters:
+      - name: reminderTime
+        in: query
+        description: リマインダーの時間
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: 08:00
+      - name: reminderDayOfWeek
+        in: query
+        description: リマインダーの曜日
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: monday
+      responses:
+        "200":
+          description: リマインダー取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_9'
+        "400":
+          description: 不正なクエリパラメータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_2'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Medicine
   /medicines/{medicineID}:
     put:
       tags:
@@ -1683,7 +1870,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_9'
+                $ref: '#/components/schemas/inline_response_200_10'
         "400":
           description: 不正なクエリパラメータが送信されました
           content:
@@ -1719,7 +1906,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_9'
+                $ref: '#/components/schemas/inline_response_200_10'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1749,7 +1936,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_10'
+                $ref: '#/components/schemas/inline_response_200_11'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1829,6 +2016,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: ChronicDisease
+  /doctors/{doctorID}/calls:
+    get:
+      tags:
+      - call
+      summary: 医師の通話予約一覧取得
+      description: 医師の通話予約一覧を取得します
+      operationId: doctorsDoctorIDCallsGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: doctorID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 医師ID
+      responses:
+        "200":
+          description: 医師の通話予約一覧取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_12'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Call
   /calls:
     get:
       tags:
@@ -1867,7 +2092,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CallReservation'
+                $ref: '#/components/schemas/inline_response_200_12'
         "404":
           description: 通話予約が見つかりません
           content:
@@ -2013,6 +2238,25 @@ paths:
       x-swagger-router-controller: Call
 components:
   schemas:
+    UserNotification:
+      type: object
+      properties:
+        isMedicineReminder:
+          type: boolean
+          description: お薬リマインダー通知
+          example: true
+        isRegularHealthCheckup:
+          type: boolean
+          description: 定期検診
+          example: true
+        isHospitalNews:
+          type: boolean
+          description: 新着病院お知らせ
+          example: true
+      example:
+        isMedicineReminder: true
+        isHospitalNews: true
+        isRegularHealthCheckup: true
     Account:
       type: object
       properties:
@@ -2745,14 +2989,9 @@ components:
           type: string
           description: 画像URL
           example: https://placehold.jp/150x150.png
-        phoneNumber:
-          type: string
-          description: 家族の電話番号
-          example: "09012345678"
       example:
         firstName: 太郎
         lastName: 山田
-        phoneNumber: "09012345678"
         familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         iconImageUrl: https://placehold.jp/150x150.png
         email: sample@sample.com
@@ -2775,10 +3014,6 @@ components:
           type: string
           description: 画像URL
           example: https://placehold.jp/150x150.png
-        phoneNumber:
-          type: string
-          description: 家族の電話番号
-          example: "09012345678"
     FamilyEmailResponse:
       type: object
       properties:
@@ -2801,14 +3036,9 @@ components:
           type: string
           description: 画像URL
           example: https://placehold.jp/150x150.png
-        phoneNumber:
-          type: string
-          description: 家族の電話番号
-          example: "09012345678"
       example:
         firstName: 太郎
         lastName: 山田
-        phoneNumber: "09012345678"
         familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         iconImageUrl: https://placehold.jp/150x150.png
         email: sample@sample.com
@@ -2856,6 +3086,15 @@ components:
         medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         count: 30
         medicineName: パラセタモール
+    MedicineReminder:
+      type: object
+      properties:
+        fcmTokenId:
+          type: string
+          description: FCMトークンID
+          example: fcm_token_id
+      example:
+        fcmTokenId: fcm_token_id
     MedicinePostRequest:
       type: object
       properties:
@@ -2941,8 +3180,8 @@ components:
           - monday
           - monday
           reminderTime: 09:00
-        quantity: 20
         dosage: 3
+        quantity: 20
         medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         count: 30
         medicineName: パラセタモール
@@ -3111,7 +3350,16 @@ components:
         available:
           type: boolean
           example: true
+        stunServerType:
+          type: string
+          description: Server Type
+          example: AKS
+          enum:
+          - AKS
+          - GKE
+          - ISS
       example:
+        stunServerType: AKS
         available: true
     inline_response_500:
       type: object
@@ -3355,13 +3603,11 @@ components:
         data:
         - firstName: 太郎
           lastName: 山田
-          phoneNumber: "09012345678"
           familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           iconImageUrl: https://placehold.jp/150x150.png
           email: sample@sample.com
         - firstName: 太郎
           lastName: 山田
-          phoneNumber: "09012345678"
           familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           iconImageUrl: https://placehold.jp/150x150.png
           email: sample@sample.com
@@ -3413,6 +3659,24 @@ components:
           medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           count: 30
           medicineName: パラセタモール
+    inline_response_200_9:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicineReminder'
+      example:
+        data:
+        - fcmTokenId: fcm_token_id
+        - fcmTokenId: fcm_token_id
+    inline_response_400_2:
+      type: object
+      properties:
+        errorType:
+          type: string
+          description: エラータイプ
+          example: Bad Request
     inline_response_404_6:
       type: object
       properties:
@@ -3420,7 +3684,7 @@ components:
           type: string
           description: エラータイプ
           example: MedicineNotFound
-    inline_response_200_9:
+    inline_response_200_10:
       type: object
       properties:
         data:
@@ -3433,7 +3697,7 @@ components:
           diseaseID: 1
         - diseaseName: 高血圧
           diseaseID: 1
-    inline_response_200_10:
+    inline_response_200_11:
       type: object
       properties:
         data:
@@ -3453,6 +3717,25 @@ components:
           type: string
           description: エラータイプ
           example: DiseaseNotFound
+    inline_response_200_12:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CallReservation'
+      example:
+        data:
+        - callReservationID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          callEndTime: 2024-10-12T15:30:00+09:00
+          doctorID: "1234567890"
+          callStartTime: 2024-10-12T15:00:00+09:00
+          userID: "1234567890"
+        - callReservationID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          callEndTime: 2024-10-12T15:30:00+09:00
+          doctorID: "1234567890"
+          callStartTime: 2024-10-12T15:00:00+09:00
+          userID: "1234567890"
     inline_response_404_8:
       type: object
       properties:

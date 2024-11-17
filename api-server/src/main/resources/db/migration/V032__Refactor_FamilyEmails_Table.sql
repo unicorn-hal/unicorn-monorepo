@@ -1,0 +1,1 @@
+ALTER TABLE family_emails DROP COLUMN phone_number;

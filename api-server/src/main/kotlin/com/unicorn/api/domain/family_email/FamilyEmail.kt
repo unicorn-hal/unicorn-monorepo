@@ -9,7 +9,6 @@ data class FamilyEmail private constructor(
     val email: Email,
     val firstName: FirstName,
     val lastName: LastName,
-    val phoneNumber: PhoneNumber,
     val iconImageUrl: IconImageUrl?,
 ) {
     companion object {
@@ -19,7 +18,6 @@ data class FamilyEmail private constructor(
             email: String,
             firstName: String,
             lastName: String,
-            phoneNumber: String,
             iconImageUrl: String?,
         ): FamilyEmail {
             return FamilyEmail(
@@ -28,7 +26,6 @@ data class FamilyEmail private constructor(
                 email = Email(email),
                 firstName = FirstName(firstName),
                 lastName = LastName(lastName),
-                phoneNumber = PhoneNumber(phoneNumber),
                 iconImageUrl = iconImageUrl?.let { IconImageUrl(it) },
             )
         }
@@ -38,7 +35,6 @@ data class FamilyEmail private constructor(
             email: String,
             firstName: String,
             lastName: String,
-            phoneNumber: String,
             iconImageUrl: String?,
         ): FamilyEmail {
             return FamilyEmail(
@@ -47,7 +43,6 @@ data class FamilyEmail private constructor(
                 email = Email(email),
                 firstName = FirstName(firstName),
                 lastName = LastName(lastName),
-                phoneNumber = PhoneNumber(phoneNumber),
                 iconImageUrl = iconImageUrl?.let { IconImageUrl(it) },
             )
         }
@@ -57,14 +52,12 @@ data class FamilyEmail private constructor(
         email: Email,
         firstName: FirstName,
         lastName: LastName,
-        phoneNumber: PhoneNumber,
         iconImageUrl: IconImageUrl?,
     ): FamilyEmail {
         return this.copy(
             email = email,
             firstName = firstName,
             lastName = lastName,
-            phoneNumber = phoneNumber,
             iconImageUrl = iconImageUrl,
         )
     }
@@ -95,13 +88,6 @@ value class FirstName(val value: String) {
 value class LastName(val value: String) {
     init {
         require(value.isNotBlank()) { "last name should not be blank" }
-    }
-}
-
-@JvmInline
-value class PhoneNumber(val value: String) {
-    init {
-        require(value.all { it.isDigit() }) { "phoneNumber should be all digits" }
     }
 }
 

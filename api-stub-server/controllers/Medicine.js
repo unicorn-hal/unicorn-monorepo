@@ -42,3 +42,13 @@ module.exports.medicinesPOST = function medicinesPOST (req, res, next, body, xUI
       utils.writeJson(res, response);
     });
 };
+
+module.exports.medicinesRemindersGET = function medicinesRemindersGET (req, res, next, reminderTime, reminderDayOfWeek) {
+  Medicine.medicinesRemindersGET(reminderTime, reminderDayOfWeek)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};

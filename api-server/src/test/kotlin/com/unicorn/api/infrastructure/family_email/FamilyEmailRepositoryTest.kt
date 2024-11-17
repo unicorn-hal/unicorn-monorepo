@@ -37,7 +37,6 @@ class FamilyEmailRepositoryTest {
                 email,
                 family_first_name,
                 family_last_name,
-                phone_number,
                 icon_image_url
             FROM family_emails
             WHERE family_email_id = :familyEmailID
@@ -53,7 +52,6 @@ class FamilyEmailRepositoryTest {
                 email = rs.getString("email"),
                 firstName = rs.getString("family_first_name"),
                 lastName = rs.getString("family_last_name"),
-                phoneNumber = rs.getString("phone_number"),
                 iconImageUrl = rs.getString("icon_image_url"),
             )
         }.singleOrNull()
@@ -67,7 +65,6 @@ class FamilyEmailRepositoryTest {
                 email = "test2@example.com",
                 firstName = "test",
                 lastName = "test",
-                phoneNumber = "07012345678",
                 iconImageUrl = "http://example.com/icon.png",
             )
 
@@ -77,7 +74,6 @@ class FamilyEmailRepositoryTest {
         assertEquals(familyEmail.email, storedFamilyEmail?.email)
         assertEquals(familyEmail.firstName, storedFamilyEmail?.firstName)
         assertEquals(familyEmail.lastName, storedFamilyEmail?.lastName)
-        assertEquals(familyEmail.phoneNumber, storedFamilyEmail?.phoneNumber)
         assertEquals(familyEmail.iconImageUrl, storedFamilyEmail?.iconImageUrl)
     }
 
@@ -90,7 +86,6 @@ class FamilyEmailRepositoryTest {
                 email = "sample@sample.com",
                 firstName = "太郎",
                 lastName = "山田",
-                phoneNumber = "09012345678",
                 iconImageUrl = "https://example.com",
             )
         val updatedFamilyEmail =
@@ -98,7 +93,6 @@ class FamilyEmailRepositoryTest {
                 email = Email("test@example.com"),
                 firstName = FirstName("John"),
                 lastName = LastName("Doe"),
-                phoneNumber = PhoneNumber("08087654321"),
                 iconImageUrl = IconImageUrl("http://example.com/newicon.png"),
             )
         familyEmailRepository.store(updatedFamilyEmail)
@@ -109,7 +103,6 @@ class FamilyEmailRepositoryTest {
         assertEquals(updatedFamilyEmail.email, result?.email)
         assertEquals(updatedFamilyEmail.firstName, result?.firstName)
         assertEquals(updatedFamilyEmail.lastName, result?.lastName)
-        assertEquals(updatedFamilyEmail.phoneNumber, result?.phoneNumber)
         assertEquals(updatedFamilyEmail.iconImageUrl, result?.iconImageUrl)
     }
 
@@ -122,7 +115,6 @@ class FamilyEmailRepositoryTest {
         assertEquals("sample@sample.com", foundFamilyEmail.email.value)
         assertEquals("太郎", foundFamilyEmail.firstName.value)
         assertEquals("山田", foundFamilyEmail.lastName.value)
-        assertEquals("09012345678", foundFamilyEmail.phoneNumber.value)
         assertEquals("https://example.com", foundFamilyEmail.iconImageUrl?.value)
     }
 
@@ -148,7 +140,6 @@ class FamilyEmailRepositoryTest {
                 email = "sample@sample.com",
                 firstName = "太郎",
                 lastName = "山田",
-                phoneNumber = "09012345678",
                 iconImageUrl = "http://example.com/icon.png",
             )
         familyEmailRepository.store(familyEmail)

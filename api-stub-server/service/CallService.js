@@ -9,8 +9,8 @@
  * callReservationID String 
  * no response value expected for this operation
  **/
-exports.callsCallReservationIDDELETE = function(xUID,callReservationID) {
-  return new Promise(function(resolve, reject) {
+exports.callsCallReservationIDDELETE = function (xUID, callReservationID) {
+  return new Promise(function (resolve, reject) {
     resolve();
   });
 }
@@ -25,16 +25,16 @@ exports.callsCallReservationIDDELETE = function(xUID,callReservationID) {
  * xUID String 
  * returns CallReservationResponse
  **/
-exports.callsCallReservationIDPUT = function(body,callReservationID,xUID) {
-  return new Promise(function(resolve, reject) {
+exports.callsCallReservationIDPUT = function (body, callReservationID, xUID) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "callReservationID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "callEndTime" : "2024-10-12T15:30:00+09:00",
-  "doctorID" : "1234567890",
-  "callStartTime" : "2024-10-12T15:00:00+09:00",
-  "userID" : "1234567890"
-};
+      "callReservationID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "callEndTime": "2024-10-12T15:30:00+09:00",
+      "doctorID": "1234567890",
+      "callStartTime": "2024-10-12T15:00:00+09:00",
+      "userID": "1234567890"
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -51,18 +51,20 @@ exports.callsCallReservationIDPUT = function(body,callReservationID,xUID) {
  * xUID String 
  * doctorID String 
  * userID String 
- * returns CallReservation
+ * returns inline_response_200_12
  **/
-exports.callsGET = function(xUID,doctorID,userID) {
-  return new Promise(function(resolve, reject) {
+exports.callsGET = function (xUID, doctorID, userID) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "callReservationID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "callEndTime" : "2024-10-12T15:30:00+09:00",
-  "doctorID" : "1234567890",
-  "callStartTime" : "2024-10-12T15:00:00+09:00",
-  "userID" : "1234567890"
-};
+      "data": [{
+        "callReservationID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "callEndTime": "2024-10-12T15:30:00+09:00",
+        "doctorID": "1234567890",
+        "callStartTime": "2024-10-12T15:00:00+09:00",
+        "userID": "1234567890"
+      }]
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -80,16 +82,45 @@ exports.callsGET = function(xUID,doctorID,userID) {
  * xUID String 
  * returns CallReservationResponse
  **/
-exports.callsPOST = function(body,xUID) {
-  return new Promise(function(resolve, reject) {
+exports.callsPOST = function (body, xUID) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "callReservationID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "callEndTime" : "2024-10-12T15:30:00+09:00",
-  "doctorID" : "1234567890",
-  "callStartTime" : "2024-10-12T15:00:00+09:00",
-  "userID" : "1234567890"
-};
+      "callReservationID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "callEndTime": "2024-10-12T15:30:00+09:00",
+      "doctorID": "1234567890",
+      "callStartTime": "2024-10-12T15:00:00+09:00",
+      "userID": "1234567890"
+    };
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+
+
+/**
+ * 医師の通話予約一覧取得
+ * 医師の通話予約一覧を取得します
+ *
+ * xUID String 
+ * doctorID String 
+ * returns inline_response_200_12
+ **/
+exports.doctorsDoctorIDCallsGET = function (xUID, doctorID) {
+  return new Promise(function (resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+      "data": [{
+        "callReservationID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "callEndTime": "2024-10-12T15:30:00+09:00",
+        "doctorID": "1234567890",
+        "callStartTime": "2024-10-12T15:00:00+09:00",
+        "userID": "1234567890"
+      }]
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {

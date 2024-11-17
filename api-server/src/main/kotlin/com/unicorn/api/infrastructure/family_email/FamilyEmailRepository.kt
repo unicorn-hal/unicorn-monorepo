@@ -28,7 +28,6 @@ class FamilyEmailRepositoryImpl(
                 email,
                 family_first_name,
                 family_last_name,
-                phone_number,
                 icon_image_url,
                 created_at
             ) VALUES (
@@ -37,7 +36,6 @@ class FamilyEmailRepositoryImpl(
                 :email,
                 :firstName,
                 :lastName,
-                :phoneNumber,
                 :iconImageUrl,
                 NOW()
             )
@@ -46,7 +44,6 @@ class FamilyEmailRepositoryImpl(
                 email = EXCLUDED.email,
                 family_first_name = EXCLUDED.family_first_name,
                 family_last_name = EXCLUDED.family_last_name,
-                phone_number = EXCLUDED.phone_number,
                 icon_image_url = EXCLUDED.icon_image_url,
                 deleted_at = NULL
             WHERE family_emails.created_at IS NOT NULL
@@ -59,7 +56,6 @@ class FamilyEmailRepositoryImpl(
                 .addValue("email", familyEmail.email.value)
                 .addValue("firstName", familyEmail.firstName.value)
                 .addValue("lastName", familyEmail.lastName.value)
-                .addValue("phoneNumber", familyEmail.phoneNumber.value)
                 .addValue("iconImageUrl", familyEmail.iconImageUrl?.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
@@ -77,7 +73,6 @@ class FamilyEmailRepositoryImpl(
                 email,
                 family_first_name,
                 family_last_name,
-                phone_number,
                 icon_image_url
             FROM family_emails
             WHERE family_email_id = :familyEmailID
@@ -96,7 +91,6 @@ class FamilyEmailRepositoryImpl(
                 email = rs.getString("email"),
                 firstName = rs.getString("family_first_name"),
                 lastName = rs.getString("family_last_name"),
-                phoneNumber = rs.getString("phone_number"),
                 iconImageUrl = rs.getString("icon_image_url"),
             )
         }.singleOrNull()

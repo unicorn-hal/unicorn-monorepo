@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.2.5"
+  version: "1.3.2"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -19,6 +19,21 @@ components:
   #      x-google-audiences: "xxxx"
 
   schemas:
+    UserNotification:
+      type: object
+      properties:
+        isMedicineReminder:
+          type: boolean
+          description: "お薬リマインダー通知"
+          example: true
+        isRegularHealthCheckup:
+          type: boolean
+          description: "定期検診"
+          example: true
+        isHospitalNews:
+          type: boolean
+          description: "新着病院お知らせ"
+          example: true
     Account:
       type: object
       properties:
@@ -29,7 +44,7 @@ components:
         role:
           type: string
           description: "User Role"
-          enum: ["user", "doctor"]
+          enum: [ "user", "doctor" ]
           example: "user"
         fcmTokenId:
           type: string
@@ -46,7 +61,7 @@ components:
         role:
           type: string
           description: "User Role"
-          enum: ["user", "doctor"]
+          enum: [ "user", "doctor" ]
           example: "user"
         fcmTokenId:
           type: string
@@ -63,7 +78,7 @@ components:
         role:
           type: string
           description: "User Role"
-          enum: ["user", "doctor"]
+          enum: [ "user", "doctor" ]
           example: "user"
         fcmTokenId:
           type: string
@@ -88,7 +103,7 @@ components:
         gender:
           type: string
           description: "ユーザーの性別"
-          enum: ["male", "female", "other"]
+          enum: [ "male", "female", "other" ]
           example: "male"
         birthDate:
           type: string
@@ -146,7 +161,7 @@ components:
         gender:
           type: string
           description: "ユーザーの性別"
-          enum: ["male", "female", "other"]
+          enum: [ "male", "female", "other" ]
           example: "male"
         birthDate:
           type: string
@@ -200,7 +215,7 @@ components:
         gender:
           type: string
           description: "ユーザーの性別"
-          enum: ["male", "female", "other"]
+          enum: [ "male", "female", "other" ]
           example: "male"
         birthDate:
           type: string
@@ -669,10 +684,6 @@ components:
           type: string
           description: "画像URL"
           example: https://placehold.jp/150x150.png
-        phoneNumber:
-          type: string
-          description: "家族の電話番号"
-          example: "09012345678"
 
     FamilyEmailRequest:
       type: object
@@ -693,10 +704,6 @@ components:
           type: string
           description: "画像URL"
           example: https://placehold.jp/150x150.png
-        phoneNumber:
-          type: string
-          description: "家族の電話番号"
-          example: "09012345678"
 
     FamilyEmailResponse:
       type: object
@@ -720,10 +727,6 @@ components:
           type: string
           description: "画像URL"
           example: https://placehold.jp/150x150.png
-        phoneNumber:
-          type: string
-          description: "家族の電話番号"
-          example: "09012345678"
 
     Medicine:
       type: object
@@ -768,6 +771,14 @@ components:
                   type: string
                   description: "リマインダー曜日"
                   example: "monday"
+
+    MedicineReminder:
+      type: object
+      properties:
+        fcmTokenId:
+          type: string
+          description: "FCMトークンID"
+          example: "fcm_token_id"
 
     MedicinePostRequest:
       type: object
@@ -1084,6 +1095,11 @@ paths:
                   available:
                     type: boolean
                     example: true
+                  stunServerType:
+                    type: string
+                    description: "Server Type"
+                    enum: [ "AKS", "GKE", "ISS" ]
+                    example: "AKS"
         "500":
           description: "サーバーエラーが発生しました"
           content:
@@ -1481,6 +1497,161 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
+  /users/{userID}/notification:
+    get:
+      tags:
+        - user
+      summary: "通知設定取得"
+      description: "ユーザーの通知設定を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: userID
+          required: true
+          schema:
+            type: string
+            description: "ユーザーID"
+      responses:
+        "200":
+          description: "通知設定取得成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserNotification"
+        "404":
+          description: "指定されたユーザーが存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "UserNotFound"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    post:
+      tags:
+        - user
+      summary: "通知設定更新"
+      description: "ユーザーの通知設定を更新します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: userID
+          required: true
+          schema:
+            type: string
+            description: "ユーザーID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserNotification"
+      responses:
+        "200":
+          description: "通知設定更新成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserNotification"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+    put:
+      tags:
+        - user
+      summary: "通知設定更新"
+      description: "ユーザーの通知設定を更新します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: userID
+          required: true
+          schema:
+            type: string
+            description: "ユーザーID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserNotification"
+      responses:
+        "200":
+          description: "通知設定更新成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserNotification"
+        "400":
+          description: "不正なデータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "InvalidData"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
   /primary_doctors:
     get:
       tags:
@@ -2811,6 +2982,61 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
+  /medicines/reminders:
+    get:
+      tags:
+        - medicine
+      summary: "リマインダー一覧取得"
+      parameters:
+        - in: query
+          name: reminderTime
+          description: "リマインダーの時間"
+          schema:
+            type: string
+            example: "08:00"
+          required: true
+        - in: query
+          name: reminderDayOfWeek
+          description: "リマインダーの曜日"
+          schema:
+            type: string
+            example: "monday"
+          required: true
+      responses:
+        "200":
+          description: "リマインダー取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MedicineReminder"
+        "400":
+          description: "不正なクエリパラメータが送信されました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "Bad Request"
+
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
 
   /medicines/{medicineID}:
     put:
@@ -3124,6 +3350,49 @@ paths:
                     description: "エラータイプ"
                     example: "ServerError"
 
+  /doctors/{doctorID}/calls:
+    get:
+      tags:
+        - call
+      summary: "医師の通話予約一覧取得"
+      description: "医師の通話予約一覧を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: doctorID
+          required: true
+          schema:
+            type: string
+            description: "医師ID"
+      responses:
+        "200":
+          description: "医師の通話予約一覧取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CallReservation"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
   /calls:
     get:
       tags:
@@ -3155,7 +3424,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CallReservation"
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CallReservation"
         "404":
           description: "通話予約が見つかりません"
           content:
