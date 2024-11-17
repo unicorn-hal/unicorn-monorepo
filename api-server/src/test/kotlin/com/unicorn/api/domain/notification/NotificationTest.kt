@@ -1,5 +1,6 @@
 package com.unicorn.api.domain.notification
 
+import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -8,7 +9,7 @@ class NotificationTest {
     fun `should create notification`() {
         val notification =
             Notification.create(
-                userID = "test",
+                userID = UserID("test"),
                 isMedicineReminder = true,
                 isRegularHealthCheckup = true,
                 isHospitalNews = true,
@@ -40,7 +41,7 @@ class NotificationTest {
     fun `should update notification`() {
         val notification =
             Notification.create(
-                userID = "test",
+                userID = UserID("test"),
                 isMedicineReminder = true,
                 isRegularHealthCheckup = true,
                 isHospitalNews = true,

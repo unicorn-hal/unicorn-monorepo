@@ -24,13 +24,13 @@ data class Notification private constructor(
         }
 
         fun create(
-            userID: String,
+            userID: UserID,
             isMedicineReminder: Boolean,
             isRegularHealthCheckup: Boolean,
             isHospitalNews: Boolean,
         ): Notification {
             return Notification(
-                userID = UserID(userID),
+                userID = userID,
                 isMedicineReminder = IsMedicineReminder(isMedicineReminder),
                 isRegularHealthCheckup = IsRegularHealthCheckup(isRegularHealthCheckup),
                 isHospitalNews = IsHospitalNews(isHospitalNews),

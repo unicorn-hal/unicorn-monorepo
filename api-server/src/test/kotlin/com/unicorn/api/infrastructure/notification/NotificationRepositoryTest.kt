@@ -59,7 +59,7 @@ class NotificationRepositoryTest {
     fun `should store notification`() {
         val notification =
             Notification.create(
-                userID = "test",
+                userID = UserID("test"),
                 isMedicineReminder = true,
                 isRegularHealthCheckup = true,
                 isHospitalNews = true,
@@ -77,7 +77,7 @@ class NotificationRepositoryTest {
     fun `should update notification`() {
         val notification =
             Notification.create(
-                userID = "test",
+                userID = UserID("test"),
                 isMedicineReminder = true,
                 isRegularHealthCheckup = true,
                 isHospitalNews = true,
