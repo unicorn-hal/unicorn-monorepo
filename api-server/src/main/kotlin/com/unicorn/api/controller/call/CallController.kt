@@ -2,19 +2,24 @@ package com.unicorn.api.controller.call
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.unicorn.api.application_service.call.SaveCallService
+import com.unicorn.api.application_service.call.UpdateCallService
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.user.UserID
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.*
 
 @Controller
 class CallController(
     private val saveCallService: SaveCallService,
+    private val updateCallService: UpdateCallService,
 ) {
     @PostMapping("/calls")
     fun store(
@@ -23,6 +28,22 @@ class CallController(
     ): ResponseEntity<*> {
         try {
             val result = saveCallService.save(UserID(uid), callPostRequest)
+            return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @PutMapping("/calls/{callReservationID}")
+    fun put(
+        @RequestHeader("X-UID") uid: String,
+        @RequestBody callPutRequest: CallPostRequest,
+        @PathVariable callReservationID: UUID,
+    ): ResponseEntity<*> {
+        try {
+            val result = updateCallService.update(UserID(uid), callPutRequest, callReservationID)
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
