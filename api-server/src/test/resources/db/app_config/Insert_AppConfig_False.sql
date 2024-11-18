@@ -1,1 +1,1 @@
-INSERT INTO app_config (app_config_id, available, created_at) VALUES ('ac8e2834-96cf-45aa-8bd1-2b3303671e8b', false, NOW());
+INSERT INTO app_config (app_config_id, available, stun, created_at) VALUES ('ac8e2834-96cf-45aa-8bd1-2b3303671e8b', false, 'AKS', NOW());
