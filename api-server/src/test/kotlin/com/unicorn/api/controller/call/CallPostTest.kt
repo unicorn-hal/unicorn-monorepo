@@ -68,8 +68,8 @@ class CallPostTest {
                 {
                     "doctorID": "${call.doctorID}",
                     "userID": "$userID",
-                    "callStartTime": "2024-10-12T06:00:00Z",
-                    "callEndTime": "2024-10-12T06:30:00Z"
+                    "callStartTime": "2024-10-12T15:00:00+09:00",
+                    "callEndTime": "2024-10-12T15:30:00+09:00"
                 }
                 """.trimIndent(),
             ),

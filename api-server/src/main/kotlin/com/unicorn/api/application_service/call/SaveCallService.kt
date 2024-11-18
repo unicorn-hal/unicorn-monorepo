@@ -43,8 +43,8 @@ class SaveCallServiceImpl(
         callDomainService.validateCallTimes(callPostRequest, doctorCallSupport)
 
         // 予約時間が重複していないかをチェック
-        if (callRepository.isOverlapping(callPostRequest.callStartTime, callPostRequest.callEndTime, callPostRequest.doctorID)) {
-            throw IllegalArgumentException("The requested call time overlaps with an existing reservation for this doctor.")
+        require(!callRepository.isOverlapping(callPostRequest.callStartTime, callPostRequest.callEndTime, callPostRequest.doctorID)) {
+            "The requested call time overlaps with an existing reservation for this doctor."
         }
 
         val call =

@@ -22,8 +22,8 @@ class CallDomainService {
         val supportEndTimeJst = doctorCallSupport.callSupportEndHour.value
 
         // サポート時間内であることを確認
-        if (supportStartTimeJst > callStartTimeJst || callEndTimeJst > supportEndTimeJst) {
-            throw IllegalArgumentException("The call start and end times do not match the doctor's support hours")
+        require(!(supportStartTimeJst > callStartTimeJst || callEndTimeJst > supportEndTimeJst)) {
+            "The call start and end times do not match the doctor's support hours"
         }
     }
 }
