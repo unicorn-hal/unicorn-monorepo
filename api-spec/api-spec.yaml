@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "1.3.2"
+  version: "1.3.3"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -688,6 +688,29 @@ components:
     FamilyEmailRequest:
       type: object
       properties:
+        email:
+          type: string
+          description: "家族メールアドレス"
+          example: "sample@sample.com"
+        firstName:
+          type: string
+          description: "家族の名"
+          example: "太郎"
+        lastName:
+          type: string
+          description: "家族の姓"
+          example: "山田"
+        iconImageUrl:
+          type: string
+          description: "画像URL"
+          example: https://placehold.jp/150x150.png
+
+    FamilyEmailsPostRequest:
+      type: object
+      properties:
+        familyEmailID:
+          type: string
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
         email:
           type: string
           description: "家族メールアドレス"
@@ -2761,7 +2784,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FamilyEmailRequest"
+              $ref: "#/components/schemas/FamilyEmailsPostRequest"
       responses:
         "200":
           description: "家族メールアドレス登録成功"

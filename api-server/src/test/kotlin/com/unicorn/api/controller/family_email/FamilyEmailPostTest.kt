@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
 @SpringBootTest
@@ -37,6 +38,7 @@ class FamilyEmailPostTest {
     fun `should return 200 when family email is created`() {
         val familyEmail =
             FamilyEmailPostRequest(
+                familyEmailID = UUID.fromString("64caec4e-33d7-a265-f9b0-b8489fc99638"),
                 email = "sample@sample.com",
                 firstName = "山田",
                 lastName = "太郎",
@@ -75,6 +77,7 @@ class FamilyEmailPostTest {
     fun `should return 400 when user not found`() {
         val familyEmail =
             FamilyEmailPostRequest(
+                familyEmailID = UUID.fromString("64caec4e-33d7-a265-f9b0-b8489fc99638"),
                 email = "sample@sample.com",
                 firstName = "山田",
                 lastName = "太郎",
@@ -99,6 +102,44 @@ class FamilyEmailPostTest {
                 """
                 {
                     "errorType": "User not found"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
+    }
+
+    @Test
+    fun `should return 400 when family email already exists`() {
+        val familyEmail =
+            FamilyEmailPostRequest(
+                familyEmailID = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d470"),
+                email = "sample@sample.com",
+                firstName = "山田",
+                lastName = "太郎",
+                iconImageUrl = "http://example.com/icon.png",
+            )
+
+        val userID = "test"
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/family_emails").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(familyEmail)),
+            )
+
+        result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                // language=json
+                """
+                {
+                    "errorType": "Family email already exists"
                 }
                 """.trimIndent(),
                 true,

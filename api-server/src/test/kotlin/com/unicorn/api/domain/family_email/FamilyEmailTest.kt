@@ -9,12 +9,15 @@ class FamilyEmailTest {
     fun `should create family email`() {
         val familyEmail =
             FamilyEmail.create(
+                familyEmailID = UUID.randomUUID(),
                 userID = "test",
                 email = "sample@sample.com",
                 firstName = "太郎",
                 lastName = "山田",
                 iconImageUrl = "http://example.com/icon.png",
             )
+
+        assertEquals(familyEmail.familyEmailID.value, familyEmail.familyEmailID.value)
         assertEquals("test", familyEmail.userID.value)
         assertEquals("sample@sample.com", familyEmail.email.value)
         assertEquals("太郎", familyEmail.firstName.value)
@@ -46,6 +49,7 @@ class FamilyEmailTest {
     fun `should update family email`() {
         val familyEmail =
             FamilyEmail.create(
+                familyEmailID = UUID.randomUUID(),
                 userID = "test",
                 email = "sample@sample.com",
                 firstName = "太郎",
@@ -70,6 +74,7 @@ class FamilyEmailTest {
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
                 FamilyEmail.create(
+                    familyEmailID = UUID.randomUUID(),
                     userID = "test",
                     email = "",
                     firstName = "太郎",
@@ -85,6 +90,7 @@ class FamilyEmailTest {
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
                 FamilyEmail.create(
+                    familyEmailID = UUID.randomUUID(),
                     userID = "test",
                     email = "sample@sample.com",
                     firstName = "",
@@ -100,6 +106,7 @@ class FamilyEmailTest {
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
                 FamilyEmail.create(
+                    familyEmailID = UUID.randomUUID(),
                     userID = "test",
                     email = "sample@sample.com",
                     firstName = "太郎",
