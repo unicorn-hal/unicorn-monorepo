@@ -25,7 +25,17 @@ class AppConfigGetTest {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/app_config"))
 
         result.andExpect(status().isOk)
-        result.andExpect(content().json("""{"available":true}"""))
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "available":true,
+                    "stunServerType":"AKS"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
     }
 
     @Test
@@ -34,7 +44,17 @@ class AppConfigGetTest {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/app_config"))
 
         result.andExpect(status().isOk)
-        result.andExpect(content().json("""{"available":false}"""))
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "available":false,
+                    "stunServerType":"AKS"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
     }
 
     @Test
