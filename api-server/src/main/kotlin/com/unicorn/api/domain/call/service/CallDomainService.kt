@@ -7,7 +7,7 @@ import java.time.ZoneOffset
 
 @Service
 class CallDomainService {
-    private val jstOffset = ZoneOffset.ofHours(9) // JSTのオフセット（UTC+9）
+    private val jstOffset = ZoneOffset.ofHours(9)
 
     fun validateCallTimes(
         callPostRequest: CallPostRequest,

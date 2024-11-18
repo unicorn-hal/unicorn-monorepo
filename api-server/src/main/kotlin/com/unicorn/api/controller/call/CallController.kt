@@ -40,10 +40,8 @@ data class CallPostRequest(
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     var callEndTime: OffsetDateTime,
 ) {
-    // コンストラクタ内で日本時間（JST、UTC+9）を設定する
     init {
-        val jstOffset = ZoneOffset.ofHours(9) // 日本時間（UTC+9）
-        // callStartTime と callEndTime を JST に変換
+        val jstOffset = ZoneOffset.ofHours(9)
         callStartTime = callStartTime.withOffsetSameInstant(jstOffset)
         callEndTime = callEndTime.withOffsetSameInstant(jstOffset)
     }
