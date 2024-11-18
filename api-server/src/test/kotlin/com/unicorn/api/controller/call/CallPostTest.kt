@@ -29,6 +29,7 @@ import kotlin.test.Test
 @Sql("/db/primary_doctor/Insert_Doctor_Data.sql")
 @Sql("/db/primary_doctor/Insert_Doctor_Department_Data.sql")
 @Sql("/db/call_support/Insert_Call_Support_Data.sql")
+@Sql("/db/call/Insert_New_Call_Data.sql")
 class CallPostTest {
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -180,6 +181,37 @@ class CallPostTest {
                     .content(objectMapper.writeValueAsString(call)),
             )
 
+        result.andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `should return 400 when a call reservation overlaps with an existing reservation`() {
+        val userID = "test"
+        val doctorID = "doctor"
+        val conflictingCallStartTime = OffsetDateTime.parse("2021-01-01T10:00:00+09:00")
+        val conflictingCallEndTime = OffsetDateTime.parse("2021-01-01T11:00:00+09:00")
+
+        val conflictingCall =
+            CallPostRequest(
+                userID = userID,
+                doctorID = doctorID,
+                callStartTime = conflictingCallStartTime,
+                callEndTime = conflictingCallEndTime,
+            )
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/calls")
+                    .headers(
+                        HttpHeaders().apply {
+                            add("X-UID", userID)
+                        },
+                    )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(conflictingCall)),
+            )
+
+        // 予約時間が重複しているため、400 Bad Requestが返されることを確認
         result.andExpect(status().isBadRequest)
     }
 }

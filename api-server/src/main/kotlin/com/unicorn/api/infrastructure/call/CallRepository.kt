@@ -15,6 +15,12 @@ interface CallRepository {
     fun getOrNullBy(callReservationID: CallReservationID): Call?
 
     fun delete(call: Call): Unit
+
+    fun isOverlapping(
+        callStartTime: OffsetDateTime,
+        callEndTime: OffsetDateTime,
+        doctorID: String,
+    ): Boolean
 }
 
 @Repository
@@ -106,5 +112,32 @@ class CallRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJ
                 .addValue("callReservationID", call.callReservationID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun isOverlapping(
+        callStartTime: OffsetDateTime,
+        callEndTime: OffsetDateTime,
+        doctorID: String,
+    ): Boolean {
+        // language=postgresql
+        val sql =
+            """
+            SELECT COUNT(*) 
+            FROM call_reservations
+            WHERE doctor_id = :doctorID
+              AND deleted_at IS NULL
+              AND (
+                (call_start_time, call_end_time) OVERLAPS (:callStartTime, :callEndTime)
+              )
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("callStartTime", callStartTime)
+                .addValue("callEndTime", callEndTime)
+                .addValue("doctorID", doctorID)
+
+        val count = namedParameterJdbcTemplate.queryForObject(sql, sqlParams, Int::class.java)
+        return count != null && count > 0
     }
 }
