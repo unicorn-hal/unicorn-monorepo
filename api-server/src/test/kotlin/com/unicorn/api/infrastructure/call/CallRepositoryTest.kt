@@ -135,4 +135,30 @@ class CallRepositoryTest {
         val deletedCall = findBy(call.callReservationID.value)
         assertEquals(null, deletedCall)
     }
+
+    @Test
+    fun `should return false when no overlapping call reservation`() {
+        // 既存の予約と被らない新しいコール予約を作成
+        val newCallStartTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 10, 0, 0), ZoneOffset.of("+09:00"))
+        val newCallEndTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 10, 30, 0), ZoneOffset.of("+09:00"))
+        val doctorID = "12345"
+
+        val isOverlapping = callRepository.isOverlapping(newCallStartTime, newCallEndTime, doctorID)
+
+        // 結果がfalseであることを確認（重複しないため）
+        assertEquals(false, isOverlapping)
+    }
+
+    @Test
+    fun `should return true when overlapping call reservation exists`() {
+        // 既存の予約と重複する新しいコール予約を作成
+        val overlappingCallStartTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 15, 0), ZoneOffset.of("+09:00"))
+        val overlappingCallEndTime = OffsetDateTime.of(LocalDateTime.of(2021, 1, 1, 9, 45, 0), ZoneOffset.of("+09:00"))
+        val doctorID = "12345"
+
+        val isOverlapping = callRepository.isOverlapping(overlappingCallStartTime, overlappingCallEndTime, doctorID)
+
+        // 結果がtrueであることを確認（重複するため）
+        assertEquals(true, isOverlapping)
+    }
 }
