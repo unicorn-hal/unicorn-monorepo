@@ -16,4 +16,10 @@ INSERT INTO chat_support_hours (
     '9:00:00',
     '15:00:00',
     NOW()
+), (
+    'd1b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3c',
+    'doctor3',
+    '9:00:00',
+    '18:00:00',
+    NOW()
 );

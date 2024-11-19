@@ -2,17 +2,22 @@ package com.unicorn.api.query_service.primary_doctor
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.infrastructure.user.UserRepository
 import com.unicorn.api.query_service.doctor.DepartmentDto
 import com.unicorn.api.query_service.doctor.DoctorDto
 import com.unicorn.api.query_service.doctor.HospitalDto
+import com.unicorn.api.query_service.user.UserDto
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 interface PrimaryDoctorQueryService {
     fun getBy(uid: String): PrimaryDoctorsResult
+
+    fun getUsersBy(doctorID: DoctorID): UsersResult
 }
 
 @Service
@@ -104,8 +109,62 @@ class PrimaryDoctorQueryServiceImpl(
 
         return PrimaryDoctorsResult(result)
     }
+
+    override fun getUsersBy(doctorID: DoctorID): UsersResult {
+        // language=postgresql
+        val sql =
+            """
+            SELECT
+                users.user_id, 
+                users.first_name, 
+                users.last_name, 
+                users.gender, 
+                users.email, 
+                users.birth_date, 
+                users.address, 
+                users.postal_code, 
+                users.phone_number, 
+                users.icon_image_url, 
+                users.body_height, 
+                users.body_weight, 
+                users.occupation
+            FROM users
+            LEFT JOIN primary_doctors ON users.user_id = primary_doctors.user_id
+            WHERE primary_doctors.doctor_id = :doctorID
+                AND users.deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctorID.value)
+
+        val result =
+            namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+                UserDto(
+                    userID = rs.getString("user_id"),
+                    firstName = rs.getString("first_name"),
+                    lastName = rs.getString("last_name"),
+                    email = rs.getString("email"),
+                    birthDate = rs.getObject("birth_date", LocalDate::class.java),
+                    gender = rs.getString("gender"),
+                    address = rs.getString("address"),
+                    postalCode = rs.getString("postal_code"),
+                    phoneNumber = rs.getString("phone_number"),
+                    iconImageUrl = rs.getString("icon_image_url"),
+                    bodyHeight = rs.getDouble("body_height"),
+                    bodyWeight = rs.getDouble("body_weight"),
+                    occupation = rs.getString("occupation"),
+                )
+            }
+
+        return UsersResult(result)
+    }
 }
 
 data class PrimaryDoctorsResult(
     val data: List<DoctorDto>,
+)
+
+data class UsersResult(
+    val data: List<UserDto>,
 )
