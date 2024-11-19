@@ -6,25 +6,68 @@ import com.unicorn.api.application_service.call.SaveCallService
 import com.unicorn.api.application_service.call.UpdateCallService
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.call.CallReservationID
+import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.user.UserID
+import com.unicorn.api.query_service.call.CallQueryService
+import com.unicorn.api.query_service.doctor.DoctorQueryService
+import com.unicorn.api.query_service.user.UserQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestParam
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.*
 
 @Controller
 class CallController(
+    private val userQueryService: UserQueryService,
+    private val doctorQueryService: DoctorQueryService,
+    private val callQueryService: CallQueryService,
     private val saveCallService: SaveCallService,
     private val updateCallService: UpdateCallService,
     private val deleteCallService: DeleteCallService,
 ) {
+    @GetMapping("/calls")
+    fun get(
+        @RequestHeader("X-UID") uid: String,
+        @RequestParam doctorID: String,
+        @RequestParam userID: String,
+    ): ResponseEntity<*> {
+        userQueryService.getOrNullBy(userID)
+            ?: return ResponseEntity.status(400).body(ResponseError("User not found"))
+
+        doctorQueryService.getOrNullBy(DoctorID(doctorID))
+            ?: return ResponseEntity.status(400).body(ResponseError("Doctor not found"))
+
+        val result =
+            callQueryService.get(DoctorID(doctorID), UserID(uid))
+                ?: return ResponseEntity.status(400).body(ResponseError("No call reservations found"))
+
+        return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/doctors/{doctorID}/calls")
+    fun getByDoctorID(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable doctorID: String,
+    ): ResponseEntity<*> {
+        doctorQueryService.getOrNullBy(DoctorID(doctorID))
+            ?: return ResponseEntity.status(400).body(ResponseError("Doctor not found"))
+
+        val result =
+            callQueryService.getByDoctorID(DoctorID(doctorID))
+                ?: return ResponseEntity.status(400).body(ResponseError("No call reservations found"))
+
+        return ResponseEntity.ok(result)
+    }
+
     @PostMapping("/calls")
     fun store(
         @RequestHeader("X-UID") uid: String,
