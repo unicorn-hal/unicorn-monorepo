@@ -56,14 +56,12 @@ class CallGetTest {
                         {
                             "callReservationID": "551177ed-92f8-a956-825f-c31b2cad8b10",
                             "doctorID": "$doctorID",
-                            "userID": "$userID",
-                            "callStartTime": "2025-01-11T13:00:00+09:00",
-                            "callEndTime": "2025-01-11T13:30:00+09:00"
+                            "userID": "$userID"
                         }
                     ]
                 }
                 """.trimIndent(),
-                true,
+                false,
             ),
         )
     }
@@ -92,21 +90,17 @@ class CallGetTest {
                         {
                             "callReservationID": "221177ed-92f8-a956-825f-c31b2cad8b10",
                             "doctorID": "$doctorID",
-                            "userID": "$userID",
-                            "callStartTime": "2025-02-22T13:00:00+09:00",
-                            "callEndTime": "2025-02-22T13:30:00+09:00"
+                            "userID": "$userID"
                         },
                         {
                             "callReservationID": "221177ed-92f8-a956-825f-c31b2cad8b22",
                             "doctorID": "$doctorID",
-                            "userID": "$userID",
-                            "callStartTime": "2025-03-22T13:00:00+09:00",
-                            "callEndTime": "2025-03-22T13:30:00+09:00"
+                            "userID": "$userID"
                         }
                     ]
                 }
                 """.trimIndent(),
-                true,
+                false,
             ),
         )
     }

@@ -4,17 +4,17 @@ INSERT INTO call_reservations (
     '211177ed-92f8-a956-825f-c31b2cad8b15', 'doctor', 'test', '2021-01-01T09:00:00+09:00', '2021-01-01T10:30:00+09:00'
 ),
 (
-    '551177ed-92f8-a956-825f-c31b2cad8b10', 'doctor', 'test', '2025-01-11T13:00:00+09:00', '2025-01-11T13:30:00+09:00'
+    '551177ed-92f8-a956-825f-c31b2cad8b10', 'doctor', 'test', CURRENT_TIMESTAMP + INTERVAL '30 minutes', CURRENT_TIMESTAMP + INTERVAL '59 minutes'
 ),
 (
-    '221177ed-92f8-a956-825f-c31b2cad8b10', 'doctor2', 'test', '2025-02-22T13:00:00+09:00', '2025-02-22T13:30:00+09:00'
+    '221177ed-92f8-a956-825f-c31b2cad8b10', 'doctor2', 'test', CURRENT_TIMESTAMP + INTERVAL '2 month', CURRENT_TIMESTAMP + INTERVAL '2 month 30 minutes'
 ),
 (
-    '221177ed-92f8-a956-825f-c31b2cad8b22', 'doctor2', 'test', '2025-03-22T13:00:00+09:00', '2025-03-22T13:30:00+09:00'
+    '221177ed-92f8-a956-825f-c31b2cad8b22', 'doctor2', 'test', CURRENT_TIMESTAMP + INTERVAL '9 month', CURRENT_TIMESTAMP + INTERVAL '9 month 30 minutes'
 ),
 (
-    '311177ed-92f8-a956-825f-c31b2cad8b15', 'doctor2', '12345', '2025-01-01T09:00:00+09:00', '2025-01-01T10:30:00+09:00'
+    '311177ed-92f8-a956-825f-c31b2cad8b15', 'doctor2', '12345', CURRENT_TIMESTAMP + INTERVAL '1 month', CURRENT_TIMESTAMP + INTERVAL '1 month 30 minutes'
 ),
 (
-    '661177ed-92f8-a956-825f-c31b2cad8b15', 'doctor2', '12345', '2027-01-01T09:00:00+09:00', '2027-01-01T10:30:00+09:00'
+    '661177ed-92f8-a956-825f-c31b2cad8b15', 'doctor2', '12345', CURRENT_TIMESTAMP + INTERVAL '5 year', CURRENT_TIMESTAMP + INTERVAL '5 year 30 minutes'
 );
