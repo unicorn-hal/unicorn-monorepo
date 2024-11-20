@@ -1,0 +1,5 @@
+ALTER TABLE call_reservations
+ALTER COLUMN call_start_time TYPE TIMESTAMP WITH TIME ZONE
+    USING call_start_time AT TIME ZONE 'UTC',
+ALTER COLUMN call_end_time TYPE TIMESTAMP WITH TIME ZONE
+    USING call_end_time AT TIME ZONE 'UTC';
