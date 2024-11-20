@@ -3,6 +3,7 @@ package com.unicorn.api.controller.primary_doctor
 import com.unicorn.api.query_service.doctor.DepartmentDto
 import com.unicorn.api.query_service.doctor.DoctorDto
 import com.unicorn.api.query_service.doctor.HospitalDto
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -243,5 +244,101 @@ class PrimaryDoctorGetTest {
 
         result.andExpect(status().isOk)
             .andExpect(content().json("""{"data":[]}""")) // 空のリストが返されることを確認
+    }
+
+    @Nested
+    inner class UserGetAssociatedWithDoctor {
+        @Test
+        fun `should return 200 when user is found`() {
+            val doctorID = "doctor"
+
+            val result =
+                mockMvc.perform(
+                    MockMvcRequestBuilders.get("/primary_doctors/$doctorID/users").headers(
+                        HttpHeaders().apply {
+                            add("X-UID", doctorID)
+                        },
+                    )
+                        .contentType(MediaType.APPLICATION_JSON),
+                )
+
+            result.andExpect(status().isOk)
+            result.andExpect(
+                content().json(
+                    """
+                    {
+                        "data": [
+                            {
+                                "userID": "test",
+                                "firstName": "test",
+                                "lastName": "test",
+                                "email": "sample@test.com",
+                                "birthDate": "1990-01-01",
+                                "gender": "male",
+                                "address": "test",
+                                "postalCode": "0000000",
+                                "phoneNumber": "00000000000",
+                                "iconImageUrl": "https://example.com",
+                                "bodyHeight": 170.4,
+                                "bodyWeight": 60.4,
+                                "occupation": "test"
+                            },
+                            {
+                                "userID": "12345",
+                                "firstName": "田中",
+                                "lastName": "太郎",
+                                "email": "tanaka@test.com",
+                                "birthDate": "2000-01-01",
+                                "gender": "female",
+                                "address": "test",
+                                "postalCode": "0000000",
+                                "phoneNumber": "00000000000",
+                                "iconImageUrl": "https://example.com",
+                                "bodyHeight": 165.2,
+                                "bodyWeight": 50.1,
+                                "occupation": "test"
+                            }
+                        ]
+                    }
+                    """.trimIndent(),
+                    true,
+                ),
+            )
+        }
+
+        @Test
+        fun `should return 200 with empty list when user is not found`() {
+            val doctorID = "doctor3"
+
+            val result =
+                mockMvc.perform(
+                    MockMvcRequestBuilders.get("/primary_doctors/$doctorID/users").headers(
+                        HttpHeaders().apply {
+                            add("X-UID", doctorID)
+                        },
+                    )
+                        .contentType(MediaType.APPLICATION_JSON),
+                )
+
+            result.andExpect(status().isOk)
+                .andExpect(content().json("""{"data":[]}""", true))
+        }
+
+        @Test
+        fun `should return 400 when doctorID is not found`() {
+            val doctorID = "not_exist_doctor_id"
+
+            val result =
+                mockMvc.perform(
+                    MockMvcRequestBuilders.get("/primary_doctors/$doctorID/users").headers(
+                        HttpHeaders().apply {
+                            add("X-UID", doctorID)
+                        },
+                    )
+                        .contentType(MediaType.APPLICATION_JSON),
+                )
+
+            result.andExpect(status().isBadRequest)
+        }
     }
 }

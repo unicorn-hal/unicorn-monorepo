@@ -61,6 +61,7 @@ class FamilyEmailRepositoryTest {
     fun `should store family email`() {
         val familyEmail =
             FamilyEmail.create(
+                familyEmailID = UUID.randomUUID(),
                 userID = "test",
                 email = "test2@example.com",
                 firstName = "test",
@@ -136,6 +137,7 @@ class FamilyEmailRepositoryTest {
     fun `should delete family email`() {
         val familyEmail =
             FamilyEmail.create(
+                familyEmailID = UUID.randomUUID(),
                 userID = "test",
                 email = "sample@sample.com",
                 firstName = "太郎",

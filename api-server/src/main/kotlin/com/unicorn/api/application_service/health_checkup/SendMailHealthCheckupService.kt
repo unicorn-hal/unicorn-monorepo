@@ -38,7 +38,7 @@ class SendMailHealthCheckupServiceImpl(
         primaryDoctors.doctors.map {
             val doctor = doctorRepository.getOrNullBy(it.doctorID) ?: return
             val primaryDoctorEmail = doctor.email.value
-            val subject = "${user.firstName.value} ${user.lastName.value}の検査結果"
+            val subject = "${user.lastName.value} ${user.firstName.value}さんの検査結果"
             val body =
                 //language=html
                 """
@@ -46,8 +46,8 @@ class SendMailHealthCheckupServiceImpl(
                 <head>
                 </head>
                 <body>
-                <h1>${user.firstName.value} ${user.lastName.value}の検査結果</h1>
-                <p>患者様の検査結果をお知らせします。</p>
+                <h1>${user.lastName.value} ${user.firstName.value}さんの検査結果</h1>
+                <p>${user.lastName.value} ${user.firstName.value}さんの検査結果をお知らせします。</p>
                 <a href="#">検査結果を確認する</a>
                 </body>
                 </html>

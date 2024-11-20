@@ -31,6 +31,7 @@ data class FamilyEmail private constructor(
         }
 
         fun create(
+            familyEmailID: UUID,
             userID: String,
             email: String,
             firstName: String,
@@ -38,7 +39,7 @@ data class FamilyEmail private constructor(
             iconImageUrl: String?,
         ): FamilyEmail {
             return FamilyEmail(
-                familyEmailID = FamilyEmailID(UUID.randomUUID()),
+                familyEmailID = FamilyEmailID(familyEmailID),
                 userID = UserID(userID),
                 email = Email(email),
                 firstName = FirstName(firstName),
