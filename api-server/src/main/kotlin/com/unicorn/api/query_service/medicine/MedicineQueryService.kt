@@ -51,6 +51,7 @@ class MedicineQueryServiceImpl(
                 user_id = :userID
                 AND medicines.deleted_at IS NULL
             GROUP BY medicines.medicine_id
+            ORDER BY medicines.created_at
             """.trimIndent()
 
         val sqlParams =

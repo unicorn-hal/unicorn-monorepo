@@ -2,6 +2,7 @@ package com.unicorn.api.application_service.family_email
 
 import com.unicorn.api.controller.family_email.FamilyEmailPostRequest
 import com.unicorn.api.domain.family_email.FamilyEmail
+import com.unicorn.api.domain.family_email.FamilyEmailID
 import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.infrastructure.family_email.FamilyEmailRepository
 import com.unicorn.api.infrastructure.user.UserRepository
@@ -27,8 +28,14 @@ class SaveFamilyEmailServiceImpl(
         val user = userRepository.getOrNullBy(userID)
         requireNotNull(user) { "User not found" }
 
+        val existingFamilyEmail =
+            familyEmailRepository
+                .getOrNullBy(FamilyEmailID(familyEmailPostRequest.familyEmailID))
+        require(existingFamilyEmail == null) { "Family email already exists" }
+
         val familyEmail =
             FamilyEmail.create(
+                familyEmailID = familyEmailPostRequest.familyEmailID,
                 userID = userID.value,
                 email = familyEmailPostRequest.email,
                 firstName = familyEmailPostRequest.firstName,

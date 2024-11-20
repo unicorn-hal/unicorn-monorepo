@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.3.2
+  version: 1.3.4
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -655,6 +655,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: PrimaryDoctors
+  /primary_doctors/{doctorID}/users:
+    get:
+      tags:
+      - primary_doctors
+      summary: 主治医患者取得
+      description: 主治医の患者情報を取得します
+      operationId: primary_doctorsDoctorIDUsersGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: doctorID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 医師ID
+      responses:
+        "200":
+          description: 主治医患者取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: PrimaryDoctors
   /health_checkups:
     post:
       tags:
@@ -727,7 +771,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_2'
+                $ref: '#/components/schemas/inline_response_200_3'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -912,7 +956,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_3'
+                $ref: '#/components/schemas/inline_response_200_4'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1255,7 +1299,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_4'
+                $ref: '#/components/schemas/inline_response_200_5'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1285,7 +1329,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_5'
+                $ref: '#/components/schemas/inline_response_200_6'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1364,7 +1408,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_6'
+                $ref: '#/components/schemas/inline_response_200_7'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1491,7 +1535,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_7'
+                $ref: '#/components/schemas/inline_response_200_8'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1518,7 +1562,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FamilyEmailRequest'
+              $ref: '#/components/schemas/FamilyEmailsPostRequest'
         required: true
       responses:
         "200":
@@ -1657,7 +1701,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_8'
+                $ref: '#/components/schemas/inline_response_200_9'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1737,7 +1781,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_9'
+                $ref: '#/components/schemas/inline_response_200_10'
         "400":
           description: 不正なクエリパラメータが送信されました
           content:
@@ -1870,7 +1914,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_10'
+                $ref: '#/components/schemas/inline_response_200_11'
         "400":
           description: 不正なクエリパラメータが送信されました
           content:
@@ -1906,7 +1950,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_10'
+                $ref: '#/components/schemas/inline_response_200_11'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1936,7 +1980,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2046,7 +2090,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_12'
+                $ref: '#/components/schemas/inline_response_200_13'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2092,7 +2136,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_12'
+                $ref: '#/components/schemas/inline_response_200_13'
         "404":
           description: 通話予約が見つかりません
           content:
@@ -3014,6 +3058,28 @@ components:
           type: string
           description: 画像URL
           example: https://placehold.jp/150x150.png
+    FamilyEmailsPostRequest:
+      type: object
+      properties:
+        familyEmailID:
+          type: string
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        email:
+          type: string
+          description: 家族メールアドレス
+          example: sample@sample.com
+        firstName:
+          type: string
+          description: 家族の名
+          example: 太郎
+        lastName:
+          type: string
+          description: 家族の姓
+          example: 山田
+        iconImageUrl:
+          type: string
+          description: 画像URL
+          example: https://placehold.jp/150x150.png
     FamilyEmailResponse:
       type: object
       properties:
@@ -3438,6 +3504,41 @@ components:
         data:
           type: array
           items:
+            $ref: '#/components/schemas/User'
+      example:
+        data:
+        - lastName: 山田
+          address: 東京都新宿区1-1-1
+          occupation: エンジニア
+          gender: male
+          iconImageUrl: https://placehold.jp/150x150.png
+          postalCode: "1234567"
+          bodyHeight: 180.5
+          userID: "1234567890"
+          birthDate: 1990-01-01T00:00:00.000+00:00
+          firstName: 太郎
+          phoneNumber: "09012345678"
+          bodyWeight: 75.5
+          email: test@test.com
+        - lastName: 山田
+          address: 東京都新宿区1-1-1
+          occupation: エンジニア
+          gender: male
+          iconImageUrl: https://placehold.jp/150x150.png
+          postalCode: "1234567"
+          bodyHeight: 180.5
+          userID: "1234567890"
+          birthDate: 1990-01-01T00:00:00.000+00:00
+          firstName: 太郎
+          phoneNumber: "09012345678"
+          bodyWeight: 75.5
+          email: test@test.com
+    inline_response_200_3:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
             $ref: '#/components/schemas/HealthCheckup'
       example:
         data:
@@ -3472,7 +3573,7 @@ components:
         errorType:
           type: string
           description: エラータイプ
-    inline_response_200_3:
+    inline_response_200_4:
       type: object
       properties:
         data:
@@ -3512,7 +3613,7 @@ components:
           type: string
           description: エラータイプ
           example: DoctorNotFound
-    inline_response_200_4:
+    inline_response_200_5:
       type: object
       properties:
         data:
@@ -3525,7 +3626,7 @@ components:
           departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         - departmentName: 内科
           departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    inline_response_200_5:
+    inline_response_200_6:
       type: object
       properties:
         data:
@@ -3560,7 +3661,7 @@ components:
             lastName: 山田
             userIconUrl: https://placehold.jp/150x150.png
             userID: "1234567890"
-    inline_response_200_6:
+    inline_response_200_7:
       type: object
       properties:
         data:
@@ -3592,7 +3693,7 @@ components:
           type: string
           description: エラータイプ
           example: MessageNotFound
-    inline_response_200_7:
+    inline_response_200_8:
       type: object
       properties:
         data:
@@ -3618,7 +3719,7 @@ components:
           type: string
           description: エラータイプ
           example: FamilyEmailNotFound
-    inline_response_200_8:
+    inline_response_200_9:
       type: object
       properties:
         data:
@@ -3659,7 +3760,7 @@ components:
           medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           count: 30
           medicineName: パラセタモール
-    inline_response_200_9:
+    inline_response_200_10:
       type: object
       properties:
         data:
@@ -3684,7 +3785,7 @@ components:
           type: string
           description: エラータイプ
           example: MedicineNotFound
-    inline_response_200_10:
+    inline_response_200_11:
       type: object
       properties:
         data:
@@ -3697,7 +3798,7 @@ components:
           diseaseID: 1
         - diseaseName: 高血圧
           diseaseID: 1
-    inline_response_200_11:
+    inline_response_200_12:
       type: object
       properties:
         data:
@@ -3717,7 +3818,7 @@ components:
           type: string
           description: エラータイプ
           example: DiseaseNotFound
-    inline_response_200_12:
+    inline_response_200_13:
       type: object
       properties:
         data:

@@ -84,6 +84,7 @@ class FamilyEmailController(
 }
 
 data class FamilyEmailPostRequest(
+    val familyEmailID: UUID,
     val email: String,
     val firstName: String,
     val lastName: String,

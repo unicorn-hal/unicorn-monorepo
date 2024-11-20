@@ -55,7 +55,7 @@ exports.family_emailsGET = function(xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "data" : [ {
+  "data" : [  {
     "firstName" : "太郎",
     "lastName" : "山田",
     "familyEmailID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
@@ -76,7 +76,7 @@ exports.family_emailsGET = function(xUID) {
  * 家族メールアドレス登録
  * 家族メールアドレスを登録します
  *
- * body FamilyEmailRequest 
+ * body FamilyEmailsPostRequest 
  * xUID String 
  * returns FamilyEmailResponse
  **/
