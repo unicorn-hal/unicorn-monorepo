@@ -142,7 +142,7 @@ class CallGetTest {
     }
 
     @Test
-    fun `should return 400 when call reservation not found`() {
+    fun `should return 200 when call reservation not found`() {
         val userID = "12345"
         val doctorID = "doctor"
 
@@ -156,6 +156,16 @@ class CallGetTest {
                     .param("doctorID", doctorID)
                     .param("userID", userID),
             )
-        result.andExpect(status().isBadRequest)
+        result.andExpect(status().isOk)
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "data": []
+                }
+                """.trimIndent(),
+                false,
+            ),
+        )
     }
 }
