@@ -14,9 +14,9 @@ interface CallQueryService {
     fun get(
         doctorID: DoctorID,
         userID: UserID,
-    ): CallResult?
+    ): CallResult
 
-    fun getByDoctorID(doctorID: DoctorID): CallResult?
+    fun getByDoctorID(doctorID: DoctorID): CallResult
 }
 
 @Service
@@ -26,7 +26,7 @@ class CallQueryServiceImpl(
     override fun get(
         doctorID: DoctorID,
         userID: UserID,
-    ): CallResult? {
+    ): CallResult {
         //language=postgresql
         val sql =
             """
@@ -57,13 +57,10 @@ class CallQueryServiceImpl(
                     callEndTime = rs.getObject("call_end_time", OffsetDateTime::class.java),
                 )
             }
-        if (calls.isEmpty()) {
-            return null
-        }
         return CallResult(calls)
     }
 
-    override fun getByDoctorID(doctorID: DoctorID): CallResult? {
+    override fun getByDoctorID(doctorID: DoctorID): CallResult {
         //language=postgresql
         val sql =
             """
@@ -93,9 +90,6 @@ class CallQueryServiceImpl(
                     callEndTime = rs.getObject("call_end_time", OffsetDateTime::class.java),
                 )
             }
-        if (calls.isEmpty()) {
-            return null
-        }
         return CallResult(calls)
     }
 }

@@ -9,7 +9,6 @@ import com.unicorn.api.domain.call.CallReservationID
 import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.query_service.call.CallQueryService
-import com.unicorn.api.query_service.call.CallResult
 import com.unicorn.api.query_service.doctor.DoctorQueryService
 import com.unicorn.api.query_service.user.UserQueryService
 import org.springframework.http.ResponseEntity
@@ -49,7 +48,6 @@ class CallController(
 
         val result =
             callQueryService.get(DoctorID(doctorID), UserID(uid))
-                ?: return ResponseEntity.ok(CallResult(emptyList()))
 
         return ResponseEntity.ok(result)
     }
@@ -64,7 +62,6 @@ class CallController(
 
         val result =
             callQueryService.getByDoctorID(DoctorID(doctorID))
-                ?: return ResponseEntity.ok(CallResult(emptyList()))
 
         return ResponseEntity.ok(result)
     }
