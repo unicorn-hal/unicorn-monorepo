@@ -48,7 +48,6 @@ class CallController(
 
         val result =
             callQueryService.get(DoctorID(doctorID), UserID(uid))
-                ?: return ResponseEntity.status(400).body(ResponseError("No call reservations found"))
 
         return ResponseEntity.ok(result)
     }
@@ -63,7 +62,6 @@ class CallController(
 
         val result =
             callQueryService.getByDoctorID(DoctorID(doctorID))
-                ?: return ResponseEntity.status(400).body(ResponseError("No call reservations found"))
 
         return ResponseEntity.ok(result)
     }
