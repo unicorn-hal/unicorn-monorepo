@@ -13,6 +13,16 @@ module.exports.callsCallReservationIDDELETE = function callsCallReservationIDDEL
     });
 };
 
+module.exports.callsCallReservationIDGET = function callsCallReservationIDGET (req, res, next, xUID, callReservationID) {
+  Call.callsCallReservationIDGET(xUID, callReservationID)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
 module.exports.callsCallReservationIDPUT = function callsCallReservationIDPUT (req, res, next, body, callReservationID, xUID) {
   Call.callsCallReservationIDPUT(body, callReservationID, xUID)
     .then(function (response) {

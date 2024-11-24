@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.3.4
+  version: 1.3.5
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -2192,6 +2192,49 @@ paths:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Call
   /calls/{callReservationID}:
+    get:
+      tags:
+      - call
+      summary: 通話予約取得
+      description: 通話予約情報を取得します
+      operationId: callsCallReservationIDGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: callReservationID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 通話予約ID
+      responses:
+        "200":
+          description: 通話予約取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallReservation'
+        "404":
+          description: 通話予約が見つかりません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404_8'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Call
     put:
       tags:
       - call
