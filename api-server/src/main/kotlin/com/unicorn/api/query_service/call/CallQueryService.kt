@@ -1,6 +1,7 @@
 package com.unicorn.api.query_service.call
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.unicorn.api.domain.call.CallReservationID
 import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.user.UserID
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
@@ -17,6 +18,8 @@ interface CallQueryService {
     ): CallResult
 
     fun getByDoctorID(doctorID: DoctorID): CallResult
+
+    fun getOrNullBy(callReservationID: CallReservationID): CallDto?
 }
 
 @Service
@@ -91,6 +94,34 @@ class CallQueryServiceImpl(
                 )
             }
         return CallResult(calls)
+    }
+
+    override fun getOrNullBy(callReservationID: CallReservationID): CallDto? {
+        //language=postgresql
+        val sql =
+            """
+            SELECT
+                call_reservation_id,
+                doctor_id,
+                user_id,
+                call_start_time,
+                call_end_time
+            FROM call_reservations
+            WHERE call_reservation_id = :call_reservation_id
+            AND deleted_at IS NULL
+            """.trimIndent()
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("call_reservation_id", callReservationID.value)
+        return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+            CallDto(
+                callReservationID = UUID.fromString(rs.getString("call_reservation_id")),
+                doctorID = rs.getString("doctor_id"),
+                userID = rs.getString("user_id"),
+                callStartTime = rs.getObject("call_start_time", OffsetDateTime::class.java),
+                callEndTime = rs.getObject("call_end_time", OffsetDateTime::class.java),
+            )
+        }.singleOrNull()
     }
 }
 

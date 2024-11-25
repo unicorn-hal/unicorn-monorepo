@@ -81,6 +81,23 @@ class CallController(
         }
     }
 
+    @GetMapping("/calls/{callReservationID}")
+    fun get(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable callReservationID: UUID,
+    ): ResponseEntity<*> {
+        try {
+            val result =
+                callQueryService.getOrNullBy(CallReservationID(callReservationID))
+                    ?: return ResponseEntity.status(404).body(ResponseError("Call not found"))
+            return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
+
     @PutMapping("/calls/{callReservationID}")
     fun put(
         @RequestHeader("X-UID") uid: String,
