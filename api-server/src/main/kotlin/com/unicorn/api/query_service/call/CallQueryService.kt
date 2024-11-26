@@ -42,7 +42,7 @@ class CallQueryServiceImpl(
             FROM call_reservations
             WHERE doctor_id = :doctor_id
             AND user_id = :user_id
-            AND call_start_time >= CURRENT_TIMESTAMP
+            AND call_end_time >= CURRENT_TIMESTAMP
             AND deleted_at IS NULL
             ORDER BY call_start_time ASC
             """.trimIndent()
@@ -75,8 +75,8 @@ class CallQueryServiceImpl(
                 call_end_time
             FROM call_reservations
             WHERE doctor_id = :doctor_id
-            AND call_start_time >= CURRENT_TIMESTAMP
-            AND call_start_time <= CURRENT_TIMESTAMP + INTERVAL '1 YEAR'
+            AND call_end_time >= CURRENT_TIMESTAMP
+            AND call_end_time <= CURRENT_TIMESTAMP + INTERVAL '1 YEAR'
             AND deleted_at IS NULL
             ORDER BY call_start_time ASC
             """.trimIndent()
