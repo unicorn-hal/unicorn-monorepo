@@ -125,10 +125,11 @@ class CallRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJ
             SELECT COUNT(*) 
             FROM call_reservations
             WHERE doctor_id = :doctorID
-              AND deleted_at IS NULL
-              AND (
-                (call_start_time, call_end_time) OVERLAPS (:callStartTime, :callEndTime)
-              )
+            AND deleted_at IS NULL
+            AND (
+                call_start_time < :callEndTime
+                AND call_end_time > :callStartTime
+            )
             """.trimIndent()
 
         val sqlParams =
