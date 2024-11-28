@@ -19,7 +19,7 @@ class AppConfigController(
                 appConfigQueryService.get()
                     ?: return ResponseEntity.status(500).body(ResponseError("serverError"))
 
-            ResponseEntity.ok(AvailableResponse(response))
+            ResponseEntity.ok(response)
         } catch (e: Exception) {
             ResponseEntity.status(500).build()
         }
