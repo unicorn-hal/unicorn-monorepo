@@ -3459,16 +3459,11 @@ components:
         available:
           type: boolean
           example: true
-        stunServerType:
-          type: string
-          description: Server Type
-          example: AKS
-          enum:
-          - AKS
-          - GKE
-          - ISS
+        releaseBuild:
+          type: integer
+          example: 5
       example:
-        stunServerType: AKS
+        releaseBuild: 5
         available: true
     inline_response_500:
       type: object

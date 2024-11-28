@@ -25,7 +25,7 @@ class AppConfigGetTest {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/app_config"))
 
         result.andExpect(status().isOk)
-        result.andExpect(content().json("""{"available":true}"""))
+        result.andExpect(content().json("""{"available":true, releaseBuild: 5}""", true))
     }
 
     @Test
@@ -34,7 +34,7 @@ class AppConfigGetTest {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/app_config"))
 
         result.andExpect(status().isOk)
-        result.andExpect(content().json("""{"available":false}"""))
+        result.andExpect(content().json("""{"available":false, releaseBuild: 4}""", true))
     }
 
     @Test
@@ -42,7 +42,12 @@ class AppConfigGetTest {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/app_config"))
 
         result.andExpect(status().isInternalServerError)
-        result.andExpect(content().json("""{"errorType":"serverError"}"""))
+        result.andExpect(
+            content().json(
+                """{"errorType":"serverError"}""",
+                true,
+            ),
+        )
     }
 
     @Test
@@ -52,6 +57,6 @@ class AppConfigGetTest {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/app_config"))
 
         result.andExpect(status().isInternalServerError)
-        result.andExpect(content().json("""{"errorType":"serverError"}"""))
+        result.andExpect(content().json("""{"errorType":"serverError"}""", true))
     }
 }

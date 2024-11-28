@@ -12,7 +12,7 @@ exports.app_configGET = function(xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "stunServerType" : "AKS",
+  "releaseBuild" : 5,
   "available" : true
 };
     if (Object.keys(examples).length > 0) {
