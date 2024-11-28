@@ -25,5 +25,3 @@ class AppConfigController(
         }
     }
 }
-
-data class AvailableResponse(val available: Boolean)
