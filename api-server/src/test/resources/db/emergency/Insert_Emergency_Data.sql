@@ -19,4 +19,11 @@ INSERT INTO emergency_queue (
         1.1,
         NOW(),
         NOW()
+    ), (
+        'f47ac10b-58cc-4372-a567-0e02b2c3d469',
+        'test',
+        1.2,
+        1.2,
+        NOW(),
+        null
     );

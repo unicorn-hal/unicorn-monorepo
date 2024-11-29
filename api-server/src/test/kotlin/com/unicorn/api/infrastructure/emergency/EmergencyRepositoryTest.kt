@@ -99,4 +99,27 @@ class EmergencyRepositoryTest {
         val foundEmergency = emergencyRepository.getOrNullBy(emergencyID)
         assertNull(foundEmergency)
     }
+
+    @Test
+    fun `should return oldest emergency`() {
+        val oldestEmergency = emergencyRepository.getOldestOrNull()
+        assertNotNull(oldestEmergency)
+        assertEquals("test", oldestEmergency!!.userID.value)
+        assertEquals(1.1, oldestEmergency.userLatitude.value)
+        assertEquals(1.1, oldestEmergency.userLongitude.value)
+    }
+
+    @Test
+    fun `should delete emergency`() {
+        val emergency =
+            Emergency.create(
+                userID = "test",
+                userLatitude = 0.0,
+                userLongitude = 0.0,
+            )
+        emergencyRepository.store(emergency)
+        emergencyRepository.delete(emergency)
+        val deletedEmergency = emergencyRepository.getOrNullBy(emergency.emergencyID)
+        assertNull(deletedEmergency)
+    }
 }
