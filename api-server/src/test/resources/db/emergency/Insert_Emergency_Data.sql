@@ -15,15 +15,15 @@ INSERT INTO emergency_queue (
     ), (
         'f47ac10b-58cc-4372-a567-0e02b2c3d471',
         'test',
-        1.1,
-        1.1,
-        NOW(),
+        1.2,
+        1.2,
+        NOW() + INTERVAL '1 day',
         NOW()
     ), (
         'f47ac10b-58cc-4372-a567-0e02b2c3d469',
         'test',
-        1.2,
-        1.2,
-        NOW(),
+        1.3,
+        1.3,
+        NOW() + INTERVAL '2 day',
         null
     );
