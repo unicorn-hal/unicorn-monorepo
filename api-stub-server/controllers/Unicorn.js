@@ -13,8 +13,8 @@ module.exports.unicornEmergencyPOST = function unicornEmergencyPOST (req, res, n
     });
 };
 
-module.exports.unicornRobotIDArrivalPOST = function unicornRobotIDArrivalPOST (req, res, next, xUID, robotID) {
-  Unicorn.unicornRobotIDArrivalPOST(xUID, robotID)
+module.exports.unicornRobotIDArrivalPOST = function unicornRobotIDArrivalPOST (req, res, next, body, robotID, xUID) {
+  Unicorn.unicornRobotIDArrivalPOST(body, robotID, xUID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -23,8 +23,8 @@ module.exports.unicornRobotIDArrivalPOST = function unicornRobotIDArrivalPOST (r
     });
 };
 
-module.exports.unicornRobotIDCompletePOST = function unicornRobotIDCompletePOST (req, res, next, xUID, robotID) {
-  Unicorn.unicornRobotIDCompletePOST(xUID, robotID)
+module.exports.unicornRobotIDCompletePOST = function unicornRobotIDCompletePOST (req, res, next, body, robotID, xUID) {
+  Unicorn.unicornRobotIDCompletePOST(body, robotID, xUID)
     .then(function (response) {
       utils.writeJson(res, response);
     })

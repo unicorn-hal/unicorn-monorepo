@@ -30,11 +30,12 @@ exports.unicornEmergencyPOST = function(body,xUID) {
  * 到着通知
  * ロボットの到着通知を行います
  *
- * xUID String 
+ * body Arrival 
  * robotID String 
+ * xUID String 
  * returns Arrival
  **/
-exports.unicornRobotIDArrivalPOST = function(xUID,robotID) {
+exports.unicornRobotIDArrivalPOST = function(body,robotID,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
@@ -55,14 +56,16 @@ exports.unicornRobotIDArrivalPOST = function(xUID,robotID) {
  * 完了通知
  * ロボットの検査・治療・搬送の完了通知を行います
  *
- * xUID String 
+ * body Complete 
  * robotID String 
+ * xUID String 
  * returns Complete
  **/
-exports.unicornRobotIDCompletePOST = function(xUID,robotID) {
+exports.unicornRobotIDCompletePOST = function(body,robotID,xUID) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
+  "robotSupportID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "userID" : "1234567890"
 };
     if (Object.keys(examples).length > 0) {

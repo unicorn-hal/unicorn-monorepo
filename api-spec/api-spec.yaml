@@ -68,6 +68,10 @@ components:
     Complete:
       type: object
       properties:
+        robotSupportID:
+          type: string
+          description: "ロボットサポートID(WSから取得できるUUID)"
+          example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
         userID:
           type: string
           description: "ユーザーID"
@@ -4391,6 +4395,12 @@ paths:
           schema:
             type: string
             description: "ロボットID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Arrival"
       responses:
         "200":
           description: "到着通知成功"
@@ -4439,6 +4449,12 @@ paths:
           schema:
             type: string
             description: "ロボットID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Complete"
       responses:
         "200":
           description: "完了通知成功"
