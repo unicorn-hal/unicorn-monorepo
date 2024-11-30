@@ -4278,8 +4278,8 @@ paths:
     post:
       tags:
         - unicorn
-      summary: "緊急通報"
-      description: "緊急通報を行います"
+      summary: "緊急要請"
+      description: "緊急要請を行います"
       parameters:
         - in: header
           name: X-UID
