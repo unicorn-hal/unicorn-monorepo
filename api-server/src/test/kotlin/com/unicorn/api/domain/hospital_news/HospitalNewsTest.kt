@@ -2,7 +2,8 @@ package com.unicorn.api.domain.hospital_news
 
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.*
 import kotlin.test.assertEquals
 
@@ -16,7 +17,6 @@ class HospitalNewsTest {
                 contents = "テストコンテンツです。テストコンテンツです。テストコンテンツです。テストコンテンツです。テストコンテンツです。",
                 noticeImageUrl = "http://example.com/icon.png",
                 relatedUrl = "https://example.com/",
-                postedDate = LocalDateTime.of(2024, 11, 21, 12, 0, 0),
             )
 
         assertEquals(hospitalNews.hospitalID.value, hospitalNews.hospitalID.value)
@@ -27,7 +27,6 @@ class HospitalNewsTest {
         )
         assertEquals("http://example.com/icon.png", hospitalNews.noticeImageUrl?.value)
         assertEquals("https://example.com/", hospitalNews.relatedUrl?.value)
-        assertEquals(LocalDateTime.of(2024, 11, 21, 12, 0, 0), hospitalNews.postedDate?.value)
     }
 
     @Test
@@ -40,7 +39,7 @@ class HospitalNewsTest {
                 contents = "テストコンテンツです。テストコンテンツです。テストコンテンツです。テストコンテンツです。テストコンテンツです。",
                 noticeImageUrl = "http://example.com/icon.png",
                 relatedUrl = "https://example.com/",
-                postedDate = LocalDateTime.of(2024, 11, 21, 12, 0, 0),
+                postedDate = OffsetDateTime.of(2024, 11, 21, 3, 0, 0, 0, ZoneOffset.UTC),
             )
 
         assertEquals(hospitalNews.hospitalNewsID.value, hospitalNews.hospitalNewsID.value)
@@ -52,7 +51,10 @@ class HospitalNewsTest {
         )
         assertEquals("http://example.com/icon.png", hospitalNews.noticeImageUrl?.value)
         assertEquals("https://example.com/", hospitalNews.relatedUrl?.value)
-        assertEquals(LocalDateTime.of(2024, 11, 21, 12, 0, 0), hospitalNews.postedDate?.value)
+        assertEquals(
+            OffsetDateTime.of(2024, 11, 21, 3, 0, 0, 0, ZoneOffset.UTC),
+            hospitalNews.postedDate.value,
+        )
     }
 
     @Test
@@ -65,7 +67,6 @@ class HospitalNewsTest {
                     contents = "テストコンテンツです。テストコンテンツです。テストコンテンツです。テストコンテンツです。テストコンテンツです。",
                     noticeImageUrl = "http://example.com/icon.png",
                     relatedUrl = "https://example.com/",
-                    postedDate = LocalDateTime.of(2024, 11, 21, 12, 0, 0),
                 )
             }
         assertEquals("title should not be blank", exception.message)
@@ -81,7 +82,6 @@ class HospitalNewsTest {
                     contents = "",
                     noticeImageUrl = "http://example.com/icon.png",
                     relatedUrl = "https://example.com/",
-                    postedDate = LocalDateTime.of(2024, 11, 21, 12, 0, 0),
                 )
             }
         assertEquals("contents should not be blank", exception.message)

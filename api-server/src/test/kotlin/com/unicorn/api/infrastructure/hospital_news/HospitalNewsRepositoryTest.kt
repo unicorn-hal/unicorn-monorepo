@@ -10,8 +10,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -54,6 +54,10 @@ class HospitalNewsRepositoryTest {
             sql,
             sqlParams,
         ) { rs, _ ->
+            val postedDate: OffsetDateTime = rs.getObject("posted_date", OffsetDateTime::class.java)
+
+            val jstPostedDate = postedDate.withOffsetSameInstant(ZoneOffset.ofHours(9))
+
             HospitalNews.fromStore(
                 hospitalNewsID = UUID.fromString(rs.getString("hospital_news_id")),
                 hospitalID = UUID.fromString(rs.getString("hospital_id")),
@@ -61,7 +65,7 @@ class HospitalNewsRepositoryTest {
                 contents = rs.getString("contents"),
                 noticeImageUrl = rs.getString("notice_image_url"),
                 relatedUrl = rs.getString("related_url"),
-                postedDate = rs.getObject("posted_date", LocalDateTime::class.java),
+                postedDate = jstPostedDate,
             )
         }.singleOrNull()
     }
@@ -75,7 +79,6 @@ class HospitalNewsRepositoryTest {
                 contents = "本日は臨時休業日です。申し訳ございません。",
                 noticeImageUrl = "http://example.com/online_service.jpg",
                 relatedUrl = "https://example.com/store",
-                postedDate = LocalDateTime.of(2024, 11, 21, 12, 0, 0),
             )
 
         hospitalNewsRepository.store(hospitalNews)
@@ -88,7 +91,6 @@ class HospitalNewsRepositoryTest {
         assert(storeHospitalNews?.contents == hospitalNews.contents)
         assert(storeHospitalNews?.noticeImageUrl == hospitalNews.noticeImageUrl)
         assert(storeHospitalNews?.relatedUrl == hospitalNews.relatedUrl)
-        assert(storeHospitalNews?.postedDate == hospitalNews.postedDate)
     }
 
     @Test
@@ -100,7 +102,6 @@ class HospitalNewsRepositoryTest {
                 contents = "本日は臨時休業日です。申し訳ございません。",
                 noticeImageUrl = "",
                 relatedUrl = "https://example.com/store",
-                postedDate = LocalDateTime.of(2024, 11, 21, 12, 0, 0),
             )
 
         hospitalNewsRepository.store(hospitalNews)
@@ -113,7 +114,6 @@ class HospitalNewsRepositoryTest {
         assert(storeHospitalNews?.contents == hospitalNews.contents)
         assert(storeHospitalNews?.noticeImageUrl == hospitalNews.noticeImageUrl)
         assert(storeHospitalNews?.relatedUrl == hospitalNews.relatedUrl)
-        assert(storeHospitalNews?.postedDate == hospitalNews.postedDate)
     }
 
     @Test
@@ -125,7 +125,6 @@ class HospitalNewsRepositoryTest {
                 contents = "本日は臨時休業日です。申し訳ございません。",
                 noticeImageUrl = "http://example.com/online_service.jpg",
                 relatedUrl = "",
-                postedDate = LocalDateTime.of(2024, 11, 21, 12, 0, 0),
             )
 
         hospitalNewsRepository.store(hospitalNews)
@@ -138,32 +137,6 @@ class HospitalNewsRepositoryTest {
         assert(storeHospitalNews?.contents == hospitalNews.contents)
         assert(storeHospitalNews?.noticeImageUrl == hospitalNews.noticeImageUrl)
         assert(storeHospitalNews?.relatedUrl == hospitalNews.relatedUrl)
-        assert(storeHospitalNews?.postedDate == hospitalNews.postedDate)
-    }
-
-    @Test
-    fun `should store hospital news is posted date is null`() {
-        val hospitalNews =
-            HospitalNews.create(
-                hospitalID = UUID.fromString("762a7a7e-41e4-46c2-b36c-f2b302cae3e7"),
-                title = "本日のお知らせ",
-                contents = "本日は臨時休業日です。申し訳ございません。",
-                noticeImageUrl = "http://example.com/online_service.jpg",
-                relatedUrl = "https://example.com/store",
-                postedDate = null,
-            )
-
-        hospitalNewsRepository.store(hospitalNews)
-
-        val storeHospitalNews = findHospitalNewsByHospitalNewsID(hospitalNews.hospitalNewsID)
-
-        assert(storeHospitalNews?.hospitalNewsID == hospitalNews.hospitalNewsID)
-        assert(storeHospitalNews?.hospitalID == hospitalNews.hospitalID)
-        assert(storeHospitalNews?.title == hospitalNews.title)
-        assert(storeHospitalNews?.contents == hospitalNews.contents)
-        assert(storeHospitalNews?.noticeImageUrl == hospitalNews.noticeImageUrl)
-        assert(storeHospitalNews?.relatedUrl == hospitalNews.relatedUrl)
-        assert(storeHospitalNews?.postedDate == hospitalNews.postedDate)
     }
 
     @Test
@@ -179,8 +152,8 @@ class HospitalNewsRepositoryTest {
         assert(hospitalNews.contents.value == "新しい診療時間は月曜日から金曜日の午前9時から午後5時までです。")
         assert(hospitalNews.noticeImageUrl?.value == "http://example.com/notice_image.png")
         assert(hospitalNews.relatedUrl?.value == "https://example.com/new-schedule")
-        val expectedDate = LocalDateTime.parse("2024-11-29 10:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-        assert(hospitalNews.postedDate?.value == expectedDate)
+        val expectedDate = OffsetDateTime.parse("2024-11-29T10:00:00z")
+        assert(hospitalNews.postedDate.value == expectedDate)
     }
 
     @Test
@@ -204,7 +177,7 @@ class HospitalNewsRepositoryTest {
                 contents = "新しい診療時間は月曜日から金曜日の午前9時から午後5時までです。",
                 noticeImageUrl = "http://example.com/notice_image.png",
                 relatedUrl = "https://example.com/new-schedule",
-                postedDate = LocalDateTime.of(2024, 11, 29, 10, 0, 0),
+                postedDate = OffsetDateTime.of(2024, 11, 29, 10, 0, 0, 0, ZoneOffset.UTC),
             )
 
         hospitalNewsRepository.delete(hospitalNews)

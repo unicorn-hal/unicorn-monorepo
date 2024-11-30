@@ -1,7 +1,8 @@
 package com.unicorn.api.domain.hospital_news
 
 import com.unicorn.api.domain.hospital.HospitalID
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.*
 
 data class HospitalNews(
@@ -11,7 +12,7 @@ data class HospitalNews(
     val contents: Contents,
     val noticeImageUrl: NoticeImageUrl?,
     val relatedUrl: RelatedUrl?,
-    val postedDate: PostedDate?,
+    val postedDate: PostedDate,
 ) {
     companion object {
         fun fromStore(
@@ -21,7 +22,7 @@ data class HospitalNews(
             contents: String,
             noticeImageUrl: String?,
             relatedUrl: String?,
-            postedDate: LocalDateTime?,
+            postedDate: OffsetDateTime,
         ): HospitalNews {
             return HospitalNews(
                 hospitalNewsID = HospitalNewsID(hospitalNewsID),
@@ -40,7 +41,6 @@ data class HospitalNews(
             contents: String,
             noticeImageUrl: String?,
             relatedUrl: String?,
-            postedDate: LocalDateTime?,
         ): HospitalNews {
             return HospitalNews(
                 hospitalNewsID = HospitalNewsID(UUID.randomUUID()),
@@ -49,7 +49,7 @@ data class HospitalNews(
                 contents = Contents(contents),
                 noticeImageUrl = NoticeImageUrl(noticeImageUrl),
                 relatedUrl = RelatedUrl(relatedUrl),
-                postedDate = PostedDate(postedDate),
+                postedDate = PostedDate(OffsetDateTime.now(ZoneOffset.UTC)),
             )
         }
     }
@@ -83,4 +83,4 @@ value class NoticeImageUrl(val value: String?)
 value class RelatedUrl(val value: String?)
 
 @JvmInline
-value class PostedDate(val value: LocalDateTime?)
+value class PostedDate(val value: OffsetDateTime)

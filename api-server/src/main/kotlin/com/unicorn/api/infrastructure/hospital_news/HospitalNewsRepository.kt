@@ -5,7 +5,7 @@ import com.unicorn.api.domain.hospital_news.HospitalNewsID
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.util.*
 
 interface HospitalNewsRepository {
@@ -53,7 +53,7 @@ class HospitalNewsImpl(private val namedParameterJdbcTemplate: NamedParameterJdb
                 .addValue("contents", hospitalNews.contents.value)
                 .addValue("noticeImageUrl", hospitalNews.noticeImageUrl?.value)
                 .addValue("relatedUrl", hospitalNews.relatedUrl?.value)
-                .addValue("postedDate", hospitalNews.postedDate?.value)
+                .addValue("postedDate", hospitalNews.postedDate.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
         return hospitalNews
@@ -91,7 +91,7 @@ class HospitalNewsImpl(private val namedParameterJdbcTemplate: NamedParameterJdb
                 contents = rs.getString("contents"),
                 noticeImageUrl = rs.getString("notice_image_url"),
                 relatedUrl = rs.getString("related_url"),
-                postedDate = rs.getObject("posted_date", LocalDateTime::class.java),
+                postedDate = rs.getObject("posted_date", OffsetDateTime::class.java),
             )
         }.singleOrNull()
     }
