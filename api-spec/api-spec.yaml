@@ -1284,11 +1284,9 @@ paths:
                   available:
                     type: boolean
                     example: true
-                  stunServerType:
-                    type: string
-                    description: "Server Type"
-                    enum: ["AKS", "GKE", "ISS"]
-                    example: "AKS"
+                  releaseBuild:
+                    type: integer
+                    example: 5
         "500":
           description: "サーバーエラーが発生しました"
           content:
