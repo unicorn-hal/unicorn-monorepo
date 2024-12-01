@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 1.3.5
+  version: 2.0.0
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -35,6 +35,10 @@ tags:
   description: 持病情報
 - name: call
   description: 通話情報
+- name: robot
+  description: ロボット情報
+- name: unicorn
+  description: Unicorn要請API
 paths:
   /app_config:
     get:
@@ -1008,6 +1012,141 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Hospital
+  /hospitals/{hospitalID}/news:
+    get:
+      tags:
+      - hospital
+      summary: 病院ニュース一覧取得
+      description: 病院のニュース一覧を取得します
+      operationId: hospitalsHospitalIDNewsGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: hospitalID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 病院UUID
+      responses:
+        "200":
+          description: 病院ニュース一覧取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_5'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Hospital
+    post:
+      tags:
+      - hospital
+      summary: 病院ニュース登録
+      description: 病院のニュースを登録します
+      operationId: hospitalsHospitalIDNewsPOST
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: hospitalID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 病院UUID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HospitalNewsRequest'
+        required: true
+      responses:
+        "200":
+          description: 病院ニュース登録成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HospitalNewsResponse'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Hospital
+  /hospitals/{hospitalID}/news/{newsID}:
+    delete:
+      tags:
+      - hospital
+      summary: 病院ニュース削除
+      description: 病院のニュースを削除します
+      operationId: hospitalsHospitalIDNewsNewsIDDELETE
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: hospitalID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 病院UUID
+      - name: newsID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ニュースUUID
+      responses:
+        "204":
+          description: 病院ニュース削除成功
+        "404":
+          description: 指定されたニュースが存在しません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404_3'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Hospital
   /hospitals/{hospitalID}/doctors:
     get:
       tags:
@@ -1175,7 +1314,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_3'
+                $ref: '#/components/schemas/inline_response_404_4'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1230,7 +1369,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_3'
+                $ref: '#/components/schemas/inline_response_404_4'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1269,7 +1408,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_3'
+                $ref: '#/components/schemas/inline_response_404_4'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1299,7 +1438,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_5'
+                $ref: '#/components/schemas/inline_response_200_6'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1329,7 +1468,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_6'
+                $ref: '#/components/schemas/inline_response_200_7'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1408,7 +1547,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_7'
+                $ref: '#/components/schemas/inline_response_200_8'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1505,7 +1644,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_4'
+                $ref: '#/components/schemas/inline_response_404_5'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1535,7 +1674,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_8'
+                $ref: '#/components/schemas/inline_response_200_9'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1632,7 +1771,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_5'
+                $ref: '#/components/schemas/inline_response_404_6'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1671,7 +1810,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_5'
+                $ref: '#/components/schemas/inline_response_404_6'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1701,7 +1840,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_9'
+                $ref: '#/components/schemas/inline_response_200_10'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1781,7 +1920,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_10'
+                $ref: '#/components/schemas/inline_response_200_11'
         "400":
           description: 不正なクエリパラメータが送信されました
           content:
@@ -1876,7 +2015,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_6'
+                $ref: '#/components/schemas/inline_response_404_7'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1914,7 +2053,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "400":
           description: 不正なクエリパラメータが送信されました
           content:
@@ -1950,7 +2089,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/inline_response_200_12'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1980,7 +2119,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_12'
+                $ref: '#/components/schemas/inline_response_200_13'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2052,7 +2191,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_7'
+                $ref: '#/components/schemas/inline_response_404_8'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2090,7 +2229,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_13'
+                $ref: '#/components/schemas/inline_response_200_14'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2136,13 +2275,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_13'
+                $ref: '#/components/schemas/inline_response_200_14'
         "404":
           description: 通話予約が見つかりません
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_8'
+                $ref: '#/components/schemas/inline_response_404_9'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2227,7 +2366,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_8'
+                $ref: '#/components/schemas/inline_response_404_9'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2315,7 +2454,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_8'
+                $ref: '#/components/schemas/inline_response_404_9'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2323,8 +2462,601 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Call
+  /robot:
+    get:
+      tags:
+      - robot
+      summary: ロボット一覧取得
+      description: ロボット一覧を取得します
+      operationId: robotGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      responses:
+        "200":
+          description: ロボット一覧取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_15'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Robot
+    post:
+      tags:
+      - robot
+      summary: ロボット追加
+      description: 新しいロボットを追加します
+      operationId: robotPOST
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RobotRequest'
+        required: true
+      responses:
+        "200":
+          description: ロボット追加成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotResponse'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Robot
+  /robot/{robotID}:
+    get:
+      tags:
+      - robot
+      summary: ロボット情報取得
+      description: ロボットの情報を取得します
+      operationId: robotRobotIDGET
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: robotID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ロボットID
+      responses:
+        "200":
+          description: ロボット情報取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Robot'
+        "404":
+          description: 指定されたロボットが存在しません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404_10'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Robot
+    put:
+      tags:
+      - robot
+      summary: ロボット情報更新
+      description: ロボットの情報を更新します
+      operationId: robotRobotIDPUT
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: robotID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ロボットID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RobotRequest'
+        required: true
+      responses:
+        "200":
+          description: ロボット情報更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RobotResponse'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "404":
+          description: 指定されたロボットが存在しません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404_10'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Robot
+    delete:
+      tags:
+      - robot
+      summary: ロボット削除
+      description: ロボットを削除します
+      operationId: robotRobotIDDELETE
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: robotID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ロボットID
+      responses:
+        "204":
+          description: ロボット削除成功
+        "404":
+          description: 指定されたロボットが存在しません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404_10'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Robot
+  /unicorn/emergency:
+    post:
+      tags:
+      - unicorn
+      summary: 緊急通報
+      description: 緊急通報を行います
+      operationId: unicornEmergencyPOST
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Emergency'
+        required: true
+      responses:
+        "200":
+          description: 緊急通報成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Emergency'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Unicorn
+  /unicorn/{robotID}/moving:
+    post:
+      tags:
+      - unicorn
+      summary: 移動通知
+      description: ロボットの移動通知を行います
+      operationId: unicornRobotIDMovingPOST
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: robotID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ロボットID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Moving'
+        required: true
+      responses:
+        "200":
+          description: 移動通知成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Moving'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Unicorn
+  /unicorn/{robotID}/arrival:
+    post:
+      tags:
+      - unicorn
+      summary: 到着通知
+      description: ロボットの到着通知を行います
+      operationId: unicornRobotIDArrivalPOST
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: robotID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ロボットID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Arrival'
+        required: true
+      responses:
+        "200":
+          description: 到着通知成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Arrival'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Unicorn
+  /unicorn/{robotID}/complete:
+    post:
+      tags:
+      - unicorn
+      summary: 完了通知
+      description: ロボットの検査・治療・搬送の完了通知を行います
+      operationId: unicornRobotIDCompletePOST
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: robotID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ロボットID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Complete'
+        required: true
+      responses:
+        "200":
+          description: 完了通知成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Complete'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Unicorn
 components:
   schemas:
+    Emergency:
+      type: object
+      properties:
+        userID:
+          type: string
+          description: ユーザーID
+          example: "1234567890"
+        userLatitude:
+          type: number
+          description: ユーザーの緯度
+          example: 35.681236
+        userLongitude:
+          type: number
+          description: ユーザーの経度
+          example: 139.767125
+      example:
+        userLatitude: 35.681236
+        userLongitude: 139.767125
+        userID: "1234567890"
+    Moving:
+      type: object
+      properties:
+        userID:
+          type: string
+          description: ユーザーID
+          example: "1234567890"
+        robotLatitude:
+          type: number
+          description: ロボットの緯度
+          example: 35.681236
+        robotLongitude:
+          type: number
+          description: ロボットの経度
+          example: 139.767125
+      example:
+        robotLongitude: 139.767125
+        robotLatitude: 35.681236
+        userID: "1234567890"
+    Arrival:
+      type: object
+      properties:
+        userID:
+          type: string
+          description: ユーザーID
+          example: "1234567890"
+        robotLatitude:
+          type: number
+          description: ロボットの緯度
+          example: 35.681236
+        robotLongitude:
+          type: number
+          description: ロボットの経度
+          example: 139.767125
+      example:
+        robotLongitude: 139.767125
+        robotLatitude: 35.681236
+        userID: "1234567890"
+    Complete:
+      type: object
+      properties:
+        robotSupportID:
+          type: string
+          description: ロボットサポートID(WSから取得できるUUID)
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        userID:
+          type: string
+          description: ユーザーID
+          example: "1234567890"
+      example:
+        robotSupportID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        userID: "1234567890"
+    Robot:
+      type: object
+      properties:
+        robotID:
+          type: string
+          description: Robot ID
+          example: "1234567890"
+        robotName:
+          type: string
+          description: Robot Name
+          example: Unicorn
+      example:
+        robotName: Unicorn
+        robotID: "1234567890"
+    RobotRequest:
+      type: object
+      properties:
+        robotName:
+          type: string
+          description: Robot Name
+          example: Unicorn
+    RobotResponse:
+      type: object
+      properties:
+        robotName:
+          type: string
+          description: Robot Name
+          example: Unicorn
+      example:
+        robotName: Unicorn
+    HospitalNews:
+      type: object
+      properties:
+        hospitalNewsID:
+          type: string
+          description: 病院お知らせUUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        hospitalID:
+          type: string
+          description: 病院UUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        title:
+          type: string
+          description: お知らせタイトル
+          example: 新型コロナウイルス対策について
+        contents:
+          type: string
+          description: お知らせ内容
+          example: 新型コロナウイルスの感染拡大に伴い、当院では以下の対策を行っております。
+        noticeImageUrl:
+          type: string
+          description: お知らせ画像URL
+          example: https://placehold.jp/150x150.png
+        relatedUrl:
+          type: string
+          description: 関連URL
+          example: https://www.hospital.com/news/1
+        postedDate:
+          type: string
+          description: お知らせ日
+          example: 2020-01-01 00:00:00 +09:00
+      example:
+        noticeImageUrl: https://placehold.jp/150x150.png
+        hospitalNewsID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        contents: 新型コロナウイルスの感染拡大に伴い、当院では以下の対策を行っております。
+        relatedUrl: https://www.hospital.com/news/1
+        title: 新型コロナウイルス対策について
+        postedDate: 2020-01-01 00:00:00 +09:00
+    HospitalNewsRequest:
+      type: object
+      properties:
+        hospitalID:
+          type: string
+          description: 病院UUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        title:
+          type: string
+          description: お知らせタイトル
+          example: 新型コロナウイルス対策について
+        contents:
+          type: string
+          description: お知らせ内容
+          example: 新型コロナウイルスの感染拡大に伴い、当院では以下の対策を行っております。
+        noticeImageUrl:
+          type: string
+          description: お知らせ画像URL
+          example: https://placehold.jp/150x150.png
+        relatedUrl:
+          type: string
+          description: 関連URL
+          example: https://www.hospital.com/news/1
+    HospitalNewsResponse:
+      type: object
+      properties:
+        hospitalID:
+          type: string
+          description: 病院UUID
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        title:
+          type: string
+          description: お知らせタイトル
+          example: 新型コロナウイルス対策について
+        contents:
+          type: string
+          description: お知らせ内容
+          example: 新型コロナウイルスの感染拡大に伴い、当院では以下の対策を行っております。
+        noticeImageUrl:
+          type: string
+          description: お知らせ画像URL
+          example: https://placehold.jp/150x150.png
+        relatedUrl:
+          type: string
+          description: 関連URL
+          example: https://www.hospital.com/news/1
+      example:
+        noticeImageUrl: https://placehold.jp/150x150.png
+        hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        contents: 新型コロナウイルスの感染拡大に伴い、当院では以下の対策を行っております。
+        relatedUrl: https://www.hospital.com/news/1
+        title: 新型コロナウイルス対策について
     UserNotification:
       type: object
       properties:
@@ -2358,6 +3090,7 @@ components:
           enum:
           - user
           - doctor
+          - robot
         fcmTokenId:
           type: string
           description: FCMトークンID
@@ -2380,6 +3113,7 @@ components:
           enum:
           - user
           - doctor
+          - robot
         fcmTokenId:
           type: string
           description: FCMトークンID
@@ -2398,6 +3132,7 @@ components:
           enum:
           - user
           - doctor
+          - robot
         fcmTokenId:
           type: string
           description: FCMトークンID
@@ -3637,6 +4372,36 @@ components:
           type: string
           description: エラータイプ
           example: HospitalNotFound
+    inline_response_200_5:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HospitalNews'
+      example:
+        data:
+        - noticeImageUrl: https://placehold.jp/150x150.png
+          hospitalNewsID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          contents: 新型コロナウイルスの感染拡大に伴い、当院では以下の対策を行っております。
+          relatedUrl: https://www.hospital.com/news/1
+          title: 新型コロナウイルス対策について
+          postedDate: 2020-01-01 00:00:00 +09:00
+        - noticeImageUrl: https://placehold.jp/150x150.png
+          hospitalNewsID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          contents: 新型コロナウイルスの感染拡大に伴い、当院では以下の対策を行っております。
+          relatedUrl: https://www.hospital.com/news/1
+          title: 新型コロナウイルス対策について
+          postedDate: 2020-01-01 00:00:00 +09:00
+    inline_response_404_3:
+      type: object
+      properties:
+        errorType:
+          type: string
+          description: エラータイプ
+          example: NewsNotFound
     inline_response_400_1:
       type: object
       properties:
@@ -3644,14 +4409,14 @@ components:
           type: string
           description: エラータイプ
           example: InvalidQuery
-    inline_response_404_3:
+    inline_response_404_4:
       type: object
       properties:
         errorType:
           type: string
           description: エラータイプ
           example: DoctorNotFound
-    inline_response_200_5:
+    inline_response_200_6:
       type: object
       properties:
         data:
@@ -3664,7 +4429,7 @@ components:
           departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         - departmentName: 内科
           departmentID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    inline_response_200_6:
+    inline_response_200_7:
       type: object
       properties:
         data:
@@ -3699,7 +4464,7 @@ components:
             lastName: 山田
             userIconUrl: https://placehold.jp/150x150.png
             userID: "1234567890"
-    inline_response_200_7:
+    inline_response_200_8:
       type: object
       properties:
         data:
@@ -3724,14 +4489,14 @@ components:
           messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           sentAt: 2020-01-01T00:00:00+09:00
           content: "Hello, World!"
-    inline_response_404_4:
+    inline_response_404_5:
       type: object
       properties:
         errorType:
           type: string
           description: エラータイプ
           example: MessageNotFound
-    inline_response_200_8:
+    inline_response_200_9:
       type: object
       properties:
         data:
@@ -3750,14 +4515,14 @@ components:
           familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           iconImageUrl: https://placehold.jp/150x150.png
           email: sample@sample.com
-    inline_response_404_5:
+    inline_response_404_6:
       type: object
       properties:
         errorType:
           type: string
           description: エラータイプ
           example: FamilyEmailNotFound
-    inline_response_200_9:
+    inline_response_200_10:
       type: object
       properties:
         data:
@@ -3798,7 +4563,7 @@ components:
           medicineID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           count: 30
           medicineName: パラセタモール
-    inline_response_200_10:
+    inline_response_200_11:
       type: object
       properties:
         data:
@@ -3816,14 +4581,14 @@ components:
           type: string
           description: エラータイプ
           example: Bad Request
-    inline_response_404_6:
+    inline_response_404_7:
       type: object
       properties:
         errorType:
           type: string
           description: エラータイプ
           example: MedicineNotFound
-    inline_response_200_11:
+    inline_response_200_12:
       type: object
       properties:
         data:
@@ -3836,7 +4601,7 @@ components:
           diseaseID: 1
         - diseaseName: 高血圧
           diseaseID: 1
-    inline_response_200_12:
+    inline_response_200_13:
       type: object
       properties:
         data:
@@ -3849,14 +4614,14 @@ components:
           chronicDiseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         - diseaseName: 高血圧
           chronicDiseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    inline_response_404_7:
+    inline_response_404_8:
       type: object
       properties:
         errorType:
           type: string
           description: エラータイプ
           example: DiseaseNotFound
-    inline_response_200_13:
+    inline_response_200_14:
       type: object
       properties:
         data:
@@ -3875,13 +4640,33 @@ components:
           doctorID: "1234567890"
           callStartTime: 2024-10-12T15:00:00+09:00
           userID: "1234567890"
-    inline_response_404_8:
+    inline_response_404_9:
       type: object
       properties:
         errorType:
           type: string
           description: エラータイプ
           example: CallReservationNotFound
+    inline_response_200_15:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Robot'
+      example:
+        data:
+        - robotName: Unicorn
+          robotID: "1234567890"
+        - robotName: Unicorn
+          robotID: "1234567890"
+    inline_response_404_10:
+      type: object
+      properties:
+        errorType:
+          type: string
+          description: エラータイプ
+          example: RobotNotFound
     Doctor_hospital:
       type: object
       properties:
