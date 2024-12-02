@@ -99,6 +99,7 @@ class MedicineQueryServiceImpl(
             INNER JOIN users u ON accounts.uid = u.user_id
             INNER JOIN medicines m ON u.user_id = m.user_id
             INNER JOIN medicine_reminders mr ON m.medicine_id = mr.medicine_id
+            LEFT JOIN user_notifications un ON u.user_id = un.user_id
             WHERE
                 mr.reminder_time = :reminderTime
                 AND :reminderDayOfWeek = ANY(mr.day_of_week)
@@ -106,6 +107,7 @@ class MedicineQueryServiceImpl(
                 AND u.deleted_at IS NULL
                 AND m.deleted_at IS NULL
                 AND mr.deleted_at IS NULL
+                AND (un.is_medicine_reminder = TRUE OR un.is_medicine_reminder IS NULL)
             """.trimIndent()
 
         val sqlParams =
