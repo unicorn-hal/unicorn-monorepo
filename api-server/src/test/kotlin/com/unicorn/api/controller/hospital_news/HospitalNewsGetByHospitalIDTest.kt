@@ -135,6 +135,32 @@ class HospitalNewsGetByHospitalIDTest {
     }
 
     @Test
+    fun `should return 200 when hospital news is not exist`() {
+        val doctorID = "doctor"
+        val hospitalID = "111a7a7e-41e4-46c2-b36c-f2b302cae3e7"
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.get("/hospitals/$hospitalID/news").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", doctorID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON),
+            )
+        result.andExpect(status().isOk)
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "data": []
+                }    
+                """.trimIndent(),
+            ),
+        )
+    }
+
+    @Test
     fun `should return 400 when hospital not found`() {
         val doctorID = "doctor"
         val hospitalID = "c0bfa31d-54b9-4c64-a499-6c522517e5f7"
