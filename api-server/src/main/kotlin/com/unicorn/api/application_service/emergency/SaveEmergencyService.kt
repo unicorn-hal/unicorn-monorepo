@@ -32,7 +32,10 @@ class SaveEmergencyServiceImpl(
             )
 
         emergencyRepository.store(emergency)
-        applicationEventPublisher.publishEvent(EmergencySavedEvent(emergency))
+        val waitingEmergencyList = emergencyRepository.getOlderOrNull()
+        for (waitingEmergency in waitingEmergencyList) {
+            applicationEventPublisher.publishEvent(EmergencySavedEvent(waitingEmergency))
+        }
         return emergency
     }
 }
