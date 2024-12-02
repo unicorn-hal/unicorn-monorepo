@@ -10,37 +10,41 @@ import java.time.ZoneOffset
 import java.util.*
 
 interface HospitalNewsQueryService {
-    fun getByHospitalID(hospitalID: HospitalID): HospitalNewsResultToAdmin
+    fun getByHospitalID(hospitalID: HospitalID): HospitalNewsResult
 }
 
 @Service
 class HospitalNewsQueryServiceImpl(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) : HospitalNewsQueryService {
-    override fun getByHospitalID(hospitalID: HospitalID): HospitalNewsResultToAdmin {
+    override fun getByHospitalID(hospitalID: HospitalID): HospitalNewsResult {
         val sql =
             """
             SELECT
-                hospital_news_id,
-                hospital_id,
-                title,
-                contents,
-                notice_image_url,
-                related_url,
-                posted_date
-            FROM hospital_news
-            WHERE hospital_id = :hospital_id
-            AND deleted_at IS NULL
-            ORDER BY created_at ASC
+                hn.hospital_news_id,
+                hn.hospital_id,
+                h.hospital_name,
+                hn.title,
+                hn.contents,
+                hn.notice_image_url,
+                hn.related_url,
+                hn.posted_date
+            FROM hospital_news hn
+            JOIN hospitals h ON hn.hospital_id = h.hospital_id
+            WHERE hn.hospital_id = :hospital_id
+            AND hn.deleted_at IS NULL
+            AND h.deleted_at IS NULL
+            ORDER BY hn.created_at ASC;
             """.trimIndent()
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("hospital_id", hospitalID.value)
         val hospitalNews =
             namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
-                HospitalNewsDtoToAdmin(
+                HospitalNewsDto(
                     hospitalNewsID = UUID.fromString(rs.getString("hospital_news_id")),
                     hospitalID = UUID.fromString(rs.getString("hospital_id")),
+                    hospitalName = rs.getString("hospital_name"),
                     title = rs.getString("title"),
                     contents = rs.getString("contents"),
                     noticeImageUrl = rs.getString("notice_image_url"),
@@ -48,13 +52,14 @@ class HospitalNewsQueryServiceImpl(
                     postedDate = rs.getObject("posted_date", OffsetDateTime::class.java),
                 )
             }
-        return HospitalNewsResultToAdmin(hospitalNews)
+        return HospitalNewsResult(hospitalNews)
     }
 }
 
-data class HospitalNewsDtoToAdmin(
+data class HospitalNewsDto(
     val hospitalNewsID: UUID,
     val hospitalID: UUID,
+    val hospitalName: String,
     val title: String,
     val contents: String,
     val noticeImageUrl: String?,
@@ -68,6 +73,6 @@ data class HospitalNewsDtoToAdmin(
     }
 }
 
-data class HospitalNewsResultToAdmin(
-    val data: List<HospitalNewsDtoToAdmin>,
+data class HospitalNewsResult(
+    val data: List<HospitalNewsDto>,
 )

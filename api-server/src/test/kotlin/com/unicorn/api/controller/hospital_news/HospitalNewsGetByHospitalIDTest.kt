@@ -56,6 +56,7 @@ class HospitalNewsGetByHospitalIDTest {
                         {
                             "hospitalNewsID": "b2c2aee5-8cb4-4ed3-b3ad-fb401c573de3",
                             "hospitalID": "$hospitalID",
+                            "hospitalName": "内科杉山医院",
                             "title": "内科杉山医院の新しいサービス開始",
                             "contents": "内科杉山医院では新たにオンライン診療サービスを開始しました。詳細はウェブサイトをご確認ください。",
                             "noticeImageUrl": "http://example.com/online_service.png",
@@ -92,6 +93,7 @@ class HospitalNewsGetByHospitalIDTest {
                         {
                             "hospitalNewsID": "d1b2f9d0-9d9b-4625-bc38-54b75d3a0127",
                             "hospitalID": "$hospitalID",
+                            "hospitalName": "きくち内科医院",
                             "title": "新しい診療時間のお知らせ",
                             "contents": "新しい診療時間は月曜日から金曜日の午前9時から午後5時までです。",
                             "noticeImageUrl": "http://example.com/notice_image.png",
@@ -101,6 +103,7 @@ class HospitalNewsGetByHospitalIDTest {
                         {
                             "hospitalNewsID": "a3d94e60-d320-47ac-9cd1-5a7b204f6e8b",
                             "hospitalID": "$hospitalID",
+                            "hospitalName": "きくち内科医院",
                             "title": "重要なお知らせ：インフルエンザ予防接種",
                             "contents": "インフルエンザの予防接種を始めました。予約はお早めにお願いいたします。",
                             "noticeImageUrl": "http://example.com/vaccine_notice.png",
