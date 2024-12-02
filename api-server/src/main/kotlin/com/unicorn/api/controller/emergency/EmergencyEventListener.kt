@@ -17,7 +17,7 @@ class EmergencyEventListenerImpl(
 ) : EmergencyEventListener {
     @EventListener
     override fun onEmergencyRequest(emergencySavedEvent: EmergencySavedEvent) {
-        // val result = requestRobot.request(emergencySavedEvent)
-        // simpMessagingTemplate.convertAndSend("/ws/users/${emergencySavedEvent.emergency.userID}", result)
+        val result = robotRequestService.request(emergencySavedEvent)
+        simpMessagingTemplate.convertAndSend("/ws/users/${emergencySavedEvent.emergency.userID}", result)
     }
 }

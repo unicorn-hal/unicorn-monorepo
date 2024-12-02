@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 // import com.unicorn.api.infrastructure.RobotSupportRepository
 
 interface RobotRequestService {
-    fun requestRobot(emergencySavedEvent: EmergencySavedEvent): UserWebSocket
+    fun request(emergencySavedEvent: EmergencySavedEvent): UserWebSocket
 }
 
 @Service
@@ -18,7 +18,7 @@ class RobotRequestServiceImpl(
 //     // private val robotRepository: RobotRepository,
 //     // private val robotSupportRepository: RobotSupportRepository,
 ) : RobotRequestService {
-    override fun requestRobot(emergencySavedEvent: EmergencySavedEvent): UserWebSocket {
+    override fun request(emergencySavedEvent: EmergencySavedEvent): UserWebSocket {
         // val robot = robotRepository.getWaitingRobot()
         //     if (robot != null) {
         //         robotSupportRepository.create(robot.robotID, emergencySavedEvent.emergency.emergencyID)
