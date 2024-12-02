@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "2.0.0"
+  version: "2.0.1"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -116,6 +116,10 @@ components:
           type: string
           description: "病院UUID"
           example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        hospitalName:
+          type: string
+          description: "病院名"
+          example: "東京都立大学病院"
         title:
           type: string
           description: "お知らせタイトル"
@@ -2380,6 +2384,42 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
+  /hospitals/news:
+    get:
+      tags:
+        - hospital
+      summary: "全病院ニュース一覧取得"
+      description: "全病院のニュース一覧を取得します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      responses:
+        "200":
+          description: "全病院ニュース一覧取得成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/HospitalNews"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
   /hospitals/{hospitalID}/news:
     get:
       tags:
@@ -2475,7 +2515,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
-  /hospitals/{hospitalID}/news/{newsID}:
+  /hospitals/{hospitalID}/news/{hospitalNewsID}:
     delete:
       tags:
         - hospital
@@ -2495,7 +2535,7 @@ paths:
             type: string
             description: "病院UUID"
         - in: path
-          name: newsID
+          name: hospitalNewsID
           required: true
           schema:
             type: string
