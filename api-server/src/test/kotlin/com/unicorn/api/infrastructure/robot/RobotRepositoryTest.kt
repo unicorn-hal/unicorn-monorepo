@@ -134,7 +134,7 @@ class RobotRepositoryTest {
 
     @Test
     fun `should not find deleted robot`() {
-        val robot = RobotID("test")
+        val robot = RobotID("12345")
 
         val foundRobot = robotRepository.getOrNullBy(robot)
         assertNull(foundRobot)
