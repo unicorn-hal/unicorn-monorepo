@@ -139,4 +139,31 @@ class MedicinePostTest {
 
         result.andExpect(status().isBadRequest)
     }
+
+    @Test
+    fun `should return 400 when quantity is negative`() {
+        val medicineRequest =
+            MedicinePostRequest(
+                medicineName = "medicineName",
+                count = -5,
+                quantity = -5,
+                dosage = 3,
+                reminders = emptyList(),
+            )
+
+        val userID = "test"
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/medicines").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(medicineRequest)),
+            )
+
+        result.andExpect(status().isBadRequest)
+    }
 }
