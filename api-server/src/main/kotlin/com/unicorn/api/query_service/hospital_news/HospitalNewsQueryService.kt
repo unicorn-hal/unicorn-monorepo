@@ -11,6 +11,8 @@ import java.util.*
 
 interface HospitalNewsQueryService {
     fun getByHospitalID(hospitalID: HospitalID): HospitalNewsResult
+
+    fun getAll(): HospitalNewsResult
 }
 
 @Service
@@ -34,11 +36,47 @@ class HospitalNewsQueryServiceImpl(
             WHERE hn.hospital_id = :hospital_id
             AND hn.deleted_at IS NULL
             AND h.deleted_at IS NULL
-            ORDER BY hn.created_at ASC;
+            ORDER BY hn.posted_date ASC;
             """.trimIndent()
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("hospital_id", hospitalID.value)
+        val hospitalNews =
+            namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+                HospitalNewsDto(
+                    hospitalNewsID = UUID.fromString(rs.getString("hospital_news_id")),
+                    hospitalID = UUID.fromString(rs.getString("hospital_id")),
+                    hospitalName = rs.getString("hospital_name"),
+                    title = rs.getString("title"),
+                    contents = rs.getString("contents"),
+                    noticeImageUrl = rs.getString("notice_image_url"),
+                    relatedUrl = rs.getString("related_url"),
+                    postedDate = rs.getObject("posted_date", OffsetDateTime::class.java),
+                )
+            }
+        return HospitalNewsResult(hospitalNews)
+    }
+
+    override fun getAll(): HospitalNewsResult {
+        val sql =
+            """
+            SELECT
+                hn.hospital_news_id,
+                hn.hospital_id,
+                h.hospital_name,
+                hn.title,
+                hn.contents,
+                hn.notice_image_url,
+                hn.related_url,
+                hn.posted_date
+            FROM hospital_news hn
+            JOIN hospitals h ON hn.hospital_id = h.hospital_id
+            WHERE hn.deleted_at IS NULL
+            AND h.deleted_at IS NULL
+            ORDER BY hn.posted_date ASC;
+            """.trimIndent()
+        val sqlParams =
+            MapSqlParameterSource()
         val hospitalNews =
             namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
                 HospitalNewsDto(

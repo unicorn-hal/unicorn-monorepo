@@ -9,6 +9,7 @@ import com.unicorn.api.domain.hospital.HospitalID
 import com.unicorn.api.domain.hospital_news.HospitalNewsID
 import com.unicorn.api.query_service.doctor.DoctorQueryService
 import com.unicorn.api.query_service.hospital_news.HospitalNewsQueryService
+import com.unicorn.api.query_service.user.UserQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -25,10 +26,23 @@ class HospitalNewsController(
     private val saveHospitalNewsService: SaveHospitalNewsService,
     private val hospitalNewsQueryService: HospitalNewsQueryService,
     private val doctorQueryService: DoctorQueryService,
+    private val userQueryService: UserQueryService,
     private val hospitalQueryService: HospitalQueryService,
 ) {
-    @GetMapping("/hospitals/{hospitalID}/news")
+    @GetMapping("/hospitals/news")
     fun get(
+        @RequestHeader("X-UID") uid: String,
+    ): ResponseEntity<*> {
+        userQueryService.getOrNullBy(uid)
+            ?: return ResponseEntity.status(400).body(ResponseError("Doctor not found"))
+
+        val result = hospitalNewsQueryService.getAll()
+
+        return ResponseEntity.ok(result)
+    }
+
+    @GetMapping("/hospitals/{hospitalID}/news")
+    fun getBy(
         @RequestHeader("X-UID") uid: String,
         @PathVariable hospitalID: UUID,
     ): ResponseEntity<*> {
