@@ -45,7 +45,7 @@ class MedicinePostTest {
                     listOf(
                         ReminderRequest(
                             reminderID = UUID.fromString("123e4567-e89b-12d3-a456-426614174010"),
-                            reminderTime = LocalTime.of(8, 0, 0),
+                            reminderTime = LocalTime.of(8, 0),
                             reminderDayOfWeek = listOf("monday", "tuesday"),
                         ),
                     ),
@@ -72,7 +72,14 @@ class MedicinePostTest {
                     "medicineName": "${medicineRequest.medicineName}",
                     "count": ${medicineRequest.count},
                     "quantity": ${medicineRequest.quantity},
-                    "dosage": ${medicineRequest.dosage}
+                    "dosage": ${medicineRequest.dosage},
+                    "reminders": [
+                        {
+                            "reminderID": "${medicineRequest.reminders[0].reminderID}",
+                            "reminderTime": "08:00",
+                            "reminderDayOfWeek": ["${medicineRequest.reminders[0].reminderDayOfWeek[0]}", "${medicineRequest.reminders[0].reminderDayOfWeek[1]}"]
+                        }
+                    ]
                 }
                 """.trimIndent(),
             ),
