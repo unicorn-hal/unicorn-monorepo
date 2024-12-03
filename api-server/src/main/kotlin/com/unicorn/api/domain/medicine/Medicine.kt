@@ -102,7 +102,7 @@ value class Count(val value: Int) {
 @JvmInline
 value class Quantity(val value: Int) {
     init {
-        require(value > 0) { "quantity should be greater than 0" }
+        require(value >= 0) { "quantity should be 0 or greater" }
     }
 }
 
