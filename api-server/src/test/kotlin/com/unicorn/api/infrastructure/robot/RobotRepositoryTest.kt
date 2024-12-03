@@ -96,7 +96,7 @@ class RobotRepositoryTest {
         robotRepository.store(robot)
 
         val newRobot = robot.updateStatus(RobotStatus.supporting)
-        robotRepository.changeStatus(newRobot)
+        robotRepository.store(newRobot)
 
         val foundRobot = findRobotBy(robot.robotID.value)
         assertNotNull(foundRobot!!)
