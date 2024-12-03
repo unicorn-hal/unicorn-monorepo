@@ -1,6 +1,5 @@
 package com.unicorn.api.infrastructure.robot
 
-import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.robot.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -107,7 +106,7 @@ class RobotRepositoryTest {
 
     @Test
     fun `should find robot by robotID`() {
-        val robot = UID("test")
+        val robot = RobotID("test")
         val foundRobot = robotRepository.getOrNullBy(robot)
         assertNotNull(foundRobot!!)
         assertEquals("test", foundRobot.robotID.value)
@@ -126,7 +125,7 @@ class RobotRepositoryTest {
 
     @Test
     fun `should delete robot`() {
-        val robot = UID("test")
+        val robot = RobotID("test")
         val foundRobot = robotRepository.getOrNullBy(robot)
         robotRepository.delete(foundRobot!!)
         val deletedRobot = findRobotBy(robot.value)
@@ -135,7 +134,7 @@ class RobotRepositoryTest {
 
     @Test
     fun `should not find deleted robot`() {
-        val robot = UID("12345")
+        val robot = RobotID("test")
 
         val foundRobot = robotRepository.getOrNullBy(robot)
         assertNull(foundRobot)
@@ -143,7 +142,7 @@ class RobotRepositoryTest {
 
     @Test
     fun `should not find null robot`() {
-        val robot = UID("null")
+        val robot = RobotID("null")
 
         val foundRobot = robotRepository.getOrNullBy(robot)
         assertNull(foundRobot)

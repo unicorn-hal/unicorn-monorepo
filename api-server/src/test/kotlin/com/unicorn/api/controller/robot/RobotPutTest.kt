@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional
 @Sql("/db/robot/Insert_Parent_Account_Data.sql")
 @Sql("/db/robot/Insert_User_Account_Data.sql")
 @Sql("/db/robot/Insert_Robot_Data.sql")
-class RobotPostTest {
+class RobotPutTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
@@ -33,20 +33,21 @@ class RobotPostTest {
 
     @Test
     fun `should return 200 when robot is saved`() {
-        val robotID = "robot"
-        val saveRobotRequest =
-            SaveRobotRequest(
-                robotName = "robotName",
+        val robotID = "test"
+        val updateRobotRequest =
+            UpdateRobotRequest(
+                robotName = "updateRobotName",
             )
+
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.post("/robot").headers(
+                MockMvcRequestBuilders.put("/robot/$robotID").headers(
                     HttpHeaders().apply {
                         add("X-UID", robotID)
                     },
                 )
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(saveRobotRequest)),
+                    .content(objectMapper.writeValueAsString(updateRobotRequest)),
             )
 
         result.andExpect(status().isOk)
@@ -54,7 +55,7 @@ class RobotPostTest {
             content().json(
                 """
                 {
-                    "robotName": "${saveRobotRequest.robotName}"
+                    "robotName": "${updateRobotRequest.robotName}"
                 }
                 """,
                 true,
@@ -63,92 +64,63 @@ class RobotPostTest {
     }
 
     @Test
-    fun `should return 400 when account is not found`() {
-        val robotID = "invalid"
-        val saveRobotRequest =
-            SaveRobotRequest(
-                robotName = "robotName",
-            )
-        val result =
-            mockMvc.perform(
-                MockMvcRequestBuilders.post("/robot").headers(
-                    HttpHeaders().apply {
-                        add("X-UID", robotID)
-                    },
-                )
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(saveRobotRequest)),
-            )
-
-        result.andExpect(status().isBadRequest)
-        result.andExpect(
-            content().json(
-                """
-                    {
-                        "errorType": "Account not found"
-                    }
-                """,
-                true,
-            ),
-        )
-    }
-
-    @Test
-    fun `should return 400 when account is not robot`() {
-        val robotID = "user"
-        val saveRobotRequest =
-            SaveRobotRequest(
-                robotName = "robotName",
-            )
-        val result =
-            mockMvc.perform(
-                MockMvcRequestBuilders.post("/robot").headers(
-                    HttpHeaders().apply {
-                        add("X-UID", robotID)
-                    },
-                )
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(saveRobotRequest)),
-            )
-
-        result.andExpect(status().isBadRequest)
-        result.andExpect(
-            content().json(
-                """
-                    {
-                        "errorType": "Account is not robot"
-                    }
-                """,
-                true,
-            ),
-        )
-    }
-
-    @Test
-    fun `should return 400 when robot already exists`() {
+    fun `should return 400 when robot name is empty`() {
         val robotID = "test"
-        val saveRobotRequest =
-            SaveRobotRequest(
-                robotName = "robotName",
+        val updateRobotRequest =
+            UpdateRobotRequest(
+                robotName = "",
             )
+
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.post("/robot").headers(
+                MockMvcRequestBuilders.put("/robot/$robotID").headers(
                     HttpHeaders().apply {
                         add("X-UID", robotID)
                     },
                 )
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(saveRobotRequest)),
+                    .content(objectMapper.writeValueAsString(updateRobotRequest)),
             )
 
         result.andExpect(status().isBadRequest)
         result.andExpect(
             content().json(
                 """
-                    {
-                        "errorType": "Robot already exists"
-                    }
+                {
+                    "errorType": "Robot name should not be blank"
+                }
+                """,
+                true,
+            ),
+        )
+    }
+
+    @Test
+    fun `should return 400 when robotID is invalid`() {
+        val robotID = "invalid"
+        val updateRobotRequest =
+            UpdateRobotRequest(
+                robotName = "updateRobotName",
+            )
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.put("/robot/$robotID").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", robotID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(updateRobotRequest)),
+            )
+
+        result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "errorType": "Robot not found"
+                }
                 """,
                 true,
             ),
