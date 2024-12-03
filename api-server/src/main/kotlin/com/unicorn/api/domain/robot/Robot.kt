@@ -54,7 +54,11 @@ enum class RobotStatus {
 }
 
 @JvmInline
-value class RobotID(val value: String)
+value class RobotID(val value: String) {
+    init {
+        require(value.isNotBlank()) { "Robot ID should not be blank" }
+    }
+}
 
 @JvmInline
 value class RobotName(val value: String) {
