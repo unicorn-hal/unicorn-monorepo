@@ -73,6 +73,7 @@ exports.hospitalsHospitalIDNewsGET = function (xUID, hospitalID) {
         "hospitalNewsID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
         "hospitalID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
         "contents": "新型コロナウイルスの感染拡大に伴い、当院では以下の対策を行っております。",
+        "hospitalName": "東京都立大学病院",
         "relatedUrl": "https://www.hospital.com/news/1",
         "title": "新型コロナウイルス対策について",
         "postedDate": "2020-01-01 00:00:00 +09:00"
@@ -93,10 +94,10 @@ exports.hospitalsHospitalIDNewsGET = function (xUID, hospitalID) {
  *
  * xUID String 
  * hospitalID String 
- * newsID String 
+ * hospitalNewsID String 
  * no response value expected for this operation
  **/
-exports.hospitalsHospitalIDNewsNewsIDDELETE = function (xUID, hospitalID, newsID) {
+exports.hospitalsHospitalIDNewsHospitalNewsIDDELETE = function (xUID, hospitalID, hospitalNewsID) {
   return new Promise(function (resolve, reject) {
     resolve();
   });
@@ -121,6 +122,37 @@ exports.hospitalsHospitalIDNewsPOST = function (body, hospitalID, xUID) {
       "contents": "新型コロナウイルスの感染拡大に伴い、当院では以下の対策を行っております。",
       "relatedUrl": "https://www.hospital.com/news/1",
       "title": "新型コロナウイルス対策について"
+    };
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+
+
+/**
+ * 全病院ニュース一覧取得
+ * 全病院のニュース一覧を取得します
+ *
+ * xUID String 
+ * returns inline_response_200_5
+ **/
+exports.hospitalsNewsGET = function (xUID) {
+  return new Promise(function (resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+      "data": [{
+        "noticeImageUrl": "https://placehold.jp/150x150.png",
+        "hospitalNewsID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "hospitalID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "contents": "新型コロナウイルスの感染拡大に伴い、当院では以下の対策を行っております。",
+        "hospitalName": "東京都立大学病院",
+        "relatedUrl": "https://www.hospital.com/news/1",
+        "title": "新型コロナウイルス対策について",
+        "postedDate": "2020-01-01 00:00:00 +09:00"
+      }]
     };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

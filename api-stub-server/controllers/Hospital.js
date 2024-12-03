@@ -33,8 +33,8 @@ module.exports.hospitalsHospitalIDNewsGET = function hospitalsHospitalIDNewsGET 
     });
 };
 
-module.exports.hospitalsHospitalIDNewsNewsIDDELETE = function hospitalsHospitalIDNewsNewsIDDELETE (req, res, next, xUID, hospitalID, newsID) {
-  Hospital.hospitalsHospitalIDNewsNewsIDDELETE(xUID, hospitalID, newsID)
+module.exports.hospitalsHospitalIDNewsHospitalNewsIDDELETE = function hospitalsHospitalIDNewsHospitalNewsIDDELETE (req, res, next, xUID, hospitalID, hospitalNewsID) {
+  Hospital.hospitalsHospitalIDNewsHospitalNewsIDDELETE(xUID, hospitalID, hospitalNewsID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -45,6 +45,16 @@ module.exports.hospitalsHospitalIDNewsNewsIDDELETE = function hospitalsHospitalI
 
 module.exports.hospitalsHospitalIDNewsPOST = function hospitalsHospitalIDNewsPOST (req, res, next, body, hospitalID, xUID) {
   Hospital.hospitalsHospitalIDNewsPOST(body, hospitalID, xUID)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};
+
+module.exports.hospitalsNewsGET = function hospitalsNewsGET (req, res, next, xUID) {
+  Hospital.hospitalsNewsGET(xUID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
