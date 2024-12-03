@@ -46,8 +46,8 @@ class CallPutTest {
             CallPostRequest(
                 userID = userID,
                 doctorID = "doctor",
-                callStartTime = OffsetDateTime.parse("2021-01-01T10:30:00+09:00"),
-                callEndTime = OffsetDateTime.parse("2021-01-01T11:00:00+09:00"),
+                callStartTime = OffsetDateTime.parse("2026-11-01T10:30:00+09:00"),
+                callEndTime = OffsetDateTime.parse("2026-11-01T11:00:00+09:00"),
             )
 
         val result =
@@ -70,8 +70,8 @@ class CallPutTest {
                     "callReservationID": "$callReservationID",
                     "doctorID": "${call.doctorID}",
                     "userID": "$userID",
-                    "callStartTime": "2021-01-01T10:30:00+09:00",
-                    "callEndTime": "2021-01-01T11:00:00+09:00"
+                    "callStartTime": "2026-11-01T10:30:00+09:00",
+                    "callEndTime": "2026-11-01T11:00:00+09:00"
                 }
                 """.trimIndent(),
             ),
