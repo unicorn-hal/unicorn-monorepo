@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Sql("/db/user/Insert_Parent_Account_Data.sql")
 @Sql("/db/user/Insert_User_Data.sql")
+@Sql("/db/notification/Insert_Notification_Data.sql")
 @Sql("/db/medicine/Insert_Medicine_Data.sql")
 @Sql("/db/medicine_reminder/Insert_Medicine_Reminder_Data.sql")
 @Sql("/db/medicine_reminder/Insert_Deleted_Medicine_Reminder_Data.sql")

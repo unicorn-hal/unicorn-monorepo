@@ -9,6 +9,8 @@ import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.infrastructure.medicine.MedicineRepository
 import com.unicorn.api.infrastructure.medicine_reminders.MedicineRemindersRepository
 import com.unicorn.api.infrastructure.user.UserRepository
+import com.unicorn.api.query_service.medicine.MedicineDto
+import com.unicorn.api.query_service.medicine.MedicineReminderDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,7 +18,7 @@ interface SaveMedicineService {
     fun save(
         uid: UID,
         medicinePostRequest: MedicinePostRequest,
-    ): Medicine
+    ): MedicineDto
 }
 
 @Service
@@ -29,7 +31,7 @@ class SaveMedicineServiceImpl(
     override fun save(
         uid: UID,
         medicinePostRequest: MedicinePostRequest,
-    ): Medicine {
+    ): MedicineDto {
         val user = userRepository.getOrNullBy(UserID(uid.value))
         requireNotNull(user) { "User not found" }
 
@@ -58,6 +60,20 @@ class SaveMedicineServiceImpl(
         medicineRepository.store(medicine)
         medicineRemindersRepository.store(medicineReminders)
 
-        return medicine
+        return MedicineDto(
+            medicineID = medicine.medicineID.value,
+            medicineName = medicine.medicineName.value,
+            count = medicine.count.value,
+            quantity = medicine.quantity.value,
+            dosage = medicine.dosage.value,
+            reminders =
+                medicinePostRequest.reminders.map { reminder ->
+                    MedicineReminderDto(
+                        reminderID = reminder.reminderID,
+                        reminderTime = reminder.reminderTime.toString(),
+                        reminderDayOfWeek = reminder.reminderDayOfWeek,
+                    )
+                },
+        )
     }
 }
