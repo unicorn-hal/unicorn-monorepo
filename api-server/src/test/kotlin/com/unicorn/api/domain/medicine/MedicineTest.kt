@@ -92,7 +92,7 @@ class MedicineTest {
                     medicineName = "Aspirin",
                     userID = userID,
                     count = -5,
-                    quantity = 0,
+                    quantity = -1,
                     dosage = 5,
                 )
             }
