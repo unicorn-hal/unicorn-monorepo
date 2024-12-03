@@ -32,6 +32,7 @@ class SaveMessageServiceImpl(
     ): MessagePostRequest {
         val account = accountRepository.getOrNullByUid(UID(messagePostRequest.senderID))
         requireNotNull(account) { "Account not found" }
+        require(account.isUser() || account.isDoctor()) { "Account is not user or doctor" }
 
         val chat = chatRepository.getOrNullBy(chatID)
         requireNotNull(chat) { "Chat not found" }
