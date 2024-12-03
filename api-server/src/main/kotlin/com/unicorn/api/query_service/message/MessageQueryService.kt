@@ -75,6 +75,9 @@ class MessageQueryServiceImpl(
                             content = rs.getString("content"),
                             sentAt = rs.getObject("sent_at", OffsetDateTime::class.java).toJST(),
                         )
+                    Role.robot -> {
+                        throw IllegalArgumentException("robot should not send message")
+                    }
                 }
             }
 
@@ -135,6 +138,9 @@ class MessageQueryServiceImpl(
                         content = rs.getString("content"),
                         sentAt = rs.getObject("sent_at", OffsetDateTime::class.java).toJST(),
                     )
+                Role.robot -> {
+                    throw IllegalArgumentException("robot should not send message")
+                }
             }
         }.singleOrNull()
     }
