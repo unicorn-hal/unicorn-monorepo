@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "2.1.1"
+  version: "2.1.2"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -1489,6 +1489,56 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
+
+  /accounts/{uid}:
+    get:
+      tags:
+        - account
+      summary: "アカウント情報取得"
+      description: "アカウント情報を取得します。医者のみが取得できます"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: string
+            description: "UID"
+      responses:
+        "200":
+          description: "アカウント情報取得成功"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+        "404":
+          description: "指定されたアカウントが存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "UserNotFound"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"
+
   /users:
     post:
       tags:

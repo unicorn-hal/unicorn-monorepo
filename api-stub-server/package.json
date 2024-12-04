@@ -1,11 +1,11 @@
 {
   "name": "unicorn-api",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "API for managing unicorn.",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm install",
-    "start": "node index.js"
+	"prestart": "npm install",
+	"start": "node index.js"
   },
   "keywords": [
     "swagger"
