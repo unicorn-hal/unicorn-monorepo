@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 2.0.1
+  version: 2.1.1
 servers:
   - url: https://api-stub-server-384446500375.asia-east1.run.app/
     description: Backend server
@@ -2492,13 +2492,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/inline_response_500"
       x-swagger-router-controller: Call
-  /robot:
+  /robots:
     get:
       tags:
         - robot
       summary: ロボット一覧取得
       description: ロボット一覧を取得します
-      operationId: robotGET
+      operationId: robotsGET
       parameters:
         - name: X-UID
           in: header
@@ -2527,7 +2527,7 @@ paths:
         - robot
       summary: ロボット追加
       description: 新しいロボットを追加します
-      operationId: robotPOST
+      operationId: robotsPOST
       parameters:
         - name: X-UID
           in: header
@@ -2563,13 +2563,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/inline_response_500"
       x-swagger-router-controller: Robot
-  /robot/{robotID}:
+  /robots/{robotID}:
     get:
       tags:
         - robot
       summary: ロボット情報取得
       description: ロボットの情報を取得します
-      operationId: robotRobotIDGET
+      operationId: robotsRobotIDGET
       parameters:
         - name: X-UID
           in: header
@@ -2594,12 +2594,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Robot"
-        "404":
+        "400":
           description: 指定されたロボットが存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_10"
+                $ref: "#/components/schemas/inline_response_400_3"
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2612,7 +2612,7 @@ paths:
         - robot
       summary: ロボット情報更新
       description: ロボットの情報を更新します
-      operationId: robotRobotIDPUT
+      operationId: robotsRobotIDPUT
       parameters:
         - name: X-UID
           in: header
@@ -2649,12 +2649,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_400"
-        "404":
-          description: 指定されたロボットが存在しません
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_404_10"
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2667,7 +2661,7 @@ paths:
         - robot
       summary: ロボット削除
       description: ロボットを削除します
-      operationId: robotRobotIDDELETE
+      operationId: robotsRobotIDDELETE
       parameters:
         - name: X-UID
           in: header
@@ -2688,12 +2682,12 @@ paths:
       responses:
         "204":
           description: ロボット削除成功
-        "404":
+        "400":
           description: 指定されたロボットが存在しません
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_404_10"
+                $ref: "#/components/schemas/inline_response_400_3"
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -4697,7 +4691,7 @@ components:
             robotID: "1234567890"
           - robotName: Unicorn
             robotID: "1234567890"
-    inline_response_404_10:
+    inline_response_400_3:
       type: object
       properties:
         errorType:

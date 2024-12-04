@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: "2.0.1"
+  version: "2.1.1"
   title: "Unicorn API"
   description: "API for managing unicorn."
 servers:
@@ -4076,7 +4076,7 @@ paths:
                     description: "エラータイプ"
                     example: "ServerError"
 
-  /robot:
+  /robots:
     get:
       tags:
         - robot
@@ -4159,7 +4159,7 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
-  /robot/{robotID}:
+  /robots/{robotID}:
     get:
       tags:
         - robot
@@ -4185,7 +4185,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Robot"
-        "404":
+        "400":
           description: "指定されたロボットが存在しません"
           content:
             application/json:
@@ -4249,17 +4249,6 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "InvalidData"
-        "404":
-          description: "指定されたロボットが存在しません"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errorType:
-                    type: string
-                    description: "エラータイプ"
-                    example: "RobotNotFound"
         "500":
           description: "サーバーエラーが発生しました"
           content:
@@ -4292,7 +4281,7 @@ paths:
       responses:
         "204":
           description: "ロボット削除成功"
-        "404":
+        "400":
           description: "指定されたロボットが存在しません"
           content:
             application/json:
