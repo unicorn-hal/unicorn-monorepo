@@ -3,8 +3,8 @@
 var utils = require('../utils/writer.js');
 var Robot = require('../service/RobotService');
 
-module.exports.robotGET = function robotGET (req, res, next, xUID) {
-  Robot.robotGET(xUID)
+module.exports.robotsGET = function robotsGET (req, res, next, xUID) {
+  Robot.robotsGET(xUID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -13,8 +13,8 @@ module.exports.robotGET = function robotGET (req, res, next, xUID) {
     });
 };
 
-module.exports.robotPOST = function robotPOST (req, res, next, body, xUID) {
-  Robot.robotPOST(body, xUID)
+module.exports.robotsPOST = function robotsPOST (req, res, next, body, xUID) {
+  Robot.robotsPOST(body, xUID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -23,8 +23,8 @@ module.exports.robotPOST = function robotPOST (req, res, next, body, xUID) {
     });
 };
 
-module.exports.robotRobotIDDELETE = function robotRobotIDDELETE (req, res, next, xUID, robotID) {
-  Robot.robotRobotIDDELETE(xUID, robotID)
+module.exports.robotsRobotIDDELETE = function robotsRobotIDDELETE (req, res, next, xUID, robotID) {
+  Robot.robotsRobotIDDELETE(xUID, robotID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -33,8 +33,8 @@ module.exports.robotRobotIDDELETE = function robotRobotIDDELETE (req, res, next,
     });
 };
 
-module.exports.robotRobotIDGET = function robotRobotIDGET (req, res, next, xUID, robotID) {
-  Robot.robotRobotIDGET(xUID, robotID)
+module.exports.robotsRobotIDGET = function robotsRobotIDGET (req, res, next, xUID, robotID) {
+  Robot.robotsRobotIDGET(xUID, robotID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
@@ -43,8 +43,8 @@ module.exports.robotRobotIDGET = function robotRobotIDGET (req, res, next, xUID,
     });
 };
 
-module.exports.robotRobotIDPUT = function robotRobotIDPUT (req, res, next, body, robotID, xUID) {
-  Robot.robotRobotIDPUT(body, robotID, xUID)
+module.exports.robotsRobotIDPUT = function robotsRobotIDPUT (req, res, next, body, robotID, xUID) {
+  Robot.robotsRobotIDPUT(body, robotID, xUID)
     .then(function (response) {
       utils.writeJson(res, response);
     })

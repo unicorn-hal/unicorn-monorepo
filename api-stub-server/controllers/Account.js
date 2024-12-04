@@ -42,3 +42,13 @@ module.exports.accountsPUT = function accountsPUT (req, res, next, body, xUID) {
       utils.writeJson(res, response);
     });
 };
+
+module.exports.accountsUidGET = function accountsUidGET (req, res, next, xUID, uid) {
+  Account.accountsUidGET(xUID, uid)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};

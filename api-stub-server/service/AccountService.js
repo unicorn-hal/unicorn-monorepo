@@ -8,8 +8,8 @@
  * xUID String 
  * no response value expected for this operation
  **/
-exports.accountsDELETE = function(xUID) {
-  return new Promise(function(resolve, reject) {
+exports.accountsDELETE = function (xUID) {
+  return new Promise(function (resolve, reject) {
     resolve();
   });
 }
@@ -22,14 +22,14 @@ exports.accountsDELETE = function(xUID) {
  * xUID String 
  * returns Account
  **/
-exports.accountsGET = function(xUID) {
-  return new Promise(function(resolve, reject) {
+exports.accountsGET = function (xUID) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "uid" : "1234567890",
-  "role" : "user",
-  "fcmTokenId" : "fcm_token_id"
-};
+      "uid": "1234567890",
+      "role": "user",
+      "fcmTokenId": "fcm_token_id"
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -47,14 +47,14 @@ exports.accountsGET = function(xUID) {
  * xUID String 
  * returns AccountResponse
  **/
-exports.accountsPOST = function(body,xUID) {
-  return new Promise(function(resolve, reject) {
+exports.accountsPOST = function (body, xUID) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "uid" : "1234567890",
-  "role" : "user",
-  "fcmTokenId" : "fcm_token_id"
-};
+      "uid": "1234567890",
+      "role": "user",
+      "fcmTokenId": "fcm_token_id"
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -72,12 +72,37 @@ exports.accountsPOST = function(body,xUID) {
  * xUID String 
  * returns accounts_body
  **/
-exports.accountsPUT = function(body,xUID) {
-  return new Promise(function(resolve, reject) {
+exports.accountsPUT = function (body, xUID) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "fcmTokenId" : "fcm_token_id"
-};
+      "fcmTokenId": "fcm_token_id"
+    };
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+
+
+/**
+ * アカウント情報取得
+ * アカウント情報を取得します。医者のみが取得できます
+ *
+ * xUID String 
+ * uid String 
+ * returns Account
+ **/
+exports.accountsUidGET = function (xUID, uid) {
+  return new Promise(function (resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+      "uid": "1234567890",
+      "role": "user",
+      "fcmTokenId": "fcm_token_id"
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {

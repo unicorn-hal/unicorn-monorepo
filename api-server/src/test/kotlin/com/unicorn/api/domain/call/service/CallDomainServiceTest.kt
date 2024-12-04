@@ -36,8 +36,8 @@ class CallDomainServiceTest {
             CallPostRequest(
                 userID = "test",
                 doctorID = "doctor",
-                callStartTime = OffsetDateTime.parse("2024-10-12T15:00:00+09:00"),
-                callEndTime = OffsetDateTime.parse("2024-10-12T15:30:00+09:00"),
+                callStartTime = OffsetDateTime.parse("2025-10-12T15:00:00+09:00"),
+                callEndTime = OffsetDateTime.parse("2025-10-12T15:30:00+09:00"),
             )
 
         // サポート時間内なので、例外はスローされない

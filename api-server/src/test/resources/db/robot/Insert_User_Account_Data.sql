@@ -1,0 +1,1 @@
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('user', 'user', 'fcm_token_id');
