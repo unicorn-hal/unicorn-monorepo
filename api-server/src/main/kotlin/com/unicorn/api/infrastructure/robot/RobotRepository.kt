@@ -1,7 +1,7 @@
 package com.unicorn.api.infrastructure.robot
 
-import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.robot.Robot
+import com.unicorn.api.domain.robot.RobotID
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -10,7 +10,7 @@ import java.util.*
 interface RobotRepository {
     fun store(robot: Robot): Robot
 
-    fun getOrNullBy(robotID: UID): Robot?
+    fun getOrNullBy(robotID: RobotID): Robot?
 
     fun getWaitingOrNull(): Robot?
 
@@ -53,7 +53,7 @@ class RobotRepositoryImpl(
         return robot
     }
 
-    override fun getOrNullBy(robotID: UID): Robot? {
+    override fun getOrNullBy(robotID: RobotID): Robot? {
         // language=postgresql
         val sql =
             """
