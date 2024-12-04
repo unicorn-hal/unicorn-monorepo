@@ -8,7 +8,7 @@
  * xUID String 
  * returns inline_response_200_15
  **/
-exports.robotGET = function (xUID) {
+exports.robotsGET = function (xUID) {
   return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
@@ -34,7 +34,7 @@ exports.robotGET = function (xUID) {
  * xUID String 
  * returns RobotResponse
  **/
-exports.robotPOST = function (body, xUID) {
+exports.robotsPOST = function (body, xUID) {
   return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
@@ -57,7 +57,7 @@ exports.robotPOST = function (body, xUID) {
  * robotID String 
  * no response value expected for this operation
  **/
-exports.robotRobotIDDELETE = function (xUID, robotID) {
+exports.robotsRobotIDDELETE = function (xUID, robotID) {
   return new Promise(function (resolve, reject) {
     resolve();
   });
@@ -72,7 +72,7 @@ exports.robotRobotIDDELETE = function (xUID, robotID) {
  * robotID String 
  * returns Robot
  **/
-exports.robotRobotIDGET = function (xUID, robotID) {
+exports.robotsRobotIDGET = function (xUID, robotID) {
   return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
@@ -97,7 +97,7 @@ exports.robotRobotIDGET = function (xUID, robotID) {
  * xUID String 
  * returns RobotResponse
  **/
-exports.robotRobotIDPUT = function (body, robotID, xUID) {
+exports.robotsRobotIDPUT = function (body, robotID, xUID) {
   return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {

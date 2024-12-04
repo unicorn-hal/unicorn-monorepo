@@ -78,4 +78,16 @@ class RobotTest {
             }
         assertEquals("robot status is invalid", exception.message)
     }
+
+    @Test
+    fun `should return error when robotID is blank`() {
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                Robot.create(
+                    robotID = "",
+                    robotName = "robotName",
+                )
+            }
+        assertEquals("Robot ID should not be blank", exception.message)
+    }
 }
