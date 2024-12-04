@@ -14,7 +14,7 @@ class RobotController(
     private val saveRobotService: SaveRobotService,
     private val updateRobotService: UpdateRobotService,
 ) {
-    @PostMapping("/robot")
+    @PostMapping("/robots")
     fun save(
         @RequestHeader("X-UID") uid: String,
         @RequestBody saveRobotRequest: SaveRobotRequest,
@@ -29,7 +29,7 @@ class RobotController(
         }
     }
 
-    @PutMapping("/robot/{robotID}")
+    @PutMapping("/robots/{robotID}")
     fun update(
         @RequestHeader("X-UID") uid: String,
         @PathVariable robotID: String,

@@ -41,7 +41,7 @@ class RobotPutTest {
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.put("/robot/$robotID").headers(
+                MockMvcRequestBuilders.put("/robots/$robotID").headers(
                     HttpHeaders().apply {
                         add("X-UID", robotID)
                     },
@@ -73,7 +73,7 @@ class RobotPutTest {
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.put("/robot/$robotID").headers(
+                MockMvcRequestBuilders.put("/robots/$robotID").headers(
                     HttpHeaders().apply {
                         add("X-UID", robotID)
                     },
@@ -105,7 +105,7 @@ class RobotPutTest {
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.put("/robot/$robotID").headers(
+                MockMvcRequestBuilders.put("/robots/$robotID").headers(
                     HttpHeaders().apply {
                         add("X-UID", robotID)
                     },
