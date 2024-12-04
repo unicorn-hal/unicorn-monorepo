@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @AutoConfigureMockMvc
 @Sql("/db/account/Insert_Account_Data.sql")
+@Sql("/db/message/Insert_Parent_Account_Data.sql")
 @Sql("/db/hospital/Insert_Hospital_Data.sql")
 @Sql("/db/department/Insert_Department_Data.sql")
 @Sql("/db/doctor/Insert_Doctor_Data.sql")
@@ -147,6 +148,36 @@ class MessagePostTest {
                 """
                 {
                     "errorType": "Chat not found"
+                }
+                """,
+                true,
+            ),
+        )
+    }
+
+    @Test
+    fun `should return 400 when account is not user or doctor`() {
+        val chatID = "e38fd3d0-99bc-11ef-8e52-cfa170f7b603"
+        val messagePostRequest =
+            MessagePostRequest(
+                senderID = "robot",
+                content = "test",
+            )
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/chats/$chatID/messages")
+                    .header("X-UID", "robot")
+                    .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(messagePostRequest)),
+            )
+
+        result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "errorType": "Account is not user or doctor"
                 }
                 """,
                 true,

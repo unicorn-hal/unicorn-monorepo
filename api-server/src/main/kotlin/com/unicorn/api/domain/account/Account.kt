@@ -50,11 +50,16 @@ data class Account private constructor(
     fun isDoctor(): Boolean {
         return role == Role.doctor
     }
+
+    fun isRobot(): Boolean {
+        return role == Role.robot
+    }
 }
 
 enum class Role {
     user,
     doctor,
+    robot,
 }
 
 @JvmInline

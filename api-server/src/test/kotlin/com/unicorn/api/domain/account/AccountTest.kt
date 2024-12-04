@@ -62,4 +62,11 @@ class AccountTest {
 
         assert(updatedAccount.fcmTokenId.value == "newFcmTokenId")
     }
+
+    @Test
+    fun `should robot account be robot`() {
+        val account = Account.create("uid", "robot", "fcmTokenId")
+
+        assert(account.isRobot())
+    }
 }
