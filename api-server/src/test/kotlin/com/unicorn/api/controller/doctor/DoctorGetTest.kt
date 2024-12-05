@@ -55,10 +55,6 @@ class DoctorGetTest {
                         departmentID = "b68a87a3-b7f1-4b85-b0ab-6c620d68d791",
                         departmentName = "循環器内科",
                     ),
-                    DepartmentDto(
-                        departmentID = "a1dcb69e-472f-4a57-90a2-f2c63b62ec90",
-                        departmentName = "総合内科",
-                    ),
                 ),
             email = "test@test.com",
             phoneNumber = "1234567890",
@@ -123,10 +119,6 @@ class DoctorGetTest {
                             {
                                 "departmentID": "${doctorDto.departments[0].departmentID}",
                                 "departmentName": "${doctorDto.departments[0].departmentName}"
-                            },
-                            {
-                                "departmentID": "${doctorDto.departments[1].departmentID}",
-                                "departmentName": "${doctorDto.departments[1].departmentName}"
                             }
                         ],
                         "chatSupportHours": "${doctorDto.chatSupportHours}",
@@ -191,10 +183,6 @@ class DoctorGetTest {
                                     {
                                         "departmentID": "${doctorDto.departments[0].departmentID}",
                                         "departmentName": "${doctorDto.departments[0].departmentName}"
-                                    },
-                                    {
-                                        "departmentID": "${doctorDto.departments[1].departmentID}",
-                                        "departmentName": "${doctorDto.departments[1].departmentName}"
                                     }
                                 ],
                                 "chatSupportHours": "${doctorDto.chatSupportHours}",
@@ -269,10 +257,6 @@ class DoctorGetTest {
                                     {
                                         "departmentID": "${doctorDto.departments[0].departmentID}",
                                         "departmentName": "${doctorDto.departments[0].departmentName}"
-                                    },
-                                    {
-                                        "departmentID": "${doctorDto.departments[1].departmentID}",
-                                        "departmentName": "${doctorDto.departments[1].departmentName}"
                                     }
                                 ],
                                 "chatSupportHours": "${doctorDto.chatSupportHours}",
@@ -341,10 +325,6 @@ class DoctorGetTest {
                                     {
                                         "departmentID": "${doctorDto.departments[0].departmentID}",
                                         "departmentName": "${doctorDto.departments[0].departmentName}"
-                                    },
-                                    {
-                                        "departmentID": "${doctorDto.departments[1].departmentID}",
-                                        "departmentName": "${doctorDto.departments[1].departmentName}"
                                     }
                                 ],
                                 "chatSupportHours": "${doctorDto.chatSupportHours}",
@@ -413,10 +393,6 @@ class DoctorGetTest {
                                     {
                                         "departmentID": "${doctorDto.departments[0].departmentID}",
                                         "departmentName": "${doctorDto.departments[0].departmentName}"
-                                    },
-                                    {
-                                        "departmentID": "${doctorDto.departments[1].departmentID}",
-                                        "departmentName": "${doctorDto.departments[1].departmentName}"
                                     }
                                 ],
                                 "chatSupportHours": "${doctorDto.chatSupportHours}",
@@ -466,10 +442,6 @@ class DoctorGetTest {
                                     {
                                         "departmentID": "${doctorDto.departments[0].departmentID}",
                                         "departmentName": "${doctorDto.departments[0].departmentName}"
-                                    },
-                                    {
-                                        "departmentID": "${doctorDto.departments[1].departmentID}",
-                                        "departmentName": "${doctorDto.departments[1].departmentName}"
                                     }
                                 ],
                                 "chatSupportHours": "${doctorDto.chatSupportHours}",
@@ -520,10 +492,6 @@ class DoctorGetTest {
                                     {
                                         "departmentID": "${doctorDto.departments[0].departmentID}",
                                         "departmentName": "${doctorDto.departments[0].departmentName}"
-                                    },
-                                    {
-                                        "departmentID": "${doctorDto.departments[1].departmentID}",
-                                        "departmentName": "${doctorDto.departments[1].departmentName}"
                                     }
                                 ],
                                 "chatSupportHours": "${doctorDto.chatSupportHours}",
@@ -574,10 +542,6 @@ class DoctorGetTest {
                                     {
                                         "departmentID": "${doctorDto.departments[0].departmentID}",
                                         "departmentName": "${doctorDto.departments[0].departmentName}"
-                                    },
-                                    {
-                                        "departmentID": "${doctorDto.departments[1].departmentID}",
-                                        "departmentName": "${doctorDto.departments[1].departmentName}"
                                     }
                                 ],
                                 "chatSupportHours": "${doctorDto.chatSupportHours}",
@@ -628,10 +592,6 @@ class DoctorGetTest {
                                     {
                                         "departmentID": "${doctorDto.departments[0].departmentID}",
                                         "departmentName": "${doctorDto.departments[0].departmentName}"
-                                    },
-                                    {
-                                        "departmentID": "${doctorDto.departments[1].departmentID}",
-                                        "departmentName": "${doctorDto.departments[1].departmentName}"
                                     }
                                 ],
                                 "chatSupportHours": "${doctorDto.chatSupportHours}",
@@ -684,10 +644,6 @@ class DoctorGetTest {
                                     {
                                         "departmentID": "${doctorDto.departments[0].departmentID}",
                                         "departmentName": "${doctorDto.departments[0].departmentName}"
-                                    },
-                                    {
-                                        "departmentID": "${doctorDto.departments[1].departmentID}",
-                                        "departmentName": "${doctorDto.departments[1].departmentName}"
                                     }
                                 ],
                                 "chatSupportHours": "${doctorDto.chatSupportHours}",
