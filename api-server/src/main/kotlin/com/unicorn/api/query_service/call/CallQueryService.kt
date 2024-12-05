@@ -17,6 +17,8 @@ interface CallQueryService {
         userID: UserID,
     ): CallResult
 
+    fun getByUserID(userID: UserID): CallResult
+
     fun getByDoctorID(doctorID: DoctorID): CallResult
 
     fun getOrNullBy(callReservationID: CallReservationID): CallDto?
@@ -49,6 +51,39 @@ class CallQueryServiceImpl(
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("doctor_id", doctorID.value)
+                .addValue("user_id", userID.value)
+        val calls =
+            namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+                CallDto(
+                    callReservationID = UUID.fromString(rs.getString("call_reservation_id")),
+                    doctorID = rs.getString("doctor_id"),
+                    userID = rs.getString("user_id"),
+                    callStartTime = rs.getObject("call_start_time", OffsetDateTime::class.java),
+                    callEndTime = rs.getObject("call_end_time", OffsetDateTime::class.java),
+                )
+            }
+        return CallResult(calls)
+    }
+
+    override fun getByUserID(userID: UserID): CallResult {
+        //language=postgresql
+        val sql =
+            """
+            SELECT
+                call_reservation_id,
+                doctor_id,
+                user_id,
+                call_start_time,
+                call_end_time
+            FROM call_reservations
+            WHERE user_id = :user_id
+            AND call_end_time >= CURRENT_TIMESTAMP
+            AND call_end_time <= CURRENT_TIMESTAMP + INTERVAL '1 YEAR'
+            AND deleted_at IS NULL
+            ORDER BY call_start_time ASC
+            """.trimIndent()
+        val sqlParams =
+            MapSqlParameterSource()
                 .addValue("user_id", userID.value)
         val calls =
             namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->

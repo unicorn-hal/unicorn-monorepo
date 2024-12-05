@@ -66,6 +66,20 @@ class CallController(
         return ResponseEntity.ok(result)
     }
 
+    @GetMapping("/users/{userID}/calls")
+    fun getByUserID(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<*> {
+        userQueryService.getOrNullBy(userID)
+            ?: return ResponseEntity.status(400).body(ResponseError("User not found"))
+
+        val result =
+            callQueryService.getByUserID(UserID(userID))
+
+        return ResponseEntity.ok(result)
+    }
+
     @PostMapping("/calls")
     fun store(
         @RequestHeader("X-UID") uid: String,
