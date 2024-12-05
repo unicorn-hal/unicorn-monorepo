@@ -6,16 +6,13 @@ import com.unicorn.api.application_service.account.UpdateAccountService
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.account.Account
 import com.unicorn.api.domain.account.UID
+import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.query_service.account.AccountDto
 import com.unicorn.api.query_service.account.AccountQueryService
+import com.unicorn.api.query_service.doctor.DoctorQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.*
 
 @Controller
 class AccountController(
@@ -23,6 +20,7 @@ class AccountController(
     private val accountQueryService: AccountQueryService,
     private val deleteAccountService: DeleteAccountService,
     private val updateAccountService: UpdateAccountService,
+    private val doctorQueryService: DoctorQueryService,
 ) {
     @PostMapping("/accounts")
     fun save(
@@ -56,6 +54,25 @@ class AccountController(
             return ResponseEntity.ok(result)
         } catch (e: Exception) {
             return ResponseEntity.internalServerError().build()
+        }
+    }
+
+    @GetMapping("/accounts/{accountUid}")
+    fun get(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable accountUid: String,
+    ): ResponseEntity<*> {
+        try {
+            doctorQueryService.getOrNullBy(DoctorID(uid))
+                ?: return ResponseEntity.badRequest().body(ResponseError("account is not doctor"))
+
+            val result =
+                accountQueryService.getOrNullBy(accountUid)
+                    ?: return ResponseEntity.badRequest().body(ResponseError("account is not found"))
+
+            return ResponseEntity.ok(result)
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("internal server error"))
         }
     }
 

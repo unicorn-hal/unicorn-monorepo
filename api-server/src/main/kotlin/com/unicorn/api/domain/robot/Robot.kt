@@ -1,9 +1,7 @@
 package com.unicorn.api.domain.robot
 
-import com.unicorn.api.domain.account.UID
-
 data class Robot private constructor(
-    val robotID: UID,
+    val robotID: RobotID,
     val robotName: RobotName,
     val robotStatus: RobotStatus,
 ) {
@@ -15,7 +13,7 @@ data class Robot private constructor(
             robotName: String,
         ): Robot {
             return Robot(
-                robotID = UID(robotID),
+                robotID = RobotID(robotID),
                 robotName = RobotName(robotName),
                 robotStatus = RobotStatus.robot_waiting,
             )
@@ -30,7 +28,7 @@ data class Robot private constructor(
                 throw InvalidRoleException()
             }
             return Robot(
-                robotID = UID(robotID),
+                robotID = RobotID(robotID),
                 robotName = RobotName(robotName),
                 robotStatus = RobotStatus.valueOf(robotStatus),
             )
@@ -53,6 +51,13 @@ data class Robot private constructor(
 enum class RobotStatus {
     supporting,
     robot_waiting,
+}
+
+@JvmInline
+value class RobotID(val value: String) {
+    init {
+        require(value.isNotBlank()) { "Robot ID should not be blank" }
+    }
 }
 
 @JvmInline
