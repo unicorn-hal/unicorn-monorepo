@@ -54,18 +54,79 @@ class CallGetByUserIDTest {
                     "data": [
                         {
                             "callReservationID": "551177ed-92f8-a956-825f-c31b2cad8b10",
-                            "doctorID": "doctor",
-                            "userID": "$userID"
+                            "userID": "$userID",
+                            "doctor": {
+                                "doctorID": "doctor",
+                                "hospital": {
+                                    "hospitalID": "d8bfa31d-54b9-4c64-a499-6c522517e5f7",
+                                    "hospitalName": "きくち内科医院"
+                                },
+                                "email": "test@test.com",
+                                "phoneNumber": "1234567890",
+                                "firstName": "test",
+                                "lastName": "test",
+                                "doctorIconUrl": "https://example.com",
+                                "departments": [
+                                    {
+                                        "departmentID": "b68a87a3-b7f1-4b85-b0ab-6c620d68d791",
+                                        "departmentName": "循環器内科"
+                                    },
+                                    {
+                                        "departmentID": "a1dcb69e-472f-4a57-90a2-f2c63b62ec90",
+                                        "departmentName": "総合内科"
+                                    }
+                                ],
+                                "chatSupportHours": "09:00-18:00",
+                                "callSupportHours": "09:00-18:00"
+                            }
                         },
                         {
                             "callReservationID": "221177ed-92f8-a956-825f-c31b2cad8b10",
-                            "doctorID": "doctor2",
-                            "userID": "$userID"
+                            "userID": "$userID",
+                            "doctor": {
+                                "doctorID": "doctor2",
+                                "hospital": {
+                                    "hospitalID": "762a7a7e-41e4-46c2-b36c-f2b302cae3e7",
+                                    "hospitalName": "内科杉山医院"
+                                },
+                                "email": "test@test.com",
+                                "phoneNumber": "1234567899",
+                                "firstName": "山田",
+                                "lastName": "次郎",
+                                "doctorIconUrl": "https://example.com",
+                                "departments": [
+                                    {
+                                        "departmentID": "cd273b1b-0c3b-4b89-b2b9-01b21832b44c",
+                                        "departmentName": "呼吸器内科"
+                                    }
+                                ],
+                                "chatSupportHours": "09:00-15:00",
+                                "callSupportHours": "09:00-15:00"
+                            }
                         },
                         {
                             "callReservationID": "221177ed-92f8-a956-825f-c31b2cad8b22",
-                            "doctorID": "doctor2",
-                            "userID": "$userID"
+                            "userID": "$userID",
+                            "doctor": {
+                                "doctorID": "doctor2",
+                                "hospital": {
+                                    "hospitalID": "762a7a7e-41e4-46c2-b36c-f2b302cae3e7",
+                                    "hospitalName": "内科杉山医院"
+                                },
+                                "email": "test@test.com",
+                                "phoneNumber": "1234567899",
+                                "firstName": "山田",
+                                "lastName": "次郎",
+                                "doctorIconUrl": "https://example.com",
+                                "departments": [
+                                    {
+                                        "departmentID": "cd273b1b-0c3b-4b89-b2b9-01b21832b44c",
+                                        "departmentName": "呼吸器内科"
+                                    }
+                                ],
+                                "chatSupportHours": "09:00-15:00",
+                                "callSupportHours": "09:00-15:00"
+                            }
                         }
                     ]
                 }
@@ -96,8 +157,27 @@ class CallGetByUserIDTest {
                     "data": [
                         {
                             "callReservationID": "311177ed-92f8-a956-825f-c31b2cad8b15",
-                            "doctorID": "doctor2",
-                            "userID": "$userID"
+                            "userID": "$userID",
+                            "doctor": {
+                                "doctorID": "doctor2",
+                                "hospital": {
+                                    "hospitalID": "762a7a7e-41e4-46c2-b36c-f2b302cae3e7",
+                                    "hospitalName": "内科杉山医院"
+                                },
+                                "email": "test@test.com",
+                                "phoneNumber": "1234567899",
+                                "firstName": "山田",
+                                "lastName": "次郎",
+                                "doctorIconUrl": "https://example.com",
+                                "departments": [
+                                    {
+                                        "departmentID": "cd273b1b-0c3b-4b89-b2b9-01b21832b44c",
+                                        "departmentName": "呼吸器内科"
+                                    }
+                                ],
+                                "chatSupportHours": "09:00-15:00",
+                                "callSupportHours": "09:00-15:00"
+                            }
                         }
                     ]
                 }
