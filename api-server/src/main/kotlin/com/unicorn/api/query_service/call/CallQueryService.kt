@@ -92,7 +92,7 @@ class CallQueryServiceImpl(
                 doctors.doctor_icon_url AS doctor_icon_url,
                 COALESCE(
                     JSONB_AGG(
-                        JSONB_BUILD_OBJECT(
+                        DISTINCT JSONB_BUILD_OBJECT(
                             'departmentID', departments.department_id,
                             'departmentName', departments.department_name
                         )
