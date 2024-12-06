@@ -15,22 +15,6 @@ data class EmergencyRobotStatus private constructor(
     val fcmTokenID: FCMTokenId,
 ) {
     companion object {
-        fun fromStore(
-            robotSupportID: UUID,
-            userID: String,
-            userLatitude: Double,
-            userLongitude: Double,
-            fcmTokenID: String,
-        ): EmergencyRobotStatus {
-            return EmergencyRobotStatus(
-                robotSupportID = RobotSupportID(robotSupportID),
-                userID = UserID(userID),
-                userLatitude = UserLatitude(userLatitude),
-                userLongitude = UserLongitude(userLongitude),
-                fcmTokenID = FCMTokenId(fcmTokenID),
-            )
-        }
-
         fun create(
             robotSupportID: UUID,
             userID: String,

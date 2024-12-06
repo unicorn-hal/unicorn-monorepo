@@ -13,7 +13,7 @@ interface EmergencyRepository {
 
     fun getOlderOrNull(): List<Emergency>
 
-    fun getWaitingCount(emergencyID: EmergencyID): Int
+    fun getWaitingCount(emergencyID: EmergencyID): Int?
 
     fun delete(emergency: Emergency)
 }
@@ -106,7 +106,7 @@ class EmergencyRepositoryImpl(
         }
     }
 
-    override fun getWaitingCount(emergencyID: EmergencyID): Int {
+    override fun getWaitingCount(emergencyID: EmergencyID): Int? {
         // language=postgresql
         val sql =
             """
@@ -129,7 +129,7 @@ class EmergencyRepositoryImpl(
 
         return namedParameterJdbcTemplate.query(sql, sqlParams, { rs, _ ->
             rs.getInt("row_number")
-        }).single()
+        }).singleOrNull()
     }
 
     override fun delete(emergency: Emergency) {

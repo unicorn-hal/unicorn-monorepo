@@ -29,6 +29,7 @@ class RobotRequestServiceImpl(
         val robot = robotRepository.getWaitingOrNull()
         if (robot == null) {
             val waitingCount = emergencyRepository.getWaitingCount(emergency.emergencyID)
+            if (waitingCount == null) return Pair(null, null)
             val emergencyUserStatus = EmergencyUserStatus.waiting(waitingCount)
             return Pair(emergencyUserStatus, null)
         }
@@ -44,6 +45,7 @@ class RobotRequestServiceImpl(
 
         val uid = UID(emergency.userID.value)
         val account = accountRepository.getOrNullByUid(uid)
+        if (account == null) return Pair(null, null)
 
         val emergencyRobotStatus =
             EmergencyRobotStatus.create(
@@ -51,7 +53,7 @@ class RobotRequestServiceImpl(
                 userID = emergency.userID.value,
                 userLatitude = emergency.userLatitude.value,
                 userLongitude = emergency.userLongitude.value,
-                fcmTokenID = account!!.fcmTokenId.value,
+                fcmTokenID = account.fcmTokenId.value,
             )
 
         val supportStatus = robot.updateStatus(RobotStatus.supporting)

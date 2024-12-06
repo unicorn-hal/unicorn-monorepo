@@ -17,10 +17,10 @@ class EmergencyEventListenerImpl(
 ) : EmergencyEventListener {
     @EventListener
     override fun onEmergencyRequest(emergencySavedEvent: EmergencySavedEvent) {
-        val result = robotRequestService.request(emergencySavedEvent.emergency)
-        result.first ?: return
-        simpMessagingTemplate.convertAndSend("/ws/users/${emergencySavedEvent.emergency.userID}", result.first!!)
-        result.second ?: return
-        simpMessagingTemplate.convertAndSend("/ws/robots/${result.first!!.robotID}", result.second!!)
+        val (userStatus, robotStatus) = robotRequestService.request(emergencySavedEvent.emergency)
+        if (userStatus == null) return
+        simpMessagingTemplate.convertAndSend("/ws/users/${emergencySavedEvent.emergency.userID}", userStatus)
+        if (robotStatus == null) return
+        simpMessagingTemplate.convertAndSend("/ws/robots/${userStatus.robotID}", robotStatus)
     }
 }
