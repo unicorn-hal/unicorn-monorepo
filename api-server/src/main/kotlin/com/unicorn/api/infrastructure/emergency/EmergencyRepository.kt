@@ -11,7 +11,9 @@ interface EmergencyRepository {
 
     fun getOrNullBy(emergencyID: EmergencyID): Emergency?
 
-    fun getOldestOrNull(): Emergency?
+    fun getOlderOrNull(): List<Emergency>
+
+    fun getWaitingCount(emergencyID: EmergencyID): Int?
 
     fun delete(emergency: Emergency)
 }
@@ -80,7 +82,7 @@ class EmergencyRepositoryImpl(
         }.singleOrNull()
     }
 
-    override fun getOldestOrNull(): Emergency? {
+    override fun getOlderOrNull(): List<Emergency> {
         // language=postgresql
         val sql =
             """
@@ -92,7 +94,6 @@ class EmergencyRepositoryImpl(
             FROM emergency_queue
             WHERE deleted_at IS NULL
             ORDER BY created_at ASC
-            LIMIT 1
             """.trimIndent()
 
         return namedParameterJdbcTemplate.query(sql) { rs, _ ->
@@ -102,7 +103,33 @@ class EmergencyRepositoryImpl(
                 userLatitude = rs.getDouble("user_latitude"),
                 userLongitude = rs.getDouble("user_longitude"),
             )
-        }.singleOrNull()
+        }
+    }
+
+    override fun getWaitingCount(emergencyID: EmergencyID): Int? {
+        // language=postgresql
+        val sql =
+            """
+            SELECT row_number
+            FROM (
+                SELECT
+                    ROW_NUMBER() OVER (
+                        ORDER BY created_at ASC
+                    ) AS row_number,
+                    emergency_queue_id
+                    FROM emergency_queue
+                    WHERE deleted_at IS NULL
+                ) AS subquery
+            WHERE emergency_queue_id = :emergencyID
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("emergencyID", emergencyID.value)
+
+        return namedParameterJdbcTemplate.query(sql, sqlParams, { rs, _ ->
+            rs.getInt("row_number")
+        }).singleOrNull()
     }
 
     override fun delete(emergency: Emergency) {

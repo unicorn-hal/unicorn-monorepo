@@ -101,12 +101,23 @@ class EmergencyRepositoryTest {
     }
 
     @Test
-    fun `should return oldest emergency`() {
-        val oldestEmergency = emergencyRepository.getOldestOrNull()
-        assertNotNull(oldestEmergency)
-        assertEquals("test", oldestEmergency!!.userID.value)
-        assertEquals(1.1, oldestEmergency.userLatitude.value)
-        assertEquals(1.1, oldestEmergency.userLongitude.value)
+    fun `should return older emergency`() {
+        val olderEmergency = emergencyRepository.getOlderOrNull()
+        assertNotNull(olderEmergency)
+        assertEquals(2, olderEmergency.size)
+        assertEquals("test", olderEmergency[0].userID.value)
+        assertEquals(1.1, olderEmergency[0].userLatitude.value)
+        assertEquals(1.1, olderEmergency[0].userLongitude.value)
+        assertEquals("test", olderEmergency[1].userID.value)
+        assertEquals(1.3, olderEmergency[1].userLatitude.value)
+        assertEquals(1.3, olderEmergency[1].userLongitude.value)
+    }
+
+    @Test
+    fun `should return emergency by rowNumber`() {
+        val rowNumber = emergencyRepository.getWaitingCount(EmergencyID(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d469")))
+        assertNotNull(rowNumber)
+        assertEquals(2, rowNumber)
     }
 
     @Test
