@@ -56,6 +56,7 @@ class DoctorQueryServiceImpl(
             FROM doctors
             LEFT JOIN hospitals ON doctors.hospital_id = hospitals.hospital_id
             LEFT JOIN doctor_departments ON doctors.doctor_id = doctor_departments.doctor_id
+                AND doctor_departments.deleted_at IS NULL
             LEFT JOIN departments ON doctor_departments.department_id = departments.department_id
             LEFT JOIN call_support_hours ON doctors.doctor_id = call_support_hours.doctor_id
             LEFT JOIN chat_support_hours ON doctors.doctor_id = chat_support_hours.doctor_id
@@ -129,6 +130,7 @@ class DoctorQueryServiceImpl(
             FROM doctors
             LEFT JOIN hospitals ON doctors.hospital_id = hospitals.hospital_id
             LEFT JOIN doctor_departments ON doctors.doctor_id = doctor_departments.doctor_id
+                AND doctor_departments.deleted_at IS NULL
             LEFT JOIN departments ON doctor_departments.department_id = departments.department_id
             LEFT JOIN call_support_hours ON doctors.doctor_id = call_support_hours.doctor_id
             LEFT JOIN chat_support_hours ON doctors.doctor_id = chat_support_hours.doctor_id
@@ -213,6 +215,7 @@ class DoctorQueryServiceImpl(
             FROM doctors
             LEFT JOIN hospitals ON doctors.hospital_id = hospitals.hospital_id
             LEFT JOIN doctor_departments ON doctors.doctor_id = doctor_departments.doctor_id
+                AND doctor_departments.deleted_at IS NULL
             LEFT JOIN departments ON doctor_departments.department_id = departments.department_id
             LEFT JOIN call_support_hours ON doctors.doctor_id = call_support_hours.doctor_id
             LEFT JOIN chat_support_hours ON doctors.doctor_id = chat_support_hours.doctor_id
