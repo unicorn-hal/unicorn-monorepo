@@ -22,7 +22,7 @@ class CompleteController(
     ): ResponseEntity<*> {
         try {
             val result = notifyCompleteService.notify(RobotID(robotID), completePostRequest)
-            simpMessagingTemplate.convertAndSend("/ws/unicorn/${completePostRequest.userID}/complete", result)
+            simpMessagingTemplate.convertAndSend("/topic/unicorn/users/${completePostRequest.userID}", result)
             return ResponseEntity.ok(result)
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
