@@ -73,4 +73,106 @@ class PostCompleteTest {
             ),
         )
     }
+
+    @Test
+    fun `should return 400 when robot is not found`() {
+        val completePostRequest =
+            CompletePostRequest(
+                robotSupportID = UUID.fromString("c64e788c-dd0a-72d8-a271-5460e1f29816"),
+                userID = "test",
+            )
+
+        val robotID = "notFound"
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/unicorn/$robotID/complete").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", "robot")
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(completePostRequest)),
+            )
+
+        result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "errorType": "Robot not found"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
+    }
+
+    @Test
+    fun `should return 400 when robot support is not found`() {
+        val completePostRequest =
+            CompletePostRequest(
+                robotSupportID = UUID.fromString("c64e788c-dd0a-72d8-a271-5460e1f29800"),
+                userID = "test",
+            )
+
+        val robotID = "robot"
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/unicorn/$robotID/complete").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", "robot")
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(completePostRequest)),
+            )
+
+        result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "errorType": "Robot support not found"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
+    }
+
+    @Test
+    fun `should return 400 when user is not found`() {
+        val completePostRequest =
+            CompletePostRequest(
+                robotSupportID = UUID.fromString("c64e788c-dd0a-72d8-a271-5460e1f29816"),
+                userID = "notFound",
+            )
+
+        val robotID = "robot"
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/unicorn/$robotID/complete").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", "robot")
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(completePostRequest)),
+            )
+
+        result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                """
+                {
+                    "errorType": "User not found"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
+    }
 }
