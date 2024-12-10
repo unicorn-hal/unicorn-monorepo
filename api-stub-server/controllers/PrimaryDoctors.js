@@ -33,8 +33,8 @@ module.exports.primary_doctorsPOST = function primary_doctorsPOST (req, res, nex
     });
 };
 
-module.exports.primary_doctorsPUT = function primary_doctorsPUT (req, res, next, body, xUID) {
-  PrimaryDoctors.primary_doctorsPUT(body, xUID)
+module.exports.primary_doctorsPrimaryDoctorIDDELETE = function primary_doctorsPrimaryDoctorIDDELETE (req, res, next, xUID, primaryDoctorID) {
+  PrimaryDoctors.primary_doctorsPrimaryDoctorIDDELETE(xUID, primaryDoctorID)
     .then(function (response) {
       utils.writeJson(res, response);
     })
