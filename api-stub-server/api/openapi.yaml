@@ -3014,9 +3014,17 @@ components:
           type: string
           description: Robot Name
           example: Unicorn
+        status:
+          type: string
+          description: Robot Status
+          example: robot_waiting
+          enum:
+          - robot_waiting
+          - supporting
       example:
         robotName: Unicorn
         robotID: "1234567890"
+        status: robot_waiting
     RobotRequest:
       type: object
       properties:
@@ -4728,8 +4736,10 @@ components:
         data:
         - robotName: Unicorn
           robotID: "1234567890"
+          status: robot_waiting
         - robotName: Unicorn
           robotID: "1234567890"
+          status: robot_waiting
     inline_response_400_3:
       type: object
       properties:

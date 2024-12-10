@@ -88,6 +88,11 @@ components:
           type: string
           description: "Robot Name"
           example: "Unicorn"
+        status:
+          type: string
+          description: "Robot Status"
+          enum: ["robot_waiting", "supporting"]
+          example: "robot_waiting"
 
     RobotRequest:
       type: object

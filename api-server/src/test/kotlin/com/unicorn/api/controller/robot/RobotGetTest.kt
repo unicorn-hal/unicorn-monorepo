@@ -48,15 +48,18 @@ class RobotGetTest {
                         "data": [
                             {
                                 "robotID": "test",
-                                "robotName": "robotName"
+                                "robotName": "robotName",
+                                "status": "robot_waiting"
                             },
                             {
                                 "robotID": "testtest",
-                                "robotName": "robotName3"
+                                "robotName": "robotName3",
+                                "status": "supporting"
                             }
                         ]
                     }
                     """,
+                    true,
                 ),
             )
         }
@@ -82,9 +85,11 @@ class RobotGetTest {
                     """
                     {
                         "robotID": "test",
-                        "robotName": "robotName"
+                        "robotName": "robotName",
+                        "status": "robot_waiting"
                     }
                     """,
+                    true,
                 ),
             )
         }
@@ -109,6 +114,7 @@ class RobotGetTest {
                         "errorType": "Robot not found"
                     }
                     """,
+                    true,
                 ),
             )
         }
