@@ -20,15 +20,15 @@ import org.springframework.transaction.annotation.Transactional
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
-@Sql("/db/primary_doctor/Insert_Parent_Account_Data.sql")
-@Sql("/db/primary_doctor/Insert_User_Data.sql")
+@Sql("/db/call/Insert_New_Parent_Account_Data.sql")
+@Sql("/db/call/Insert_New_User_Data.sql")
 @Sql("/db/primary_doctor/Insert_Hospital_Data.sql")
 @Sql("/db/primary_doctor/Insert_Department_Data.sql")
 @Sql("/db/primary_doctor/Insert_Doctor_Data.sql")
 @Sql("/db/primary_doctor/Insert_Doctor_Department_Data.sql")
 @Sql("/db/primary_doctor/Insert_Call_Support_Data.sql")
 @Sql("/db/primary_doctor/Insert_Chat_Support_Data.sql")
-@Sql("/db/call/Insert_New_Call_Data.sql")
+@Sql("/db/call/Insert_Deleted_Call_Data.sql")
 class CallGetByDoctorIDTest {
     @Autowired
     private lateinit var mockMvc: MockMvc

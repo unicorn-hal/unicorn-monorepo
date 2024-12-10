@@ -21,7 +21,8 @@ class RobotQueryServiceImpl(
             """
             SELECT 
                 robot_id,
-                name
+                name,
+                status
             from robots
             WHERE deleted_at IS NULL
             """.trimIndent()
@@ -32,6 +33,7 @@ class RobotQueryServiceImpl(
                 RobotDto(
                     robotID = rs.getString("robot_id"),
                     robotName = rs.getString("name"),
+                    status = rs.getString("status"),
                 )
             }
         return RobotResult(result)
@@ -43,7 +45,8 @@ class RobotQueryServiceImpl(
             """
             SELECT 
                 robot_id,
-                name
+                name,
+                status
             from robots
             WHERE robot_id = :robotID
             AND deleted_at IS NULL
@@ -58,6 +61,7 @@ class RobotQueryServiceImpl(
             RobotDto(
                 robotID = rs.getString("robot_id"),
                 robotName = rs.getString("name"),
+                status = rs.getString("status"),
             )
         }.singleOrNull()
     }
@@ -70,4 +74,5 @@ data class RobotResult(
 data class RobotDto(
     val robotID: String,
     val robotName: String,
+    val status: String,
 )

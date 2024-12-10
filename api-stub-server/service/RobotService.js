@@ -14,7 +14,8 @@ exports.robotsGET = function (xUID) {
     examples['application/json'] = {
       "data": [{
         "robotName": "Unicorn",
-        "robotID": "1234567890"
+        "robotID": "1234567890",
+        "status": "robot_waiting"
       }]
     };
     if (Object.keys(examples).length > 0) {
@@ -77,7 +78,8 @@ exports.robotsRobotIDGET = function (xUID, robotID) {
     var examples = {};
     examples['application/json'] = {
       "robotName": "Unicorn",
-      "robotID": "1234567890"
+      "robotID": "1234567890",
+      "status": "robot_waiting"
     };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
