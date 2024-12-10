@@ -9,26 +9,26 @@
  * doctorID String 
  * returns inline_response_200_2
  **/
-exports.primary_doctorsDoctorIDUsersGET = function(xUID,doctorID) {
-  return new Promise(function(resolve, reject) {
+exports.primary_doctorsDoctorIDUsersGET = function (xUID, doctorID) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "data" : [ {
-    "lastName" : "山田",
-    "address" : "東京都新宿区1-1-1",
-    "occupation" : "エンジニア",
-    "gender" : "male",
-    "iconImageUrl" : "https://placehold.jp/150x150.png",
-    "postalCode" : "1234567",
-    "bodyHeight" : 180.5,
-    "userID" : "1234567890",
-    "birthDate" : "1990-01-01T00:00:00.000+00:00",
-    "firstName" : "太郎",
-    "phoneNumber" : "09012345678",
-    "bodyWeight" : 75.5,
-    "email" : "test@test.com"
-  } ]
-};
+      "data": [{
+        "lastName": "山田",
+        "address": "東京都新宿区1-1-1",
+        "occupation": "エンジニア",
+        "gender": "male",
+        "iconImageUrl": "https://placehold.jp/150x150.png",
+        "postalCode": "1234567",
+        "bodyHeight": 180.5,
+        "userID": "1234567890",
+        "birthDate": "1990-01-01T00:00:00.000+00:00",
+        "firstName": "太郎",
+        "phoneNumber": "09012345678",
+        "bodyWeight": 75.5,
+        "email": "test@test.com"
+      }]
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -45,29 +45,29 @@ exports.primary_doctorsDoctorIDUsersGET = function(xUID,doctorID) {
  * xUID String 
  * returns inline_response_200_1
  **/
-exports.primary_doctorsGET = function(xUID) {
-  return new Promise(function(resolve, reject) {
+exports.primary_doctorsGET = function (xUID) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "data" : [ {
-    "firstName" : "太郎",
-    "lastName" : "山田",
-    "doctorIconUrl" : "https://placehold.jp/150x150.png",
-    "chatSupportHours" : "9:00-17:00",
-    "phoneNumber" : "09012345678",
-    "callSupportHours" : "9:00-17:00",
-    "doctorID" : "1234567890",
-    "departments" : [ {
-      "departmentName" : "内科",
-      "departmentID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    }],
-    "hospital" : {
-      "hospitalID" : "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-      "hospitalName" : "東京都立大学病院"
-    },
-    "email" : "sample@mail.com"
-  }]
-};
+      "data": [{
+        "firstName": "太郎",
+        "lastName": "山田",
+        "doctorIconUrl": "https://placehold.jp/150x150.png",
+        "chatSupportHours": "9:00-17:00",
+        "phoneNumber": "09012345678",
+        "callSupportHours": "9:00-17:00",
+        "doctorID": "1234567890",
+        "departments": [{
+          "departmentName": "内科",
+          "departmentID": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        }],
+        "hospital": {
+          "hospitalID": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+          "hospitalName": "東京都立大学病院"
+        },
+        "email": "sample@mail.com"
+      }]
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -85,13 +85,12 @@ exports.primary_doctorsGET = function(xUID) {
  * xUID String 
  * returns PrimaryDoctorsResponse
  **/
-exports.primary_doctorsPOST = function(body,xUID) {
-  return new Promise(function(resolve, reject) {
+exports.primary_doctorsPOST = function (body, xUID) {
+  return new Promise(function (resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "doctorIDs" : [ "1234567890" ],
-  "userID" : "1234567890"
-};
+      "doctorID": "1234567890"
+    };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
@@ -102,25 +101,16 @@ exports.primary_doctorsPOST = function(body,xUID) {
 
 
 /**
- * 主治医更新
- * ユーザーの主治医を更新します
+ * 主治医削除
+ * ユーザーの主治医を削除します
  *
- * body PrimaryDoctorsRequest 
  * xUID String 
- * returns PrimaryDoctorsResponse
+ * primaryDoctorID String 
+ * no response value expected for this operation
  **/
-exports.primary_doctorsPUT = function(body,xUID) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "doctorIDs" : [ "1234567890" ],
-  "userID" : "1234567890"
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
+exports.primary_doctorsPrimaryDoctorIDDELETE = function (xUID, primaryDoctorID) {
+  return new Promise(function (resolve, reject) {
+    resolve();
   });
 }
 
