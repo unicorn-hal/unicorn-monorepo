@@ -1,0 +1,11 @@
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('doctor', 'doctor', 'fcm_token_id');
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('doctor2', 'doctor', 'fcm_token_id');
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('doctor3', 'doctor', 'fcm_token_id');
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('doctor4', 'user', 'fcm_token_id');
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('doctor5', 'doctor', 'fcm_token_id');
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('doctor6', 'doctor', 'fcm_token_id');
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('doctor7', 'doctor', 'fcm_token_id');
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('test', 'user', 'fcm_token_id');
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('12345', 'user', 'fcm_token_id');
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('testtest', 'user', 'fcm_token_id');
+INSERT INTO accounts (uid, role, fcm_token_id) VALUES ('deleted_test_user', 'user', 'fcm_token_id');
