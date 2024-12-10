@@ -19,8 +19,9 @@ class EmergencyEventListenerImpl(
     override fun onEmergencyRequest(emergencySavedEvent: EmergencySavedEvent) {
         val (userStatus, robotStatus) = robotRequestService.request(emergencySavedEvent.emergency)
         if (userStatus == null) return
-        simpMessagingTemplate.convertAndSend("/topic/unicorn/users/${emergencySavedEvent.emergency.userID}", userStatus)
+        simpMessagingTemplate.convertAndSend("/topic/unicorn/users/${emergencySavedEvent.emergency.userID.value}", userStatus)
         if (robotStatus == null) return
-        simpMessagingTemplate.convertAndSend("/topic/unicorn/robots/${userStatus.robotID}", robotStatus)
+        if (userStatus.robotID == null) return
+        simpMessagingTemplate.convertAndSend("/topic/unicorn/robots/${userStatus.robotID.value}", robotStatus)
     }
 }
