@@ -29,13 +29,15 @@ class SavePrimaryDoctorServiceImpl(
     ): PrimaryDoctor {
         val user = userRepository.getOrNullBy(userID)
         requireNotNull(user) { "User not found" }
-        val doctor = doctorRepository.getOrNullBy(DoctorID(primaryDoctorRequest.doctorID))
+
+        val doctorID = DoctorID(primaryDoctorRequest.doctorID)
+        val doctor = doctorRepository.getOrNullBy(doctorID)
         requireNotNull(doctor) { "Doctor not found" }
 
         val primaryDoctor =
             PrimaryDoctor.create(
                 userID = userID.value,
-                doctorID = primaryDoctorRequest.doctorID,
+                doctorID = doctorID.value,
             )
         primaryDoctorRepository.store(primaryDoctor)
 
