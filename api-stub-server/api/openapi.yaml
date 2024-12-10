@@ -621,47 +621,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: PrimaryDoctors
-    put:
-      tags:
-      - primary_doctors
-      summary: 主治医更新
-      description: ユーザーの主治医を更新します
-      operationId: primary_doctorsPUT
-      parameters:
-      - name: X-UID
-        in: header
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          description: UID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PrimaryDoctorsRequest'
-        required: true
-      responses:
-        "200":
-          description: 主治医更新成功
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PrimaryDoctorsResponse'
-        "400":
-          description: 不正なデータが送信されました
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_400'
-        "500":
-          description: サーバーエラーが発生しました
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_500'
-      x-swagger-router-controller: PrimaryDoctors
     post:
       tags:
       - primary_doctors
@@ -696,6 +655,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: PrimaryDoctors
+  /primary_doctors/{primaryDoctorID}:
+    delete:
+      tags:
+      - primary_doctors
+      summary: 主治医削除
+      description: ユーザーの主治医を削除します
+      operationId: primary_doctorsPrimaryDoctorIDDELETE
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: primaryDoctorID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: 主治医ID
+      responses:
+        "204":
+          description: 主治医削除成功
+        "404":
+          description: 指定された主治医が存在しません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_404_1'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -871,7 +870,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_1'
+                $ref: '#/components/schemas/inline_response_404_2'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -934,7 +933,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_1'
+                $ref: '#/components/schemas/inline_response_404_2'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -974,7 +973,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_1'
+                $ref: '#/components/schemas/inline_response_404_2'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1048,7 +1047,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_2'
+                $ref: '#/components/schemas/inline_response_404_3'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1213,7 +1212,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_3'
+                $ref: '#/components/schemas/inline_response_404_4'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1388,7 +1387,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_4'
+                $ref: '#/components/schemas/inline_response_404_5'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1443,7 +1442,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_4'
+                $ref: '#/components/schemas/inline_response_404_5'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1482,7 +1481,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_4'
+                $ref: '#/components/schemas/inline_response_404_5'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1718,7 +1717,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_5'
+                $ref: '#/components/schemas/inline_response_404_6'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1845,7 +1844,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_6'
+                $ref: '#/components/schemas/inline_response_404_7'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -1884,7 +1883,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_6'
+                $ref: '#/components/schemas/inline_response_404_7'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2089,7 +2088,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_7'
+                $ref: '#/components/schemas/inline_response_404_8'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2265,7 +2264,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_8'
+                $ref: '#/components/schemas/inline_response_404_9'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2355,7 +2354,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_9'
+                $ref: '#/components/schemas/inline_response_404_10'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2440,7 +2439,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_9'
+                $ref: '#/components/schemas/inline_response_404_10'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -2528,7 +2527,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_404_9'
+                $ref: '#/components/schemas/inline_response_404_10'
         "500":
           description: サーバーエラーが発生しました
           content:
@@ -4237,30 +4236,19 @@ components:
     PrimaryDoctorsRequest:
       type: object
       properties:
-        doctorIDs:
-          type: array
-          items:
-            type: string
-            description: 医師ID
-            example: "1234567890"
+        doctorID:
+          type: string
+          description: 医師ID
+          example: "1234567890"
     PrimaryDoctorsResponse:
       type: object
       properties:
-        userID:
+        doctorID:
           type: string
-          description: ユーザーID
+          description: 医師ID
           example: "1234567890"
-        doctorIDs:
-          type: array
-          items:
-            type: string
-            description: 医師ID
-            example: "1234567890"
       example:
-        doctorIDs:
-        - "1234567890"
-        - "1234567890"
-        userID: "1234567890"
+        doctorID: "1234567890"
     inline_response_200:
       type: object
       properties:
@@ -4344,6 +4332,13 @@ components:
             hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
             hospitalName: 東京都立大学病院
           email: sample@mail.com
+    inline_response_404_1:
+      type: object
+      properties:
+        errorType:
+          type: string
+          description: エラータイプ
+          example: PrimaryDoctorNotFound
     inline_response_200_2:
       type: object
       properties:
@@ -4406,7 +4401,7 @@ components:
             - 体温: 36.5
             - 血圧: 120/80
             - 診断: 軽度の風邪
-    inline_response_404_1:
+    inline_response_404_2:
       type: object
       properties:
         errorType:
@@ -4438,7 +4433,7 @@ components:
           hospitalID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           postalCode: "1234567"
           hospitalName: 東京都立大学病院
-    inline_response_404_2:
+    inline_response_404_3:
       type: object
       properties:
         errorType:
@@ -4470,7 +4465,7 @@ components:
           relatedUrl: https://www.hospital.com/news/1
           title: 新型コロナウイルス対策について
           postedDate: 2020-01-01 00:00:00 +09:00
-    inline_response_404_3:
+    inline_response_404_4:
       type: object
       properties:
         errorType:
@@ -4484,7 +4479,7 @@ components:
           type: string
           description: エラータイプ
           example: InvalidQuery
-    inline_response_404_4:
+    inline_response_404_5:
       type: object
       properties:
         errorType:
@@ -4564,7 +4559,7 @@ components:
           messageID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           sentAt: 2020-01-01T00:00:00+09:00
           content: "Hello, World!"
-    inline_response_404_5:
+    inline_response_404_6:
       type: object
       properties:
         errorType:
@@ -4590,7 +4585,7 @@ components:
           familyEmailID: f47ac10b-58cc-4372-a567-0e02b2c3d479
           iconImageUrl: https://placehold.jp/150x150.png
           email: sample@sample.com
-    inline_response_404_6:
+    inline_response_404_7:
       type: object
       properties:
         errorType:
@@ -4656,7 +4651,7 @@ components:
           type: string
           description: エラータイプ
           example: Bad Request
-    inline_response_404_7:
+    inline_response_404_8:
       type: object
       properties:
         errorType:
@@ -4689,7 +4684,7 @@ components:
           chronicDiseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
         - diseaseName: 高血圧
           chronicDiseaseID: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    inline_response_404_8:
+    inline_response_404_9:
       type: object
       properties:
         errorType:
@@ -4715,7 +4710,7 @@ components:
           doctorID: "1234567890"
           callStartTime: 2024-10-12T15:00:00+09:00
           userID: "1234567890"
-    inline_response_404_9:
+    inline_response_404_10:
       type: object
       properties:
         errorType:
