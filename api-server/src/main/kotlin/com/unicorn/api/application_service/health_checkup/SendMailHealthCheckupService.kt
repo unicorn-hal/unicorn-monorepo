@@ -35,7 +35,7 @@ class SendMailHealthCheckupServiceImpl(
             primaryDoctorRepository.getOrNullByUserID(healthCheckup.userID)
                 ?: return
 
-        primaryDoctors.doctors.map {
+        primaryDoctors.map {
             val doctor = doctorRepository.getOrNullBy(it.doctorID) ?: return
             val primaryDoctorEmail = doctor.email.value
             val subject = "${user.lastName.value} ${user.firstName.value}さんの検査結果"
