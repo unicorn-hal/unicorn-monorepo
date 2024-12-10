@@ -177,17 +177,19 @@ class CallQueryServiceImpl(
         val sql =
             """
             SELECT
-                call_reservation_id,
-                doctor_id,
-                user_id,
-                call_start_time,
-                call_end_time
-            FROM call_reservations
-            WHERE doctor_id = :doctor_id
-            AND call_end_time >= CURRENT_TIMESTAMP
-            AND call_end_time <= CURRENT_TIMESTAMP + INTERVAL '1 YEAR'
-            AND deleted_at IS NULL
-            ORDER BY call_start_time ASC
+                cr.call_reservation_id,
+                cr.doctor_id,
+                cr.user_id,
+                cr.call_start_time,
+                cr.call_end_time
+            FROM call_reservations cr
+            JOIN users u ON cr.user_id = u.user_id
+            WHERE cr.doctor_id = :doctor_id
+              AND cr.call_end_time >= CURRENT_TIMESTAMP
+              AND cr.call_end_time <= CURRENT_TIMESTAMP + INTERVAL '1 YEAR'
+              AND cr.deleted_at IS NULL
+              AND u.deleted_at IS NULL
+            ORDER BY cr.call_start_time ASC
             """.trimIndent()
         val sqlParams =
             MapSqlParameterSource()
