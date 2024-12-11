@@ -29,6 +29,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core:10.12.0")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
+    implementation("com.google.firebase:firebase-admin:9.3.0")
     implementation("com.sun.mail:javax.mail:1.6.2")
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.flywaydb:flyway-database-postgresql:10.12.0")
