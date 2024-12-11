@@ -6,6 +6,8 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseToken
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import jakarta.annotation.PreDestroy
 import org.springframework.stereotype.Component
 import java.io.ByteArrayInputStream
@@ -18,7 +20,11 @@ class FirebaseClient {
                 System.getenv("FIREBASE_CREDENTIALS_JSON")
                     ?: throw IllegalArgumentException("FIREBASE_CREDENTIALS_JSON is not set")
 
-            val credentialsStream = ByteArrayInputStream(firebaseCredentialsJson.toByteArray())
+            val validJson = firebaseCredentialsJson.trim('\'')
+            val parsedJson: JsonObject = JsonParser.parseString(validJson).asJsonObject
+            val prettyJson = parsedJson.toString()
+
+            val credentialsStream = ByteArrayInputStream(prettyJson.toByteArray())
 
             val options =
                 FirebaseOptions.builder()
