@@ -28,12 +28,12 @@ class FirebaseAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        if (request.requestURI.startsWith("/ws")) {
+        if (!filterProperties.firebaseAuthenticationEnabled) {
             filterChain.doFilter(request, response)
             return
         }
 
-        if (!filterProperties.firebaseAuthenticationEnabled) {
+        if (request.requestURI.startsWith("/ws")) {
             filterChain.doFilter(request, response)
             return
         }
