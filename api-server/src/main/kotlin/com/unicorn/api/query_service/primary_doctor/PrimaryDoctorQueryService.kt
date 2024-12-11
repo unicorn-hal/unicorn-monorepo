@@ -64,6 +64,7 @@ class PrimaryDoctorQueryServiceImpl(
             LEFT JOIN primary_doctors ON doctors.doctor_id = primary_doctors.doctor_id
             WHERE primary_doctors.user_id = :userID
                 AND doctors.deleted_at IS NULL
+                AND primary_doctors.deleted_at IS NULL
             GROUP BY 
                 doctors.doctor_id, 
                 hospitals.hospital_id, 
@@ -132,6 +133,7 @@ class PrimaryDoctorQueryServiceImpl(
             LEFT JOIN primary_doctors ON users.user_id = primary_doctors.user_id
             WHERE primary_doctors.doctor_id = :doctorID
                 AND users.deleted_at IS NULL
+                AND primary_doctors.deleted_at IS NULL
             """.trimIndent()
 
         val sqlParams =

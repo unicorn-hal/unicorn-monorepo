@@ -341,4 +341,40 @@ class PrimaryDoctorGetTest {
             result.andExpect(status().isBadRequest)
         }
     }
+
+    @Test
+    fun `should return 200 but not found deleted primary doctor of user`() {
+        val userID = "testUser"
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.get("/primary_doctors").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", userID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON),
+            )
+
+        result.andExpect(status().isOk)
+        result.andExpect(content().json("""{"data":[]}""", true))
+    }
+
+    @Test
+    fun `Should return 200 but responsible user not found`() {
+        val doctorID = "doctor7"
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.get("/primary_doctors/$doctorID/users").headers(
+                    HttpHeaders().apply {
+                        add("X-UID", doctorID)
+                    },
+                )
+                    .contentType(MediaType.APPLICATION_JSON),
+            )
+
+        result.andExpect(status().isOk)
+        result.andExpect(content().json("""{"data":[]}""", true))
+    }
 }
