@@ -42,13 +42,9 @@ class FirebaseAuthenticationFilter(
             request.getHeader("Authorization")
                 ?: return response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
 
-        val uid = request.getHeader("X-UID")
         try {
             val token = tokenHeader.split(" ").last()
             val firebaseToken = firebaseClient.verify(token)
-            if (uid != null && firebaseToken.uid != uid) {
-                return response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
-            }
             request.setAttribute("firebaseToken", firebaseToken)
         } catch (e: FirebaseAuthException) {
             return response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
