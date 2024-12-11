@@ -1,53 +1,46 @@
 package com.unicorn.api.application_service.primary_doctor
 
 import com.unicorn.api.controller.primary_doctor.PrimaryDoctorRequest
-import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.doctor.DoctorID
-import com.unicorn.api.domain.primary_doctor.PrimaryDoctors
+import com.unicorn.api.domain.primary_doctor.PrimaryDoctor
 import com.unicorn.api.domain.user.UserID
-import com.unicorn.api.infrastructure.account.AccountRepository
 import com.unicorn.api.infrastructure.doctor.DoctorRepository
 import com.unicorn.api.infrastructure.primary_doctor.PrimaryDoctorRepository
+import com.unicorn.api.infrastructure.user.UserRepository
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 interface SavePrimaryDoctorService {
     fun save(
-        uid: String,
-        primaryDoctorPostRequest: PrimaryDoctorRequest,
-    ): PrimaryDoctors
+        userID: UserID,
+        primaryDoctorRequest: PrimaryDoctorRequest,
+    ): PrimaryDoctor
 }
 
 @Service
 class SavePrimaryDoctorServiceImpl(
-    private val accountRepository: AccountRepository,
-    private val doctorRepository: DoctorRepository,
     private val primaryDoctorRepository: PrimaryDoctorRepository,
+    private val userRepository: UserRepository,
+    private val doctorRepository: DoctorRepository,
 ) : SavePrimaryDoctorService {
-    @Transactional
     override fun save(
-        uid: String,
-        primaryDoctorPostRequest: PrimaryDoctorRequest,
-    ): PrimaryDoctors {
-        val account = accountRepository.getOrNullByUid(UID(uid))
-        requireNotNull(account) { "Account not found" }
-        require(account.isUser()) { "Account is not user" }
+        userID: UserID,
+        primaryDoctorRequest: PrimaryDoctorRequest,
+    ): PrimaryDoctor {
+        val user = userRepository.getOrNullBy(userID)
+        requireNotNull(user) { "User not found" }
 
-        val doctorIDList =
-            primaryDoctorPostRequest.doctorIDs.map { doctorID ->
-                doctorRepository.getOrNullBy(DoctorID(doctorID))
-                    ?: throw IllegalArgumentException("Doctor not found for ID: $doctorID")
-                DoctorID(doctorID)
-            }
+        val doctorID = DoctorID(primaryDoctorRequest.doctorID)
+        val doctor = doctorRepository.getOrNullBy(doctorID)
+        requireNotNull(doctor) { "Doctor not found" }
 
-        val primaryDoctors =
-            PrimaryDoctors.create(
-                userID = UserID(uid),
-                doctorIDs = doctorIDList,
+        val primaryDoctor =
+            PrimaryDoctor.create(
+                userID = userID.value,
+                doctorID = doctorID.value,
             )
+        primaryDoctorRepository.store(primaryDoctor)
 
-        primaryDoctorRepository.store(primaryDoctors)
-
-        return primaryDoctors
+        return primaryDoctor
     }
 }

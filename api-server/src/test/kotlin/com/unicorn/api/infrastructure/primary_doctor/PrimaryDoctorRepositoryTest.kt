@@ -1,12 +1,8 @@
 package com.unicorn.api.infrastructure.primary_doctor
 
-import com.unicorn.api.domain.doctor.DoctorID
-import com.unicorn.api.domain.primary_doctor.PrimaryDoctor
-import com.unicorn.api.domain.primary_doctor.PrimaryDoctorID
-import com.unicorn.api.domain.primary_doctor.PrimaryDoctors
+import com.unicorn.api.domain.primary_doctor.*
 import com.unicorn.api.domain.user.UserID
-import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -17,7 +13,6 @@ import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
-import kotlin.test.assertEquals
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
 @SpringBootTest
@@ -37,116 +32,98 @@ class PrimaryDoctorRepositoryTest {
     @Autowired
     private lateinit var namedParameterJdbcTemplate: NamedParameterJdbcTemplate
 
-    private fun findPrimaryDoctorByPrimaryDoctorID(primaryDoctorID: PrimaryDoctorID): PrimaryDoctor? {
+    private fun findPrimaryDoctorBy(primaryDoctorID: PrimaryDoctorID): PrimaryDoctor? {
         // language=postgresql
         val sql =
             """
-            SELECT primary_doctor_id, doctor_id, user_id
+            SELECT
+                primary_doctor_id,
+                user_id,
+                doctor_id
             FROM primary_doctors
-            WHERE primary_doctor_id = :primaryDoctorId
+            WHERE primary_doctor_id = :primaryDoctorID
             AND deleted_at IS NULL
             """.trimIndent()
 
         val sqlParams =
             MapSqlParameterSource()
-                .addValue("primaryDoctorId", primaryDoctorID.value)
+                .addValue("primaryDoctorID", primaryDoctorID.value)
 
         return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
             PrimaryDoctor.fromStore(
-                primaryDoctorID = PrimaryDoctorID(UUID.fromString(rs.getString("primary_doctor_id"))),
-                doctorID = DoctorID(rs.getString("doctor_id")),
+                primaryDoctorID = UUID.fromString(rs.getString("primary_doctor_id")),
+                userID = rs.getString("user_id"),
+                doctorID = rs.getString("doctor_id"),
             )
         }.singleOrNull()
     }
 
     @Test
-    fun `should get primary doctor by primaryDoctorID`() {
-        val userID = UserID("test")
+    fun `should store primary doctor`() {
+        val primaryDoctor =
+            PrimaryDoctor.create(
+                userID = "test",
+                doctorID = "doctor",
+            )
+        primaryDoctorRepository.store(primaryDoctor)
+
+        val foundPrimaryDoctor = findPrimaryDoctorBy(primaryDoctor.primaryDoctorID)
+        assertNotNull(foundPrimaryDoctor)
+        assertEquals(primaryDoctor, foundPrimaryDoctor)
+    }
+
+    @Test
+    fun `should find primary doctor by ID`() {
         val primaryDoctorID = PrimaryDoctorID(UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5a0"))
 
-        val primaryDoctor = primaryDoctorRepository.getOrNullBy(userID, primaryDoctorID)
+        val foundPrimaryDoctor = primaryDoctorRepository.getOrNullBy(primaryDoctorID)
 
-        assertNotNull(primaryDoctor)
-
-        // primaryDoctorがnullでないことが保証された後に、doctorsにアクセスする
-        if (primaryDoctor != null) {
-            assertTrue(primaryDoctor.doctors.any { it.primaryDoctorID == primaryDoctorID })
-        }
+        assertNotNull(foundPrimaryDoctor)
+        assertEquals(primaryDoctorID, foundPrimaryDoctor!!.primaryDoctorID)
+        assertEquals("test", foundPrimaryDoctor.userID.value)
+        assertEquals("doctor", foundPrimaryDoctor.doctorID.value)
     }
 
     @Test
-    fun `should return null when primary doctor ID not found`() {
-        val userID = UserID("test")
-        val primaryDoctorID = PrimaryDoctorID(UUID.fromString("e9c29e5b-9b7a-4d4d-8f59-1c8c7a7c92d4"))
-
-        val act = primaryDoctorRepository.getOrNullBy(userID, primaryDoctorID)
-
-        assertEquals(null, act)
-    }
-
-    @Test
-    fun `should store multiple primary doctors`() {
-        val userID = UserID("test")
-        val doctorIDs = listOf(DoctorID("doctor3"), DoctorID("doctor5"))
-        val primaryDoctors = PrimaryDoctors.create(userID, doctorIDs)
-
-        val storedDoctors = primaryDoctorRepository.store(primaryDoctors)
-
-        assertEquals(primaryDoctors.doctors.size, storedDoctors.doctors.size)
-        assertTrue(primaryDoctors.doctors[0].primaryDoctorID == storedDoctors.doctors[0].primaryDoctorID)
-        assertTrue(primaryDoctors.doctors[0].doctorID == storedDoctors.doctors[0].doctorID)
-        assertTrue(primaryDoctors.doctors[1].primaryDoctorID == storedDoctors.doctors[1].primaryDoctorID)
-        assertTrue(primaryDoctors.doctors[1].doctorID == storedDoctors.doctors[1].doctorID)
-    }
-
-    @Test
-    fun `should update existing primary doctor using store`() {
-        // 既存の医者を更新するテスト
-        val existingPrimaryDoctorID = PrimaryDoctorID(UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5a0"))
-        val existingDoctor = findPrimaryDoctorByPrimaryDoctorID(existingPrimaryDoctorID)
-        assertNotNull(existingDoctor)
-
-        // 新しい医者の情報に更新する
-        val userID = UserID("test")
-        val updatedDoctorIDs = listOf(DoctorID("doctor2"))
-        val toUpdateDoctors = PrimaryDoctors.create(userID, updatedDoctorIDs)
-
-        val updatedDoctors = primaryDoctorRepository.store(toUpdateDoctors)
-
-        assertTrue(updatedDoctors.doctors.size == 1)
-        assertTrue(updatedDoctors.doctors[0].primaryDoctorID != existingPrimaryDoctorID)
-        if (existingDoctor != null) {
-            assertTrue(updatedDoctors.doctors[0].doctorID != existingDoctor.doctorID)
-        }
-    }
-
-    @Test
-    fun `should handle case when commonDoctors is null and both doctorsToAdd and doctorsToDelete are empty`() {
-        val userID = UserID("test")
-        val primaryDoctors = PrimaryDoctors.create(userID, emptyList()) // 既存の医者がいない状態を模擬
-        val storedDoctors = primaryDoctorRepository.store(primaryDoctors)
-
-        assertTrue(storedDoctors.doctors.isEmpty()) // 追加される医者がいないことを確認
-    }
-
-    @Test
-    fun `should get primary doctors by userID`() {
+    fun `should find primary doctor by user ID`() {
         val userID = UserID("test")
 
-        // userIDに関連するすべてのPrimaryDoctorを取得
-        val primaryDoctors = primaryDoctorRepository.getOrNullByUserID(userID)
+        val foundPrimaryDoctors = primaryDoctorRepository.getOrNullByUserID(userID)
 
-        assertNotNull(primaryDoctors) // PrimaryDoctorsオブジェクトがnullでないことを確認
-        assertTrue(primaryDoctors?.doctors?.isNotEmpty() == true) // doctorsが空でないことを確認
+        assertNotNull(foundPrimaryDoctors)
+        assertEquals(2, foundPrimaryDoctors!!.size)
+        assertEquals("test", foundPrimaryDoctors[0].userID.value)
+        assertEquals("doctor", foundPrimaryDoctors[0].doctorID.value)
+        assertEquals("test", foundPrimaryDoctors[1].userID.value)
+        assertEquals("doctor2", foundPrimaryDoctors[1].doctorID.value)
     }
 
     @Test
-    fun `should return null when no primary doctors found for userID`() {
-        val userID = UserID("nonexistent_user") // 存在しないユーザーIDを指定
+    fun `should not find primary doctor by not found ID`() {
+        val primaryDoctorID = PrimaryDoctorID(UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5a1"))
 
-        // userIDに関連するPrimaryDoctorが存在しない場合
-        val primaryDoctors = primaryDoctorRepository.getOrNullByUserID(userID)
+        val foundPrimaryDoctor = primaryDoctorRepository.getOrNullBy(primaryDoctorID)
 
-        assertEquals(null, primaryDoctors) // nullが返されることを確認
+        assertNull(foundPrimaryDoctor)
+    }
+
+    @Test
+    fun `should not find primary doctor by not found user ID`() {
+        val userID = UserID("notFound")
+
+        val foundPrimaryDoctors = primaryDoctorRepository.getOrNullByUserID(userID)
+
+        assertEquals(0, foundPrimaryDoctors!!.size)
+    }
+
+    @Test
+    fun `should delete primary doctor`() {
+        val primaryDoctor = PrimaryDoctor.create("test", "doctor")
+
+        primaryDoctorRepository.store(primaryDoctor)
+        primaryDoctorRepository.delete(primaryDoctor)
+
+        val foundPrimaryDoctor = findPrimaryDoctorBy(primaryDoctor.primaryDoctorID)
+        assertNull(foundPrimaryDoctor)
     }
 }
