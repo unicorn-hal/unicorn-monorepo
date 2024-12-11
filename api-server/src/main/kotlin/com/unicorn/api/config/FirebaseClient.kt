@@ -6,6 +6,7 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseToken
+import com.google.firebase.auth.UserRecord
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import jakarta.annotation.PreDestroy
@@ -56,7 +57,7 @@ class FirebaseClient {
     ): String {
         val user =
             FirebaseAuth.getInstance().createUser(
-                com.google.firebase.auth.UserRecord.CreateRequest()
+                UserRecord.CreateRequest()
                     .setEmail(email)
                     .setPassword(password),
             )
