@@ -38,6 +38,11 @@ class FirebaseAuthenticationFilter(
             return
         }
 
+        if (request.requestURI.startsWith("/app_config")) {
+            filterChain.doFilter(request, response)
+            return
+        }
+
         val tokenHeader =
             request.getHeader("Authorization")
                 ?: return response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
