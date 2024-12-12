@@ -34,13 +34,16 @@ class SavePrimaryDoctorServiceImpl(
         val doctor = doctorRepository.getOrNullBy(doctorID)
         requireNotNull(doctor) { "Doctor not found" }
 
-        val primaryDoctor =
+        val primaryDoctor = primaryDoctorRepository.getOrNullByDoctorIDAndUserID(doctorID, userID)
+        require(primaryDoctor == null) { "Primary doctor already exists" }
+
+        val createPrimaryDoctor =
             PrimaryDoctor.create(
                 userID = userID.value,
                 doctorID = doctorID.value,
             )
-        primaryDoctorRepository.store(primaryDoctor)
+        primaryDoctorRepository.store(createPrimaryDoctor)
 
-        return primaryDoctor
+        return createPrimaryDoctor
     }
 }
