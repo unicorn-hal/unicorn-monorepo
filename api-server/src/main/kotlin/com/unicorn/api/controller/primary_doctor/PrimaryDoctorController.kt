@@ -3,7 +3,6 @@ package com.unicorn.api.controller.primary_doctor
 import com.unicorn.api.application_service.primary_doctor.*
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.doctor.DoctorID
-import com.unicorn.api.domain.primary_doctor.PrimaryDoctorID
 import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.query_service.doctor.DoctorQueryService
 import com.unicorn.api.query_service.primary_doctor.PrimaryDoctorQueryService
@@ -66,13 +65,13 @@ class PrimaryDoctorController(
         }
     }
 
-    @DeleteMapping("/primary_doctors/{primaryDoctorID}")
+    @DeleteMapping("/primary_doctors/{doctorID}")
     fun delete(
         @RequestHeader("X-UID") uid: String,
-        @PathVariable primaryDoctorID: UUID,
+        @PathVariable doctorID: String,
     ): ResponseEntity<Any> {
         try {
-            deletePrimaryDoctorService.delete(UserID(uid), PrimaryDoctorID(primaryDoctorID))
+            deletePrimaryDoctorService.delete(UserID(uid), DoctorID(doctorID))
             return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))

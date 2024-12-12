@@ -1,5 +1,6 @@
 package com.unicorn.api.infrastructure.primary_doctor
 
+import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.primary_doctor.*
 import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.*
@@ -124,6 +125,38 @@ class PrimaryDoctorRepositoryTest {
         primaryDoctorRepository.delete(primaryDoctor)
 
         val foundPrimaryDoctor = findPrimaryDoctorBy(primaryDoctor.primaryDoctorID)
+        assertNull(foundPrimaryDoctor)
+    }
+
+    @Test
+    fun `should found primary doctor by doctor ID and user ID`() {
+        val userID = UserID("test")
+        val doctorID = DoctorID("doctor")
+
+        val foundPrimaryDoctor = primaryDoctorRepository.getOrNullByDoctorIDAndUserID(doctorID, userID)
+
+        assertNotNull(foundPrimaryDoctor)
+        assertEquals("test", foundPrimaryDoctor!!.userID.value)
+        assertEquals("doctor", foundPrimaryDoctor.doctorID.value)
+    }
+
+    @Test
+    fun `should not found primary doctor by not found doctor ID and user ID`() {
+        val userID = UserID("notFoundTest")
+        val doctorID = DoctorID("notFoundDoctor")
+
+        val foundPrimaryDoctor = primaryDoctorRepository.getOrNullByDoctorIDAndUserID(doctorID, userID)
+
+        assertNull(foundPrimaryDoctor)
+    }
+
+    @Test
+    fun `should not found deleted primary doctor by doctor ID and user ID`() {
+        val userID = UserID("testUser")
+        val doctorID = DoctorID("doctor7")
+
+        val foundPrimaryDoctor = primaryDoctorRepository.getOrNullByDoctorIDAndUserID(doctorID, userID)
+
         assertNull(foundPrimaryDoctor)
     }
 }

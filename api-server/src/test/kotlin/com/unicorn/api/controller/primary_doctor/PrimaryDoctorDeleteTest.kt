@@ -34,12 +34,12 @@ class PrimaryDoctorDeleteTest {
 
     @Test
     fun `should return 200 when delete primary doctor`() {
-        val primaryDoctorID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5a0")
+        val doctorID = "doctor"
         val userID = "test"
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.delete("/primary_doctors/$primaryDoctorID")
+                MockMvcRequestBuilders.delete("/primary_doctors/$doctorID")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)
@@ -52,12 +52,12 @@ class PrimaryDoctorDeleteTest {
 
     @Test
     fun `should return 400 when user not found`() {
-        val primaryDoctorID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5a0")
+        val doctorID = "doctor"
         val userID = "notfound"
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.delete("/primary_doctors/$primaryDoctorID")
+                MockMvcRequestBuilders.delete("/primary_doctors/$doctorID")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)
@@ -80,13 +80,42 @@ class PrimaryDoctorDeleteTest {
     }
 
     @Test
-    fun `should return 400 when primary doctor not found`() {
-        val primaryDoctorID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5a1")
+    fun `should return 400 when doctor not found`() {
+        val doctorID = "notFound"
         val userID = "test"
 
         val result =
             mockMvc.perform(
-                MockMvcRequestBuilders.delete("/primary_doctors/$primaryDoctorID")
+                MockMvcRequestBuilders.delete("/primary_doctors/$doctorID")
+                    .headers(
+                        HttpHeaders().apply {
+                            add("X-UID", userID)
+                        },
+                    )
+                    .contentType(MediaType.APPLICATION_JSON),
+            )
+        result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                // language=json
+                """
+                {
+                    "errorType": "Doctor not found"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
+    }
+
+    @Test
+    fun `should return 400 when deleted primary doctor not found`() {
+        val doctorID = "doctor7"
+        val userID = "testUser"
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.delete("/primary_doctors/$doctorID")
                     .headers(
                         HttpHeaders().apply {
                             add("X-UID", userID)

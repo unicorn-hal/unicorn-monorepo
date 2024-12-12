@@ -1,5 +1,6 @@
 package com.unicorn.api.infrastructure.primary_doctor
 
+import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.primary_doctor.*
 import com.unicorn.api.domain.user.UserID
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
@@ -13,6 +14,11 @@ interface PrimaryDoctorRepository {
     fun getOrNullBy(primaryDoctorID: PrimaryDoctorID): PrimaryDoctor?
 
     fun getOrNullByUserID(userID: UserID): List<PrimaryDoctor>?
+
+    fun getOrNullByDoctorIDAndUserID(
+        doctorID: DoctorID,
+        userID: UserID,
+    ): PrimaryDoctor?
 
     fun delete(primaryDoctor: PrimaryDoctor)
 }
@@ -101,6 +107,37 @@ class PrimaryDoctorRepositoryImpl(
                 doctorID = rs.getString("doctor_id"),
             )
         }
+    }
+
+    override fun getOrNullByDoctorIDAndUserID(
+        doctorID: DoctorID,
+        userID: UserID,
+    ): PrimaryDoctor? {
+        // language=postgresql
+        val sql =
+            """
+            SELECT
+                primary_doctor_id,
+                user_id,
+                doctor_id
+            FROM primary_doctors
+            WHERE user_id = :userID
+            AND doctor_id = :doctorID
+            AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", userID.value)
+                .addValue("doctorID", doctorID.value)
+
+        return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+            PrimaryDoctor.fromStore(
+                primaryDoctorID = UUID.fromString(rs.getString("primary_doctor_id")),
+                userID = rs.getString("user_id"),
+                doctorID = rs.getString("doctor_id"),
+            )
+        }.singleOrNull()
     }
 
     override fun delete(primaryDoctor: PrimaryDoctor) {
