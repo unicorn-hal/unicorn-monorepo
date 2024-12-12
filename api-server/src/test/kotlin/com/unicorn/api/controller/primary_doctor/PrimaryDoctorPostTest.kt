@@ -39,9 +39,9 @@ class PrimaryDoctorPostTest {
     fun `should return 200 when create primary doctor`() {
         val primaryDoctorRequest =
             PrimaryDoctorRequest(
-                doctorID = "doctor",
+                doctorID = "doctor3",
             )
-        val userID = "test"
+        val userID = "testtest"
 
         val result =
             mockMvc.perform(
@@ -127,6 +127,39 @@ class PrimaryDoctorPostTest {
                 """
                 {
                     "errorType": "User not found"
+                }
+                """.trimIndent(),
+                true,
+            ),
+        )
+    }
+
+    @Test
+    fun `should return 400 when already exists primary doctor`() {
+        val primaryDoctorRequest =
+            PrimaryDoctorRequest(
+                doctorID = "doctor",
+            )
+        val userID = "test"
+
+        val result =
+            mockMvc.perform(
+                MockMvcRequestBuilders.post("/primary_doctors")
+                    .headers(
+                        HttpHeaders().apply {
+                            add("X-UID", userID)
+                        },
+                    )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(primaryDoctorRequest)),
+            )
+        result.andExpect(status().isBadRequest)
+        result.andExpect(
+            content().json(
+                // language=json
+                """
+                {
+                    "errorType": "Primary doctor already exists"
                 }
                 """.trimIndent(),
                 true,
