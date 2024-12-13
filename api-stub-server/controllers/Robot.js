@@ -52,3 +52,13 @@ module.exports.robotsRobotIDPUT = function robotsRobotIDPUT (req, res, next, bod
       utils.writeJson(res, response);
     });
 };
+
+module.exports.robotsRobotIDPowerPUT = function robotsRobotIDPowerPUT (req, res, next, body, robotID, xUID) {
+  Robot.robotsRobotIDPowerPUT(body, robotID, xUID)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};

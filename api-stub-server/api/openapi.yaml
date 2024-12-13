@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Unicorn API
   description: API for managing unicorn.
-  version: 2.1.2
+  version: 2.1.3
 servers:
 - url: https://api-stub-server-384446500375.asia-east1.run.app/
   description: Backend server
@@ -662,13 +662,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: PrimaryDoctors
-  /primary_doctors/{primaryDoctorID}:
+  /primary_doctors/{doctorID}:
     delete:
       tags:
       - primary_doctors
       summary: 主治医削除
       description: ユーザーの主治医を削除します
-      operationId: primary_doctorsPrimaryDoctorIDDELETE
+      operationId: primary_doctorsDoctorIDDELETE
       parameters:
       - name: X-UID
         in: header
@@ -678,14 +678,14 @@ paths:
         schema:
           type: string
           description: UID
-      - name: primaryDoctorID
+      - name: doctorID
         in: path
         required: true
         style: simple
         explode: false
         schema:
           type: string
-          description: 主治医ID
+          description: 医者ID
       responses:
         "204":
           description: 主治医削除成功
@@ -2738,6 +2738,56 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Robot
+  /robots/{robotID}/power:
+    put:
+      tags:
+      - robot
+      summary: ロボット電源操作
+      description: ロボットの電源を操作します
+      operationId: robotsRobotIDPowerPUT
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: robotID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: ロボットID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RobotPowerRequest'
+        required: true
+      responses:
+        "200":
+          description: ロボット電源操作成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Robot'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Robot
   /unicorn/emergency:
     post:
       tags:
@@ -2930,8 +2980,80 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Unicorn
+  /firebase/accounts:
+    post:
+      tags:
+      - firebase
+      summary: Firebaseアカウント作成
+      description: Firebaseアカウントを作成します
+      operationId: firebaseAccountsPOST
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirebaseAccountRequest'
+        required: true
+      responses:
+        "200":
+          description: Firebaseアカウント作成成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirebaseAccountResponse'
+        "400":
+          description: 不正なデータが送信されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Firebase
 components:
   schemas:
+    FirebaseAccountRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: User Email
+          example: test@test.com
+        password:
+          type: string
+          description: User Password
+          example: password
+    FirebaseAccountResponse:
+      type: object
+      properties:
+        uid:
+          type: string
+          description: User ID
+          example: "1234567890"
+        email:
+          type: string
+          description: User Email
+          example: test@test.com
+        password:
+          type: string
+          description: User Password
+          example: password
+      example:
+        uid: "1234567890"
+        password: password
+        email: test@test.com
     Emergency:
       type: object
       properties:
@@ -3021,6 +3143,7 @@ components:
           enum:
           - robot_waiting
           - supporting
+          - shutdown
       example:
         robotName: Unicorn
         robotID: "1234567890"
@@ -3041,6 +3164,16 @@ components:
           example: Unicorn
       example:
         robotName: Unicorn
+    RobotPowerRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Robot Status
+          example: robot_waiting
+          enum:
+          - robot_waiting
+          - shutdown
     HospitalNews:
       type: object
       properties:

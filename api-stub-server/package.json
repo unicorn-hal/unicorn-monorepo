@@ -1,6 +1,6 @@
 {
   "name": "unicorn-api",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "API for managing unicorn.",
   "main": "index.js",
   "scripts": {

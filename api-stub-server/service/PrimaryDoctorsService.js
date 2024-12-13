@@ -2,6 +2,21 @@
 
 
 /**
+ * 主治医削除
+ * ユーザーの主治医を削除します
+ *
+ * xUID String 
+ * doctorID String 
+ * no response value expected for this operation
+ **/
+exports.primary_doctorsDoctorIDDELETE = function (xUID, doctorID) {
+  return new Promise(function (resolve, reject) {
+    resolve();
+  });
+}
+
+
+/**
  * 主治医患者取得
  * 主治医の患者情報を取得します
  *
@@ -96,21 +111,6 @@ exports.primary_doctorsPOST = function (body, xUID) {
     } else {
       resolve();
     }
-  });
-}
-
-
-/**
- * 主治医削除
- * ユーザーの主治医を削除します
- *
- * xUID String 
- * primaryDoctorID String 
- * no response value expected for this operation
- **/
-exports.primary_doctorsPrimaryDoctorIDDELETE = function (xUID, primaryDoctorID) {
-  return new Promise(function (resolve, reject) {
-    resolve();
   });
 }
 

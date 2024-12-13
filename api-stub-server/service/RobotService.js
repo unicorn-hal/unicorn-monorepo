@@ -113,3 +113,29 @@ exports.robotsRobotIDPUT = function (body, robotID, xUID) {
   });
 }
 
+
+/**
+ * ロボット電源操作
+ * ロボットの電源を操作します
+ *
+ * body RobotPowerRequest 
+ * robotID String 
+ * xUID String 
+ * returns Robot
+ **/
+exports.robotsRobotIDPowerPUT = function (body, robotID, xUID) {
+  return new Promise(function (resolve, reject) {
+    var examples = {};
+    examples['application/json'] = {
+      "robotName": "Unicorn",
+      "robotID": "1234567890",
+      "status": "robot_waiting"
+    };
+    if (Object.keys(examples).length > 0) {
+      resolve(examples[Object.keys(examples)[0]]);
+    } else {
+      resolve();
+    }
+  });
+}
+
