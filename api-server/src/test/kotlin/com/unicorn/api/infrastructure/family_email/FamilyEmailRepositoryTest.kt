@@ -1,6 +1,7 @@
 package com.unicorn.api.infrastructure.family_email
 
 import com.unicorn.api.domain.family_email.*
+import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -148,5 +149,19 @@ class FamilyEmailRepositoryTest {
         familyEmailRepository.delete(familyEmail)
         val deletedFamilyEmail = familyEmailRepository.getOrNullBy(familyEmail.familyEmailID)
         assertNull(deletedFamilyEmail)
+    }
+
+    @Test
+    fun `should find family emails by userID`() {
+        val userID = UserID("test")
+
+        val familyEmails = familyEmailRepository.getOrNullByUserID(userID)
+
+        assertNotNull(familyEmails)
+        assertEquals(1, familyEmails!!.size)
+        assertEquals("sample@sample.com", familyEmails[0].email.value)
+        assertEquals("太郎", familyEmails[0].firstName.value)
+        assertEquals("山田", familyEmails[0].lastName.value)
+        assertEquals("https://example.com", familyEmails[0].iconImageUrl?.value)
     }
 }
