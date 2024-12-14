@@ -110,7 +110,7 @@ class RobotTest {
                 robotName = "robotName",
                 robotStatus = "robot_waiting",
             )
-        val newRobot = robot.power(RobotStatus.shutdown)
+        val newRobot = robot.power(RobotStatus.shutdown.toString())
         assertEquals(RobotStatus.shutdown, newRobot.robotStatus)
     }
 
@@ -122,7 +122,7 @@ class RobotTest {
                 robotName = "robotName",
                 robotStatus = "shutdown",
             )
-        val newRobot = robot.power(RobotStatus.robot_waiting)
+        val newRobot = robot.power(RobotStatus.robot_waiting.toString())
         assertEquals(RobotStatus.robot_waiting, newRobot.robotStatus)
     }
 
@@ -136,7 +136,7 @@ class RobotTest {
             )
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
-                robot.power(RobotStatus.shutdown)
+                robot.power(RobotStatus.shutdown.toString())
             }
         assertEquals("Robot is supporting", exception.message)
     }
@@ -151,7 +151,7 @@ class RobotTest {
             )
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
-                robot.power(RobotStatus.shutdown)
+                robot.power(RobotStatus.shutdown.toString())
             }
         assertEquals("Robot status is already shutdown", exception.message)
     }
@@ -166,8 +166,23 @@ class RobotTest {
             )
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
-                robot.power(RobotStatus.robot_waiting)
+                robot.power(RobotStatus.robot_waiting.toString())
             }
         assertEquals("Robot status is already robot_waiting", exception.message)
+    }
+
+    @Test
+    fun `should return error when robot status is invalid`() {
+        val robot =
+            Robot.fromStore(
+                robotID = "test",
+                robotName = "robotName",
+                robotStatus = "invalid",
+            )
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                robot.power(RobotStatus.supporting.toString())
+            }
+        assertEquals("Robot status is invalid", exception.message)
     }
 }

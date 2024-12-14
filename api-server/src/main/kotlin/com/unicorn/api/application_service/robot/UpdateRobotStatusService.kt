@@ -25,8 +25,7 @@ class UpdateRobotStatusServiceImpl(
         val robot = robotRepository.getOrNullBy(robotID)
         requireNotNull(robot) { "Robot not found" }
 
-        val newStatus = RobotStatus.valueOf(robotPowerRequest.status)
-        val newRobot = robot.power(newStatus)
+        val newRobot = robot.power(robotPowerRequest.status)
 
         robotRepository.store(newRobot)
 
