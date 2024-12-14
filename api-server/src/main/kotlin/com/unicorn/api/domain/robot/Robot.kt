@@ -46,6 +46,15 @@ data class Robot private constructor(
             robotStatus = robotStatus,
         )
     }
+
+    fun power(robotStatus: RobotStatus): Robot {
+        require(this.robotStatus != RobotStatus.supporting) { "Robot is supporting" }
+        require(this.robotStatus != robotStatus) { "Robot status is already $robotStatus" }
+
+        return this.copy(
+            robotStatus = robotStatus,
+        )
+    }
 }
 
 enum class RobotStatus {
