@@ -3,6 +3,7 @@ package com.unicorn.api.controller.robot
 import com.unicorn.api.application_service.robot.DeleteRobotService
 import com.unicorn.api.application_service.robot.SaveRobotService
 import com.unicorn.api.application_service.robot.UpdateRobotService
+import com.unicorn.api.application_service.robot.UpdateRobotStatusService
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.robot.RobotID
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*
 class RobotController(
     private val saveRobotService: SaveRobotService,
     private val updateRobotService: UpdateRobotService,
+    private val updateRobotStatusService: UpdateRobotStatusService,
     private val deleteRobotService: DeleteRobotService,
     private val robotQueryService: RobotQueryService,
 ) {
@@ -95,6 +97,22 @@ class RobotController(
             return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
         }
     }
+
+    @PutMapping("/robots/{robotID}/power")
+    fun power(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable robotID: String,
+        @RequestBody robotPowerRequest: RobotPowerRequest,
+    ): ResponseEntity<*> {
+        try {
+            val result = updateRobotStatusService.power(RobotID(robotID), robotPowerRequest)
+            return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
 }
 
 data class SaveRobotRequest(
@@ -103,4 +121,8 @@ data class SaveRobotRequest(
 
 data class UpdateRobotRequest(
     val robotName: String,
+)
+
+data class RobotPowerRequest(
+    val status: String,
 )

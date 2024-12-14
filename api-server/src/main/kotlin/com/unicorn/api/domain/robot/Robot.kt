@@ -46,6 +46,19 @@ data class Robot private constructor(
             robotStatus = robotStatus,
         )
     }
+
+    fun power(robotStatus: String): Robot {
+        if (robotStatus !in RobotStatus.entries.map { it.name }) {
+            throw InvalidRoleException()
+        }
+        val newStatus = RobotStatus.valueOf(robotStatus)
+        require(this.robotStatus != RobotStatus.supporting) { "Robot is supporting" }
+        require(this.robotStatus != newStatus) { "Robot status is already $robotStatus" }
+
+        return this.copy(
+            robotStatus = newStatus,
+        )
+    }
 }
 
 enum class RobotStatus {

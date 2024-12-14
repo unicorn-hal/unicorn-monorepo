@@ -22,4 +22,10 @@ INSERT INTO robots (
         'supporting',
         NOW(),
         null
+    ),(
+        'testtesttest',
+        'robotName4',
+        'shutdown',
+        NOW(),
+        null
     );

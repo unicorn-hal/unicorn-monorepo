@@ -101,4 +101,88 @@ class RobotTest {
             }
         assertEquals("Robot ID should not be blank", exception.message)
     }
+
+    @Test
+    fun `should power off robot`() {
+        val robot =
+            Robot.fromStore(
+                robotID = "test",
+                robotName = "robotName",
+                robotStatus = "robot_waiting",
+            )
+        val newRobot = robot.power(RobotStatus.shutdown.toString())
+        assertEquals(RobotStatus.shutdown, newRobot.robotStatus)
+    }
+
+    @Test
+    fun `should power on robot`() {
+        val robot =
+            Robot.fromStore(
+                robotID = "test",
+                robotName = "robotName",
+                robotStatus = "shutdown",
+            )
+        val newRobot = robot.power(RobotStatus.robot_waiting.toString())
+        assertEquals(RobotStatus.robot_waiting, newRobot.robotStatus)
+    }
+
+    @Test
+    fun `should return error when robot is supporting`() {
+        val robot =
+            Robot.fromStore(
+                robotID = "test",
+                robotName = "robotName",
+                robotStatus = "supporting",
+            )
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                robot.power(RobotStatus.shutdown.toString())
+            }
+        assertEquals("Robot is supporting", exception.message)
+    }
+
+    @Test
+    fun `should return error when robot status is already shutdown`() {
+        val robot =
+            Robot.fromStore(
+                robotID = "test",
+                robotName = "robotName",
+                robotStatus = "shutdown",
+            )
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                robot.power(RobotStatus.shutdown.toString())
+            }
+        assertEquals("Robot status is already shutdown", exception.message)
+    }
+
+    @Test
+    fun `should return error when robot status is already robot_waiting`() {
+        val robot =
+            Robot.fromStore(
+                robotID = "test",
+                robotName = "robotName",
+                robotStatus = "robot_waiting",
+            )
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                robot.power(RobotStatus.robot_waiting.toString())
+            }
+        assertEquals("Robot status is already robot_waiting", exception.message)
+    }
+
+    @Test
+    fun `should return error when robot status is invalid`() {
+        val robot =
+            Robot.fromStore(
+                robotID = "test",
+                robotName = "robotName",
+                robotStatus = "robot_waiting",
+            )
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                robot.power("invalid")
+            }
+        assertEquals("robot status is invalid", exception.message)
+    }
 }
