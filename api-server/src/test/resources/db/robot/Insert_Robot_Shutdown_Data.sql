@@ -7,24 +7,18 @@ INSERT INTO robots (
     ) VALUES (
         'test',
         'robotName',
-        'robot_waiting',
+        'shutdown',
         NOW(),
         null
     ),(
         '12345',
         'robotName2',
-        'robot_waiting',
+        'shutdown',
         NOW(),
         NOW()
     ),(
         'testtest',
         'robotName3',
-        'supporting',
-        NOW(),
-        null
-    ),(
-        'testtesttest',
-        'robotName4',
         'shutdown',
         NOW(),
         null

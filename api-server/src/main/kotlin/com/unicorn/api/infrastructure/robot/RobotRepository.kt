@@ -15,6 +15,8 @@ interface RobotRepository {
     fun getWaitingOrNull(): Robot?
 
     fun delete(robot: Robot)
+
+    fun checkAllShutdown(): Boolean
 }
 
 @Repository
@@ -111,5 +113,26 @@ class RobotRepositoryImpl(
             MapSqlParameterSource()
                 .addValue("robotID", robot.robotID.value)
         namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun checkAllShutdown(): Boolean {
+        // language=postgresql
+        val sql =
+            """
+            SELECT
+                robot_id,
+                name,
+                status
+            FROM robots
+            WHERE status != 'shutdown'::robot_status
+            AND deleted_at IS NULL
+            """.trimIndent()
+        return namedParameterJdbcTemplate.query(sql) { rs, _ ->
+            Robot.fromStore(
+                robotID = rs.getString("robot_id"),
+                robotName = rs.getString("name"),
+                robotStatus = rs.getString("status"),
+            )
+        }.isEmpty()
     }
 }

@@ -55,6 +55,11 @@ class RobotGetTest {
                                 "robotID": "testtest",
                                 "robotName": "robotName3",
                                 "status": "supporting"
+                            },
+                            {
+                                "robotID": "testtesttest",
+                                "robotName": "robotName4",
+                                "status": "shutdown"
                             }
                         ]
                     }
