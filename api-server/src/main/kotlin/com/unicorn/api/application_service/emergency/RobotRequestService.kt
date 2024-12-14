@@ -27,6 +27,12 @@ class RobotRequestServiceImpl(
 ) : RobotRequestService {
     override fun request(emergency: Emergency): Pair<EmergencyUserStatus?, EmergencyRobotStatus?> {
         emergencyRepository.getOrNullBy(emergency.emergencyID) ?: return Pair(null, null)
+        if (robotRepository.checkAllShutdown()) {
+            emergencyRepository.delete(emergency)
+            val emergencyUserStatus = EmergencyUserStatus.allShutdown()
+            return Pair(emergencyUserStatus, null)
+        }
+
         val robot = robotRepository.getWaitingOrNull()
         if (robot == null) {
             val waitingCount = emergencyRepository.getWaitingCount(emergency.emergencyID)
