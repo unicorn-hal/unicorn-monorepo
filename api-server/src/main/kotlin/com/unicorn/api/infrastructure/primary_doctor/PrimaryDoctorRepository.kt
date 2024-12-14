@@ -13,7 +13,7 @@ interface PrimaryDoctorRepository {
 
     fun getOrNullBy(primaryDoctorID: PrimaryDoctorID): PrimaryDoctor?
 
-    fun getOrNullByUserID(userID: UserID): List<PrimaryDoctor>?
+    fun getOrNullByUserID(userID: UserID): List<PrimaryDoctor>
 
     fun getOrNullByDoctorIDAndUserID(
         doctorID: DoctorID,
@@ -82,7 +82,7 @@ class PrimaryDoctorRepositoryImpl(
         }.singleOrNull()
     }
 
-    override fun getOrNullByUserID(userID: UserID): List<PrimaryDoctor>? {
+    override fun getOrNullByUserID(userID: UserID): List<PrimaryDoctor> {
         // language=postgresql
         val sql =
             """
