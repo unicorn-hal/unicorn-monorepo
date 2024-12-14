@@ -158,10 +158,19 @@ class FamilyEmailRepositoryTest {
         val familyEmails = familyEmailRepository.getOrNullByUserID(userID)
 
         assertNotNull(familyEmails)
-        assertEquals(1, familyEmails!!.size)
+        assertEquals(1, familyEmails.size)
         assertEquals("sample@sample.com", familyEmails[0].email.value)
         assertEquals("太郎", familyEmails[0].firstName.value)
         assertEquals("山田", familyEmails[0].lastName.value)
         assertEquals("https://example.com", familyEmails[0].iconImageUrl?.value)
+    }
+
+    @Test
+    fun `should not find family emails by not found userID`() {
+        val userID = UserID("notFound")
+
+        val familyEmails = familyEmailRepository.getOrNullByUserID(userID)
+
+        assertEquals(0, familyEmails.size)
     }
 }

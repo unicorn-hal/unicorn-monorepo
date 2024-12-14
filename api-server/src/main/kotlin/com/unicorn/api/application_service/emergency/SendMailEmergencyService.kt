@@ -29,8 +29,6 @@ class SendMailEmergencyServiceImpl(
 
         val primaryDoctors = primaryDoctorRepository.getOrNullByUserID(emergency.userID)
 
-        if (familyEmails == null && primaryDoctors == null) return
-
         val subject = "${user.lastName.value} ${user.firstName.value}さんの緊急要請"
 
         val body =
@@ -46,19 +44,15 @@ class SendMailEmergencyServiceImpl(
             </html>
             """
 
-        if (familyEmails != null) {
-            familyEmails.map {
-                val email = it.email.value
-                mailTransport.send(email, subject, body)
-            }
+        familyEmails.map {
+            val email = it.email.value
+            mailTransport.send(email, subject, body)
         }
 
-        if (primaryDoctors != null) {
-            primaryDoctors.map {
-                val doctor = doctorRepository.getOrNullBy(it.doctorID) ?: return
-                val email = doctor.email.value
-                mailTransport.send(email, subject, body)
-            }
+        primaryDoctors.map {
+            val doctor = doctorRepository.getOrNullBy(it.doctorID) ?: return
+            val email = doctor.email.value
+            mailTransport.send(email, subject, body)
         }
     }
 }

@@ -12,7 +12,7 @@ interface FamilyEmailRepository {
 
     fun getOrNullBy(familyEmailID: FamilyEmailID): FamilyEmail?
 
-    fun getOrNullByUserID(userID: UserID): List<FamilyEmail>?
+    fun getOrNullByUserID(userID: UserID): List<FamilyEmail>
 
     fun delete(familyEmail: FamilyEmail): Unit
 }
@@ -99,7 +99,7 @@ class FamilyEmailRepositoryImpl(
         }.singleOrNull()
     }
 
-    override fun getOrNullByUserID(userID: UserID): List<FamilyEmail>? {
+    override fun getOrNullByUserID(userID: UserID): List<FamilyEmail> {
         // language=postgresql
         val sql =
             """
