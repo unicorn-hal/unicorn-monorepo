@@ -177,12 +177,12 @@ class RobotTest {
             Robot.fromStore(
                 robotID = "test",
                 robotName = "robotName",
-                robotStatus = "invalid",
+                robotStatus = "robot_waiting",
             )
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
-                robot.power(RobotStatus.supporting.toString())
+                robot.power("invalid")
             }
-        assertEquals("Robot status is invalid", exception.message)
+        assertEquals("robot status is invalid", exception.message)
     }
 }
