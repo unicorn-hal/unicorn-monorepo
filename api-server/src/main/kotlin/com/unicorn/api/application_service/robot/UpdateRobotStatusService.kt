@@ -3,7 +3,6 @@ package com.unicorn.api.application_service.robot
 import com.unicorn.api.controller.robot.RobotPowerRequest
 import com.unicorn.api.domain.robot.Robot
 import com.unicorn.api.domain.robot.RobotID
-import com.unicorn.api.domain.robot.RobotStatus
 import com.unicorn.api.infrastructure.robot.RobotRepository
 import org.springframework.stereotype.Service
 
