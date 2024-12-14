@@ -33,7 +33,6 @@ class SendMailHealthCheckupServiceImpl(
 
         val primaryDoctors =
             primaryDoctorRepository.getOrNullByUserID(healthCheckup.userID)
-                ?: return
 
         primaryDoctors.map {
             val doctor = doctorRepository.getOrNullBy(it.doctorID) ?: return

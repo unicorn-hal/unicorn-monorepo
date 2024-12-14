@@ -92,7 +92,7 @@ class PrimaryDoctorRepositoryTest {
         val foundPrimaryDoctors = primaryDoctorRepository.getOrNullByUserID(userID)
 
         assertNotNull(foundPrimaryDoctors)
-        assertEquals(2, foundPrimaryDoctors!!.size)
+        assertEquals(2, foundPrimaryDoctors.size)
         assertEquals("test", foundPrimaryDoctors[0].userID.value)
         assertEquals("doctor", foundPrimaryDoctors[0].doctorID.value)
         assertEquals("test", foundPrimaryDoctors[1].userID.value)
@@ -114,7 +114,7 @@ class PrimaryDoctorRepositoryTest {
 
         val foundPrimaryDoctors = primaryDoctorRepository.getOrNullByUserID(userID)
 
-        assertEquals(0, foundPrimaryDoctors!!.size)
+        assertEquals(0, foundPrimaryDoctors.size)
     }
 
     @Test

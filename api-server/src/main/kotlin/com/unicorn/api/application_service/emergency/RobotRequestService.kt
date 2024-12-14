@@ -9,6 +9,7 @@ import com.unicorn.api.infrastructure.account.AccountRepository
 import com.unicorn.api.infrastructure.emergency.EmergencyRepository
 import com.unicorn.api.infrastructure.robot.RobotRepository
 import com.unicorn.api.infrastructure.robot_support.RobotSupportRepository
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -22,6 +23,7 @@ class RobotRequestServiceImpl(
     private val robotRepository: RobotRepository,
     private val robotSupportRepository: RobotSupportRepository,
     private val accountRepository: AccountRepository,
+    private val applicationEventPublisher: ApplicationEventPublisher,
 ) : RobotRequestService {
     override fun request(emergency: Emergency): Pair<EmergencyUserStatus?, EmergencyRobotStatus?> {
         emergencyRepository.getOrNullBy(emergency.emergencyID) ?: return Pair(null, null)
@@ -65,6 +67,8 @@ class RobotRequestServiceImpl(
         robotRepository.store(supportStatus)
 
         emergencyRepository.delete(emergency)
+
+        applicationEventPublisher.publishEvent(RobotDispatchedEvent(emergency))
 
         return Pair(emergencyUserStatus, emergencyRobotStatus)
     }
