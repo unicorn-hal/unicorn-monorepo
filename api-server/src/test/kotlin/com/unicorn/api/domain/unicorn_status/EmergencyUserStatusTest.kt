@@ -89,4 +89,17 @@ class EmergencyUserStatusTest {
         assertNull(emergencyUserStatus.robotLatitude?.value)
         assertNull(emergencyUserStatus.robotLongitude?.value)
     }
+
+    @Test
+    fun `should all shutdown status`() {
+        val emergencyUserStatus = EmergencyUserStatus.allShutdown()
+
+        assertNotNull(emergencyUserStatus)
+        assertEquals(Status.all_shutdown, emergencyUserStatus.status)
+        assertNull(emergencyUserStatus.waitingNumber)
+        assertNull(emergencyUserStatus.robotID)
+        assertNull(emergencyUserStatus.robotName)
+        assertNull(emergencyUserStatus.robotLatitude)
+        assertNull(emergencyUserStatus.robotLongitude)
+    }
 }

@@ -15,7 +15,7 @@ data class Robot private constructor(
             return Robot(
                 robotID = RobotID(robotID),
                 robotName = RobotName(robotName),
-                robotStatus = RobotStatus.robot_waiting,
+                robotStatus = RobotStatus.shutdown,
             )
         }
 
@@ -51,6 +51,7 @@ data class Robot private constructor(
 enum class RobotStatus {
     supporting,
     robot_waiting,
+    shutdown,
 }
 
 @JvmInline
