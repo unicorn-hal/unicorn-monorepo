@@ -14,7 +14,7 @@ class RobotTest {
             )
         assertEquals("test", robot.robotID.value)
         assertEquals("robotName", robot.robotName.value)
-        assertEquals(RobotStatus.robot_waiting, robot.robotStatus)
+        assertEquals(RobotStatus.shutdown, robot.robotStatus)
     }
 
     @Test
@@ -43,7 +43,7 @@ class RobotTest {
     }
 
     @Test
-    fun `should update robot status`() {
+    fun `should update robot status supporting`() {
         val robot =
             Robot.create(
                 robotID = "test",
@@ -51,6 +51,17 @@ class RobotTest {
             )
         val newRobot = robot.updateStatus(RobotStatus.supporting)
         assertEquals(RobotStatus.supporting, newRobot.robotStatus)
+    }
+
+    @Test
+    fun `should update robot status waiting`() {
+        val robot =
+            Robot.create(
+                robotID = "test",
+                robotName = "robotName",
+            )
+        val newRobot = robot.updateStatus(RobotStatus.robot_waiting)
+        assertEquals(RobotStatus.robot_waiting, newRobot.robotStatus)
     }
 
     @Test

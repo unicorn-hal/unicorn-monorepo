@@ -12,6 +12,17 @@ data class EmergencyUserStatus private constructor(
     val robotLongitude: RobotLongitude?,
 ) {
     companion object {
+        fun allShutdown(): EmergencyUserStatus {
+            return EmergencyUserStatus(
+                status = Status.all_shutdown,
+                waitingNumber = null,
+                robotID = null,
+                robotName = null,
+                robotLatitude = null,
+                robotLongitude = null,
+            )
+        }
+
         fun dispatch(
             robotID: String,
             robotName: String,
@@ -86,6 +97,7 @@ data class EmergencyUserStatus private constructor(
 }
 
 enum class Status {
+    all_shutdown,
     dispatch,
     user_waiting,
     arrival,

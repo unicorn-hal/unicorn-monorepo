@@ -1,0 +1,1 @@
+ALTER TYPE robot_status ADD VALUE 'shutdown';

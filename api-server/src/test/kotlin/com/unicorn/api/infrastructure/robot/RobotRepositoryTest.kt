@@ -63,7 +63,7 @@ class RobotRepositoryTest {
         assertNotNull(foundRobot!!)
         assertEquals("robot", foundRobot.robotID.value)
         assertEquals("robotName", foundRobot.robotName.value)
-        assertEquals(RobotStatus.robot_waiting, foundRobot.robotStatus)
+        assertEquals(RobotStatus.shutdown, foundRobot.robotStatus)
     }
 
     @Test
@@ -82,7 +82,7 @@ class RobotRepositoryTest {
         assertNotNull(foundRobot!!)
         assertEquals("robot", foundRobot.robotID.value)
         assertEquals("newRobotName", foundRobot.robotName.value)
-        assertEquals(RobotStatus.robot_waiting, foundRobot.robotStatus)
+        assertEquals(RobotStatus.shutdown, foundRobot.robotStatus)
     }
 
     @Test
@@ -102,6 +102,25 @@ class RobotRepositoryTest {
         assertEquals("robot", foundRobot.robotID.value)
         assertEquals("robotName", foundRobot.robotName.value)
         assertEquals(RobotStatus.supporting, foundRobot.robotStatus)
+    }
+
+    @Test
+    fun `should change waiting robot status`() {
+        val robot =
+            Robot.create(
+                robotID = "robot",
+                robotName = "robotName",
+            )
+        robotRepository.store(robot)
+
+        val newRobot = robot.updateStatus(RobotStatus.robot_waiting)
+        robotRepository.store(newRobot)
+
+        val foundRobot = findRobotBy(robot.robotID.value)
+        assertNotNull(foundRobot!!)
+        assertEquals("robot", foundRobot.robotID.value)
+        assertEquals("robotName", foundRobot.robotName.value)
+        assertEquals(RobotStatus.robot_waiting, foundRobot.robotStatus)
     }
 
     @Test
@@ -146,5 +165,13 @@ class RobotRepositoryTest {
 
         val foundRobot = robotRepository.getOrNullBy(robot)
         assertNull(foundRobot)
+    }
+
+    @Test
+    @Sql("/db/robot/Insert_Parent_Account_Data.sql")
+    @Sql("/db/robot/Insert_Robot_Shutdown_Data.sql")
+    fun `should check all shutdown`() {
+        val robot = robotRepository.checkAllShutdown()
+        assertTrue(robot)
     }
 }
