@@ -45,7 +45,7 @@ class RobotRepositoryTest {
             Robot.fromStore(
                 robotID = rs.getString("robot_id"),
                 robotName = rs.getString("name"),
-                robotStatus = rs.getString("status"),
+                status = rs.getString("status"),
             )
         }.singleOrNull()
     }
@@ -63,7 +63,7 @@ class RobotRepositoryTest {
         assertNotNull(foundRobot!!)
         assertEquals("robot", foundRobot.robotID.value)
         assertEquals("robotName", foundRobot.robotName.value)
-        assertEquals(RobotStatus.shutdown, foundRobot.robotStatus)
+        assertEquals(RobotStatus.shutdown, foundRobot.status)
     }
 
     @Test
@@ -82,7 +82,7 @@ class RobotRepositoryTest {
         assertNotNull(foundRobot!!)
         assertEquals("robot", foundRobot.robotID.value)
         assertEquals("newRobotName", foundRobot.robotName.value)
-        assertEquals(RobotStatus.shutdown, foundRobot.robotStatus)
+        assertEquals(RobotStatus.shutdown, foundRobot.status)
     }
 
     @Test
@@ -101,7 +101,7 @@ class RobotRepositoryTest {
         assertNotNull(foundRobot!!)
         assertEquals("robot", foundRobot.robotID.value)
         assertEquals("robotName", foundRobot.robotName.value)
-        assertEquals(RobotStatus.supporting, foundRobot.robotStatus)
+        assertEquals(RobotStatus.supporting, foundRobot.status)
     }
 
     @Test
@@ -120,7 +120,7 @@ class RobotRepositoryTest {
         assertNotNull(foundRobot!!)
         assertEquals("robot", foundRobot.robotID.value)
         assertEquals("robotName", foundRobot.robotName.value)
-        assertEquals(RobotStatus.robot_waiting, foundRobot.robotStatus)
+        assertEquals(RobotStatus.robot_waiting, foundRobot.status)
     }
 
     @Test
@@ -130,7 +130,7 @@ class RobotRepositoryTest {
         assertNotNull(foundRobot!!)
         assertEquals("test", foundRobot.robotID.value)
         assertEquals("robotName", foundRobot.robotName.value)
-        assertEquals(RobotStatus.robot_waiting, foundRobot.robotStatus)
+        assertEquals(RobotStatus.robot_waiting, foundRobot.status)
     }
 
     @Test
@@ -139,7 +139,7 @@ class RobotRepositoryTest {
         assertNotNull(robot!!)
         assertEquals("test", robot.robotID.value)
         assertEquals("robotName", robot.robotName.value)
-        assertEquals(RobotStatus.robot_waiting, robot.robotStatus)
+        assertEquals(RobotStatus.robot_waiting, robot.status)
     }
 
     @Test

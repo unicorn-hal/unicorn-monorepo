@@ -38,7 +38,7 @@ class RobotPowerPutTest {
             Robot.fromStore(
                 robotID = "testtesttest",
                 robotName = "robotName4",
-                robotStatus = "shutdown",
+                status = "shutdown",
             )
         val robotPowerRequest =
             RobotPowerRequest(
@@ -63,7 +63,7 @@ class RobotPowerPutTest {
                     {   
                         "robotID": "${robot.robotID.value}",
                         "robotName": "${robot.robotName.value}",
-                        "robotStatus": "${robotPowerRequest.status}"
+                        "status": "${robotPowerRequest.status}"
                     }
                 """,
                 true,
@@ -77,7 +77,7 @@ class RobotPowerPutTest {
             Robot.fromStore(
                 robotID = "test",
                 robotName = "robotName",
-                robotStatus = "robot_waiting",
+                status = "robot_waiting",
             )
 
         val robotPowerRequest =
@@ -103,7 +103,7 @@ class RobotPowerPutTest {
                     {
                         "robotID": "${robot.robotID.value}",
                         "robotName": "${robot.robotName.value}",
-                        "robotStatus": "${robotPowerRequest.status}"
+                        "status": "${robotPowerRequest.status}"
                     }
                 """,
                 true,

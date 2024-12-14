@@ -14,7 +14,7 @@ class RobotTest {
             )
         assertEquals("test", robot.robotID.value)
         assertEquals("robotName", robot.robotName.value)
-        assertEquals(RobotStatus.shutdown, robot.robotStatus)
+        assertEquals(RobotStatus.shutdown, robot.status)
     }
 
     @Test
@@ -23,12 +23,12 @@ class RobotTest {
             Robot.fromStore(
                 robotID = "test",
                 robotName = "robotName",
-                robotStatus = "robot_waiting",
+                status = "robot_waiting",
             )
 
         assertEquals("test", robot.robotID.value)
         assertEquals("robotName", robot.robotName.value)
-        assertEquals(RobotStatus.robot_waiting, robot.robotStatus)
+        assertEquals(RobotStatus.robot_waiting, robot.status)
     }
 
     @Test
@@ -50,7 +50,7 @@ class RobotTest {
                 robotName = "robotName",
             )
         val newRobot = robot.updateStatus(RobotStatus.supporting)
-        assertEquals(RobotStatus.supporting, newRobot.robotStatus)
+        assertEquals(RobotStatus.supporting, newRobot.status)
     }
 
     @Test
@@ -61,7 +61,7 @@ class RobotTest {
                 robotName = "robotName",
             )
         val newRobot = robot.updateStatus(RobotStatus.robot_waiting)
-        assertEquals(RobotStatus.robot_waiting, newRobot.robotStatus)
+        assertEquals(RobotStatus.robot_waiting, newRobot.status)
     }
 
     @Test
@@ -84,7 +84,7 @@ class RobotTest {
                 Robot.fromStore(
                     robotID = "test",
                     robotName = "robotName",
-                    robotStatus = "badStatus",
+                    status = "badStatus",
                 )
             }
         assertEquals("robot status is invalid", exception.message)
@@ -108,10 +108,10 @@ class RobotTest {
             Robot.fromStore(
                 robotID = "test",
                 robotName = "robotName",
-                robotStatus = "robot_waiting",
+                status = "robot_waiting",
             )
         val newRobot = robot.power(RobotStatus.shutdown.toString())
-        assertEquals(RobotStatus.shutdown, newRobot.robotStatus)
+        assertEquals(RobotStatus.shutdown, newRobot.status)
     }
 
     @Test
@@ -120,10 +120,10 @@ class RobotTest {
             Robot.fromStore(
                 robotID = "test",
                 robotName = "robotName",
-                robotStatus = "shutdown",
+                status = "shutdown",
             )
         val newRobot = robot.power(RobotStatus.robot_waiting.toString())
-        assertEquals(RobotStatus.robot_waiting, newRobot.robotStatus)
+        assertEquals(RobotStatus.robot_waiting, newRobot.status)
     }
 
     @Test
@@ -132,7 +132,7 @@ class RobotTest {
             Robot.fromStore(
                 robotID = "test",
                 robotName = "robotName",
-                robotStatus = "supporting",
+                status = "supporting",
             )
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
@@ -147,7 +147,7 @@ class RobotTest {
             Robot.fromStore(
                 robotID = "test",
                 robotName = "robotName",
-                robotStatus = "shutdown",
+                status = "shutdown",
             )
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
@@ -162,7 +162,7 @@ class RobotTest {
             Robot.fromStore(
                 robotID = "test",
                 robotName = "robotName",
-                robotStatus = "robot_waiting",
+                status = "robot_waiting",
             )
         val exception =
             assertThrows(IllegalArgumentException::class.java) {
@@ -177,7 +177,7 @@ class RobotTest {
             Robot.fromStore(
                 robotID = "test",
                 robotName = "robotName",
-                robotStatus = "robot_waiting",
+                status = "robot_waiting",
             )
         val exception =
             assertThrows(IllegalArgumentException::class.java) {

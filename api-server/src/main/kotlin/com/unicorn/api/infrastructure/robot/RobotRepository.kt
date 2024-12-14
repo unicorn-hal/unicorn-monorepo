@@ -49,7 +49,7 @@ class RobotRepositoryImpl(
             MapSqlParameterSource()
                 .addValue("robotID", robot.robotID.value)
                 .addValue("robotName", robot.robotName.value)
-                .addValue("status", robot.robotStatus.toString())
+                .addValue("status", robot.status.toString())
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
         return robot
@@ -74,7 +74,7 @@ class RobotRepositoryImpl(
             Robot.fromStore(
                 robotID = rs.getString("robot_id"),
                 robotName = rs.getString("name"),
-                robotStatus = rs.getString("status"),
+                status = rs.getString("status"),
             )
         }.singleOrNull()
     }
@@ -96,7 +96,7 @@ class RobotRepositoryImpl(
             Robot.fromStore(
                 robotID = rs.getString("robot_id"),
                 robotName = rs.getString("name"),
-                robotStatus = rs.getString("status"),
+                status = rs.getString("status"),
             )
         }.singleOrNull()
     }
@@ -131,7 +131,7 @@ class RobotRepositoryImpl(
             Robot.fromStore(
                 robotID = rs.getString("robot_id"),
                 robotName = rs.getString("name"),
-                robotStatus = rs.getString("status"),
+                status = rs.getString("status"),
             )
         }.isEmpty()
     }
