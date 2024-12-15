@@ -3,7 +3,7 @@ package com.unicorn.api.domain.robot
 data class Robot private constructor(
     val robotID: RobotID,
     val robotName: RobotName,
-    val robotStatus: RobotStatus,
+    val status: RobotStatus,
 ) {
     class InvalidRoleException : IllegalArgumentException("robot status is invalid")
 
@@ -15,22 +15,22 @@ data class Robot private constructor(
             return Robot(
                 robotID = RobotID(robotID),
                 robotName = RobotName(robotName),
-                robotStatus = RobotStatus.shutdown,
+                status = RobotStatus.shutdown,
             )
         }
 
         fun fromStore(
             robotID: String,
             robotName: String,
-            robotStatus: String,
+            status: String,
         ): Robot {
-            if (robotStatus !in RobotStatus.entries.map { it.name }) {
+            if (status !in RobotStatus.entries.map { it.name }) {
                 throw InvalidRoleException()
             }
             return Robot(
                 robotID = RobotID(robotID),
                 robotName = RobotName(robotName),
-                robotStatus = RobotStatus.valueOf(robotStatus),
+                status = RobotStatus.valueOf(status),
             )
         }
     }
@@ -41,22 +41,22 @@ data class Robot private constructor(
         )
     }
 
-    fun updateStatus(robotStatus: RobotStatus): Robot {
+    fun updateStatus(status: RobotStatus): Robot {
         return this.copy(
-            robotStatus = robotStatus,
+            status = status,
         )
     }
 
-    fun power(robotStatus: String): Robot {
-        if (robotStatus !in RobotStatus.entries.map { it.name }) {
+    fun power(status: String): Robot {
+        if (status !in RobotStatus.entries.map { it.name }) {
             throw InvalidRoleException()
         }
-        val newStatus = RobotStatus.valueOf(robotStatus)
-        require(this.robotStatus != RobotStatus.supporting) { "Robot is supporting" }
-        require(this.robotStatus != newStatus) { "Robot status is already $robotStatus" }
+        val newStatus = RobotStatus.valueOf(status)
+        require(this.status != RobotStatus.supporting) { "Robot is supporting" }
+        require(this.status != newStatus) { "Robot status is already $status" }
 
         return this.copy(
-            robotStatus = newStatus,
+            status = newStatus,
         )
     }
 }
