@@ -18,12 +18,12 @@ interface DeleteFirebaseAccountService {
 class DeleteFirebaseAccountServiceImpl(
     private val doctorRepository: DoctorRepository,
     private val robotRepository: RobotRepository,
-    private val firebaseClient: FirebaseClient
+    private val firebaseClient: FirebaseClient,
 ) : DeleteFirebaseAccountService {
     override fun delete(
         doctorID: DoctorID,
         robotID: RobotID,
-    ): Unit {
+    ) {
         val doctor = doctorRepository.getOrNullBy(doctorID)
         requireNotNull(doctor) { "Doctor not found" }
 
