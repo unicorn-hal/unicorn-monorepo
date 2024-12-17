@@ -2,6 +2,7 @@ package com.unicorn.api.infrastructure.call
 
 import com.unicorn.api.domain.call.Call
 import com.unicorn.api.domain.call.CallReservationID
+import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.util.toJST
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -21,6 +22,8 @@ interface CallRepository {
         callEndTime: OffsetDateTime,
         doctorID: String,
     ): Boolean
+
+    fun deleteByUserID(userID: UserID)
 }
 
 @Repository
@@ -140,5 +143,21 @@ class CallRepositoryImpl(private val namedParameterJdbcTemplate: NamedParameterJ
 
         val count = namedParameterJdbcTemplate.queryForObject(sql, sqlParams, Int::class.java)
         return count != null && count > 0
+    }
+
+    override fun deleteByUserID(userID: UserID) {
+        val sql =
+            """
+            UPDATE call_reservations
+            SET deleted_at = NOW()
+            WHERE user_id = :userID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", userID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
     }
 }

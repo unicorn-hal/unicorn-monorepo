@@ -1,6 +1,7 @@
 package com.unicorn.api.infrastructure.call
 
 import com.unicorn.api.domain.call.Call
+import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.util.toJST
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -59,6 +60,34 @@ class CallRepositoryTest {
                 callEndTime = rs.getObject("call_end_time", OffsetDateTime::class.java).toJST(),
             )
         }.singleOrNull()
+    }
+
+    private fun findByUserID(userID: String): List<Call> {
+        val sql =
+            """
+            SELECT
+                call_reservation_id,
+                doctor_id,
+                user_id,
+                call_start_time,
+                call_end_time
+            FROM call_reservations WHERE user_id = :userID AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams = MapSqlParameterSource().addValue("userID", userID)
+
+        return namedParameterJdbcTemplate.query(
+            sql,
+            sqlParams,
+        ) { rs, _ ->
+            Call.fromStore(
+                callReservationID = UUID.fromString(rs.getString("call_reservation_id")),
+                doctorID = rs.getString("doctor_id"),
+                userID = rs.getString("user_id"),
+                callStartTime = rs.getObject("call_start_time", OffsetDateTime::class.java).toJST(),
+                callEndTime = rs.getObject("call_end_time", OffsetDateTime::class.java).toJST(),
+            )
+        }
     }
 
     @Test
@@ -160,5 +189,15 @@ class CallRepositoryTest {
 
         // 結果がtrueであることを確認（重複するため）
         assertEquals(true, isOverlapping)
+    }
+
+    @Test
+    fun `should delete call reservation by userID`() {
+        val userID = "67890"
+
+        callRepository.deleteByUserID(UserID(userID))
+
+        val deletedCall = findByUserID(userID)
+        assertEquals(0, deletedCall.size)
     }
 }
