@@ -61,6 +61,21 @@ class ChronicDiseaseController(
             return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
         }
     }
+
+    @DeleteMapping("/users/{userID}/chronic_diseases")
+    fun deleteByUserID(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<Any> {
+        try {
+            deleteChronicDiseaseService.deleteBy(UserID(userID))
+            return ResponseEntity.noContent().build()
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
 }
 
 data class ChronicDiseasePostRequest(
