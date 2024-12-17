@@ -1,7 +1,9 @@
 package com.unicorn.api.infrastructure.medicine
 
 import com.unicorn.api.domain.medicine.*
+import com.unicorn.api.domain.user.User
 import com.unicorn.api.domain.user.UserID
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -11,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.util.*
 import kotlin.test.assertEquals
 
@@ -56,6 +59,36 @@ class MedicineRepositoryTest {
                 dosage = rs.getInt("dosage"),
             )
         }.singleOrNull()
+    }
+
+    private fun findMedicineByUserID(userID: UserID): List<Medicine> {
+        val sql =
+            """
+            SELECT
+                medicine_id,
+                user_id,
+                medicine_name,
+                count,
+                quantity,
+                dosage
+            FROM medicines WHERE user_id = :userID AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams = MapSqlParameterSource().addValue("userID", userID.value)
+
+        return namedParameterJdbcTemplate.query(
+            sql,
+            sqlParams,
+        ) { rs, _ ->
+            Medicine.fromStore(
+                medicineID = rs.getObject("medicine_id", UUID::class.java),
+                medicineName = rs.getString("medicine_name"),
+                userID = rs.getString("user_id"),
+                count = rs.getInt("count"),
+                quantity = rs.getInt("quantity"),
+                dosage = rs.getInt("dosage"),
+            )
+        }
     }
 
     @Test
@@ -144,5 +177,30 @@ class MedicineRepositoryTest {
 
         val deletedMedicine = findMedicineByID(medicineID)
         assertEquals(null, deletedMedicine)
+    }
+
+    @Test
+    fun `should delete medicine by user`() {
+        val user =
+            User.fromStore(
+                userID = "test",
+                firstName = "test",
+                lastName = "test",
+                email = "sample@test.com",
+                birthDate = LocalDate.of(1990, 1, 1),
+                gender = "male",
+                address = "test",
+                postalCode = "0000000",
+                phoneNumber = "00000000000",
+                iconImageUrl = "https://example.com",
+                bodyHeight = 170.4,
+                bodyWeight = 60.4,
+                occupation = "test",
+            )
+
+        medicineRepository.deleteByUser(user)
+
+        val deletedCall = findMedicineByUserID(user.userID)
+        Assertions.assertEquals(0, deletedCall.size)
     }
 }

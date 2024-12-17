@@ -3,6 +3,7 @@ package com.unicorn.api.infrastructure.medicine_reminders
 import com.unicorn.api.domain.medicine.MedicineID
 import com.unicorn.api.domain.medicine_reminders.MedicineReminder
 import com.unicorn.api.domain.medicine_reminders.MedicineReminders
+import com.unicorn.api.domain.user.User
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -14,6 +15,8 @@ interface MedicineRemindersRepository {
     fun getBy(medicineID: MedicineID): MedicineReminders
 
     fun delete(medicineReminders: MedicineReminders): Unit
+
+    fun deleteByUser(user: User)
 }
 
 @Repository
@@ -117,6 +120,27 @@ class MedicineRemindersRepositoryImpl(
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("medicineID", medicineReminders.medicineID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByUser(user: User) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE medicine_reminders
+            SET deleted_at = NOW()
+            WHERE medicine_id IN (
+                SELECT medicine_id 
+                FROM medicines 
+                WHERE user_id = :userID
+            )
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }

@@ -3,6 +3,8 @@ package com.unicorn.api.infrastructure.medicine_reminders
 import com.unicorn.api.domain.medicine.MedicineID
 import com.unicorn.api.domain.medicine_reminders.MedicineReminder
 import com.unicorn.api.domain.medicine_reminders.MedicineReminders
+import com.unicorn.api.domain.user.User
+import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,6 +15,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.time.LocalTime
 import java.util.*
 
@@ -62,6 +65,38 @@ class MedicineRemindersRepositoryTest {
             }
 
         return MedicineReminders.of(medicineID, reminders)
+    }
+
+    private fun getByUserID(userID: UserID): List<MedicineReminder> {
+        // language=postgresql
+        val sql =
+            """
+            SELECT 
+                mr.reminder_id,
+                mr.medicine_id,
+                mr.reminder_time,
+                mr.day_of_week
+            FROM medicine_reminders mr
+            INNER JOIN medicines m ON mr.medicine_id = m.medicine_id
+            WHERE m.user_id = :userID
+              AND mr.deleted_at IS NULL
+              AND m.deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", userID.value)
+
+        return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+            MedicineReminder.fromStore(
+                reminderID = rs.getObject("reminder_id", UUID::class.java),
+                reminderTime = rs.getTime("reminder_time").toLocalTime(),
+                dayOfWeek =
+                    (rs.getArray("day_of_week").array as Array<*>)
+                        .map { it.toString() }
+                        .toSet(),
+            )
+        }
     }
 
     @Test
@@ -168,5 +203,30 @@ class MedicineRemindersRepositoryTest {
 
         val deletedMedicineReminders = getBy(medicineID)
         assertEquals(MedicineReminders.of(medicineID, emptyList()), deletedMedicineReminders)
+    }
+
+    @Test
+    fun `should delete medicine reminders by user`() {
+        val user =
+            User.fromStore(
+                userID = "test",
+                firstName = "test",
+                lastName = "test",
+                email = "sample@test.com",
+                birthDate = LocalDate.of(1990, 1, 1),
+                gender = "male",
+                address = "test",
+                postalCode = "0000000",
+                phoneNumber = "00000000000",
+                iconImageUrl = "https://example.com",
+                bodyHeight = 170.4,
+                bodyWeight = 60.4,
+                occupation = "test",
+            )
+
+        medicineRemindersRepository.deleteByUser(user)
+
+        val deletedMedicineReminders = getByUserID(user.userID)
+        assertEquals(0, deletedMedicineReminders.size)
     }
 }

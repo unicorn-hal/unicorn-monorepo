@@ -2,6 +2,7 @@ package com.unicorn.api.infrastructure.medicine
 
 import com.unicorn.api.domain.medicine.Medicine
 import com.unicorn.api.domain.medicine.MedicineID
+import com.unicorn.api.domain.user.User
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -13,6 +14,8 @@ interface MedicineRepository {
     fun getOrNullBy(medicineID: MedicineID): Medicine?
 
     fun delete(medicine: Medicine): Unit
+
+    fun deleteByUser(user: User)
 }
 
 @Repository
@@ -108,6 +111,23 @@ class MedicineRepositoryImpl(private val namedParameterJdbcTemplate: NamedParame
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("medicineID", medicine.medicineID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByUser(user: User) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE medicines
+            SET deleted_at = NOW()
+            WHERE user_id = :userID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }
