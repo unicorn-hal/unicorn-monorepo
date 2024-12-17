@@ -4695,3 +4695,48 @@ paths:
                     type: string
                     description: "エラータイプ"
                     example: "ServerError"
+
+  /firebase/accounts/{robotID}:
+    delete:
+      tags:
+        - firebase
+      summary: "Firebaseアカウント削除"
+      description: "Firebaseアカウントを削除します"
+      parameters:
+        - in: header
+          name: X-UID
+          required: true
+          schema:
+            type: string
+            description: "UID"
+        - in: path
+          name: robotID
+          required: true
+          schema:
+            type: string
+            description: "FirebaseアカウントID"
+      responses:
+        "204":
+          description: "Firebaseアカウント削除成功"
+        "400":
+          description: "指定されたFirebaseアカウントが存在しません"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "FirebaseAccountNotFound"
+        "500":
+          description: "サーバーエラーが発生しました"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorType:
+                    type: string
+                    description: "エラータイプ"
+                    example: "ServerError"

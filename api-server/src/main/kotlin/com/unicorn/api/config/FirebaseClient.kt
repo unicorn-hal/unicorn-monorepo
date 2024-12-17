@@ -63,4 +63,9 @@ class FirebaseClient {
             )
         return user.uid
     }
+
+    @Throws(FirebaseAuthException::class)
+    fun deleteAccount(uid: String) {
+        FirebaseAuth.getInstance().deleteUser(uid)
+    }
 }
