@@ -11,6 +11,8 @@ interface DeleteCallService {
         callReservationID: CallReservationID,
         userID: UserID,
     )
+
+    fun deleteByUserID(userID: UserID)
 }
 
 @Service
@@ -29,5 +31,12 @@ class DeleteCallServiceImpl(
         requireNotNull(callReservation) { "Call reservation not found" }
 
         callRepository.delete(callReservation)
+    }
+
+    override fun deleteByUserID(userID: UserID) {
+        val user = userRepository.getOrNullBy(userID)
+        requireNotNull(user) { "User not found" }
+
+        callRepository.deleteByUserID(userID)
     }
 }
