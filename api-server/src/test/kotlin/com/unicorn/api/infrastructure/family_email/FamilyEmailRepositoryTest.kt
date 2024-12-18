@@ -76,7 +76,7 @@ class FamilyEmailRepositoryTest {
             AND deleted_at IS NULL
             """.trimIndent()
 
-        val sqlParams = MapSqlParameterSource().addValue("userID", userID)
+        val sqlParams = MapSqlParameterSource().addValue("userID", userID.value)
 
         return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
             FamilyEmail.fromStore(
@@ -227,7 +227,7 @@ class FamilyEmailRepositoryTest {
 
         familyEmailRepository.deleteByUser(user)
 
-        val deletedFamilyEmail = familyEmailRepository.getOrNullByUserID(user.userID)
+        val deletedFamilyEmail = findFamilyEmailByUserID(user.userID)
         assertEquals(0, deletedFamilyEmail.size)
     }
 }
