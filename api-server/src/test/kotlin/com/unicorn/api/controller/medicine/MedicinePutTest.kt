@@ -78,7 +78,7 @@ class MedicinePutTest {
                     "reminders": [
                         {
                             "reminderID": "${medicine.reminders[0].reminderID}",
-                            "reminderTime": "${medicine.reminders[0].reminderTime}:00",
+                            "reminderTime": "${medicine.reminders[0].reminderTime}",
                             "reminderDayOfWeek": [
                                 "${medicine.reminders[0].reminderDayOfWeek[0]}",
                                 "${medicine.reminders[0].reminderDayOfWeek[1]}"

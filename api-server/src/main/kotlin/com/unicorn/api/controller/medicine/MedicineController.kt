@@ -1,5 +1,6 @@
 package com.unicorn.api.controller.medicine
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.unicorn.api.application_service.medicine.DeleteMedicineService
 import com.unicorn.api.application_service.medicine.SaveMedicineService
 import com.unicorn.api.application_service.medicine.UpdateMedicineService
@@ -125,6 +126,7 @@ data class MedicinePutRequest(
 
 data class ReminderRequest(
     val reminderID: UUID,
+    @JsonFormat(pattern = "HH:mm")
     val reminderTime: LocalTime,
     val reminderDayOfWeek: List<String>,
 )
