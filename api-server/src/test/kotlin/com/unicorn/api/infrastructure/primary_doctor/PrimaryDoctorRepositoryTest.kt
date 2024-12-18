@@ -2,6 +2,7 @@ package com.unicorn.api.infrastructure.primary_doctor
 
 import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.primary_doctor.*
+import com.unicorn.api.domain.user.User
 import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -13,6 +14,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.util.*
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
@@ -57,6 +59,32 @@ class PrimaryDoctorRepositoryTest {
                 doctorID = rs.getString("doctor_id"),
             )
         }.singleOrNull()
+    }
+
+    private fun findPrimaryDoctorByUser(user: User): List<PrimaryDoctor> {
+        // language=postgresql
+        val sql =
+            """
+            SELECT
+                primary_doctor_id,
+                user_id,
+                doctor_id
+            FROM primary_doctors
+            WHERE user_id = :userID
+            AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
+
+        return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+            PrimaryDoctor.fromStore(
+                primaryDoctorID = UUID.fromString(rs.getString("primary_doctor_id")),
+                userID = rs.getString("user_id"),
+                doctorID = rs.getString("doctor_id"),
+            )
+        }
     }
 
     @Test
@@ -158,5 +186,30 @@ class PrimaryDoctorRepositoryTest {
         val foundPrimaryDoctor = primaryDoctorRepository.getOrNullByDoctorIDAndUserID(doctorID, userID)
 
         assertNull(foundPrimaryDoctor)
+    }
+
+    @Test
+    fun `should delete message by user`() {
+        val user =
+            User.fromStore(
+                userID = "test",
+                firstName = "test",
+                lastName = "test",
+                email = "sample@test.com",
+                birthDate = LocalDate.of(1990, 1, 1),
+                gender = "male",
+                address = "test",
+                postalCode = "0000000",
+                phoneNumber = "00000000000",
+                iconImageUrl = "https://example.com",
+                bodyHeight = 170.4,
+                bodyWeight = 60.4,
+                occupation = "test",
+            )
+
+        primaryDoctorRepository.deleteByUser(user)
+
+        val deletedPrimaryDoctor = findPrimaryDoctorByUser(user)
+        assertEquals(0, deletedPrimaryDoctor.size)
     }
 }

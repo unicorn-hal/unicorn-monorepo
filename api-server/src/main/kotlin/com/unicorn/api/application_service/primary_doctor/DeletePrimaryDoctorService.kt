@@ -12,6 +12,8 @@ interface DeletePrimaryDoctorService {
         userID: UserID,
         doctorID: DoctorID,
     ): Unit
+
+    fun deleteByUserID(userID: UserID)
 }
 
 @Service
@@ -34,5 +36,12 @@ class DeletePrimaryDoctorServiceImpl(
         requireNotNull(primaryDoctor) { "Primary doctor not found" }
 
         primaryDoctorRepository.delete(primaryDoctor)
+    }
+
+    override fun deleteByUserID(userID: UserID) {
+        val user = userRepository.getOrNullBy(userID)
+        requireNotNull(user) { "User not found" }
+
+        primaryDoctorRepository.deleteByUser(user)
     }
 }

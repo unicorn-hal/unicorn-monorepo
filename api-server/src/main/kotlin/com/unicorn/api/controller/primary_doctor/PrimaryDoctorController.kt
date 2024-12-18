@@ -79,6 +79,21 @@ class PrimaryDoctorController(
             return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
         }
     }
+
+    @DeleteMapping("/users/{userID}/primary_doctors")
+    fun deleteBy(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<Any> {
+        try {
+            deletePrimaryDoctorService.deleteByUserID(UserID(uid))
+            return ResponseEntity.noContent().build()
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
 }
 
 data class PrimaryDoctorRequest(
