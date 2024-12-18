@@ -1,6 +1,7 @@
 package com.unicorn.api.infrastructure.notification
 
 import com.unicorn.api.domain.notification.*
+import com.unicorn.api.domain.user.User
 import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -12,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.util.*
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
@@ -116,5 +118,34 @@ class NotificationRepositoryTest {
         val foundNotification = notificationRepository.getOrNullBy(userID)
 
         assertNull(foundNotification)
+    }
+
+    @Test
+    fun `should delete notification by user`() {
+        val user =
+            User.fromStore(
+                userID = "test",
+                firstName = "test",
+                lastName = "test",
+                email = "sample@test.com",
+                birthDate = LocalDate.of(1990, 1, 1),
+                gender = "male",
+                address = "test",
+                postalCode = "0000000",
+                phoneNumber = "00000000000",
+                iconImageUrl = "https://example.com",
+                bodyHeight = 170.4,
+                bodyWeight = 60.4,
+                occupation = "test",
+            )
+
+        notificationRepository.deleteByUser(user)
+
+        val deletedNotification = findNotificationBy(user.userID)
+        assertNotNull(deletedNotification)
+        assertEquals(user.userID.value, deletedNotification!!.userID.value)
+        assertEquals(false, deletedNotification.isMedicineReminder.value)
+        assertEquals(false, deletedNotification.isRegularHealthCheckup.value)
+        assertEquals(false, deletedNotification.isHospitalNews.value)
     }
 }
