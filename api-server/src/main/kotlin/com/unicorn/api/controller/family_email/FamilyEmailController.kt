@@ -81,6 +81,21 @@ class FamilyEmailController(
             return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
         }
     }
+
+    @DeleteMapping("/users/{userID}/family_emails")
+    fun deleteBy(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<Any> {
+        try {
+            deleteFamilyEmailService.deleteByUserID(UserID(userID))
+            return ResponseEntity.noContent().build()
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
 }
 
 data class FamilyEmailPostRequest(
