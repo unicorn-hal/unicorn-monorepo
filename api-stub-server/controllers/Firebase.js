@@ -12,3 +12,13 @@ module.exports.firebaseAccountsPOST = function firebaseAccountsPOST (req, res, n
       utils.writeJson(res, response);
     });
 };
+
+module.exports.firebaseAccountsRobotIDDELETE = function firebaseAccountsRobotIDDELETE (req, res, next, xUID, robotID) {
+  Firebase.firebaseAccountsRobotIDDELETE(xUID, robotID)
+    .then(function (response) {
+      utils.writeJson(res, response);
+    })
+    .catch(function (response) {
+      utils.writeJson(res, response);
+    });
+};

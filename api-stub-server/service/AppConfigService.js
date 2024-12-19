@@ -13,7 +13,8 @@ exports.app_configGET = function(xUID) {
     var examples = {};
     examples['application/json'] = {
   "releaseBuild" : 5,
-  "available" : true
+  "available" : true,
+  "demoMode" : true
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);

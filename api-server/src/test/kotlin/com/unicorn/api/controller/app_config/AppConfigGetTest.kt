@@ -25,7 +25,7 @@ class AppConfigGetTest {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/app_config"))
 
         result.andExpect(status().isOk)
-        result.andExpect(content().json("""{"available":true, releaseBuild: 5}""", true))
+        result.andExpect(content().json("""{"available":true, releaseBuild: 5, demoMode: true}""", true))
     }
 
     @Test
@@ -34,7 +34,7 @@ class AppConfigGetTest {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/app_config"))
 
         result.andExpect(status().isOk)
-        result.andExpect(content().json("""{"available":false, releaseBuild: 4}""", true))
+        result.andExpect(content().json("""{"available":false, releaseBuild: 4, demoMode: true}""", true))
     }
 
     @Test
