@@ -1,0 +1,1 @@
+ALTER TABLE app_config ADD COLUMN demo_mode boolean NOT NULL;

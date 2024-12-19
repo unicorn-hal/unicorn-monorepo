@@ -25,3 +25,18 @@ exports.firebaseAccountsPOST = function(body,xUID) {
   });
 }
 
+
+/**
+ * Firebaseアカウント削除
+ * Firebaseアカウントを削除します
+ *
+ * xUID String 
+ * robotID String 
+ * no response value expected for this operation
+ **/
+exports.firebaseAccountsRobotIDDELETE = function(xUID,robotID) {
+  return new Promise(function(resolve, reject) {
+    resolve();
+  });
+}
+
