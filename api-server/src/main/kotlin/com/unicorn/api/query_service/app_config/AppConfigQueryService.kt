@@ -15,7 +15,7 @@ class AppConfigQueryServiceImpl(
         // language=postgresql
         val sql =
             """
-            SELECT available, release_build
+            SELECT available, release_build, demo_mode
             FROM app_config
             """.trimIndent()
 
@@ -23,6 +23,7 @@ class AppConfigQueryServiceImpl(
             AppConfigDto(
                 available = rs.getBoolean("available"),
                 releaseBuild = rs.getInt("release_build"),
+                demoMode = rs.getBoolean("demo_mode"),
             )
         }.singleOrNull()
     }
@@ -31,4 +32,5 @@ class AppConfigQueryServiceImpl(
 data class AppConfigDto(
     val available: Boolean,
     val releaseBuild: Int,
+    val demoMode: Boolean,
 )

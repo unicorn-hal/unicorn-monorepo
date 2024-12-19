@@ -3022,6 +3022,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/inline_response_500'
       x-swagger-router-controller: Firebase
+  /firebase/accounts/{robotID}:
+    delete:
+      tags:
+      - firebase
+      summary: Firebaseアカウント削除
+      description: Firebaseアカウントを削除します
+      operationId: firebaseAccountsRobotIDDELETE
+      parameters:
+      - name: X-UID
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: UID
+      - name: robotID
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          description: FirebaseアカウントID
+      responses:
+        "204":
+          description: Firebaseアカウント削除成功
+        "400":
+          description: 指定されたFirebaseアカウントが存在しません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400_4'
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_500'
+      x-swagger-router-controller: Firebase
 components:
   schemas:
     FirebaseAccountRequest:
@@ -4399,9 +4439,13 @@ components:
         releaseBuild:
           type: integer
           example: 5
+        demoMode:
+          type: boolean
+          example: true
       example:
         releaseBuild: 5
         available: true
+        demoMode: true
     inline_response_500:
       type: object
       properties:
@@ -4880,6 +4924,13 @@ components:
           type: string
           description: エラータイプ
           example: RobotNotFound
+    inline_response_400_4:
+      type: object
+      properties:
+        errorType:
+          type: string
+          description: エラータイプ
+          example: FirebaseAccountNotFound
     Doctor_hospital:
       type: object
       properties:

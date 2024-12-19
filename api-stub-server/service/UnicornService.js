@@ -2,8 +2,8 @@
 
 
 /**
- * 緊急通報
- * 緊急通報を行います
+ * 緊急要請
+ * 緊急要請を行います
  *
  * body Emergency 
  * xUID String 

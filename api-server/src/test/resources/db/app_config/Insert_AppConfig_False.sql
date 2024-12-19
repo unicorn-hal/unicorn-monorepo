@@ -1,1 +1,1 @@
-INSERT INTO app_config (app_config_id, available, release_build, created_at) VALUES ('ac8e2834-96cf-45aa-8bd1-2b3303671e8b', false, 4, NOW());
+INSERT INTO app_config (app_config_id, available, release_build, created_at, demo_mode) VALUES ('ac8e2834-96cf-45aa-8bd1-2b3303671e8b', false, 4, NOW(), true);

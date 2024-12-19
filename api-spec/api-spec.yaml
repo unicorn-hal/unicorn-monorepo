@@ -1328,6 +1328,9 @@ paths:
                   releaseBuild:
                     type: integer
                     example: 5
+                  demoMode:
+                    type: boolean
+                    example: true
         "500":
           description: "サーバーエラーが発生しました"
           content:
