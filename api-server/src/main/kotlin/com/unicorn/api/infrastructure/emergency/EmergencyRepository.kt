@@ -1,6 +1,7 @@
 package com.unicorn.api.infrastructure.emergency
 
 import com.unicorn.api.domain.emergency.*
+import com.unicorn.api.domain.user.User
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -16,6 +17,8 @@ interface EmergencyRepository {
     fun getWaitingCount(emergencyID: EmergencyID): Int?
 
     fun delete(emergency: Emergency)
+
+    fun deleteByUser(user: User)
 }
 
 @Repository
@@ -144,6 +147,23 @@ class EmergencyRepositoryImpl(
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("emergencyID", emergency.emergencyID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByUser(user: User) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE emergency_queue
+            SET deleted_at = NOW()
+            WHERE user_id = :userID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }

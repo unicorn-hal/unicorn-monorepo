@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*
 class NotificationController(
     private val saveNotificationService: SaveNotificationService,
     private val updateNotificationService: UpdateNotificationService,
+    private val deleteNotificationService: DeleteNotificationService,
     private val notificationQueryService: NotificationQueryService,
     private val userQueryService: UserQueryService,
 ) {
@@ -59,6 +60,21 @@ class NotificationController(
         try {
             val result = updateNotificationService.update(UserID(userID), notificationPutRequest)
             return ResponseEntity.ok(result)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @DeleteMapping("/users/{userID}/notification")
+    fun deleteBy(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<Any> {
+        try {
+            deleteNotificationService.deleteByUserID(UserID(userID))
+            return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
         } catch (e: Exception) {

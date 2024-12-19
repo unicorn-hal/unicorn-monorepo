@@ -2,6 +2,8 @@ package com.unicorn.api.infrastructure.message
 
 import com.unicorn.api.domain.message.Message
 import com.unicorn.api.domain.message.MessageID
+import com.unicorn.api.domain.user.User
+import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,6 +14,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -65,6 +68,36 @@ class MessageRepositoryTest {
                 content = rs.getString("content"),
             )
         }.singleOrNull()
+    }
+
+    private fun findByUserID(userID: UserID): List<Message> {
+        // language=postgresql
+        val sql =
+            """
+            SELECT
+                message_id,
+                chat_id,
+                sender_id,
+                sent_at,
+                content
+            FROM messages
+            WHERE sender_id = :userID
+            AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", userID.value)
+
+        return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+            Message.fromStore(
+                messageID = UUID.fromString(rs.getString("message_id")),
+                chatID = UUID.fromString(rs.getString("chat_id")),
+                senderID = rs.getString("sender_id"),
+                sentAt = rs.getObject("sent_at", OffsetDateTime::class.java),
+                content = rs.getString("content"),
+            )
+        }
     }
 
     @Test
@@ -130,5 +163,30 @@ class MessageRepositoryTest {
 
         val deletedMessage = findBy(MessageID(messageID))
         assertEquals(null, deletedMessage)
+    }
+
+    @Test
+    fun `should delete message by user`() {
+        val user =
+            User.fromStore(
+                userID = "test",
+                firstName = "test",
+                lastName = "test",
+                email = "sample@test.com",
+                birthDate = LocalDate.of(1990, 1, 1),
+                gender = "male",
+                address = "test",
+                postalCode = "0000000",
+                phoneNumber = "00000000000",
+                iconImageUrl = "https://example.com",
+                bodyHeight = 170.4,
+                bodyWeight = 60.4,
+                occupation = "test",
+            )
+
+        messageRepository.deleteByUser(user)
+
+        val deletedMessage = findByUserID(UserID(user.userID.value))
+        assertEquals(0, deletedMessage.size)
     }
 }

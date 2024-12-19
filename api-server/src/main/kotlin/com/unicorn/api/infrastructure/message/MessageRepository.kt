@@ -2,6 +2,7 @@ package com.unicorn.api.infrastructure.message
 
 import com.unicorn.api.domain.message.Message
 import com.unicorn.api.domain.message.MessageID
+import com.unicorn.api.domain.user.User
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -14,6 +15,8 @@ interface MessageRepository {
     fun getOrNullBy(messageID: MessageID): Message?
 
     fun delete(message: Message)
+
+    fun deleteByUser(user: User)
 }
 
 @Repository
@@ -101,6 +104,23 @@ class MessageRepositoryImpl(
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("messageID", message.messageID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByUser(user: User) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE messages
+            SET deleted_at = NOW()
+            WHERE sender_id = :userID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }

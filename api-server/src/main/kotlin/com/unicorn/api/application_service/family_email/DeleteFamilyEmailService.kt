@@ -11,6 +11,8 @@ interface DeleteFamilyEmailService {
         familyEmailID: FamilyEmailID,
         userID: UserID,
     ): Unit
+
+    fun deleteByUserID(userID: UserID)
 }
 
 @Service
@@ -29,5 +31,12 @@ class DeleteFamilyEmailServiceImpl(
         requireNotNull(familyEmail) { "Family email not found" }
 
         familyEmailRepository.delete(familyEmail)
+    }
+
+    override fun deleteByUserID(userID: UserID) {
+        val user = userRepository.getOrNullBy(userID)
+        requireNotNull(user) { "User not found" }
+
+        familyEmailRepository.deleteByUser(user)
     }
 }

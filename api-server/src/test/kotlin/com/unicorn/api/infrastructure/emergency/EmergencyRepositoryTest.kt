@@ -1,6 +1,8 @@
 package com.unicorn.api.infrastructure.emergency
 
 import com.unicorn.api.domain.emergency.*
+import com.unicorn.api.domain.user.User
+import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.util.*
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
@@ -53,6 +56,34 @@ class EmergencyRepositoryTest {
                 userLongitude = rs.getDouble("user_longitude"),
             )
         }.singleOrNull()
+    }
+
+    private fun findEmergencyByUserID(userID: UserID): List<Emergency> {
+        // language=postgresql
+        val sql =
+            """
+            SELECT 
+                emergency_queue_id,
+                user_id,
+                user_latitude,
+                user_longitude
+            FROM emergency_queue
+            WHERE user_id = :userID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", userID.value)
+
+        return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+            Emergency.fromStore(
+                emergencyID = UUID.fromString(rs.getString("emergency_queue_id")),
+                userID = rs.getString("user_id"),
+                userLatitude = rs.getDouble("user_latitude"),
+                userLongitude = rs.getDouble("user_longitude"),
+            )
+        }
     }
 
     @Test
@@ -132,5 +163,30 @@ class EmergencyRepositoryTest {
         emergencyRepository.delete(emergency)
         val deletedEmergency = emergencyRepository.getOrNullBy(emergency.emergencyID)
         assertNull(deletedEmergency)
+    }
+
+    @Test
+    fun `should delete emergency by user`() {
+        val user =
+            User.fromStore(
+                userID = "test",
+                firstName = "test",
+                lastName = "test",
+                email = "sample@test.com",
+                birthDate = LocalDate.of(1990, 1, 1),
+                gender = "male",
+                address = "test",
+                postalCode = "0000000",
+                phoneNumber = "00000000000",
+                iconImageUrl = "https://example.com",
+                bodyHeight = 170.4,
+                bodyWeight = 60.4,
+                occupation = "test",
+            )
+
+        emergencyRepository.deleteByUser(user)
+
+        val deletedFamilyEmergency = findEmergencyByUserID(user.userID)
+        assertEquals(0, deletedFamilyEmergency.size)
     }
 }

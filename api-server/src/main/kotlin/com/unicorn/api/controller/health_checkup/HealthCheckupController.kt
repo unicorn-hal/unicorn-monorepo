@@ -102,6 +102,21 @@ class HealthCheckupController(
             return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
         }
     }
+
+    @DeleteMapping("/users/{userID}/health_checkups")
+    fun deleteBy(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<Any> {
+        try {
+            deleteHealthCheckupService.deleteByUserID(UserID(userID))
+            return ResponseEntity.noContent().build()
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.internalServerError().body(ResponseError("Internal Server Error"))
+        }
+    }
 }
 
 data class HealthCheckupPostRequest(

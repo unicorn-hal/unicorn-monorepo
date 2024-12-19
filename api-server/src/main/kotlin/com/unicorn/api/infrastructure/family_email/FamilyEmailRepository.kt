@@ -1,6 +1,7 @@
 package com.unicorn.api.infrastructure.family_email
 
 import com.unicorn.api.domain.family_email.*
+import com.unicorn.api.domain.user.User
 import com.unicorn.api.domain.user.UserID
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -15,6 +16,8 @@ interface FamilyEmailRepository {
     fun getOrNullByUserID(userID: UserID): List<FamilyEmail>
 
     fun delete(familyEmail: FamilyEmail): Unit
+
+    fun deleteByUser(user: User)
 }
 
 @Repository
@@ -143,6 +146,21 @@ class FamilyEmailRepositoryImpl(
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("familyEmailID", familyEmail.familyEmailID.value)
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByUser(user: User) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE family_emails
+            SET deleted_at = NOW()
+            WHERE user_id = :userID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }
 }

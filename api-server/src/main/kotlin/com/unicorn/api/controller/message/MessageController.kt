@@ -6,6 +6,7 @@ import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.chat.ChatID
 import com.unicorn.api.domain.message.MessageID
+import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.query_service.message.MessageQueryService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -47,6 +48,21 @@ class MessageController(
     ): ResponseEntity<Any> {
         try {
             deleteMessageService.delete(UID(uid), ChatID(chatID), MessageID(messageID))
+            return ResponseEntity.noContent().build()
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @DeleteMapping("/users/{userID}/messages")
+    fun deleteMessageByUserID(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<Any> {
+        try {
+            deleteMessageService.deleteBy(UserID(userID))
             return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
