@@ -2,6 +2,7 @@ package com.unicorn.api.infrastructure.department
 
 import com.unicorn.api.domain.department.Department
 import com.unicorn.api.domain.department.DepartmentID
+import com.unicorn.api.domain.doctor.Doctor
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -11,6 +12,8 @@ interface DepartmentRepository {
     fun getOrNullBy(departmentID: DepartmentID): Department?
 
     fun findByDepartmentIDs(departmentIDs: List<DepartmentID>): List<Department?>
+
+    fun deleteByDoctor(doctor: Doctor)
 }
 
 @Repository
@@ -62,5 +65,22 @@ class DepartmentRepositoryImpl(
         return departmentIDs.map { departmentID ->
             result.find { it.departmentID == departmentID }
         }
+    }
+
+    override fun deleteByDoctor(doctor: Doctor) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE doctor_departments
+            SET deleted_at = NOW()
+            WHERE doctor_id = :doctorID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctor.doctorID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
     }
 }

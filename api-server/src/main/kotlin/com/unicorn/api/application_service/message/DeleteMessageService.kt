@@ -2,10 +2,12 @@ package com.unicorn.api.application_service.message
 
 import com.unicorn.api.domain.account.UID
 import com.unicorn.api.domain.chat.ChatID
+import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.message.MessageID
 import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.infrastructure.account.AccountRepository
 import com.unicorn.api.infrastructure.chat.ChatRepository
+import com.unicorn.api.infrastructure.doctor.DoctorRepository
 import com.unicorn.api.infrastructure.message.MessageRepository
 import com.unicorn.api.infrastructure.user.UserRepository
 import org.springframework.stereotype.Service
@@ -18,12 +20,15 @@ interface DeleteMessageService {
     )
 
     fun deleteBy(userID: UserID)
+
+    fun deleteByDoctorID(doctorID: DoctorID)
 }
 
 @Service
 class DeleteMessageServiceImpl(
     private val accountRepository: AccountRepository,
     private val userRepository: UserRepository,
+    private val doctorRepository: DoctorRepository,
     private val chatRepository: ChatRepository,
     private val messageRepository: MessageRepository,
 ) : DeleteMessageService {
@@ -50,5 +55,12 @@ class DeleteMessageServiceImpl(
         requireNotNull(user) { "User not found" }
 
         messageRepository.deleteByUser(user)
+    }
+
+    override fun deleteByDoctorID(doctorID: DoctorID) {
+        val doctor = doctorRepository.getOrNullBy(doctorID)
+        requireNotNull(doctor) { "Doctor not found" }
+
+        messageRepository.deleteByDoctor(doctor)
     }
 }

@@ -2,6 +2,7 @@ package com.unicorn.api.infrastructure.chat
 
 import com.unicorn.api.domain.chat.Chat
 import com.unicorn.api.domain.chat.ChatID
+import com.unicorn.api.domain.doctor.Doctor
 import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.user.User
 import com.unicorn.api.domain.user.UserID
@@ -88,6 +89,32 @@ class ChatRepositoryTest {
         }
     }
 
+    private fun findByDoctorID(doctorID: DoctorID): List<Chat> {
+        // language=postgresql
+        val sql =
+            """
+            SELECT
+                chat_id, 
+                doctor_id, 
+                user_id
+            FROM chats
+            WHERE doctor_id = :doctorID
+            AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctorID.value)
+
+        return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+            Chat.fromStore(
+                chatID = UUID.fromString(rs.getString("chat_id")),
+                doctorID = rs.getString("doctor_id"),
+                userID = rs.getString("user_id"),
+            )
+        }
+    }
+
     @Test
     fun `should store chat`() {
         val doctorID = "doctor"
@@ -147,6 +174,25 @@ class ChatRepositoryTest {
         chatRepository.deleteByUser(user)
 
         val result = findByUserID(user.userID)
+        assertEquals(0, result.size)
+    }
+
+    @Test
+    fun `should delete chat by doctor`() {
+        val doctor =
+            Doctor.fromStore(
+                doctorID = "doctor",
+                hospitalID = UUID.fromString("d8bfa31d-54b9-4c64-a499-6c522517e5f7"),
+                firstName = "test",
+                lastName = "test",
+                email = "test@test.com",
+                phoneNumber = "1234567890",
+                doctorIconUrl = "https://example.com",
+                departments = listOf(UUID.fromString("b68a87a3-b7f1-4b85-b0ab-6c620d68d791")),
+            )
+        chatRepository.deleteByDoctor(doctor)
+
+        val result = findByDoctorID(doctor.doctorID)
         assertEquals(0, result.size)
     }
 }

@@ -4,6 +4,7 @@ import com.unicorn.api.application_service.chat.DeleteChatService
 import com.unicorn.api.application_service.chat.SaveChatService
 import com.unicorn.api.controller.api_response.ResponseError
 import com.unicorn.api.domain.account.UID
+import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.user.UserID
 import com.unicorn.api.query_service.chat.ChatQueryService
 import org.springframework.http.ResponseEntity
@@ -55,6 +56,21 @@ class ChatController(
     ): ResponseEntity<Any> {
         try {
             deleteChatService.deleteBy(UserID(userID))
+            return ResponseEntity.noContent().build()
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @DeleteMapping("/doctors/{doctorID}/chats")
+    fun deleteByDoctorID(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable doctorID: String,
+    ): ResponseEntity<Any> {
+        try {
+            deleteChatService.deleteByDoctorID(DoctorID(doctorID))
             return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().body(ResponseError(e.message ?: "Bad Request"))
