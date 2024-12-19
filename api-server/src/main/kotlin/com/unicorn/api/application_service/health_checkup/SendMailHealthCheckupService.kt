@@ -47,7 +47,7 @@ class SendMailHealthCheckupServiceImpl(
                 <body>
                 <h1>${user.lastName.value} ${user.firstName.value}さんの検査結果</h1>
                 <p>${user.lastName.value} ${user.firstName.value}さんの検査結果をお知らせします。</p>
-                <a href="#">検査結果を確認する</a>
+                <a href="https://unicorn-doctor-frontend.pages.dev/doctors/patients/${user.userID.value}">検査結果を確認する</a>
                 </body>
                 </html>
                 """
