@@ -1,5 +1,6 @@
 package com.unicorn.api.infrastructure.message
 
+import com.unicorn.api.domain.doctor.Doctor
 import com.unicorn.api.domain.message.Message
 import com.unicorn.api.domain.message.MessageID
 import com.unicorn.api.domain.user.User
@@ -17,6 +18,8 @@ interface MessageRepository {
     fun delete(message: Message)
 
     fun deleteByUser(user: User)
+
+    fun deleteByDoctor(doctor: Doctor)
 }
 
 @Repository
@@ -121,6 +124,23 @@ class MessageRepositoryImpl(
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("userID", user.userID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByDoctor(doctor: Doctor) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE messages
+            SET deleted_at = NOW()
+            WHERE sender_id = :doctorID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctor.doctorID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }

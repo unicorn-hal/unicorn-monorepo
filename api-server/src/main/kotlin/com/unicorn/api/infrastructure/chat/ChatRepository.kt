@@ -2,6 +2,7 @@ package com.unicorn.api.infrastructure.chat
 
 import com.unicorn.api.domain.chat.Chat
 import com.unicorn.api.domain.chat.ChatID
+import com.unicorn.api.domain.doctor.Doctor
 import com.unicorn.api.domain.user.User
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -16,6 +17,8 @@ interface ChatRepository {
     fun delete(chat: Chat)
 
     fun deleteByUser(user: User)
+
+    fun deleteByDoctor(doctor: Doctor)
 }
 
 @Repository
@@ -101,6 +104,23 @@ class ChatRepositoryImpl(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("userID", user.userID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByDoctor(doctor: Doctor) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE chats
+            SET deleted_at = NOW()
+            WHERE doctor_id = :doctorID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctor.doctorID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }
