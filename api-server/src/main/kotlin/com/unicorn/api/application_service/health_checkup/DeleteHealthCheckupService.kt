@@ -11,6 +11,8 @@ interface DeleteHealthCheckupService {
         userID: UserID,
         healthCheckupID: HealthCheckupID,
     ): Unit
+
+    fun deleteByUserID(userID: UserID)
 }
 
 @Service
@@ -29,5 +31,12 @@ class DeleteHealthCheckupServiceImpl(
         requireNotNull(healthCheckup) { "Health checkup not found" }
 
         healthCheckupRepository.delete(healthCheckup)
+    }
+
+    override fun deleteByUserID(userID: UserID) {
+        val user = userRepository.getOrNullBy(userID)
+        requireNotNull(user) { "User not found" }
+
+        healthCheckupRepository.deleteByUser(user)
     }
 }

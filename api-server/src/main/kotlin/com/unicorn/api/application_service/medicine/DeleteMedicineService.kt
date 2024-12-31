@@ -13,6 +13,8 @@ interface DeleteMedicineService {
         userID: UserID,
         medicineID: MedicineID,
     ): Unit
+
+    fun deleteByUserID(userID: UserID)
 }
 
 @Service
@@ -40,5 +42,14 @@ class DeleteMedicineServiceImpl(
 
         medicineRepository.delete(medicine)
         medicineRemindersRepository.delete(medicineReminders)
+    }
+
+    override fun deleteByUserID(userID: UserID) {
+        val user = userRepository.getOrNullBy(userID)
+        requireNotNull(user) { "User not found" }
+
+        medicineRepository.deleteByUser(user)
+
+        medicineRemindersRepository.deleteByUser(user)
     }
 }

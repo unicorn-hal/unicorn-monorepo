@@ -1,6 +1,7 @@
 package com.unicorn.api.infrastructure.chronic_disease
 
 import com.unicorn.api.domain.chronic_disease.*
+import com.unicorn.api.domain.user.User
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,6 +12,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.util.*
 
 @TestPropertySource(locations = ["classpath:application-test.properties"])
@@ -55,6 +57,35 @@ class ChronicDiseaseRepositoryTest {
                 diseaseID = rs.getInt("disease_id"),
             )
         }.singleOrNull()
+    }
+
+    private fun findChronicDiseaseByUser(user: User): List<ChronicDisease> {
+        // language=postgresql
+        val sql =
+            """
+            SELECT
+                chronic_disease_id,
+                user_id,
+                disease_id
+            FROM chronic_diseases
+            WHERE user_id = :userID
+            AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
+
+        return namedParameterJdbcTemplate.query(
+            sql,
+            sqlParams,
+        ) { rs, _ ->
+            ChronicDisease.fromStore(
+                chronicDiseaseID = UUID.fromString(rs.getString("chronic_disease_id")),
+                userID = rs.getString("user_id"),
+                diseaseID = rs.getInt("disease_id"),
+            )
+        }
     }
 
     @Test
@@ -107,5 +138,30 @@ class ChronicDiseaseRepositoryTest {
 
         val foundChronicDisease = findChronicDiseaseID(chronicDiseaseID.value)
         assertNull(foundChronicDisease)
+    }
+
+    @Test
+    fun `should delete chronic disease by user`() {
+        val user =
+            User.fromStore(
+                userID = "test",
+                firstName = "test",
+                lastName = "test",
+                email = "sample@test.com",
+                birthDate = LocalDate.of(1990, 1, 1),
+                gender = "male",
+                address = "test",
+                postalCode = "0000000",
+                phoneNumber = "00000000000",
+                iconImageUrl = "https://example.com",
+                bodyHeight = 170.4,
+                bodyWeight = 60.4,
+                occupation = "test",
+            )
+
+        chronicDiseaseRepository.deleteByUser(user)
+
+        val foundChronicDisease = findChronicDiseaseByUser(user)
+        assertEquals(0, foundChronicDisease.size)
     }
 }

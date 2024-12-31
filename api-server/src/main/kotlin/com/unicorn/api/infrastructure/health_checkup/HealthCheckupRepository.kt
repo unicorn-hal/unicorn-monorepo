@@ -1,6 +1,7 @@
 package com.unicorn.api.infrastructure.health_checkup
 
 import com.unicorn.api.domain.health_checkup.*
+import com.unicorn.api.domain.user.User
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -12,6 +13,8 @@ interface HealthCheckupRepository {
     fun getOrNullBy(healthCheckupID: HealthCheckupID): HealthCheckup?
 
     fun delete(healthCheckup: HealthCheckup)
+
+    fun deleteByUser(user: User)
 }
 
 @Repository
@@ -111,6 +114,23 @@ class HealthCheckupRepositoryImpl(
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("healthCheckupID", healthCheckup.healthCheckupID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByUser(user: User) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE health_checkups
+            SET deleted_at = NOW()
+            WHERE checkuped_user_id = :userID
+            AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }

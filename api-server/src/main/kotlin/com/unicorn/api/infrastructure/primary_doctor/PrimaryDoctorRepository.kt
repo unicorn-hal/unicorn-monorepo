@@ -1,7 +1,9 @@
 package com.unicorn.api.infrastructure.primary_doctor
 
+import com.unicorn.api.domain.doctor.Doctor
 import com.unicorn.api.domain.doctor.DoctorID
 import com.unicorn.api.domain.primary_doctor.*
+import com.unicorn.api.domain.user.User
 import com.unicorn.api.domain.user.UserID
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -21,6 +23,10 @@ interface PrimaryDoctorRepository {
     ): PrimaryDoctor?
 
     fun delete(primaryDoctor: PrimaryDoctor)
+
+    fun deleteByUser(user: User)
+
+    fun deleteByDoctor(doctor: Doctor)
 }
 
 @Repository
@@ -153,6 +159,40 @@ class PrimaryDoctorRepositoryImpl(
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("primaryDoctorID", primaryDoctor.primaryDoctorID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByUser(user: User) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE primary_doctors
+            SET deleted_at = NOW()
+            WHERE user_id = :userID
+            AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByDoctor(doctor: Doctor) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE primary_doctors
+            SET deleted_at = NOW()
+            WHERE doctor_id = :doctorID
+            AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctor.doctorID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }

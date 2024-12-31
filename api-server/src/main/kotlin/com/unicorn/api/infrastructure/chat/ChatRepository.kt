@@ -2,6 +2,8 @@ package com.unicorn.api.infrastructure.chat
 
 import com.unicorn.api.domain.chat.Chat
 import com.unicorn.api.domain.chat.ChatID
+import com.unicorn.api.domain.doctor.Doctor
+import com.unicorn.api.domain.user.User
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Repository
@@ -13,6 +15,10 @@ interface ChatRepository {
     fun getOrNullBy(chatID: ChatID): Chat?
 
     fun delete(chat: Chat)
+
+    fun deleteByUser(user: User)
+
+    fun deleteByDoctor(doctor: Doctor)
 }
 
 @Repository
@@ -81,6 +87,40 @@ class ChatRepositoryImpl(val namedParameterJdbcTemplate: NamedParameterJdbcTempl
         val sqlParams =
             MapSqlParameterSource()
                 .addValue("chatID", chat.chatID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByUser(user: User) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE chats
+            SET deleted_at = NOW()
+            WHERE user_id = :userID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", user.userID.value)
+
+        namedParameterJdbcTemplate.update(sql, sqlParams)
+    }
+
+    override fun deleteByDoctor(doctor: Doctor) {
+        // language=postgresql
+        val sql =
+            """
+            UPDATE chats
+            SET deleted_at = NOW()
+            WHERE doctor_id = :doctorID
+            AND deleted_at IS NULL;
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("doctorID", doctor.doctorID.value)
 
         namedParameterJdbcTemplate.update(sql, sqlParams)
     }

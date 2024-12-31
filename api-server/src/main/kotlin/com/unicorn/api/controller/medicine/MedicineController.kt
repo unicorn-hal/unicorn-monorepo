@@ -29,11 +29,7 @@ class MedicineController(
         @RequestHeader("X-UID") uid: String,
     ): ResponseEntity<*> {
         return try {
-            val user = userQueryService.getOrNullBy(uid)
-
-            if (user == null) {
-                return ResponseEntity.status(400).body("User not found")
-            }
+            val user = userQueryService.getOrNullBy(uid) ?: return ResponseEntity.status(400).body("User not found")
 
             val result = medicineQueryService.getMedicines(uid)
             ResponseEntity.ok(result)
@@ -99,6 +95,21 @@ class MedicineController(
     ): ResponseEntity<Any> {
         try {
             deleteMedicineService.delete(UserID(uid), MedicineID(medicineID))
+            return ResponseEntity.noContent().build()
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))
+        } catch (e: Exception) {
+            return ResponseEntity.status(500).body(ResponseError("Internal Server Error"))
+        }
+    }
+
+    @DeleteMapping("/users/{userID}/medicines")
+    fun deleteByUserID(
+        @RequestHeader("X-UID") uid: String,
+        @PathVariable userID: String,
+    ): ResponseEntity<Any> {
+        try {
+            deleteMedicineService.deleteByUserID(UserID(userID))
             return ResponseEntity.noContent().build()
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.status(400).body(ResponseError(e.message ?: "Bad Request"))

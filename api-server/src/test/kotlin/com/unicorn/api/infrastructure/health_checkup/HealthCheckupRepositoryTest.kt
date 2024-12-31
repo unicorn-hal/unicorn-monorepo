@@ -1,6 +1,8 @@
 package com.unicorn.api.infrastructure.health_checkup
 
 import com.unicorn.api.domain.health_checkup.*
+import com.unicorn.api.domain.user.User
+import com.unicorn.api.domain.user.UserID
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -58,6 +60,38 @@ class HealthCheckupRepositoryTest {
                 date = rs.getDate("checkuped_date").toLocalDate(),
             )
         }.singleOrNull()
+    }
+
+    private fun findHealthCheckupByUserID(userID: UserID): List<HealthCheckup> {
+        //language=postgresql
+        val sql =
+            """
+            SELECT
+                health_checkup_id,
+                checkuped_user_id,
+                body_temperature,
+                blood_pressure,
+                medical_record,
+                checkuped_date
+            FROM health_checkups
+            WHERE checkuped_user_id = :userID
+            AND deleted_at IS NULL
+            """.trimIndent()
+
+        val sqlParams =
+            MapSqlParameterSource()
+                .addValue("userID", userID.value)
+
+        return namedParameterJdbcTemplate.query(sql, sqlParams) { rs, _ ->
+            HealthCheckup.fromStore(
+                healthCheckupID = UUID.fromString(rs.getString("health_checkup_id")),
+                userID = rs.getString("checkuped_user_id"),
+                bodyTemperature = rs.getDouble("body_temperature"),
+                bloodPressure = rs.getString("blood_pressure"),
+                medicalRecord = rs.getString("medical_record"),
+                date = rs.getDate("checkuped_date").toLocalDate(),
+            )
+        }
     }
 
     @Test
@@ -151,5 +185,30 @@ class HealthCheckupRepositoryTest {
 
         val deletedHealthCheckup = findHealthCheckupByID(healthCheckup.healthCheckupID.value)
         assertNull(deletedHealthCheckup)
+    }
+
+    @Test
+    fun `Should delete health checkup by user`() {
+        val user =
+            User.fromStore(
+                userID = "test",
+                firstName = "test",
+                lastName = "test",
+                email = "sample@test.com",
+                birthDate = LocalDate.of(1990, 1, 1),
+                gender = "male",
+                address = "test",
+                postalCode = "0000000",
+                phoneNumber = "00000000000",
+                iconImageUrl = "https://example.com",
+                bodyHeight = 170.4,
+                bodyWeight = 60.4,
+                occupation = "test",
+            )
+
+        healthCheckupRepository.deleteByUser(user)
+
+        val deletedHealthCheckup = findHealthCheckupByUserID(user.userID)
+        assertEquals(0, deletedHealthCheckup.size)
     }
 }

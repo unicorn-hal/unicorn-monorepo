@@ -11,6 +11,8 @@ interface DeleteChronicDiseaseService {
         userID: UserID,
         chronicDiseaseID: ChronicDiseaseID,
     ): Unit
+
+    fun deleteBy(userID: UserID)
 }
 
 @Service
@@ -29,5 +31,12 @@ class DeleteChronicDiseaseServiceImpl(
         requireNotNull(chronicDisease) { "Chronic disease not found" }
 
         chronicDiseaseRepository.delete(chronicDisease)
+    }
+
+    override fun deleteBy(userID: UserID) {
+        val user = userRepository.getOrNullBy(userID)
+        requireNotNull(user) { "User not found" }
+
+        chronicDiseaseRepository.deleteByUser(user)
     }
 }
